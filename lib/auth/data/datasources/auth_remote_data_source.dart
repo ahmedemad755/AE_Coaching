@@ -1,61 +1,103 @@
+import 'dart:async';
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class AuthRemoteDataSource {
-  /// يقوم بإرسال رمز التحقق (OTP) إلى رقم الهاتف المدخل
-  Future<void> requestOtp(String phoneNumber);
+  Future<String> requestOtp(String phoneNumber);
 
-  /// يقوم بإتمام عملية التسجيل باستخدام معرف التحقق ورمز OTP
-  Future<UserCredential> registerWithOtp({
+  // تم إضافة الاسم والباسورد عشان نحفظهم في الفايرستور
+  Future<void> registerWithOtp({
     required String verificationId,
     required String smsCode,
+    required String name,
+    required String phone,
+    required String password,
   });
 
-  /// يقوم بتسجيل الدخول التقليدي باستخدام البريد الإلكتروني وكلمة المرور
-  Future<UserCredential> login(String email, String password);
+  // تسجيل الدخول العادي بالرقم والباسورد
+  Future<void> login(String phone, String password);
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  @override
-  Future<void> requestOtp(String phoneNumber) async {
-    await _auth.verifyPhoneNumber(
-      phoneNumber: phoneNumber,
-      verificationCompleted: (PhoneAuthCredential credential) async {
-        // في حال التحقق التلقائي (على أجهزة أندرويد مثلاً)
-        await _auth.signInWithCredential(credential);
-      },
-      verificationFailed: (FirebaseAuthException e) {
-        throw e; // سيتم التقاط الخطأ في الـ Repository أو الكيوبيت
-      },
-      codeSent: (String verificationId, int? resendToken) {
-        // يمكنك استخدام الـ callback هنا لتخزين الـ verificationId 
-        // أو إرساله لواجهة المستخدم عبر الـ Flow الخاص بك
-      },
-      codeAutoRetrievalTimeout: (String verificationId) {},
-    );
+  // دالة لتشفير الباسورد قبل حفظه (Security Best Practice)
+  String _hashPassword(String password) {
+    var bytes = utf8.encode(password);
+    var digest = sha256.convert(bytes);
+    return digest.toString();
   }
 
   @override
-  Future<UserCredential> registerWithOtp({
+  Future<String> requestOtp(String phoneNumber) async {
+    Completer<String> completer = Completer<String>();
+
+    await _auth.verifyPhoneNumber(
+      phoneNumber: phoneNumber,
+      verificationCompleted: (PhoneAuthCredential credential) async {},
+      verificationFailed: (FirebaseAuthException e) {
+        if (!completer.isCompleted) completer.completeError(e);
+      },
+      codeSent: (String verificationId, int? resendToken) {
+        if (!completer.isCompleted) completer.complete(verificationId);
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {
+        if (!completer.isCompleted) completer.complete(verificationId);
+      },
+    );
+
+    return completer.future;
+  }
+
+  @override
+  Future<void> registerWithOtp({
     required String verificationId,
     required String smsCode,
+    required String name,
+    required String phone,
+    required String password,
   }) async {
-    // إنشاء الكريدينشال باستخدام الكود المرسل
+    // 1. تأكيد الـ OTP
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
       verificationId: verificationId,
       smsCode: smsCode,
     );
-    // إتمام تسجيل الدخول/التسجيل في فايربيز
-    return await _auth.signInWithCredential(credential);
+    UserCredential userCredential = await _auth.signInWithCredential(credential);
+
+    // 2. حفظ بيانات المستخدم في Firestore
+    await _firestore.collection('users').doc(userCredential.user!.uid).set({
+      'uid': userCredential.user!.uid,
+      'name': name,
+      'phoneNumber': phone,
+      'password': _hashPassword(password), // بنحفظ الباسورد مشفر
+      'createdAt': FieldValue.serverTimestamp(),
+    });
   }
 
   @override
-  Future<UserCredential> login(String email, String password) async {
-    // تسجيل الدخول العادي المستخدم في الـ LoginView
-    return await _auth.signInWithEmailAndPassword(
-      email: email, 
-      password: password,
-    );
+  Future<void> login(String phone, String password) async {
+    // 1. البحث عن المستخدم برقم الهاتف في Firestore
+    var querySnapshot = await _firestore
+        .collection('users')
+        .where('phoneNumber', isEqualTo: phone)
+        .get();
+
+    if (querySnapshot.docs.isEmpty) {
+      throw Exception('Account not found. Please register first.');
+    }
+
+    // 2. التحقق من الباسورد
+    var userData = querySnapshot.docs.first.data();
+    String storedHashedPassword = userData['password'];
+    String inputHashedPassword = _hashPassword(password);
+
+    if (storedHashedPassword != inputHashedPassword) {
+      throw Exception('Incorrect password. Please try again.');
+    }
+
+    // إذا وصلنا هنا، يعني الرقم والباسورد صح!
   }
 }

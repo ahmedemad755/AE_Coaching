@@ -4,17 +4,6 @@ import 'package:ae_coaching/auth/domain/usecases/request_otp_usecase.dart';
 import 'package:ae_coaching/auth/presentation/cubit/auth_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AuthError extends AuthState {
-  final String message;
-  AuthError(this.message);
-}
-
-// الكود الخاص بمعرف التحقق في حالة الـ OTP
-class AuthOtpSent extends AuthState {
-  final String verificationId;
-  AuthOtpSent(this.verificationId);
-}
-
 class AuthCubit extends Cubit<AuthState> {
   final LoginUseCase loginUseCase;
   final RequestOtpUseCase requestOtpUseCase;
@@ -26,7 +15,6 @@ class AuthCubit extends Cubit<AuthState> {
     required this.registerWithOtpUseCase,
   }) : super(AuthInitial());
 
-  // 1. تسجيل الدخول التقليدي
   Future<void> login(String email, String password) async {
     emit(AuthLoading());
     try {
@@ -37,39 +25,43 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  // 2. طلب كود OTP
   Future<void> requestOtp(String phoneNumber) async {
     emit(AuthLoading());
     try {
-      await requestOtpUseCase(phoneNumber);
-      // ملاحظة: الـ verificationId عادة بيتم التعامل معاه في الـ Data Source 
-      // عبر callback، اتأكد من تمريره إذا كنت بتخزنه هناك.
-      emit(AuthSuccess(message: "OTP Sent successfully"));
+      // 🔥 دلوقتي إحنا بننتظر الـ ID الحقيقي من فايربيز
+      final String verificationId = await requestOtpUseCase(phoneNumber);
+      
+      // بنبعته للـ RegisterView عن طريق State الـ AuthOtpSent
+      emit(AuthOtpSent(verificationId)); 
     } catch (e) {
       emit(AuthError(_mapExceptionToMessage(e)));
     }
   }
 
-  // 3. إتمام التسجيل بكود الـ OTP
+// في دالة registerWithOtp ضيف المعطيات الجديدة:
   Future<void> registerWithOtp({
     required String verificationId,
     required String smsCode,
+    required String name,
+    required String phone,
+    required String password,
   }) async {
     emit(AuthLoading());
     try {
       await registerWithOtpUseCase(
         verificationId: verificationId,
         smsCode: smsCode,
+        name: name,
+        phone: phone,
+        password: password,
       );
-      emit(AuthSuccess(message: "Registered successfully"));
+      emit(AuthSuccess(message: "Account created successfully. Please login."));
     } catch (e) {
       emit(AuthError(_mapExceptionToMessage(e)));
     }
   }
 
-  // دالة مساعدة لتحويل الـ Exceptions لرسائل مفهومة
   String _mapExceptionToMessage(Object e) {
-    // يمكنك تخصيص الرسائل بناءً على نوع الـ Exception (FirebaseException مثلاً)
     return e.toString().replaceAll('Exception: ', '');
   }
 }

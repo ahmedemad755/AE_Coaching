@@ -1,6 +1,5 @@
 import 'package:ae_coaching/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:ae_coaching/auth/domain/repositories/auth_repository.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;
@@ -8,26 +7,29 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<void> requestOtp(String phoneNumber) async {
+  Future<String> requestOtp(String phoneNumber) async {
     try {
-      // تمرير الطلب إلى الـ Data Source مباشرة
-      return await remoteDataSource.requestOtp(phoneNumber);
+      return await remoteDataSource.requestOtp(phoneNumber); 
     } catch (e) {
-      // هنا ممكن مستقبلاً تحول الـ Exception لـ Failure مخصص
       rethrow;
     }
   }
 
   @override
-  Future<UserCredential> registerWithOtp({
+  Future<void> registerWithOtp({
     required String verificationId,
     required String smsCode,
+    required String name,
+    required String phone,
+    required String password,
   }) async {
     try {
-      // تنفيذ عملية التسجيل عبر الـ Remote Data Source
       return await remoteDataSource.registerWithOtp(
         verificationId: verificationId,
         smsCode: smsCode,
+        name: name,
+        phone: phone,
+        password: password,
       );
     } catch (e) {
       rethrow;
@@ -35,10 +37,9 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<UserCredential> login(String email, String password) async {
+  Future<void> login(String phone, String password) async {
     try {
-      // تنفيذ عملية تسجيل الدخول التقليدية
-      return await remoteDataSource.login(email, password);
+      return await remoteDataSource.login(phone, password);
     } catch (e) {
       rethrow;
     }

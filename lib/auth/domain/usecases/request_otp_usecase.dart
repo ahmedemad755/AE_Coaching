@@ -5,8 +5,8 @@ class RequestOtpUseCase {
 
   RequestOtpUseCase(this.repository);
 
-  /// طلب إرسال كود التحقق لرقم الهاتف
-  Future<void> call(String phoneNumber) async {
+  // تم التعديل لترجع String
+  Future<String> call(String phoneNumber) async {
     return await repository.requestOtp(phoneNumber);
   }
 }

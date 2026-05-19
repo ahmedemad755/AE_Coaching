@@ -1,4 +1,6 @@
 import 'package:ae_coaching/auth/data/models/Exercise_Set.dart';
+import 'package:ae_coaching/core/routes/app_router.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // 🔥 نحتاج فايربيز هنا لجلب الـ UID
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
@@ -11,7 +13,9 @@ class Hom extends StatefulWidget {
 }
 
 class _HomState extends State<Hom> {
-  late Box<ExerciseSet> exerciseBox;
+  Box<ExerciseSet>? exerciseBox; // جعلناه Nullable لأننا هنفتحه برمجياً
+  bool _isLoading = true; // متغير لإظهار شاشة تحميل لحد ما الداتا تجهز
+
   final nameController = TextEditingController();
   final weightController = TextEditingController();
   final repsController = TextEditingController();
@@ -23,7 +27,22 @@ class _HomState extends State<Hom> {
   @override
   void initState() {
     super.initState();
-    exerciseBox = Hive.box<ExerciseSet>('sets');
+    _initUserBox(); // 🔥 استدعاء دالة فتح صندوق المستخدم
+  }
+
+  // 🔥 السحر كله هنا: بنفتح Box باسم الـ UID بتاع اليوزر
+  Future<void> _initUserBox() async {
+    final user = FirebaseAuth.instance.currentUser;
+    final uid = user?.uid ?? 'local_user'; // بنجيب الـ UID
+    
+    // فتح صندوق خاص ومستقل للمستخدم ده فقط
+    exerciseBox = await Hive.openBox<ExerciseSet>('sets_$uid');
+    
+    if (mounted) {
+      setState(() {
+        _isLoading = false; // إخفاء شاشة التحميل بعد فتح الصندوق
+      });
+    }
   }
 
   @override
@@ -32,6 +51,56 @@ class _HomState extends State<Hom> {
     weightController.dispose();
     repsController.dispose();
     super.dispose();
+  }
+
+  Future<void> _logout() async {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: const Color(0xfff5f9fc),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        title: const Text(
+          'Logout',
+          style: TextStyle(fontWeight: FontWeight.w900, color: _dark),
+        ),
+        content: const Text(
+          'Are you sure you want to log out of your account?',
+          style: TextStyle(color: _muted),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Cancel', style: TextStyle(color: _blue)),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              await Hive.box('authBox').put('isLoggedIn', false);
+              
+              // إغلاق الصندوق الحالي لتنظيف الذاكرة
+              if (exerciseBox != null && exerciseBox!.isOpen) {
+                await exerciseBox!.close();
+              }
+              
+              await FirebaseAuth.instance.signOut();
+              
+              if (mounted) {
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  AppNavigator.login,
+                  (route) => false,
+                );
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.redAccent,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            ),
+            child: const Text('Logout', style: TextStyle(fontWeight: FontWeight.w800)),
+          ),
+        ],
+      ),
+    );
   }
 
   Map<String, List<ExerciseSet>> _groupExercises(List<ExerciseSet> allSets) {
@@ -50,8 +119,9 @@ class _HomState extends State<Hom> {
   }
 
   double _calculateTodayVolume() {
+    if (exerciseBox == null) return 0.0;
     final todayStr = DateFormat('yyyy-MM-dd').format(DateTime.now());
-    return exerciseBox.values.where((set) {
+    return exerciseBox!.values.where((set) {
       return DateFormat('yyyy-MM-dd').format(set.date) == todayStr;
     }).fold(0.0, (sum, set) => sum + (set.weight * set.reps));
   }
@@ -66,7 +136,8 @@ class _HomState extends State<Hom> {
   }
 
   void _showProgressAnalysis() {
-    final allSets = exerciseBox.values.toList();
+    if (exerciseBox == null) return;
+    final allSets = exerciseBox!.values.toList();
     final exerciseHistory = <String, List<ExerciseSet>>{};
     for (final set in allSets) {
       exerciseHistory.putIfAbsent(set.exerciseName.toLowerCase().trim(), () => []).add(set);
@@ -191,6 +262,24 @@ class _HomState extends State<Hom> {
 
   @override
   Widget build(BuildContext context) {
+    // 🔥 عرض شاشة تحميل زرقاء أنيقة لحد ما الـ Data بتاعت اليوزر تجهز
+    if (_isLoading) {
+      return Scaffold(
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Color(0xffdbe9f7), Color(0xff8fb6e6)],
+            ),
+          ),
+          child: const Center(
+            child: CircularProgressIndicator(color: _blue),
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -209,7 +298,7 @@ class _HomState extends State<Hom> {
                   _buildTopPanel(),
                   Expanded(
                     child: ValueListenableBuilder(
-                      valueListenable: exerciseBox.listenable(),
+                      valueListenable: exerciseBox!.listenable(),
                       builder: (context, Box<ExerciseSet> box, _) {
                         final groupedData = _groupExercises(box.values.toList());
                         final groupKeys = groupedData.keys.toList()
@@ -298,6 +387,12 @@ class _HomState extends State<Hom> {
                   ),
                 ),
                 IconButton(
+                  onPressed: _logout,
+                  icon: const Icon(Icons.logout, size: 22),
+                  color: Colors.white,
+                  tooltip: 'Logout',
+                ),
+                IconButton(
                   onPressed: _showProgressAnalysis,
                   icon: const Icon(Icons.analytics_outlined),
                   color: Colors.white,
@@ -314,7 +409,7 @@ class _HomState extends State<Hom> {
               borderRadius: BorderRadius.circular(10),
             ),
             child: ValueListenableBuilder(
-              valueListenable: exerciseBox.listenable(),
+              valueListenable: exerciseBox!.listenable(),
               builder: (context, box, _) {
                 return Row(
                   children: [
@@ -380,7 +475,7 @@ class _HomState extends State<Hom> {
             return;
           }
 
-          exerciseBox.add(
+          exerciseBox!.add(
             ExerciseSet(
               exerciseName: nameController.text.trim(),
               weight: weight,
@@ -411,7 +506,7 @@ class _HomState extends State<Hom> {
           Navigator.pop(context);
         },
         onSubmit: () {
-          exerciseBox.put(
+          exerciseBox!.put(
             set.key,
             ExerciseSet(
               exerciseName: set.exerciseName,
@@ -427,6 +522,8 @@ class _HomState extends State<Hom> {
     );
   }
 }
+
+// ... بقية الـ Widgets (مثل _ExerciseCard و _AnalyticsCard) زي ما هي بدون أي تعديل
 
 class _ExerciseCard extends StatelessWidget {
   final String exerciseName;

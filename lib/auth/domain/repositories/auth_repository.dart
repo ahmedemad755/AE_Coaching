@@ -1,15 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
-
 abstract class AuthRepository {
-  /// طلب إرسال كود OTP لرقم الهاتف
-  Future<void> requestOtp(String phoneNumber);
+  Future<String> requestOtp(String phoneNumber);
 
-  /// تسجيل مستخدم جديد أو تفعيل الحساب باستخدام الكود المستلم ومعرف التحقق
-  Future<UserCredential> registerWithOtp({
+  Future<void> registerWithOtp({
     required String verificationId,
     required String smsCode,
+    required String name,
+    required String phone,
+    required String password,
   });
 
-  /// تسجيل الدخول العادي بالبريد الإلكتروني وكلمة المرور
-  Future<UserCredential> login(String email, String password);
+  Future<void> login(String phone, String password);
 }

@@ -17,6 +17,8 @@ class _RegisterViewState extends State<RegisterView> {
   final TextEditingController _nameController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  bool _isPasswordObscured = true; // متغير إخفاء/إظهار الباسورد
+
   @override
   void dispose() {
     _phoneController.dispose();
@@ -25,10 +27,22 @@ class _RegisterViewState extends State<RegisterView> {
     super.dispose();
   }
 
-  InputDecoration _fieldDecoration(String hint, IconData icon) {
+  // دالة لتعديل رقم الهاتف بإضافة كود الدولة تلقائياً
+  String formatPhoneNumber(String phone) {
+    String formatted = phone.trim();
+    if (formatted.startsWith('01')) {
+      formatted = '+20${formatted.substring(1)}';
+    } else if (!formatted.startsWith('+')) {
+      formatted = '+20$formatted';
+    }
+    return formatted;
+  }
+
+  InputDecoration _fieldDecoration(String hint, IconData icon, {Widget? suffixIcon}) {
     return InputDecoration(
       hintText: hint,
       prefixIcon: Icon(icon, color: const Color(0xff2f80ed)),
+      suffixIcon: suffixIcon,
       filled: true,
       fillColor: Colors.white,
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
@@ -65,13 +79,18 @@ class _RegisterViewState extends State<RegisterView> {
         child: BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) {
             if (state is AuthSuccess || state is AuthOtpSent) {
+              String vId = '';
+              if (state is AuthOtpSent) {
+                vId = state.verificationId;
+              }
               Navigator.pushNamed(
                 context,
                 AppNavigator.otp,
                 arguments: {
-                  'phone': _phoneController.text.trim(),
+                  'phone': formatPhoneNumber(_phoneController.text), // إرسال الرقم بالصيغة الصحيحة
                   'password': _passwordController.text.trim(),
                   'name': _nameController.text.trim(),
+                  'verificationId': vId, // تمرير الـ verificationId
                 },
               );
             } else if (state is AuthError) {
@@ -147,8 +166,22 @@ class _RegisterViewState extends State<RegisterView> {
                             const SizedBox(height: 14),
                             TextFormField(
                               controller: _passwordController,
-                              obscureText: true,
-                              decoration: _fieldDecoration('Password', Icons.lock),
+                              obscureText: _isPasswordObscured,
+                              decoration: _fieldDecoration(
+                                'Password', 
+                                Icons.lock,
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _isPasswordObscured ? Icons.visibility_off : Icons.visibility,
+                                    color: Colors.grey,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _isPasswordObscured = !_isPasswordObscured;
+                                    });
+                                  },
+                                ),
+                              ),
                               validator: (value) =>
                                   value == null || value.length < 6 ? 'Password too short' : null,
                             ),
@@ -161,7 +194,7 @@ class _RegisterViewState extends State<RegisterView> {
                                     : () {
                                         if (_formKey.currentState!.validate()) {
                                           context.read<AuthCubit>().requestOtp(
-                                                _phoneController.text.trim(),
+                                                formatPhoneNumber(_phoneController.text), // إرسال الرقم المنسق للـ Cubit
                                               );
                                         }
                                       },

@@ -13,9 +13,11 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController(); // بيستقبل رقم الهاتف
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  
+  bool _isPasswordObscured = true;
 
   @override
   void dispose() {
@@ -24,13 +26,26 @@ class _LoginViewState extends State<LoginView> {
     super.dispose();
   }
 
+  // 🔥 ضفنا دالة التنسيق هنا عشان نوحد شكل الرقم قبل ما نبحث عنه في الداتا بيز
+  String formatPhoneNumber(String phone) {
+    String formatted = phone.trim();
+    if (formatted.startsWith('01')) {
+      formatted = '+20${formatted.substring(1)}';
+    } else if (!formatted.startsWith('+')) {
+      formatted = '+20$formatted';
+    }
+    return formatted;
+  }
+
   InputDecoration _fieldDecoration({
     required String hint,
     required IconData icon,
+    Widget? suffixIcon,
   }) {
     return InputDecoration(
       hintText: hint,
       prefixIcon: Icon(icon, color: const Color(0xff2f80ed)),
+      suffixIcon: suffixIcon,
       filled: true,
       fillColor: Colors.white,
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
@@ -144,20 +159,32 @@ class _LoginViewState extends State<LoginView> {
                             const SizedBox(height: 20),
                             TextFormField(
                               controller: _emailController,
+                              keyboardType: TextInputType.phone, // خليناها أرقام عشان تجربة المستخدم
                               decoration: _fieldDecoration(
-                                hint: 'Email or phone',
+                                hint: 'Phone number',
                                 icon: Icons.phone,
                               ),
                               validator: (value) =>
-                                  value == null || value.isEmpty ? 'Enter your email or phone' : null,
+                                  value == null || value.isEmpty ? 'Enter your phone number' : null,
                             ),
                             const SizedBox(height: 14),
                             TextFormField(
                               controller: _passwordController,
-                              obscureText: true,
+                              obscureText: _isPasswordObscured,
                               decoration: _fieldDecoration(
                                 hint: 'Password',
                                 icon: Icons.lock,
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _isPasswordObscured ? Icons.visibility_off : Icons.visibility,
+                                    color: Colors.grey,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _isPasswordObscured = !_isPasswordObscured;
+                                    });
+                                  },
+                                ),
                               ),
                               validator: (value) =>
                                   value == null || value.isEmpty ? 'Enter your password' : null,
@@ -170,8 +197,11 @@ class _LoginViewState extends State<LoginView> {
                                     ? null
                                     : () {
                                         if (_formKey.currentState!.validate()) {
+                                          // 🔥 هنا بنستخدم دالة الـ Format قبل ما نبعت الرقم للكيوبيت
+                                          String formattedPhone = formatPhoneNumber(_emailController.text);
+                                          
                                           context.read<AuthCubit>().login(
-                                                _emailController.text.trim(),
+                                                formattedPhone, 
                                                 _passwordController.text.trim(),
                                               );
                                         }

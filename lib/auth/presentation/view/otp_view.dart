@@ -3,16 +3,19 @@ import 'package:ae_coaching/auth/presentation/cubit/auth_state.dart';
 import 'package:ae_coaching/core/routes/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 class OtpView extends StatefulWidget {
   final String phoneNumber;
   final String password;
+  final String verificationId;
+  final String name; // 🔥 ضفنا الاسم هنا
 
   const OtpView({
     super.key,
     required this.phoneNumber,
     required this.password,
+    required this.verificationId,
+    required this.name, // إجباري
   });
 
   @override
@@ -43,15 +46,16 @@ class _OtpViewState extends State<OtpView> {
         child: BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) async {
             if (state is AuthSuccess) {
-              await Hive.box('authBox').put('isLoggedIn', true);
+              // شيلنا سطر الـ Hive لأن ده إنشاء حساب مش تسجيل دخول
 
               if (mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Account Verified Successfully!')),
+                  SnackBar(content: Text(state.message ?? 'Account Verified! Please Login.')),
                 );
+                // 🔥 التوجيه لصفحة الـ Login بدل الـ Home
                 Navigator.pushNamedAndRemoveUntil(
                   context,
-                  AppNavigator.home,
+                  AppNavigator.login, 
                   (route) => false,
                 );
               }
@@ -183,9 +187,12 @@ class _OtpViewState extends State<OtpView> {
                                         : () {
                                             if (_formKey.currentState!.validate()) {
                                               context.read<AuthCubit>().registerWithOtp(
-                                                    verificationId: '',
-                                                    smsCode: _otpController.text.trim(),
-                                                  );
+                                                verificationId: widget.verificationId,
+                                                smsCode: _otpController.text.trim(),
+                                                name: widget.name, // مررنا الاسم
+                                                phone: widget.phoneNumber, // مررنا الرقم
+                                                password: widget.password, // مررنا الباسورد
+                                              );
                                             }
                                           },
                                     style: ElevatedButton.styleFrom(

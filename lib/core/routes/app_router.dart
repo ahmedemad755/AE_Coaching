@@ -36,8 +36,7 @@ class AppRouter {
             child: const RegisterView(),
           ),
         );
-
-      case AppNavigator.otp:
+case AppNavigator.otp:
         final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
@@ -45,6 +44,8 @@ class AppRouter {
             child: OtpView(
               phoneNumber: args['phone'],
               password: args['password'],
+              verificationId: args['verificationId'],
+              name: args['name'], // 🔥 ضفنا استقبال الاسم هنا
             ),
           ),
         );
