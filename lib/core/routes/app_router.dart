@@ -1,5 +1,6 @@
 import 'package:ae_coaching/auth/presentation/cubit/auth_cubit.dart';
 import 'package:ae_coaching/auth/presentation/view/LoginView.dart';
+import 'package:ae_coaching/features/analytics/presentation/workout_analytics_screen.dart';
 import 'package:ae_coaching/feature/presentation/views/hom.dart';
 import 'package:ae_coaching/auth/presentation/view/otp_view.dart';
 import 'package:ae_coaching/auth/presentation/view/register_view.dart';
@@ -14,6 +15,7 @@ class AppNavigator {
   static const String login = 'login';
   static const String register = 'register';
   static const String home = 'home';
+  static const String workoutAnalytics = 'workout-analytics';
 }
 
 class AppRouter {
@@ -69,8 +71,42 @@ case AppNavigator.otp:
           ),
         );
 
+      case AppNavigator.workoutAnalytics:
+        final args = settings.arguments;
+        if (args is! WorkoutAnalyticsArgs) {
+          return MaterialPageRoute(
+            builder: (_) => const _InvalidWorkoutAnalyticsRoute(),
+          );
+        }
+        return WorkoutAnalyticsScreen.route(args);
+
       default:
         return null;
     }
+  }
+}
+
+class _InvalidWorkoutAnalyticsRoute extends StatelessWidget {
+  const _InvalidWorkoutAnalyticsRoute();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      backgroundColor: Color(0xFF0F172A),
+      body: Center(
+        child: Padding(
+          padding: EdgeInsets.all(24),
+          child: Text(
+            'Workout analytics route requires WorkoutAnalyticsArgs.',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

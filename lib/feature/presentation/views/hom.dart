@@ -1,5 +1,6 @@
 import 'package:ae_coaching/auth/data/models/Exercise_Set.dart';
 import 'package:ae_coaching/core/routes/app_router.dart';
+import 'package:ae_coaching/features/analytics/presentation/workout_analytics_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // 🔥 نحتاج فايربيز هنا لجلب الـ UID
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -162,6 +163,7 @@ class _HomState extends State<Hom> {
 
   void _showProgressAnalysis() {
     if (exerciseBox == null) return;
+    final analyticsScreenContext = context;
     final allSets = exerciseBox!.values.toList();
     final exerciseHistory = <String, List<ExerciseSet>>{};
     for (final set in allSets) {
@@ -244,13 +246,30 @@ class _HomState extends State<Hom> {
                       final previousVol = dailyVolume[dates[1]]!;
                       final diff = currentVol - previousVol;
                       final isImproved = diff >= 0;
+                      final percentage = previousVol > 0 ? (diff / previousVol) * 100 : 0.0;
+                      final progressDeltaStr = percentage.toStringAsFixed(1);
 
-                      return _AnalyticsCard(
-                        title: _titleCase(name),
-                        subtitle:
-                            'Last: ${currentVol.toStringAsFixed(0)} kg | Previous: ${previousVol.toStringAsFixed(0)} kg',
-                        improved: isImproved,
-                        diff: diff,
+                      return GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.pushNamed(
+                            analyticsScreenContext,
+                            AppNavigator.workoutAnalytics,
+                            arguments: WorkoutAnalyticsArgs(
+                              exerciseName: _titleCase(name),
+                              totalVolume: currentVol.toStringAsFixed(0),
+                              progressDelta: progressDeltaStr,
+                            ),
+                          );
+                        },
+                        child: _AnalyticsCard(
+                          title: _titleCase(name),
+                          subtitle:
+                              'Last: ${currentVol.toStringAsFixed(0)} kg | Previous: ${previousVol.toStringAsFixed(0)} kg',
+                          improved: isImproved,
+                          diff: diff,
+                        ),
                       );
                     }),
                   const SizedBox(height: 24),
