@@ -21,11 +21,14 @@ class AppRouter {
     switch (settings.name) {
       case AppNavigator.initial:
         // فحص حالة الدخول داخل الراوتر لتحديد الصفحة الأولى
-        final bool isLoggedIn = Hive.box('authBox').get('isLoggedIn', defaultValue: false);
+        final authBox = Hive.box('authBox');
+        final bool isLoggedIn = authBox.get('isLoggedIn', defaultValue: false);
+        final String currentUserUid = authBox.get('currentUserUid', defaultValue: '');
+        final bool hasActiveSession = isLoggedIn && currentUserUid.trim().isNotEmpty;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => sl<AuthCubit>(),
-            child: isLoggedIn ? const Hom() : const LoginView(),
+            child: hasActiveSession ? const Hom() : const LoginView(),
           ),
         );
 

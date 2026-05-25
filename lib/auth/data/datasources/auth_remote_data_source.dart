@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:ae_coaching/auth/domain/entities/auth_user.dart';
 import 'package:crypto/crypto.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,7 +18,7 @@ abstract class AuthRemoteDataSource {
   });
 
   // تسجيل الدخول العادي بالرقم والباسورد
-  Future<void> login(String phone, String password);
+  Future<AuthUser> login(String phone, String password);
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -78,7 +79,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<void> login(String phone, String password) async {
+  Future<AuthUser> login(String phone, String password) async {
     // 1. البحث عن المستخدم برقم الهاتف في Firestore
     var querySnapshot = await _firestore
         .collection('users')
@@ -90,13 +91,20 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     }
 
     // 2. التحقق من الباسورد
-    var userData = querySnapshot.docs.first.data();
+    var userDoc = querySnapshot.docs.first;
+    var userData = userDoc.data();
     String storedHashedPassword = userData['password'];
     String inputHashedPassword = _hashPassword(password);
 
     if (storedHashedPassword != inputHashedPassword) {
       throw Exception('Incorrect password. Please try again.');
     }
+
+    return AuthUser(
+      uid: (userData['uid'] as String?) ?? userDoc.id,
+      name: (userData['name'] as String?) ?? '',
+      phoneNumber: (userData['phoneNumber'] as String?) ?? phone,
+    );
 
     // إذا وصلنا هنا، يعني الرقم والباسورد صح!
   }

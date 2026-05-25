@@ -16,6 +16,8 @@ class _HomState extends State<Hom> {
   Box<ExerciseSet>? exerciseBox; // جعلناه Nullable لأننا هنفتحه برمجياً
   bool _isLoading = true; // متغير لإظهار شاشة تحميل لحد ما الداتا تجهز
 
+  String _userName = 'User';
+
   final nameController = TextEditingController();
   final weightController = TextEditingController();
   final repsController = TextEditingController();
@@ -32,9 +34,28 @@ class _HomState extends State<Hom> {
 
   // 🔥 السحر كله هنا: بنفتح Box باسم الـ UID بتاع اليوزر
   Future<void> _initUserBox() async {
-    final user = FirebaseAuth.instance.currentUser;
-    final uid = user?.uid ?? 'local_user'; // بنجيب الـ UID
+    final authBox = Hive.box('authBox');
+    final firebaseUser = FirebaseAuth.instance.currentUser;
+    final storedUid = (authBox.get('currentUserUid', defaultValue: '') as String).trim();
+    final storedName = (authBox.get('currentUserName', defaultValue: '') as String).trim();
+    final fallbackUid = firebaseUser?.uid ?? '';
+    final uid = storedUid.isNotEmpty ? storedUid : fallbackUid;
     
+    if (uid.isEmpty) {
+      await authBox.put('isLoggedIn', false);
+      if (!mounted) return;
+      setState(() => _isLoading = false);
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        AppNavigator.login,
+        (route) => false,
+      );
+      return;
+    }
+
+    _userName = storedName.isNotEmpty ? storedName : (firebaseUser?.displayName ?? 'User');
+    await authBox.put('currentUserUid', uid);
+
     // فتح صندوق خاص ومستقل للمستخدم ده فقط
     exerciseBox = await Hive.openBox<ExerciseSet>('sets_$uid');
     
@@ -74,7 +95,11 @@ class _HomState extends State<Hom> {
           ),
           ElevatedButton(
             onPressed: () async {
-              await Hive.box('authBox').put('isLoggedIn', false);
+              final authBox = Hive.box('authBox');
+              await authBox.put('isLoggedIn', false);
+              await authBox.delete('currentUserUid');
+              await authBox.delete('currentUserName');
+              await authBox.delete('currentUserPhone');
               
               // إغلاق الصندوق الحالي لتنظيف الذاكرة
               if (exerciseBox != null && exerciseBox!.isOpen) {
@@ -323,13 +348,28 @@ class _HomState extends State<Hom> {
                             final dateLabel = key.split('|')[0].trim();
                             final totalVol = sets.fold(0.0, (sum, s) => sum + (s.weight * s.reps));
 
-                            return _ExerciseCard(
-                              exerciseName: exerciseName,
-                              dateLabel: dateLabel,
-                              totalVolume: totalVol,
-                              sets: sets,
-                              onAddSet: () => _showAddExerciseDialog(preFilledName: exerciseName),
-                              onEditSet: _showEditSetDialog,
+                            return Dismissible(
+                              key: ValueKey(key),
+                              direction: DismissDirection.horizontal,
+                              background: const _DeleteSwipeBackground(
+                                alignment: Alignment.centerLeft,
+                              ),
+                              secondaryBackground: const _DeleteSwipeBackground(
+                                alignment: Alignment.centerRight,
+                              ),
+                              confirmDismiss: (_) => _confirmDeleteExercise(
+                                exerciseName: exerciseName,
+                                setCount: sets.length,
+                              ),
+                              onDismissed: (_) => _deleteExerciseSets(sets),
+                              child: _ExerciseCard(
+                                exerciseName: exerciseName,
+                                dateLabel: dateLabel,
+                                totalVolume: totalVol,
+                                sets: sets,
+                                onAddSet: () => _showAddExerciseDialog(preFilledName: exerciseName),
+                                onEditSet: _showEditSetDialog,
+                              ),
                             );
                           },
                         );
@@ -357,6 +397,8 @@ class _HomState extends State<Hom> {
   }
 
   Widget _buildTopPanel() {
+    final headerName = 'c.${_userName.trim().isEmpty ? 'User' : _userName.trim()}';
+
     return Container(
       margin: const EdgeInsets.fromLTRB(18, 12, 18, 0),
       decoration: BoxDecoration(
@@ -376,14 +418,29 @@ class _HomState extends State<Hom> {
             padding: const EdgeInsets.fromLTRB(16, 12, 8, 6),
             child: Row(
               children: [
-                const Expanded(
-                  child: Text(
-                    'Workout Tracker',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w900,
-                    ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        headerName,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      Text(
+                        'Workout Tracker',
+                        style: TextStyle(
+                          color: Colors.white.withValues(alpha: 0.78),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 IconButton(
@@ -521,9 +578,72 @@ class _HomState extends State<Hom> {
       ),
     );
   }
+
+  Future<bool> _confirmDeleteExercise({
+    required String exerciseName,
+    required int setCount,
+  }) async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: const Color(0xfff5f9fc),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        title: const Text(
+          'Delete Exercise',
+          style: TextStyle(fontWeight: FontWeight.w900, color: _dark),
+        ),
+        content: Text(
+          'Are you sure you want to delete $exerciseName and its $setCount ${setCount == 1 ? 'set' : 'sets'}?',
+          style: const TextStyle(color: _muted),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Cancel', style: TextStyle(color: _blue)),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.redAccent,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            ),
+            child: const Text('Delete', style: TextStyle(fontWeight: FontWeight.w800)),
+          ),
+        ],
+      ),
+    );
+
+    return result ?? false;
+  }
+
+  Future<void> _deleteExerciseSets(List<ExerciseSet> sets) async {
+    final keys = sets.map((set) => set.key).toList();
+    await exerciseBox?.deleteAll(keys);
+  }
 }
 
 // ... بقية الـ Widgets (مثل _ExerciseCard و _AnalyticsCard) زي ما هي بدون أي تعديل
+
+class _DeleteSwipeBackground extends StatelessWidget {
+  final Alignment alignment;
+
+  const _DeleteSwipeBackground({required this.alignment});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      decoration: BoxDecoration(
+        color: Colors.redAccent,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      alignment: alignment,
+      child: const Icon(Icons.delete_outline, color: Colors.white, size: 28),
+    );
+  }
+}
 
 class _ExerciseCard extends StatelessWidget {
   final String exerciseName;

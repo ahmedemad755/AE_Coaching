@@ -18,8 +18,8 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> login(String email, String password) async {
     emit(AuthLoading());
     try {
-      await loginUseCase(email, password);
-      emit(AuthSuccess(message: "Logged in successfully"));
+      final user = await loginUseCase(email, password);
+      emit(AuthSuccess(message: "Logged in successfully", user: user));
     } catch (e) {
       emit(AuthError(_mapExceptionToMessage(e)));
     }

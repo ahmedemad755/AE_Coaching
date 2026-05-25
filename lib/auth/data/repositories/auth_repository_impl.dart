@@ -1,4 +1,5 @@
 import 'package:ae_coaching/auth/data/datasources/auth_remote_data_source.dart';
+import 'package:ae_coaching/auth/domain/entities/auth_user.dart';
 import 'package:ae_coaching/auth/domain/repositories/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -37,7 +38,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<void> login(String phone, String password) async {
+  Future<AuthUser> login(String phone, String password) async {
     try {
       return await remoteDataSource.login(phone, password);
     } catch (e) {

@@ -1,3 +1,5 @@
+import 'package:ae_coaching/auth/domain/entities/auth_user.dart';
+
 abstract class AuthRepository {
   Future<String> requestOtp(String phoneNumber);
 
@@ -9,5 +11,5 @@ abstract class AuthRepository {
     required String password,
   });
 
-  Future<void> login(String phone, String password);
+  Future<AuthUser> login(String phone, String password);
 }

@@ -1,3 +1,5 @@
+import 'package:ae_coaching/auth/domain/entities/auth_user.dart';
+
 abstract class AuthState {}
 
 class AuthInitial extends AuthState {}
@@ -6,7 +8,9 @@ class AuthLoading extends AuthState {}
 
 class AuthSuccess extends AuthState {
   final String? message;
-  AuthSuccess({this.message});
+  final AuthUser? user;
+
+  AuthSuccess({this.message, this.user});
 }
 
 // تمت إضافة حالة الخطأ

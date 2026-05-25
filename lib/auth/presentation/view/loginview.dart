@@ -82,7 +82,14 @@ class _LoginViewState extends State<LoginView> {
         child: BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) async {
             if (state is AuthSuccess) {
-              await Hive.box('authBox').put('isLoggedIn', true);
+              final authBox = Hive.box('authBox');
+              await authBox.put('isLoggedIn', true);
+
+              if (state.user != null) {
+                await authBox.put('currentUserUid', state.user!.uid);
+                await authBox.put('currentUserName', state.user!.name);
+                await authBox.put('currentUserPhone', state.user!.phoneNumber);
+              }
 
               if (mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(

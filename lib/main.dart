@@ -25,7 +25,6 @@ void main() async {
     Hive.registerAdapter(ExerciseSetAdapter());
   }
   
-  await Hive.openBox<ExerciseSet>('sets');
   await Hive.openBox('authBox');
 
   runApp(const MyApp());
