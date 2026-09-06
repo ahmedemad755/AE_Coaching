@@ -1,6 +1,8 @@
 import 'package:ae_coaching/auth/presentation/cubit/auth_cubit.dart';
 import 'package:ae_coaching/auth/presentation/cubit/auth_state.dart';
+import 'package:ae_coaching/core/localization/auth_message_localizer.dart';
 import 'package:ae_coaching/core/routes/app_router.dart';
+import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -34,6 +36,7 @@ class _OtpViewState extends State<OtpView> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -50,12 +53,12 @@ class _OtpViewState extends State<OtpView> {
 
               if (mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(state.message ?? 'Account Verified! Please Login.')),
+                  SnackBar(content: Text(localizeAuthMessage(l10n, state.message))),
                 );
                 // 🔥 التوجيه لصفحة الـ Login بدل الـ Home
                 Navigator.pushNamedAndRemoveUntil(
                   context,
-                  AppNavigator.login, 
+                  AppNavigator.login,
                   (route) => false,
                 );
               }
@@ -105,15 +108,15 @@ class _OtpViewState extends State<OtpView> {
                                       : () => context.read<AuthCubit>().requestOtp(widget.phoneNumber),
                                   icon: const Icon(Icons.refresh),
                                   color: const Color(0xff2f80ed),
-                                  tooltip: 'Resend Code',
+                                  tooltip: l10n.resendCodeTooltip,
                                 ),
                               ],
                             ),
                             const SizedBox(height: 4),
-                            const Text(
-                              'Verify Phone',
+                            Text(
+                              l10n.verifyPhoneTitle,
                               textAlign: TextAlign.center,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Color(0xff202936),
                                 fontSize: 26,
                                 fontWeight: FontWeight.w900,
@@ -121,7 +124,7 @@ class _OtpViewState extends State<OtpView> {
                             ),
                             const SizedBox(height: 6),
                             Text(
-                              'Enter the 6-digit code sent to ${widget.phoneNumber}',
+                              l10n.enterCodeSentTo(widget.phoneNumber),
                               textAlign: TextAlign.center,
                               style: const TextStyle(color: Color(0xff7d8792)),
                             ),
@@ -155,7 +158,7 @@ class _OtpViewState extends State<OtpView> {
                                 ),
                               ),
                               validator: (value) =>
-                                  value == null || value.length < 6 ? 'Enter the 6-digit code' : null,
+                                  value == null || value.length < 6 ? l10n.enterSixDigitCodeValidator : null,
                             ),
                             const SizedBox(height: 18),
                             Row(
@@ -173,9 +176,9 @@ class _OtpViewState extends State<OtpView> {
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                     ),
-                                    child: const Text(
-                                      'RESEND',
-                                      style: TextStyle(fontWeight: FontWeight.w800),
+                                    child: Text(
+                                      l10n.resendButton,
+                                      style: const TextStyle(fontWeight: FontWeight.w800),
                                     ),
                                   ),
                                 ),
@@ -209,9 +212,9 @@ class _OtpViewState extends State<OtpView> {
                                             width: 22,
                                             child: CircularProgressIndicator(strokeWidth: 2.4),
                                           )
-                                        : const Text(
-                                            'VERIFY',
-                                            style: TextStyle(fontWeight: FontWeight.w800),
+                                        : Text(
+                                            l10n.verifyButton,
+                                            style: const TextStyle(fontWeight: FontWeight.w800),
                                           ),
                                   ),
                                 ),

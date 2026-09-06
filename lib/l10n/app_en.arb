@@ -1,0 +1,183 @@
+{
+  "@@locale": "en",
+
+  "appBrandShort": "AE",
+  "appBrandFull": "AE COACHING",
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "save": "Save",
+  "close": "Close",
+  "retry": "Retry",
+  "edit": "Edit",
+  "languageToggleTooltip": "Switch language",
+
+  "loginSubtitle": "Login to Your Account",
+  "phoneNumberHint": "Phone number",
+  "phoneNumberRequired": "Enter your phone number",
+  "passwordHint": "Password",
+  "passwordRequired": "Enter your password",
+  "loginButton": "LOGIN",
+  "forgotPassword": "Forgot Password?",
+  "registerNow": "Register Now",
+  "loginSuccessMessage": "Logged in successfully",
+  "genericSuccess": "Success",
+
+  "createAccountTitle": "Create Account",
+  "startJourneySubtitle": "Start your coaching journey",
+  "fullNameHint": "Full Name",
+  "fullNameRequired": "Please enter your name",
+  "phoneNumberFieldHint": "Phone Number",
+  "phoneNumberRequiredRegister": "Please enter phone number",
+  "passwordTooShort": "Password too short",
+  "createAccountButton": "CREATE ACCOUNT",
+  "accountCreatedSuccess": "Account created successfully",
+  "accountCreatedPendingLogin": "Account created successfully. Please login.",
+
+  "verifyPhoneTitle": "Verify Phone",
+  "enterCodeSentTo": "Enter the 6-digit code sent to {phone}",
+  "@enterCodeSentTo": {
+    "placeholders": { "phone": { "type": "String" } }
+  },
+  "resendCodeTooltip": "Resend Code",
+  "enterSixDigitCodeValidator": "Enter the 6-digit code",
+  "resendButton": "RESEND",
+  "verifyButton": "VERIFY",
+  "accountVerifiedMessage": "Account Verified! Please Login.",
+
+  "workoutTrackerSubtitle": "Workout Tracker",
+  "logoutTooltip": "Logout",
+  "logoutConfirmTitle": "Logout",
+  "logoutConfirmBody": "Are you sure you want to log out of your account?",
+  "measurementsTooltip": "Measurements",
+  "progressAnalyticsTooltip": "Progress Analytics",
+  "startFirstExercise": "Start by adding your first exercise.",
+  "newExerciseButton": "New Exercise",
+  "todaysVolumeLabel": "Today's Volume: [kg]",
+  "historyLabel": "History",
+  "analyticsLabel": "Analytics",
+  "progressAnalyticsTitle": "Progress Analytics",
+  "exerciseTrendsLabel": "Exercise Trends",
+  "needMoreDataForProgress": "Add at least two workout days to unlock progress analysis.",
+  "exerciseNeedsMoreData": "{name} needs more data (2+ workouts)",
+  "@exerciseNeedsMoreData": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "lastPreviousVolume": "Last: {current} kg | Previous: {previous} kg",
+  "@lastPreviousVolume": {
+    "placeholders": {
+      "current": { "type": "String" },
+      "previous": { "type": "String" }
+    }
+  },
+  "totalVolumeLabel": "{date} | Total Vol: {volume} kg",
+  "@totalVolumeLabel": {
+    "placeholders": {
+      "date": { "type": "String" },
+      "volume": { "type": "String" }
+    }
+  },
+  "addNewExerciseTitle": "Add New Exercise",
+  "addSetToTitle": "Add Set to {name}",
+  "@addSetToTitle": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "editSetTitle": "Edit {name} Set",
+  "@editSetTitle": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "updateButton": "Update",
+  "exerciseNameHint": "Exercise Name",
+  "weightKgHint": "Weight (kg)",
+  "repsHint": "Reps",
+  "addAnotherSetButton": "Add Another Set",
+  "setsColumnLabel": "Sets",
+  "weightColumnLabel": "Weight",
+  "repsColumnLabel": "Reps",
+  "setLabel": "Set",
+  "deleteExerciseTitle": "Delete Exercise",
+  "deleteExerciseBody": "Are you sure you want to delete {name} and its {count} {unit}?",
+  "@deleteExerciseBody": {
+    "placeholders": {
+      "name": { "type": "String" },
+      "count": { "type": "int" },
+      "unit": { "type": "String" }
+    }
+  },
+  "setUnitSingular": "set",
+  "setUnitPlural": "sets",
+
+  "todaysProgressLabel": "TODAY'S PROGRESS",
+  "totalTrainingVolumeLabel": "TOTAL TRAINING VOLUME",
+  "trackedViaFooter": "Tracked smoothly via AE Coaching App 🚀",
+  "shareProgressButton": "Share Progress",
+  "sharingButton": "Sharing...",
+
+  "bodyMeasurementsTitle": "Body Measurements",
+  "addMeasurementButton": "Add Measurement",
+  "somethingWrongLoadingMeasurements": "Something went wrong loading your measurements.",
+  "lastCheckInLabel": "Last Check-in",
+  "historyButton": "History",
+  "analyticsButton": "Analytics",
+  "noMeasurementsYetTitle": "No body measurements yet.",
+  "addFirstCheckInSubtitle": "Add your first measurement check-in to start tracking progress.",
+  "editMeasurementTitle": "Edit Measurement",
+  "addMeasurementTitle": "Add Measurement",
+  "allFieldsOptionalHint": "All fields are optional — fill in whatever you measured today.",
+  "changeDateButton": "Change Date",
+  "enterAtLeastOneMeasurement": "Enter at least one measurement to save a check-in.",
+  "updateCheckInButton": "Update Check-in",
+  "saveCheckInButton": "Save Check-in",
+  "cmUnit": "cm",
+  "measurementHistoryTitle": "Measurement History",
+  "deleteCheckInTitle": "Delete Check-in",
+  "deleteCheckInBody": "Are you sure you want to delete the check-in from {date}?",
+  "@deleteCheckInBody": {
+    "placeholders": { "date": { "type": "String" } }
+  },
+  "unableToLoadHistory": "Unable to load measurement history.",
+  "noMeasurementsHistoryEmpty": "No body measurements yet.\n\nAdd your first measurement check-in to start tracking progress.",
+  "measurementAnalyticsTitle": "Measurement Analytics",
+  "unableToLoadAnalytics": "Unable to load measurement analytics.",
+  "notEnoughDataYet": "Not enough data yet",
+  "sincePreviousCheckIn": "Since Previous Check-in",
+  "overallProgress": "Overall Progress",
+  "previousLabel": "Previous",
+  "currentLabel": "Current",
+  "firstLabel": "First",
+  "latestLabel": "Latest",
+  "noMeasurementsRecordedCheckIn": "No measurements recorded for this check-in.",
+
+  "fieldChest": "Chest",
+  "fieldWaist": "Waist",
+  "fieldHips": "Hips",
+  "fieldShoulders": "Shoulders",
+  "fieldNeck": "Neck",
+  "fieldRightArm": "Right Arm",
+  "fieldLeftArm": "Left Arm",
+  "fieldRightThigh": "Right Thigh",
+  "fieldLeftThigh": "Left Thigh",
+  "fieldRightCalf": "Right Calf",
+  "fieldLeftCalf": "Left Calf",
+
+  "progressPhotosTitle": "Progress Photos",
+  "photosButton": "Photos",
+  "addPhotoButton": "Add Photo",
+  "choosePhotoSourceTitle": "Add Progress Photo",
+  "cameraOption": "Camera",
+  "galleryOption": "Gallery",
+  "sinceLatestPhoto": "Since Latest Photo",
+  "beforeLabel": "Before",
+  "afterLabel": "After",
+  "noPhotosYetTitle": "No progress photos yet.",
+  "addFirstPhotoSubtitle": "Add your first photo to start comparing your transformation.",
+  "photoHistoryTitle": "Photo History",
+  "deletePhotoTitle": "Delete Photo",
+  "deletePhotoBody": "Are you sure you want to delete this photo from {date}?",
+  "@deletePhotoBody": {
+    "placeholders": { "date": { "type": "String" } }
+  },
+  "addPhotoPromptTitle": "Add a Progress Photo?",
+  "addPhotoPromptBody": "Would you like to add a photo for today's check-in?",
+  "skip": "Skip",
+  "unableToLoadPhotos": "Unable to load progress photos."
+}

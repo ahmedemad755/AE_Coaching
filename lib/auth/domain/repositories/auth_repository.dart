@@ -11,5 +11,11 @@ abstract class AuthRepository {
     required String password,
   });
 
+  Future<AuthUser> registerWithPhonePassword({
+    required String name,
+    required String phone,
+    required String password,
+  });
+
   Future<AuthUser> login(String phone, String password);
 }

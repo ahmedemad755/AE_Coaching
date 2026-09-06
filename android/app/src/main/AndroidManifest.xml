@@ -1,8 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Progress Photos feature: image_picker needs camera access to
+         take a photo directly. Gallery selection uses the Android
+         Photo Picker and needs no storage permission. -->
+    <uses-permission android:name="android.permission.CAMERA"/>
     <application
         android:label="ae_coaching"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:exported="true"

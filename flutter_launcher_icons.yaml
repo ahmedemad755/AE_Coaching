@@ -1,0 +1,9 @@
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "lib/assets/ae_coaching_icon.png" 
+  min_sdk_android: 21 
+  
+ 
+  adaptive_icon_background: "#ffffff" 
+  adaptive_icon_foreground: "lib/assets/ae_coaching_icon.png" 

@@ -1,8 +1,12 @@
 import 'package:ae_coaching/auth/data/models/Exercise_Set.dart';
+import 'package:ae_coaching/core/localization/locale_cubit.dart';
 import 'package:ae_coaching/core/routes/app_router.dart';
 import 'package:ae_coaching/features/analytics/presentation/workout_analytics_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // 🔥 نحتاج فايربيز هنا لجلب الـ UID
+import 'package:ae_coaching/features/workout/presentation/bloc/workout_cubit.dart';
+import 'package:ae_coaching/l10n/app_localizations.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 
@@ -14,9 +18,8 @@ class Hom extends StatefulWidget {
 }
 
 class _HomState extends State<Hom> {
-  Box<ExerciseSet>? exerciseBox; // جعلناه Nullable لأننا هنفتحه برمجياً
-  bool _isLoading = true; // متغير لإظهار شاشة تحميل لحد ما الداتا تجهز
-
+  Box<ExerciseSet>? exerciseBox; // محتفظين بيه فقط للـ ValueListenableBuilder المحلى أو العرض السريع
+  bool _isLoading = true;
   String _userName = 'User';
 
   final nameController = TextEditingController();
@@ -30,18 +33,16 @@ class _HomState extends State<Hom> {
   @override
   void initState() {
     super.initState();
-    _initUserBox(); // 🔥 استدعاء دالة فتح صندوق المستخدم
+    _initUserBox();
   }
 
-  // 🔥 السحر كله هنا: بنفتح Box باسم الـ UID بتاع اليوزر
   Future<void> _initUserBox() async {
     final authBox = Hive.box('authBox');
     final firebaseUser = FirebaseAuth.instance.currentUser;
-    final storedUid = (authBox.get('currentUserUid', defaultValue: '') as String).trim();
-    final storedName = (authBox.get('currentUserName', defaultValue: '') as String).trim();
-    final fallbackUid = firebaseUser?.uid ?? '';
-    final uid = storedUid.isNotEmpty ? storedUid : fallbackUid;
-    
+    final storedName =
+        (authBox.get('currentUserName', defaultValue: '') as String).trim();
+    final uid = firebaseUser?.uid ?? '';
+
     if (uid.isEmpty) {
       await authBox.put('isLoggedIn', false);
       if (!mounted) return;
@@ -57,12 +58,18 @@ class _HomState extends State<Hom> {
     _userName = storedName.isNotEmpty ? storedName : (firebaseUser?.displayName ?? 'User');
     await authBox.put('currentUserUid', uid);
 
-    // فتح صندوق خاص ومستقل للمستخدم ده فقط
+    // فتح الصندوق الخاص بالمستخدم الحالي
     exerciseBox = await Hive.openBox<ExerciseSet>('sets_$uid');
-    
+
+    // 🔥 تلميح هندسي: هنا تقدر تعمل Trigger لـ Load Workouts من الـ Cubit بتاعك:
     if (mounted) {
       setState(() {
-        _isLoading = false; // إخفاء شاشة التحميل بعد فتح الصندوق
+        _isLoading = false;
+      });
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        context.read<WorkoutCubit>().loadWorkoutBox();
       });
     }
   }
@@ -76,23 +83,24 @@ class _HomState extends State<Hom> {
   }
 
   Future<void> _logout() async {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
         backgroundColor: const Color(0xfff5f9fc),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        title: const Text(
-          'Logout',
-          style: TextStyle(fontWeight: FontWeight.w900, color: _dark),
+        title: Text(
+          l10n.logoutConfirmTitle,
+          style: const TextStyle(fontWeight: FontWeight.w900, color: _dark),
         ),
-        content: const Text(
-          'Are you sure you want to log out of your account?',
-          style: TextStyle(color: _muted),
+        content: Text(
+          l10n.logoutConfirmBody,
+          style: const TextStyle(color: _muted),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Cancel', style: TextStyle(color: _blue)),
+            child: Text(l10n.cancel, style: const TextStyle(color: _blue)),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -101,14 +109,13 @@ class _HomState extends State<Hom> {
               await authBox.delete('currentUserUid');
               await authBox.delete('currentUserName');
               await authBox.delete('currentUserPhone');
-              
-              // إغلاق الصندوق الحالي لتنظيف الذاكرة
+
               if (exerciseBox != null && exerciseBox!.isOpen) {
                 await exerciseBox!.close();
               }
-              
+
               await FirebaseAuth.instance.signOut();
-              
+
               if (mounted) {
                 Navigator.pushNamedAndRemoveUntil(
                   context,
@@ -122,17 +129,19 @@ class _HomState extends State<Hom> {
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             ),
-            child: const Text('Logout', style: TextStyle(fontWeight: FontWeight.w800)),
+            child: Text(l10n.logoutTooltip, style: const TextStyle(fontWeight: FontWeight.w800)),
           ),
         ],
       ),
     );
   }
 
+  // ملاحظة: مفاتيح التجميع/المقارنة دي لازم تفضل بأرقام إنجليزية عادية
+  // بغض النظر عن لغة الابلكيشن، عشان الـ sort/compare يفضل شغال صح.
   Map<String, List<ExerciseSet>> _groupExercises(List<ExerciseSet> allSets) {
     final grouped = <String, List<ExerciseSet>>{};
     for (final set in allSets) {
-      final dateKey = DateFormat('yyyy-MM-dd').format(set.date);
+      final dateKey = DateFormat('yyyy-MM-dd', 'en_US').format(set.date);
       final groupKey = '$dateKey | ${set.exerciseName}';
       grouped.putIfAbsent(groupKey, () => []).add(set);
     }
@@ -146,16 +155,16 @@ class _HomState extends State<Hom> {
 
   double _calculateTodayVolume() {
     if (exerciseBox == null) return 0.0;
-    final todayStr = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    final todayStr = DateFormat('yyyy-MM-dd', 'en_US').format(DateTime.now());
     return exerciseBox!.values.where((set) {
-      return DateFormat('yyyy-MM-dd').format(set.date) == todayStr;
+      return DateFormat('yyyy-MM-dd', 'en_US').format(set.date) == todayStr;
     }).fold(0.0, (sum, set) => sum + (set.weight * set.reps));
   }
 
   Map<String, double> _dailyVolumeFor(List<ExerciseSet> history) {
     final dailyVolume = <String, double>{};
     for (final set in history) {
-      final day = DateFormat('yyyy-MM-dd').format(set.date);
+      final day = DateFormat('yyyy-MM-dd', 'en_US').format(set.date);
       dailyVolume[day] = (dailyVolume[day] ?? 0) + (set.weight * set.reps);
     }
     return dailyVolume;
@@ -163,6 +172,7 @@ class _HomState extends State<Hom> {
 
   void _showProgressAnalysis() {
     if (exerciseBox == null) return;
+    final l10n = AppLocalizations.of(context)!;
     final analyticsScreenContext = context;
     final allSets = exerciseBox!.values.toList();
     final exerciseHistory = <String, List<ExerciseSet>>{};
@@ -200,35 +210,35 @@ class _HomState extends State<Hom> {
                       TextButton.icon(
                         onPressed: () {},
                         icon: const Icon(Icons.history),
-                        label: const Text('History'),
+                        label: Text(l10n.historyLabel),
                         style: TextButton.styleFrom(foregroundColor: _blue),
                       ),
                       TextButton.icon(
                         onPressed: () {},
                         icon: const Icon(Icons.analytics_outlined),
-                        label: const Text('Analytics'),
+                        label: Text(l10n.analyticsLabel),
                         style: TextButton.styleFrom(foregroundColor: _blue),
                       ),
                     ],
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    'Progress Analytics',
-                    style: TextStyle(
+                  Text(
+                    l10n.progressAnalyticsTitle,
+                    style: const TextStyle(
                       color: _dark,
                       fontSize: 25,
                       fontWeight: FontWeight.w900,
                     ),
                   ),
                   const SizedBox(height: 28),
-                  const Text(
-                    'Exercise Trends',
-                    style: TextStyle(color: _muted, fontWeight: FontWeight.w700),
+                  Text(
+                    l10n.exerciseTrendsLabel,
+                    style: const TextStyle(color: _muted, fontWeight: FontWeight.w700),
                   ),
                   const SizedBox(height: 10),
                   if (exerciseHistory.isEmpty)
                     _AnalyticsNoticeCard(
-                      text: 'Add at least two workout days to unlock progress analysis.',
+                      text: l10n.needMoreDataForProgress,
                     )
                   else
                     ...exerciseHistory.entries.map((entry) {
@@ -238,7 +248,7 @@ class _HomState extends State<Hom> {
 
                       if (dates.length < 2) {
                         return _AnalyticsNoticeCard(
-                          text: '${_titleCase(name)} needs more data (2+ workouts)',
+                          text: l10n.exerciseNeedsMoreData(_titleCase(name)),
                         );
                       }
 
@@ -265,8 +275,10 @@ class _HomState extends State<Hom> {
                         },
                         child: _AnalyticsCard(
                           title: _titleCase(name),
-                          subtitle:
-                              'Last: ${currentVol.toStringAsFixed(0)} kg | Previous: ${previousVol.toStringAsFixed(0)} kg',
+                          subtitle: l10n.lastPreviousVolume(
+                            currentVol.toStringAsFixed(0),
+                            previousVol.toStringAsFixed(0),
+                          ),
                           improved: isImproved,
                           diff: diff,
                         ),
@@ -283,7 +295,7 @@ class _HomState extends State<Hom> {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
                         elevation: 8,
                       ),
-                      child: const Text('Close'),
+                      child: Text(l10n.close),
                     ),
                   ),
                 ],
@@ -304,9 +316,28 @@ class _HomState extends State<Hom> {
         .join(' ');
   }
 
+  void _onWorkoutStateChanged(BuildContext context, WorkoutState state) {
+    if (state is WorkoutSuccess) {
+      if (exerciseBox != state.box) {
+        setState(() => exerciseBox = state.box);
+      }
+      return;
+    }
+
+    if (state is WorkoutError) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(state.message),
+          backgroundColor: Colors.redAccent,
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    // 🔥 عرض شاشة تحميل زرقاء أنيقة لحد ما الـ Data بتاعت اليوزر تجهز
+    final l10n = AppLocalizations.of(context)!;
+
     if (_isLoading) {
       return Scaffold(
         body: Container(
@@ -324,8 +355,10 @@ class _HomState extends State<Hom> {
       );
     }
 
-    return Scaffold(
-      body: Container(
+    return BlocListener<WorkoutCubit, WorkoutState>(
+      listener: _onWorkoutStateChanged,
+      child: Scaffold(
+        body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
@@ -339,7 +372,7 @@ class _HomState extends State<Hom> {
               constraints: const BoxConstraints(maxWidth: 430),
               child: Column(
                 children: [
-                  _buildTopPanel(),
+                  _buildTopPanel(l10n),
                   Expanded(
                     child: ValueListenableBuilder(
                       valueListenable: exerciseBox!.listenable(),
@@ -349,10 +382,10 @@ class _HomState extends State<Hom> {
                           ..sort((a, b) => b.compareTo(a));
 
                         if (groupKeys.isEmpty) {
-                          return const Center(
+                          return Center(
                             child: Text(
-                              'Start by adding your first exercise.',
-                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+                              l10n.startFirstExercise,
+                              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
                             ),
                           );
                         }
@@ -401,22 +434,24 @@ class _HomState extends State<Hom> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _showAddExerciseDialog(),
-        backgroundColor: _blue,
-        foregroundColor: Colors.white,
-        elevation: 10,
-        icon: const Icon(Icons.add_circle_outline),
-        label: const Text(
-          'New Exercise',
-          style: TextStyle(fontWeight: FontWeight.w800),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () => _showAddExerciseDialog(),
+          backgroundColor: _blue,
+          foregroundColor: Colors.white,
+          elevation: 10,
+          icon: const Icon(Icons.add_circle_outline),
+          label: Text(
+            l10n.newExerciseButton,
+            style: const TextStyle(fontWeight: FontWeight.w800),
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildTopPanel() {
+  Widget _buildTopPanel(AppLocalizations l10n) {
     final headerName = 'c.${_userName.trim().isEmpty ? 'User' : _userName.trim()}';
+    final dateLocale = Localizations.localeOf(context).toString();
 
     return Container(
       margin: const EdgeInsets.fromLTRB(18, 12, 18, 0),
@@ -452,7 +487,7 @@ class _HomState extends State<Hom> {
                         ),
                       ),
                       Text(
-                        'Workout Tracker',
+                        l10n.workoutTrackerSubtitle,
                         style: TextStyle(
                           color: Colors.white.withValues(alpha: 0.78),
                           fontSize: 12,
@@ -463,23 +498,35 @@ class _HomState extends State<Hom> {
                   ),
                 ),
                 IconButton(
+                  onPressed: () => context.read<LocaleCubit>().toggle(),
+                  icon: const Icon(Icons.translate, size: 22),
+                  color: Colors.white,
+                  tooltip: l10n.languageToggleTooltip,
+                ),
+                IconButton(
                   onPressed: _logout,
                   icon: const Icon(Icons.logout, size: 22),
                   color: Colors.white,
-                  tooltip: 'Logout',
+                  tooltip: l10n.logoutTooltip,
+                ),
+                IconButton(
+                  onPressed: () => Navigator.pushNamed(context, AppNavigator.measurements),
+                  icon: const Icon(Icons.straighten),
+                  color: Colors.white,
+                  tooltip: l10n.measurementsTooltip,
                 ),
                 IconButton(
                   onPressed: _showProgressAnalysis,
                   icon: const Icon(Icons.analytics_outlined),
                   color: Colors.white,
-                  tooltip: 'Progress Analytics',
+                  tooltip: l10n.progressAnalyticsTooltip,
                 ),
               ],
             ),
           ),
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
+            padding: const EdgeInsets.all(18),
             decoration: BoxDecoration(
               color: Colors.white.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(10),
@@ -493,9 +540,9 @@ class _HomState extends State<Hom> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "Today's Volume: [kg]",
-                            style: TextStyle(
+                          Text(
+                            l10n.todaysVolumeLabel,
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 23,
                               fontWeight: FontWeight.w900,
@@ -503,7 +550,7 @@ class _HomState extends State<Hom> {
                           ),
                           const SizedBox(height: 6),
                           Text(
-                            DateFormat('EEE, MMM d').format(DateTime.now()),
+                            DateFormat('EEE, MMM d', dateLocale).format(DateTime.now()),
                             style: TextStyle(
                               color: Colors.white.withValues(alpha: 0.78),
                               fontWeight: FontWeight.w600,
@@ -531,18 +578,20 @@ class _HomState extends State<Hom> {
   }
 
   void _showAddExerciseDialog({String? preFilledName}) {
+    final l10n = AppLocalizations.of(context)!;
+    final workoutCubit = context.read<WorkoutCubit>();
     nameController.text = preFilledName ?? '';
     weightController.clear();
     repsController.clear();
     showDialog(
       context: context,
       builder: (context) => _ExerciseDialog(
-        title: preFilledName == null ? 'Add New Exercise' : 'Add Set to $preFilledName',
+        title: preFilledName == null ? l10n.addNewExerciseTitle : l10n.addSetToTitle(preFilledName),
         nameController: nameController,
         weightController: weightController,
         repsController: repsController,
         showName: preFilledName == null,
-        actionLabel: 'Save',
+        actionLabel: l10n.save,
         onDelete: null,
         onSubmit: () {
           final weight = double.tryParse(weightController.text);
@@ -551,14 +600,18 @@ class _HomState extends State<Hom> {
             return;
           }
 
-          exerciseBox!.add(
-            ExerciseSet(
-              exerciseName: nameController.text.trim(),
-              weight: weight,
-              reps: reps,
-              date: DateTime.now(),
-            ),
+          final newSet = ExerciseSet(
+            exerciseName: nameController.text.trim(),
+            weight: weight,
+            reps: reps,
+            date: DateTime.now(),
           );
+
+          // 🔥 التعديل المعماري: الحفظ عبر الـ Cubit للحفاظ على الـ Sync والداتا
+
+          // حل محلي مؤقت شغال لحين ربط الـ Cubit بالكامل:
+          workoutCubit.saveWorkout(set: newSet);
+
           Navigator.pop(context);
         },
       ),
@@ -566,32 +619,40 @@ class _HomState extends State<Hom> {
   }
 
   void _showEditSetDialog(ExerciseSet set) {
+    final l10n = AppLocalizations.of(context)!;
+    final workoutCubit = context.read<WorkoutCubit>();
     weightController.text = set.weight.toString();
     repsController.text = set.reps.toString();
     showDialog(
       context: context,
       builder: (context) => _ExerciseDialog(
-        title: 'Edit ${set.exerciseName} Set',
+        title: l10n.editSetTitle(set.exerciseName),
         nameController: nameController,
         weightController: weightController,
         repsController: repsController,
         showName: false,
-        actionLabel: 'Update',
+        actionLabel: l10n.updateButton,
         onDelete: () {
-          set.delete();
+          // 🔥 التعديل المعماري: الحذف عبر الـ Cubit لضمان المسح من السيرفر والـ Local
+
+          workoutCubit.deleteWorkout(set: set);
           Navigator.pop(context);
         },
         onSubmit: () {
-          exerciseBox!.put(
-            set.key,
-            ExerciseSet(
-              exerciseName: set.exerciseName,
-              weight: double.tryParse(weightController.text) ?? set.weight,
-              reps: int.tryParse(repsController.text) ?? set.reps,
-              date: set.date,
-              notes: set.notes,
-            ),
+          final updatedSet = ExerciseSet(
+            exerciseName: set.exerciseName,
+            weight: double.tryParse(weightController.text) ?? set.weight,
+            reps: int.tryParse(repsController.text) ?? set.reps,
+            date: set.date,
+            notes: set.notes,
           );
+
+          // 🔥 التعديل المعماري: التحديث عبر الـ Cubit
+
+          workoutCubit.saveWorkout(
+                set: updatedSet,
+                key: set.key.toString(),
+              );
           Navigator.pop(context);
         },
       ),
@@ -602,23 +663,28 @@ class _HomState extends State<Hom> {
     required String exerciseName,
     required int setCount,
   }) async {
+    final l10n = AppLocalizations.of(context)!;
     final result = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
         backgroundColor: const Color(0xfff5f9fc),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        title: const Text(
-          'Delete Exercise',
-          style: TextStyle(fontWeight: FontWeight.w900, color: _dark),
+        title: Text(
+          l10n.deleteExerciseTitle,
+          style: const TextStyle(fontWeight: FontWeight.w900, color: _dark),
         ),
         content: Text(
-          'Are you sure you want to delete $exerciseName and its $setCount ${setCount == 1 ? 'set' : 'sets'}?',
+          l10n.deleteExerciseBody(
+            exerciseName,
+            setCount,
+            setCount == 1 ? l10n.setUnitSingular : l10n.setUnitPlural,
+          ),
           style: const TextStyle(color: _muted),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancel', style: TextStyle(color: _blue)),
+            child: Text(l10n.cancel, style: const TextStyle(color: _blue)),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(ctx, true),
@@ -627,7 +693,7 @@ class _HomState extends State<Hom> {
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             ),
-            child: const Text('Delete', style: TextStyle(fontWeight: FontWeight.w800)),
+            child: Text(l10n.delete, style: const TextStyle(fontWeight: FontWeight.w800)),
           ),
         ],
       ),
@@ -637,16 +703,24 @@ class _HomState extends State<Hom> {
   }
 
   Future<void> _deleteExerciseSets(List<ExerciseSet> sets) async {
-    final keys = sets.map((set) => set.key).toList();
-    await exerciseBox?.deleteAll(keys);
+    final keys = sets
+        .map((set) => set.key?.toString())
+        .whereType<String>()
+        .where((key) => key.isNotEmpty)
+        .toList(growable: false);
+
+    // 🔥 التعديل المعماري: حذف مجموعة كاملة عبر الـ Cubit
+
+    if (keys.isEmpty) return;
+
+    await context.read<WorkoutCubit>().deleteMultipleWorkouts(keys: keys);
   }
 }
 
-// ... بقية الـ Widgets (مثل _ExerciseCard و _AnalyticsCard) زي ما هي بدون أي تعديل
+// ==================== Sub-Widgets Components ====================
 
 class _DeleteSwipeBackground extends StatelessWidget {
   final Alignment alignment;
-
   const _DeleteSwipeBackground({required this.alignment});
 
   @override
@@ -683,6 +757,7 @@ class _ExerciseCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
@@ -714,23 +789,26 @@ class _ExerciseCard extends StatelessWidget {
             ),
           ),
           subtitle: Text(
-            '$dateLabel | Total Vol: ${totalVolume.toStringAsFixed(1)} kg',
+            l10n.totalVolumeLabel(dateLabel, totalVolume.toStringAsFixed(1)),
             style: const TextStyle(color: Color(0xff8a96a3), fontSize: 12),
           ),
           trailing: const Icon(Icons.tune, color: Color(0xff2f80ed)),
           children: [
             const Divider(height: 18),
             Row(
-              children: const [
+              children: [
                 Expanded(
                   flex: 2,
-                  child: Text('Sets', style: TextStyle(color: Color(0xff7d8792), fontWeight: FontWeight.w800)),
+                  child: Text(l10n.setsColumnLabel,
+                      style: const TextStyle(color: Color(0xff7d8792), fontWeight: FontWeight.w800)),
                 ),
                 Expanded(
-                  child: Text('Weight', style: TextStyle(color: Color(0xff7d8792), fontWeight: FontWeight.w800)),
+                  child: Text(l10n.weightColumnLabel,
+                      style: const TextStyle(color: Color(0xff7d8792), fontWeight: FontWeight.w800)),
                 ),
                 Expanded(
-                  child: Text('Reps', style: TextStyle(color: Color(0xff7d8792), fontWeight: FontWeight.w800)),
+                  child: Text(l10n.repsColumnLabel,
+                      style: const TextStyle(color: Color(0xff7d8792), fontWeight: FontWeight.w800)),
                 ),
               ],
             ),
@@ -757,9 +835,9 @@ class _ExerciseCard extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(width: 10),
-                            const Text(
-                              'Set',
-                              style: TextStyle(
+                            Text(
+                              l10n.setLabel,
+                              style: const TextStyle(
                                 color: Color(0xff202936),
                                 fontWeight: FontWeight.w800,
                               ),
@@ -795,7 +873,7 @@ class _ExerciseCard extends StatelessWidget {
             OutlinedButton.icon(
               onPressed: onAddSet,
               icon: const Icon(Icons.add_box),
-              label: const Text('Add Another Set'),
+              label: Text(l10n.addAnotherSetButton),
               style: OutlinedButton.styleFrom(
                 minimumSize: const Size.fromHeight(48),
                 foregroundColor: const Color(0xff2f80ed),
@@ -885,7 +963,6 @@ class _AnalyticsCard extends StatelessWidget {
 
 class _AnalyticsNoticeCard extends StatelessWidget {
   final String text;
-
   const _AnalyticsNoticeCard({required this.text});
 
   @override
@@ -944,6 +1021,7 @@ class _ExerciseDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return AlertDialog(
       backgroundColor: const Color(0xfff5f9fc),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -960,19 +1038,19 @@ class _ExerciseDialog extends StatelessWidget {
           if (showName) ...[
             TextField(
               controller: nameController,
-              decoration: _decoration('Exercise Name'),
+              decoration: _decoration(l10n.exerciseNameHint),
             ),
             const SizedBox(height: 12),
           ],
           TextField(
             controller: weightController,
-            decoration: _decoration('Weight (kg)'),
+            decoration: _decoration(l10n.weightKgHint),
             keyboardType: TextInputType.number,
           ),
           const SizedBox(height: 12),
           TextField(
             controller: repsController,
-            decoration: _decoration('Reps'),
+            decoration: _decoration(l10n.repsHint),
             keyboardType: TextInputType.number,
           ),
         ],
@@ -985,7 +1063,7 @@ class _ExerciseDialog extends StatelessWidget {
           ),
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('Cancel'),
+          child: Text(l10n.cancel),
         ),
         ElevatedButton(
           onPressed: onSubmit,

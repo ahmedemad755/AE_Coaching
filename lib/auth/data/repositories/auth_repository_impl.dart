@@ -38,6 +38,23 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<AuthUser> registerWithPhonePassword({
+    required String name,
+    required String phone,
+    required String password,
+  }) async {
+    try {
+      return await remoteDataSource.registerWithPhonePassword(
+        name: name,
+        phone: phone,
+        password: password,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
   Future<AuthUser> login(String phone, String password) async {
     try {
       return await remoteDataSource.login(phone, password);

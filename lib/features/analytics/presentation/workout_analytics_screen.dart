@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
@@ -52,10 +53,24 @@ Future<void> captureAndShareWorkout(ScreenshotController controller) async {
 }
 
 Widget buildInstagramShareCard({
+  required AppLocalizations l10n,
   required String exerciseName,
   required String totalVolume,
   required String progressDelta,
 }) {
+  // 🔥 كشف ما إذا كان المستوى متراجع (يحتوي على سالب أو قيمته سالبة)
+  final double? deltaValue = double.tryParse(progressDelta.replaceAll('%', '').trim());
+  final bool isNegative = progressDelta.contains('-') || (deltaValue != null && deltaValue < 0);
+  
+  // شيل علامة السالب من النص لو موجودة عشان شكل التصميم، لأننا هنعوض عنها بكلمة "تراجع" أو بشكل الـ UI الاحمر
+  final String cleanDelta = progressDelta.replaceAll('-', '').trim();
+
+  // 🎨 تحديد الألوان بناءً على الحالة (أخضر للتقدم / أحمر للتراجع)
+  final Color statusColor = isNegative ? const Color(0xFFEF4444) : const Color(0xFF4ADE80);
+  final String statusText = isNegative 
+      ? 'المستوى مريح بمعدل $cleanDelta% عن التمرين اللي فات! شد حيلك وعوض 🦾' 
+      : 'أتطورت بمعدل $cleanDelta% عن التمرين اللي فات! 🔥';
+
   return Container(
     width: 360,
     height: 520,
@@ -116,9 +131,9 @@ Widget buildInstagramShareCard({
           ],
         ),
         const Spacer(),
-        const Text(
-          "TODAY'S PROGRESS",
-          style: TextStyle(
+        Text(
+          l10n.todaysProgressLabel,
+          style: const TextStyle(
             color: Color(0xFF94A3B8),
             fontSize: 12,
             fontWeight: FontWeight.w800,
@@ -139,9 +154,9 @@ Widget buildInstagramShareCard({
           ),
         ),
         const SizedBox(height: 30),
-        const Text(
-          'TOTAL TRAINING VOLUME',
-          style: TextStyle(
+        Text(
+          l10n.totalTrainingVolumeLabel,
+          style: const TextStyle(
             color: Color(0xFF94A3B8),
             fontSize: 12,
             fontWeight: FontWeight.w800,
@@ -154,8 +169,8 @@ Widget buildInstagramShareCard({
           alignment: Alignment.centerLeft,
           child: Text(
             totalVolume,
-            style: const TextStyle(
-              color: Color(0xFF4ADE80),
+            style: TextStyle(
+              color: statusColor, // 🟢🔴 بيتغير ديناميكياً حسب الحالة
               fontSize: 54,
               height: 1,
               fontWeight: FontWeight.w900,
@@ -168,24 +183,24 @@ Widget buildInstagramShareCard({
           width: double.infinity,
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
-            color: const Color(0xFF4ADE80).withValues(alpha: 0.14),
+            color: statusColor.withValues(alpha: 0.14), // خلفية خفيفة من نفس اللون الحرج
             borderRadius: BorderRadius.circular(18),
             border: Border.all(
-              color: const Color(0xFF4ADE80).withValues(alpha: 0.45),
+              color: statusColor.withValues(alpha: 0.45),
             ),
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Icon(
-                Icons.trending_up,
-                color: Color(0xFF4ADE80),
+              Icon(
+                isNegative ? Icons.trending_down : Icons.trending_up, // سهم نازل لو سالب وسهم طالع لو موجب
+                color: statusColor,
                 size: 28,
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
-                  'أتطورت بمعدل $progressDelta% عن التمرين اللي فات! 🔥',
+                  statusText,
                   textDirection: TextDirection.rtl,
                   style: const TextStyle(
                     color: Colors.white,
@@ -202,7 +217,7 @@ Widget buildInstagramShareCard({
         const Spacer(),
         Center(
           child: Text(
-            'Tracked smoothly via AE Coaching App 🚀',
+            l10n.trackedViaFooter,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white.withValues(alpha: 0.62),
@@ -269,6 +284,7 @@ class _WorkoutAnalyticsScreenState extends State<WorkoutAnalyticsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: const Color(0xFF0F172A),
       body: SafeArea(
@@ -281,6 +297,7 @@ class _WorkoutAnalyticsScreenState extends State<WorkoutAnalyticsScreen> {
                 Screenshot(
                   controller: _screenshotController,
                   child: buildInstagramShareCard(
+                    l10n: l10n,
                     exerciseName: widget.exerciseName,
                     totalVolume: widget.totalVolume,
                     progressDelta: widget.progressDelta,
@@ -299,7 +316,7 @@ class _WorkoutAnalyticsScreenState extends State<WorkoutAnalyticsScreen> {
                           ),
                         )
                       : const Icon(Icons.ios_share),
-                  label: Text(_isSharing ? 'Sharing...' : 'Share Progress'),
+                  label: Text(_isSharing ? l10n.sharingButton : l10n.shareProgressButton),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF38BDF8),
                     disabledBackgroundColor:

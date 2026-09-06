@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 // هذا الملف سيتم إنتاجه بواسطة hive_generator
 part 'Exercise_Set.g.dart'; 
 
-@HiveType(typeId: 0) // الـ typeId اللي سجلناه في الـ main
+@HiveType(typeId: 0) // الـ typeId الخاص بالـ Model
 class ExerciseSet extends HiveObject {
   @HiveField(0)
   final String exerciseName;
@@ -28,7 +28,7 @@ class ExerciseSet extends HiveObject {
     this.notes,
   });
 
-  // اختيارياً: دالة لتحويل البيانات من/إلى JSON إذا كنت ستحفظها في Firebase لاحقاً
+  // دالة لتحويل البيانات من/إلى JSON للحفظ والمزامنة مع Firebase Firestore
   Map<String, dynamic> toJson() {
     return {
       'exerciseName': exerciseName,
@@ -41,11 +41,11 @@ class ExerciseSet extends HiveObject {
 
   factory ExerciseSet.fromJson(Map<String, dynamic> json) {
     return ExerciseSet(
-      exerciseName: json['exerciseName'],
+      exerciseName: json['exerciseName'] as String,
       weight: (json['weight'] as num).toDouble(),
-      reps: json['reps'],
-      date: DateTime.parse(json['date']),
-      notes: json['notes'],
+      reps: json['reps'] as int,
+      date: DateTime.parse(json['date'] as String),
+      notes: json['notes'] as String?,
     );
   }
 }

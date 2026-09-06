@@ -21,13 +21,14 @@ class ExerciseSetAdapter extends TypeAdapter<ExerciseSet> {
       weight: fields[1] as double,
       reps: fields[2] as int,
       date: fields[3] as DateTime,
+      notes: fields[4] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, ExerciseSet obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.exerciseName)
       ..writeByte(1)
@@ -35,7 +36,9 @@ class ExerciseSetAdapter extends TypeAdapter<ExerciseSet> {
       ..writeByte(2)
       ..write(obj.reps)
       ..writeByte(3)
-      ..write(obj.date);
+      ..write(obj.date)
+      ..writeByte(4)
+      ..write(obj.notes);
   }
 
   @override

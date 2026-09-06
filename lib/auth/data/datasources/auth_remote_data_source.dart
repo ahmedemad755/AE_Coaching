@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:ae_coaching/auth/domain/entities/auth_user.dart';
-import 'package:crypto/crypto.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class AuthRemoteDataSource {
   Future<String> requestOtp(String phoneNumber);
 
-  // تم إضافة الاسم والباسورد عشان نحفظهم في الفايرستور
   Future<void> registerWithOtp({
     required String verificationId,
     required String smsCode,
@@ -17,7 +17,12 @@ abstract class AuthRemoteDataSource {
     required String password,
   });
 
-  // تسجيل الدخول العادي بالرقم والباسورد
+  Future<AuthUser> registerWithPhonePassword({
+    required String name,
+    required String phone,
+    required String password,
+  });
+
   Future<AuthUser> login(String phone, String password);
 }
 
@@ -25,16 +30,62 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // دالة لتشفير الباسورد قبل حفظه (Security Best Practice)
   String _hashPassword(String password) {
-    var bytes = utf8.encode(password);
-    var digest = sha256.convert(bytes);
+    final bytes = utf8.encode(password);
+    final digest = sha256.convert(bytes);
     return digest.toString();
+  }
+
+  String _authEmailFromPhone(String phone) {
+    final digitsOnly = phone.replaceAll(RegExp(r'[^0-9]'), '');
+    if (digitsOnly.isEmpty) {
+      throw Exception('Invalid phone number.');
+    }
+    return 'u$digitsOnly@ae-coaching.app';
+  }
+
+  Future<void> _linkPasswordLogin({
+    required User user,
+    required String phone,
+    required String password,
+  }) async {
+    final emailCredential = EmailAuthProvider.credential(
+      email: _authEmailFromPhone(phone),
+      password: password,
+    );
+
+    try {
+      await user.linkWithCredential(emailCredential);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'provider-already-linked') {
+        return;
+      }
+      if (e.code == 'credential-already-in-use' ||
+          e.code == 'email-already-in-use') {
+        throw Exception('Account already exists. Please login.');
+      }
+      rethrow;
+    }
+  }
+
+  String _mapFirebaseAuthException(FirebaseAuthException e) {
+    switch (e.code) {
+      case 'user-not-found':
+      case 'wrong-password':
+      case 'invalid-credential':
+        return 'Incorrect phone number or password.';
+      case 'operation-not-allowed':
+        return 'Enable Email/Password sign-in method in Firebase Authentication.';
+      case 'too-many-requests':
+        return 'Too many attempts. Please try again later.';
+      default:
+        return e.message ?? e.code;
+    }
   }
 
   @override
   Future<String> requestOtp(String phoneNumber) async {
-    Completer<String> completer = Completer<String>();
+    final completer = Completer<String>();
 
     await _auth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
@@ -61,51 +112,108 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String phone,
     required String password,
   }) async {
-    // 1. تأكيد الـ OTP
-    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+    final credential = PhoneAuthProvider.credential(
       verificationId: verificationId,
       smsCode: smsCode,
     );
-    UserCredential userCredential = await _auth.signInWithCredential(credential);
+    final userCredential = await _auth.signInWithCredential(credential);
+    final user = userCredential.user;
 
-    // 2. حفظ بيانات المستخدم في Firestore
-    await _firestore.collection('users').doc(userCredential.user!.uid).set({
-      'uid': userCredential.user!.uid,
+    if (user == null) {
+      throw Exception('Unable to complete registration.');
+    }
+
+    await _linkPasswordLogin(
+      user: user,
+      phone: phone,
+      password: password,
+    );
+
+    await _firestore.collection('users').doc(user.uid).set({
+      'uid': user.uid,
       'name': name,
       'phoneNumber': phone,
-      'password': _hashPassword(password), // بنحفظ الباسورد مشفر
+      'authEmail': _authEmailFromPhone(phone),
+      'password': _hashPassword(password),
       'createdAt': FieldValue.serverTimestamp(),
-    });
+    }, SetOptions(merge: true));
+  }
+
+  @override
+  Future<AuthUser> registerWithPhonePassword({
+    required String name,
+    required String phone,
+    required String password,
+  }) async {
+    try {
+      final userCredential = await _auth.createUserWithEmailAndPassword(
+        email: _authEmailFromPhone(phone),
+        password: password,
+      );
+      final user = userCredential.user;
+
+      if (user == null) {
+        throw Exception('Unable to complete registration.');
+      }
+
+      await user.updateDisplayName(name);
+
+      await _firestore.collection('users').doc(user.uid).set({
+        'uid': user.uid,
+        'name': name,
+        'phoneNumber': phone,
+        'authEmail': _authEmailFromPhone(phone),
+        'password': _hashPassword(password),
+        'createdAt': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
+
+      return AuthUser(
+        uid: user.uid,
+        name: name,
+        phoneNumber: phone,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'email-already-in-use') {
+        throw Exception('Account already exists. Please login.');
+      }
+      throw Exception(_mapFirebaseAuthException(e));
+    }
   }
 
   @override
   Future<AuthUser> login(String phone, String password) async {
-    // 1. البحث عن المستخدم برقم الهاتف في Firestore
-    var querySnapshot = await _firestore
-        .collection('users')
-        .where('phoneNumber', isEqualTo: phone)
-        .get();
+    try {
+      final userCredential = await _auth.signInWithEmailAndPassword(
+        email: _authEmailFromPhone(phone),
+        password: password,
+      );
+      final firebaseUser = userCredential.user;
 
-    if (querySnapshot.docs.isEmpty) {
-      throw Exception('Account not found. Please register first.');
+      if (firebaseUser == null) {
+        throw Exception('Unable to login. Please try again.');
+      }
+
+      final userRef = _firestore.collection('users').doc(firebaseUser.uid);
+      final userDoc = await userRef.get();
+
+      if (!userDoc.exists) {
+        await userRef.set({
+          'uid': firebaseUser.uid,
+          'phoneNumber': phone,
+          'authEmail': _authEmailFromPhone(phone),
+          'createdAt': FieldValue.serverTimestamp(),
+        }, SetOptions(merge: true));
+      }
+
+      final userData = userDoc.data() ?? {};
+
+      return AuthUser(
+        uid: firebaseUser.uid,
+        name: (userData['name'] as String?) ?? '',
+        phoneNumber: (userData['phoneNumber'] as String?) ?? phone,
+      );
+    } on FirebaseAuthException catch (e) {
+      throw Exception(_mapFirebaseAuthException(e));
     }
-
-    // 2. التحقق من الباسورد
-    var userDoc = querySnapshot.docs.first;
-    var userData = userDoc.data();
-    String storedHashedPassword = userData['password'];
-    String inputHashedPassword = _hashPassword(password);
-
-    if (storedHashedPassword != inputHashedPassword) {
-      throw Exception('Incorrect password. Please try again.');
-    }
-
-    return AuthUser(
-      uid: (userData['uid'] as String?) ?? userDoc.id,
-      name: (userData['name'] as String?) ?? '',
-      phoneNumber: (userData['phoneNumber'] as String?) ?? phone,
-    );
-
-    // إذا وصلنا هنا، يعني الرقم والباسورد صح!
   }
 }

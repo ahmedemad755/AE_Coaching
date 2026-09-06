@@ -1,8 +1,11 @@
 import 'package:ae_coaching/auth/presentation/cubit/auth_cubit.dart';
 import 'package:ae_coaching/auth/presentation/cubit/auth_state.dart';
+import 'package:ae_coaching/core/localization/auth_message_localizer.dart';
 import 'package:ae_coaching/core/routes/app_router.dart';
+import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -67,6 +70,7 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -77,20 +81,37 @@ class _RegisterViewState extends State<RegisterView> {
           ),
         ),
         child: BlocConsumer<AuthCubit, AuthState>(
-          listener: (context, state) {
-            if (state is AuthSuccess || state is AuthOtpSent) {
-              String vId = '';
-              if (state is AuthOtpSent) {
-                vId = state.verificationId;
+          listener: (context, state) async {
+            if (state is AuthSuccess) {
+              final authBox = Hive.box('authBox');
+              await authBox.put('isLoggedIn', true);
+
+              if (state.user != null) {
+                await authBox.put('currentUserUid', state.user!.uid);
+                await authBox.put('currentUserName', state.user!.name);
+                await authBox.put('currentUserPhone', state.user!.phoneNumber);
               }
+
+              if (!mounted) return;
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(localizeAuthMessage(l10n, state.message)),
+                ),
+              );
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                AppNavigator.home,
+                (route) => false,
+              );
+            } else if (state is AuthOtpSent) {
               Navigator.pushNamed(
                 context,
                 AppNavigator.otp,
                 arguments: {
-                  'phone': formatPhoneNumber(_phoneController.text), // إرسال الرقم بالصيغة الصحيحة
+                  'phone': formatPhoneNumber(_phoneController.text),
                   'password': _passwordController.text.trim(),
                   'name': _nameController.text.trim(),
-                  'verificationId': vId, // تمرير الـ verificationId
+                  'verificationId': state.verificationId,
                 },
               );
             } else if (state is AuthError) {
@@ -126,49 +147,49 @@ class _RegisterViewState extends State<RegisterView> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Align(
-                              alignment: Alignment.centerLeft,
+                              alignment: AlignmentDirectional.centerStart,
                               child: IconButton(
                                 onPressed: () => Navigator.pop(context),
                                 icon: const Icon(Icons.arrow_back_ios_new),
                                 color: const Color(0xff2f80ed),
                               ),
                             ),
-                            const Text(
-                              'Create Account',
+                            Text(
+                              l10n.createAccountTitle,
                               textAlign: TextAlign.center,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Color(0xff202936),
                                 fontSize: 26,
                                 fontWeight: FontWeight.w900,
                               ),
                             ),
                             const SizedBox(height: 6),
-                            const Text(
-                              'Start your coaching journey',
+                            Text(
+                              l10n.startJourneySubtitle,
                               textAlign: TextAlign.center,
-                              style: TextStyle(color: Color(0xff7d8792)),
+                              style: const TextStyle(color: Color(0xff7d8792)),
                             ),
                             const SizedBox(height: 22),
                             TextFormField(
                               controller: _nameController,
-                              decoration: _fieldDecoration('Full Name', Icons.person),
+                              decoration: _fieldDecoration(l10n.fullNameHint, Icons.person),
                               validator: (value) =>
-                                  value == null || value.isEmpty ? 'Please enter your name' : null,
+                                  value == null || value.isEmpty ? l10n.fullNameRequired : null,
                             ),
                             const SizedBox(height: 14),
                             TextFormField(
                               controller: _phoneController,
                               keyboardType: TextInputType.phone,
-                              decoration: _fieldDecoration('Phone Number', Icons.phone),
+                              decoration: _fieldDecoration(l10n.phoneNumberFieldHint, Icons.phone),
                               validator: (value) =>
-                                  value == null || value.isEmpty ? 'Please enter phone number' : null,
+                                  value == null || value.isEmpty ? l10n.phoneNumberRequiredRegister : null,
                             ),
                             const SizedBox(height: 14),
                             TextFormField(
                               controller: _passwordController,
                               obscureText: _isPasswordObscured,
                               decoration: _fieldDecoration(
-                                'Password', 
+                                l10n.passwordHint,
                                 Icons.lock,
                                 suffixIcon: IconButton(
                                   icon: Icon(
@@ -183,7 +204,7 @@ class _RegisterViewState extends State<RegisterView> {
                                 ),
                               ),
                               validator: (value) =>
-                                  value == null || value.length < 6 ? 'Password too short' : null,
+                                  value == null || value.length < 6 ? l10n.passwordTooShort : null,
                             ),
                             const SizedBox(height: 18),
                             SizedBox(
@@ -193,8 +214,15 @@ class _RegisterViewState extends State<RegisterView> {
                                     ? null
                                     : () {
                                         if (_formKey.currentState!.validate()) {
-                                          context.read<AuthCubit>().requestOtp(
-                                                formatPhoneNumber(_phoneController.text), // إرسال الرقم المنسق للـ Cubit
+                                          context
+                                              .read<AuthCubit>()
+                                              .registerWithPhonePassword(
+                                                name: _nameController.text.trim(),
+                                                phone: formatPhoneNumber(
+                                                  _phoneController.text,
+                                                ),
+                                                password:
+                                                    _passwordController.text.trim(),
                                               );
                                         }
                                       },
@@ -216,9 +244,9 @@ class _RegisterViewState extends State<RegisterView> {
                                           strokeWidth: 2.4,
                                         ),
                                       )
-                                    : const Text(
-                                        'CONTINUE',
-                                        style: TextStyle(fontWeight: FontWeight.w800),
+                                    : Text(
+                                        l10n.createAccountButton,
+                                        style: const TextStyle(fontWeight: FontWeight.w800),
                                       ),
                               ),
                             ),
