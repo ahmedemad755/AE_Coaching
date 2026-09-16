@@ -436,4 +436,552 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get unableToLoadPhotos => 'تعذّر تحميل صور المتابعة.';
+
+  @override
+  String get myProgramsTitle => 'برامجي';
+
+  @override
+  String get activeProgramLabel => 'البرنامج النشط';
+
+  @override
+  String get previousProgramsLabel => 'البرامج السابقة';
+
+  @override
+  String get createProgramButton => 'إنشاء برنامج';
+
+  @override
+  String get createProgramTitle => 'إنشاء برنامج';
+
+  @override
+  String get programNameHint => 'اسم البرنامج';
+
+  @override
+  String get descriptionOptionalHint => 'الوصف (اختياري)';
+
+  @override
+  String get createButton => 'إنشاء';
+
+  @override
+  String get createAndMakeActiveButton => 'إنشاء وتفعيل';
+
+  @override
+  String get makeActiveButton => 'تفعيل';
+
+  @override
+  String get renameButton => 'إعادة تسمية';
+
+  @override
+  String get renameProgramTitle => 'إعادة تسمية البرنامج';
+
+  @override
+  String get archiveButton => 'أرشفة';
+
+  @override
+  String get openButton => 'فتح';
+
+  @override
+  String get noProgramsYetTitle => 'مفيش برامج لسه.';
+
+  @override
+  String get noProgramsYetSubtitle =>
+      'أنشئ أول برنامج ليك عشان تبدأ تنظّم تدريبك.';
+
+  @override
+  String get makeActiveConfirmTitle => 'تفعيل البرنامج؟';
+
+  @override
+  String makeActiveConfirmBodyWithCurrent(String name) {
+    return 'تحب تفعّل \"$name\"؟ برنامجك الحالي هيفضل محفوظ كبرنامج سابق.';
+  }
+
+  @override
+  String makeActiveConfirmBodyNoCurrent(String name) {
+    return 'تحب تفعّل \"$name\"؟';
+  }
+
+  @override
+  String get archiveActiveConfirmTitle => 'أرشفة البرنامج؟';
+
+  @override
+  String archiveActiveConfirmBody(String name) {
+    return 'تحب تؤرشف \"$name\"؟ هينتقل لقائمة البرامج السابقة — سجل تمرينك هيفضل زي ما هو.';
+  }
+
+  @override
+  String get enterProgramNameValidation => 'أدخل اسم البرنامج.';
+
+  @override
+  String get unableToLoadProgramsError => 'تعذّر تحميل برامجك.';
+
+  @override
+  String get workoutDaysPlaceholder => 'أيام التمرين هتتضاف في المرحلة الجاية.';
+
+  @override
+  String get startedLabel => 'بدأ';
+
+  @override
+  String get endedLabel => 'انتهى';
+
+  @override
+  String get workoutProgramsTooltip => 'برامجي';
+
+  @override
+  String get workoutDaysTitle => 'أيام التمرين';
+
+  @override
+  String get addWorkoutDayButton => 'إضافة يوم تمرين';
+
+  @override
+  String get createWorkoutDayTitle => 'إضافة يوم تمرين';
+
+  @override
+  String get renameWorkoutDayTitle => 'إعادة تسمية يوم التمرين';
+
+  @override
+  String get workoutDayNameHint => 'اسم يوم التمرين';
+
+  @override
+  String get noWorkoutDaysYetTitle => 'مفيش أيام تمرين لسه.';
+
+  @override
+  String get noWorkoutDaysYetSubtitle =>
+      'ضيف يوم تمرين زي \"Push 1\" عشان تبدأ تبني البرنامج ده.';
+
+  @override
+  String get archiveWorkoutDayConfirmTitle => 'أرشفة يوم التمرين؟';
+
+  @override
+  String archiveWorkoutDayConfirmBody(String name) {
+    return 'تحب تؤرشف \"$name\"؟ هيتخفي من القايمة دي، بس سجل التمرين هيفضل زي ما هو.';
+  }
+
+  @override
+  String get enterWorkoutDayNameValidation => 'أدخل اسم يوم التمرين.';
+
+  @override
+  String get unableToLoadWorkoutDaysError => 'تعذّر تحميل أيام التمرين.';
+
+  @override
+  String get startWorkoutButton => 'ابدأ التمرين';
+
+  @override
+  String get moveUpTooltip => 'تحريك لأعلى';
+
+  @override
+  String get moveDownTooltip => 'تحريك لأسفل';
+
+  @override
+  String get startWorkoutComingSoon => 'بدء التمرين هييجي في المرحلة الجاية.';
+
+  @override
+  String get resumeWorkoutBannerTitle => 'في تمرين شغال';
+
+  @override
+  String resumeWorkoutBannerBody(String name, String elapsed) {
+    return '$name — بدأ من $elapsed';
+  }
+
+  @override
+  String get resumeWorkoutButton => 'استكمال التمرين';
+
+  @override
+  String get workoutInProgressConflictTitle => 'فيه تمرين شغال بالفعل';
+
+  @override
+  String workoutInProgressConflictBody(String name) {
+    return 'عندك بالفعل \"$name\" شغال. خلّصه أو ألغيه قبل ما تبدأ تمرين جديد.';
+  }
+
+  @override
+  String get cancelWorkoutButton => 'إلغاء التمرين';
+
+  @override
+  String get cancelWorkoutConfirmTitle => 'تحب تلغي التمرين ده؟';
+
+  @override
+  String get cancelWorkoutConfirmBody =>
+      'التمرين ده هيتسجل كـ ملغي ومش هيتحسب في سجلك. الإجراء ده مش قابل للتراجع.';
+
+  @override
+  String get finishWorkoutButton => 'إنهاء التمرين';
+
+  @override
+  String get finishWorkoutComingSoon =>
+      'إنهاء التمرين هييجي في المرحلة الجاية.';
+
+  @override
+  String get elapsedTimeLabel => 'الوقت المنقضي';
+
+  @override
+  String get unableToStartWorkoutError => 'تعذّر بدء التمرين.';
+
+  @override
+  String get sessionExercisesTitle => 'التمارين';
+
+  @override
+  String get noExercisesLoggedYetBody =>
+      'لسه مفيش تمارين متسجلة. دوس على \"تمرين جديد\" عشان تسجل أول مجموعة.';
+
+  @override
+  String get suggestedFromLastTimeLabel => 'مقترح من آخر مرة';
+
+  @override
+  String get logFirstSetButton => 'سجّل المجموعة';
+
+  @override
+  String get addSetTooltip => 'أضف مجموعة تانية';
+
+  @override
+  String get deleteSetTooltip => 'احذف المجموعة';
+
+  @override
+  String get unableToLogSetError => 'تعذّر تسجيل المجموعة.';
+
+  @override
+  String get exerciseNameRequiredError => 'من فضلك اكتب اسم التمرين.';
+
+  @override
+  String get lastTimeLabel => 'آخر مرة';
+
+  @override
+  String get finishWorkoutConfirmTitle => 'تنهي التمرين ده؟';
+
+  @override
+  String finishWorkoutConfirmBody(String volume) {
+    return 'إجمالي الحجم المسجَّل: $volume كجم. ده هيسجل التمرين كمكتمل ويحفظه في سجلك.';
+  }
+
+  @override
+  String workoutFinishedBody(String volume) {
+    return 'التمرين خلص! إجمالي الحجم: $volume كجم.';
+  }
+
+  @override
+  String get unableToFinishWorkoutError => 'تعذّر إنهاء التمرين.';
+
+  @override
+  String get workoutSummaryTitle => 'ملخص التمرين';
+
+  @override
+  String get sessionTotalVolumeLabel => 'إجمالي الحجم';
+
+  @override
+  String get sinceLastTimeLabel => 'مقارنة بآخر مرة';
+
+  @override
+  String get noPreviousSessionBody =>
+      'لسه مفيش تمرين سابق لليوم ده — المرة الجاية هتشوف مقارنة أدائك.';
+
+  @override
+  String get newPersonalRecordsLabel => 'أرقام قياسية جديدة';
+
+  @override
+  String firstTimePrBody(String exercise) {
+    return 'أول مرة تسجل $exercise!';
+  }
+
+  @override
+  String heaviestWeightPrBody(String exercise, String weight, String previous) {
+    return '$exercise: أتقل وزن على الإطلاق — $weight كجم (كان $previous كجم)';
+  }
+
+  @override
+  String highestSetVolumePrBody(String exercise, String weight, int reps) {
+    return '$exercise: أفضل مجموعة على الإطلاق — $weight كجم × $reps';
+  }
+
+  @override
+  String get exerciseImprovedLabel => 'تحسّن';
+
+  @override
+  String get exerciseMaintainedLabel => 'ثابت';
+
+  @override
+  String get exerciseDeclinedLabel => 'قلّ';
+
+  @override
+  String get exerciseNewLabel => 'جديد';
+
+  @override
+  String get doneButton => 'تم';
+
+  @override
+  String workoutHistoryTitle(String name) {
+    return 'سجل $name';
+  }
+
+  @override
+  String get historyTooltip => 'السجل';
+
+  @override
+  String get noSessionsYetTitle => 'لسه مفيش جلسات';
+
+  @override
+  String get noSessionsYetSubtitle =>
+      'خلّص تمرين لليوم ده عشان يبدأ سجله يتكوّن.';
+
+  @override
+  String get sessionCompletedLabel => 'مكتمل';
+
+  @override
+  String get sessionCancelledLabel => 'ملغي';
+
+  @override
+  String get sessionInProgressLabel => 'جاري';
+
+  @override
+  String get sessionDurationLabel => 'المدة';
+
+  @override
+  String get viewWorkoutTrackerButton => 'افتح متتبع التمرين';
+
+  @override
+  String get programAnalyticsTitle => 'تحليلات البرنامج';
+
+  @override
+  String get analyticsTooltip => 'التحليلات';
+
+  @override
+  String get noAnalyticsYetTitle => 'لسه مفيش بيانات';
+
+  @override
+  String get noAnalyticsYetSubtitle =>
+      'خلّص كام تمرين عشان تبدأ تشوف اتجاه أدائك هنا.';
+
+  @override
+  String sessionsLoggedLabel(int count) {
+    return '$count جلسة';
+  }
+
+  @override
+  String get averageVolumeLabel => 'متوسط الحجم';
+
+  @override
+  String get bestWeightLabel => 'الأفضل';
+
+  @override
+  String get noExercisesForDayYetBody => 'لسه مفيش جلسات مكتملة لليوم ده.';
+
+  @override
+  String get thisWeekTitle => 'الأسبوع ده';
+
+  @override
+  String totalSessionsThisWeekLabel(int count) {
+    return '$count جلسة مكتملة';
+  }
+
+  @override
+  String templateSessionsThisWeekLabel(int count) {
+    return '$count×';
+  }
+
+  @override
+  String get restTimerLabel => 'تايمر الراحة';
+
+  @override
+  String get startRestTimerButton => 'ابدأ';
+
+  @override
+  String get stopRestTimerButton => 'وقف';
+
+  @override
+  String get resetRestTimerTooltip => 'تصفير';
+
+  @override
+  String get setNotesHint => 'ملاحظات (اختياري)';
+
+  @override
+  String get sessionNoteTooltip => 'ملاحظة الجلسة';
+
+  @override
+  String get editSessionNoteTitle => 'ملاحظة الجلسة';
+
+  @override
+  String get sessionNoteHint => 'التمرين ده كان حاسس بيه إزاي؟';
+
+  @override
+  String get saveNoteButton => 'حفظ';
+
+  @override
+  String get unableToSaveNoteError => 'تعذّر حفظ الملاحظة.';
+
+  @override
+  String get consistencyTitle => 'الانتظام';
+
+  @override
+  String get currentWeekStreakLabel => 'التتابع الحالي';
+
+  @override
+  String weeksUnit(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'أسابيع',
+      one: 'أسبوع',
+    );
+    return '$count $_temp0';
+  }
+
+  @override
+  String get longestWeekStreakLabel => 'أطول تتابع';
+
+  @override
+  String get averagePerWeekLabel => 'متوسط أسبوعي';
+
+  @override
+  String get daysSinceLastSessionLabel => 'آخر تمرين';
+
+  @override
+  String daysAgoLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'أيام',
+      two: 'يومين',
+      one: 'يوم',
+      zero: 'يوم',
+    );
+    return 'من $count $_temp0';
+  }
+
+  @override
+  String get noConsistencyDataYetBody =>
+      'خلّص كام تمرين عشان تشوف انتظامك هنا.';
+
+  @override
+  String get kgUnit => 'كجم';
+
+  @override
+  String currentVsPreviousVolumeLabel(String current, String previous) {
+    return '$current كجم ($previous كجم آخر مرة)';
+  }
+
+  @override
+  String durationHoursMinutesLabel(int hours, int minutes) {
+    return '$hoursس $minutesد';
+  }
+
+  @override
+  String durationMinutesOnlyLabel(int minutes) {
+    return '$minutesد';
+  }
+
+  @override
+  String durationSecondsOnlyLabel(int seconds) {
+    return '$secondsث';
+  }
+
+  @override
+  String exerciseBestLatestSummary(String bestWeight, String latestVolume) {
+    return 'أفضل: $bestWeight كجم  •  $latestVolume كجم آخر مرة';
+  }
+
+  @override
+  String get homeCurrentProgramLabel => 'البرنامج الحالي';
+
+  @override
+  String homeWorkoutsCompletedThisWeekLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'تمارين مكتملة',
+      two: 'تمرينين مكتملين',
+      one: 'تمرين مكتمل',
+      zero: 'تمرين مكتمل',
+    );
+    return '$count $_temp0';
+  }
+
+  @override
+  String get homeOpenProgramButton => 'افتح البرنامج';
+
+  @override
+  String get homeWorkoutInProgressLabel => 'تمرين جاري';
+
+  @override
+  String homeStartedAgoLabel(String duration) {
+    return 'بدأ من $duration';
+  }
+
+  @override
+  String get homeRecentWorkoutsTitle => 'التمارين الأخيرة';
+
+  @override
+  String homeExerciseCountLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'تمارين',
+      two: 'تمرينين',
+      one: 'تمرين',
+    );
+    return '$count $_temp0';
+  }
+
+  @override
+  String homeSetCountLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'مجموعات',
+      two: 'مجموعتين',
+      one: 'مجموعة',
+    );
+    return '$count $_temp0';
+  }
+
+  @override
+  String homeTotalVolumeLabel(String volume) {
+    return 'إجمالي الحجم: $volume كجم';
+  }
+
+  @override
+  String get homeViewSessionButton => 'شوف الجلسة';
+
+  @override
+  String get homeShowExercisesButton => 'اعرض التمارين';
+
+  @override
+  String get homeHideExercisesButton => 'اخفِ التمارين';
+
+  @override
+  String get homeNoActiveProgramTitle => 'مفيش برنامج نشط';
+
+  @override
+  String get homeNoActiveProgramBody =>
+      'اعمل أو فعّل برنامج عشان تبدأ تتابع تمارينك بشكل منظم.';
+
+  @override
+  String get homeNoRecentWorkoutsBody => 'لسه مفيش تمارين مكتملة.';
+
+  @override
+  String get startWorkoutFabLabel => 'ابدأ تمرين';
+
+  @override
+  String get deleteProgramConfirmTitle => 'تحذف البرنامج ده نهائي؟';
+
+  @override
+  String deleteProgramConfirmBody(String name) {
+    return 'ده هيحذف \"$name\" نهائيًا وكل حاجة جواه — كل يوم تمرين، وكل جلسة، وكل تمرين اتسجل. الإجراء ده مش قابل للتراجع.';
+  }
+
+  @override
+  String get deleteWorkoutDayConfirmTitle => 'تحذف يوم التمرين ده نهائي؟';
+
+  @override
+  String deleteWorkoutDayConfirmBody(String name) {
+    return 'ده هيحذف \"$name\" نهائيًا وكل حاجة جواه — كل جلسة، وكل تمرين اتسجل. الإجراء ده مش قابل للتراجع.';
+  }
+
+  @override
+  String get archivedWorkoutDaysTooltip => 'الأرشيف';
+
+  @override
+  String get archivedWorkoutDaysTitle => 'أيام التمرين المؤرشفة';
+
+  @override
+  String get noArchivedWorkoutDaysBody => 'مفيش أيام تمرين مؤرشفة.';
+
+  @override
+  String get restoreButton => 'استرجاع';
 }

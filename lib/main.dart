@@ -1,6 +1,9 @@
 import 'package:ae_coaching/auth/data/models/Exercise_Set.dart';
 import 'package:ae_coaching/auth/data/models/body_measurement.dart';
 import 'package:ae_coaching/features/progress_photos/data/models/progress_photo.dart';
+import 'package:ae_coaching/features/workout/data/models/workout_program.dart';
+import 'package:ae_coaching/features/workout/data/models/workout_template.dart';
+import 'package:ae_coaching/features/workout/data/models/workout_session.dart';
 import 'package:ae_coaching/core/localization/locale_cubit.dart';
 import 'package:ae_coaching/core/routes/app_router.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
@@ -26,17 +29,37 @@ void main() async {
   initWorkout();
   initMeasurements(); // Body Measurements feature — separate from Workout
   initProgressPhotos(); // Progress Photos feature — separate from both
+  initWorkoutPrograms(); // Programs UI (Phase 5) — separate from all of the above
+  initWorkoutTemplates(); // Workout Days UI (Phase 6) — separate from all of the above
+  initWorkoutCascadeDeletion(); // Cascade delete (Program/Template → Session → Set)
+  initWorkoutSessions(); // Active Workout Session (Phase 7) — separate from all of the above
+  initSessionExercises(); // Session exercise logging (Phase 8) — separate from all of the above
+  initWorkoutHistory(); // Workout History (Phase 14) — separate from all of the above
+  initProgramAnalytics(); // Program Analytics (Phase 15) — separate from all of the above
+  initProgramOverview(); // Program Overview (Phase 16) — separate from all of the above
+  initRestTimer(); // Rest Timer (Phase 17) — separate from all of the above
+  initProgramConsistency(); // Program Consistency (Phase 19) — separate from all of the above
+  initHomeWorkoutOverview(); // Home Workout Overview redesign — separate from all of the above
 
   // 4. تهيئة Hive
   await Hive.initFlutter();
   if (!Hive.isAdapterRegistered(0)) {
     Hive.registerAdapter(ExerciseSetAdapter());
   }
+  if (!Hive.isAdapterRegistered(1)) {
+    Hive.registerAdapter(WorkoutProgramAdapter());
+  }
   if (!Hive.isAdapterRegistered(2)) {
     Hive.registerAdapter(BodyMeasurementAdapter());
   }
   if (!Hive.isAdapterRegistered(3)) {
     Hive.registerAdapter(ProgressPhotoAdapter());
+  }
+  if (!Hive.isAdapterRegistered(4)) {
+    Hive.registerAdapter(WorkoutTemplateAdapter());
+  }
+  if (!Hive.isAdapterRegistered(5)) {
+    Hive.registerAdapter(WorkoutSessionAdapter());
   }
 
   await Hive.openBox('authBox');

@@ -179,5 +179,267 @@
   "addPhotoPromptTitle": "Add a Progress Photo?",
   "addPhotoPromptBody": "Would you like to add a photo for today's check-in?",
   "skip": "Skip",
-  "unableToLoadPhotos": "Unable to load progress photos."
+  "unableToLoadPhotos": "Unable to load progress photos.",
+
+  "myProgramsTitle": "My Programs",
+  "activeProgramLabel": "Active Program",
+  "previousProgramsLabel": "Previous Programs",
+  "createProgramButton": "Create Program",
+  "createProgramTitle": "Create Program",
+  "programNameHint": "Program Name",
+  "descriptionOptionalHint": "Description (optional)",
+  "createButton": "Create",
+  "createAndMakeActiveButton": "Create & Make Active",
+  "makeActiveButton": "Make Active",
+  "renameButton": "Rename",
+  "renameProgramTitle": "Rename Program",
+  "archiveButton": "Archive",
+  "openButton": "Open",
+  "noProgramsYetTitle": "No programs yet.",
+  "noProgramsYetSubtitle": "Create your first program to start organizing your training.",
+  "makeActiveConfirmTitle": "Make Active?",
+  "makeActiveConfirmBodyWithCurrent": "Make \"{name}\" your active program? Your current program will remain saved as a previous program.",
+  "@makeActiveConfirmBodyWithCurrent": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "makeActiveConfirmBodyNoCurrent": "Make \"{name}\" your active program?",
+  "@makeActiveConfirmBodyNoCurrent": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "archiveActiveConfirmTitle": "Archive Program?",
+  "archiveActiveConfirmBody": "Archive \"{name}\"? It will move to Previous Programs — your workout history stays intact.",
+  "@archiveActiveConfirmBody": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "enterProgramNameValidation": "Enter a program name.",
+  "unableToLoadProgramsError": "Unable to load your programs.",
+  "workoutDaysPlaceholder": "Workout Days will be added in the next phase.",
+  "startedLabel": "Started",
+  "endedLabel": "Ended",
+  "workoutProgramsTooltip": "My Programs",
+
+  "workoutDaysTitle": "Workout Days",
+  "addWorkoutDayButton": "Add Workout Day",
+  "createWorkoutDayTitle": "Add Workout Day",
+  "renameWorkoutDayTitle": "Rename Workout Day",
+  "workoutDayNameHint": "Workout Day Name",
+  "noWorkoutDaysYetTitle": "No workout days yet.",
+  "noWorkoutDaysYetSubtitle": "Add a workout day like \"Push 1\" to start building this program.",
+  "archiveWorkoutDayConfirmTitle": "Archive Workout Day?",
+  "archiveWorkoutDayConfirmBody": "Archive \"{name}\"? It will be hidden from this list, but any workout history stays intact.",
+  "@archiveWorkoutDayConfirmBody": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "enterWorkoutDayNameValidation": "Enter a workout day name.",
+  "unableToLoadWorkoutDaysError": "Unable to load workout days.",
+  "startWorkoutButton": "Start Workout",
+  "moveUpTooltip": "Move up",
+  "moveDownTooltip": "Move down",
+  "startWorkoutComingSoon": "Starting a workout is coming in the next phase.",
+
+  "resumeWorkoutBannerTitle": "Workout in progress",
+  "resumeWorkoutBannerBody": "{name} — started {elapsed} ago",
+  "@resumeWorkoutBannerBody": {
+    "placeholders": {
+      "name": { "type": "String" },
+      "elapsed": { "type": "String" }
+    }
+  },
+  "resumeWorkoutButton": "Resume Workout",
+  "workoutInProgressConflictTitle": "Workout Already In Progress",
+  "workoutInProgressConflictBody": "You already have \"{name}\" in progress. Finish or cancel it before starting a new workout.",
+  "@workoutInProgressConflictBody": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "cancelWorkoutButton": "Cancel Workout",
+  "cancelWorkoutConfirmTitle": "Cancel this workout?",
+  "cancelWorkoutConfirmBody": "This workout session will be marked cancelled and won't count toward your history. This can't be undone.",
+  "finishWorkoutButton": "Finish Workout",
+  "finishWorkoutComingSoon": "Finishing a workout is coming in the next phase.",
+  "elapsedTimeLabel": "Elapsed Time",
+  "unableToStartWorkoutError": "Unable to start the workout.",
+  "sessionExercisesTitle": "Exercises",
+  "noExercisesLoggedYetBody": "No exercises logged yet. Tap \"New Exercise\" to add your first set.",
+  "suggestedFromLastTimeLabel": "Suggested from last time",
+  "logFirstSetButton": "Log Set",
+  "addSetTooltip": "Add another set",
+  "deleteSetTooltip": "Delete set",
+  "unableToLogSetError": "Unable to log this set.",
+  "exerciseNameRequiredError": "Please enter an exercise name.",
+  "lastTimeLabel": "Last time",
+  "finishWorkoutConfirmTitle": "Finish this workout?",
+  "finishWorkoutConfirmBody": "Total volume logged: {volume} kg. This will mark the session complete and save it to your history.",
+  "@finishWorkoutConfirmBody": {
+    "placeholders": { "volume": { "type": "String" } }
+  },
+  "workoutFinishedBody": "Workout completed! Total volume: {volume} kg.",
+  "@workoutFinishedBody": {
+    "placeholders": { "volume": { "type": "String" } }
+  },
+  "unableToFinishWorkoutError": "Unable to finish the workout.",
+  "workoutSummaryTitle": "Workout Summary",
+  "sessionTotalVolumeLabel": "Total Volume",
+  "sinceLastTimeLabel": "Since Last Time",
+  "noPreviousSessionBody": "No previous session for this workout day yet — next time you'll see how you compare.",
+  "newPersonalRecordsLabel": "New Personal Records",
+  "firstTimePrBody": "First time logging {exercise}!",
+  "@firstTimePrBody": {
+    "placeholders": { "exercise": { "type": "String" } }
+  },
+  "heaviestWeightPrBody": "{exercise}: heaviest weight ever — {weight} kg (was {previous} kg)",
+  "@heaviestWeightPrBody": {
+    "placeholders": {
+      "exercise": { "type": "String" },
+      "weight": { "type": "String" },
+      "previous": { "type": "String" }
+    }
+  },
+  "highestSetVolumePrBody": "{exercise}: best single set ever — {weight} kg × {reps}",
+  "@highestSetVolumePrBody": {
+    "placeholders": {
+      "exercise": { "type": "String" },
+      "weight": { "type": "String" },
+      "reps": { "type": "int" }
+    }
+  },
+  "exerciseImprovedLabel": "Improved",
+  "exerciseMaintainedLabel": "Maintained",
+  "exerciseDeclinedLabel": "Declined",
+  "exerciseNewLabel": "New",
+  "doneButton": "Done",
+  "workoutHistoryTitle": "{name} History",
+  "@workoutHistoryTitle": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "historyTooltip": "History",
+  "noSessionsYetTitle": "No sessions yet",
+  "noSessionsYetSubtitle": "Finish a workout for this day to start building its history.",
+  "sessionCompletedLabel": "Completed",
+  "sessionCancelledLabel": "Cancelled",
+  "sessionInProgressLabel": "In Progress",
+  "sessionDurationLabel": "Duration",
+  "viewWorkoutTrackerButton": "View Workout Tracker",
+  "programAnalyticsTitle": "Program Analytics",
+  "analyticsTooltip": "Analytics",
+  "noAnalyticsYetTitle": "No data yet",
+  "noAnalyticsYetSubtitle": "Finish a few workouts to start seeing trends here.",
+  "sessionsLoggedLabel": "{count} sessions",
+  "@sessionsLoggedLabel": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "averageVolumeLabel": "Avg volume",
+  "bestWeightLabel": "Best",
+  "noExercisesForDayYetBody": "No completed sessions for this day yet.",
+  "thisWeekTitle": "This Week",
+  "totalSessionsThisWeekLabel": "{count} sessions completed",
+  "@totalSessionsThisWeekLabel": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "templateSessionsThisWeekLabel": "{count}×",
+  "@templateSessionsThisWeekLabel": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "restTimerLabel": "Rest Timer",
+  "startRestTimerButton": "Start",
+  "stopRestTimerButton": "Stop",
+  "resetRestTimerTooltip": "Reset",
+  "setNotesHint": "Notes (optional)",
+  "sessionNoteTooltip": "Session Note",
+  "editSessionNoteTitle": "Session Note",
+  "sessionNoteHint": "How did this workout feel?",
+  "saveNoteButton": "Save",
+  "unableToSaveNoteError": "Unable to save the note.",
+  "consistencyTitle": "Consistency",
+  "currentWeekStreakLabel": "Current streak",
+  "weeksUnit": "{count} {count, plural, =1{week} other{weeks}}",
+  "@weeksUnit": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "longestWeekStreakLabel": "Longest streak",
+  "averagePerWeekLabel": "Avg per week",
+  "daysSinceLastSessionLabel": "Last workout",
+  "daysAgoLabel": "{count} {count, plural, =0{days ago} =1{day ago} other{days ago}}",
+  "@daysAgoLabel": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "noConsistencyDataYetBody": "Complete a few workouts to see your consistency here.",
+  "kgUnit": "kg",
+  "currentVsPreviousVolumeLabel": "{current} kg ({previous} kg last time)",
+  "@currentVsPreviousVolumeLabel": {
+    "placeholders": {
+      "current": { "type": "String" },
+      "previous": { "type": "String" }
+    }
+  },
+  "durationHoursMinutesLabel": "{hours}h {minutes}m",
+  "@durationHoursMinutesLabel": {
+    "placeholders": {
+      "hours": { "type": "int" },
+      "minutes": { "type": "int" }
+    }
+  },
+  "durationMinutesOnlyLabel": "{minutes}m",
+  "@durationMinutesOnlyLabel": {
+    "placeholders": {
+      "minutes": { "type": "int" }
+    }
+  },
+  "durationSecondsOnlyLabel": "{seconds}s",
+  "@durationSecondsOnlyLabel": {
+    "placeholders": {
+      "seconds": { "type": "int" }
+    }
+  },
+  "exerciseBestLatestSummary": "Best: {bestWeight} kg  •  {latestVolume} kg latest",
+  "@exerciseBestLatestSummary": {
+    "placeholders": {
+      "bestWeight": { "type": "String" },
+      "latestVolume": { "type": "String" }
+    }
+  },
+  "homeCurrentProgramLabel": "Current Program",
+  "homeWorkoutsCompletedThisWeekLabel": "{count} {count, plural, =0{workouts completed} =1{workout completed} other{workouts completed}}",
+  "@homeWorkoutsCompletedThisWeekLabel": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "homeOpenProgramButton": "Open Program",
+  "homeWorkoutInProgressLabel": "Workout in Progress",
+  "homeStartedAgoLabel": "Started {duration} ago",
+  "@homeStartedAgoLabel": {
+    "placeholders": { "duration": { "type": "String" } }
+  },
+  "homeRecentWorkoutsTitle": "Recent Workouts",
+  "homeExerciseCountLabel": "{count} {count, plural, =1{Exercise} other{Exercises}}",
+  "@homeExerciseCountLabel": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "homeSetCountLabel": "{count} {count, plural, =1{Set} other{Sets}}",
+  "@homeSetCountLabel": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "homeTotalVolumeLabel": "Total Volume: {volume} kg",
+  "@homeTotalVolumeLabel": {
+    "placeholders": { "volume": { "type": "String" } }
+  },
+  "homeViewSessionButton": "View Session",
+  "homeShowExercisesButton": "Show exercises",
+  "homeHideExercisesButton": "Hide exercises",
+  "homeNoActiveProgramTitle": "No Active Program",
+  "homeNoActiveProgramBody": "Create or activate a program to start tracking structured workouts.",
+  "homeNoRecentWorkoutsBody": "No completed workouts yet.",
+  "startWorkoutFabLabel": "Start Workout",
+  "deleteProgramConfirmTitle": "Delete this program permanently?",
+  "deleteProgramConfirmBody": "This will permanently delete \"{name}\" and everything in it — every workout day, every session, every logged set. This cannot be undone.",
+  "@deleteProgramConfirmBody": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "deleteWorkoutDayConfirmTitle": "Delete this workout day permanently?",
+  "deleteWorkoutDayConfirmBody": "This will permanently delete \"{name}\" and everything in it — every session, every logged set. This cannot be undone.",
+  "@deleteWorkoutDayConfirmBody": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "archivedWorkoutDaysTooltip": "Archived",
+  "archivedWorkoutDaysTitle": "Archived Workout Days",
+  "noArchivedWorkoutDaysBody": "No archived workout days.",
+  "restoreButton": "Restore"
 }

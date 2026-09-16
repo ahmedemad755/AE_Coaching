@@ -438,4 +438,552 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unableToLoadPhotos => 'Unable to load progress photos.';
+
+  @override
+  String get myProgramsTitle => 'My Programs';
+
+  @override
+  String get activeProgramLabel => 'Active Program';
+
+  @override
+  String get previousProgramsLabel => 'Previous Programs';
+
+  @override
+  String get createProgramButton => 'Create Program';
+
+  @override
+  String get createProgramTitle => 'Create Program';
+
+  @override
+  String get programNameHint => 'Program Name';
+
+  @override
+  String get descriptionOptionalHint => 'Description (optional)';
+
+  @override
+  String get createButton => 'Create';
+
+  @override
+  String get createAndMakeActiveButton => 'Create & Make Active';
+
+  @override
+  String get makeActiveButton => 'Make Active';
+
+  @override
+  String get renameButton => 'Rename';
+
+  @override
+  String get renameProgramTitle => 'Rename Program';
+
+  @override
+  String get archiveButton => 'Archive';
+
+  @override
+  String get openButton => 'Open';
+
+  @override
+  String get noProgramsYetTitle => 'No programs yet.';
+
+  @override
+  String get noProgramsYetSubtitle =>
+      'Create your first program to start organizing your training.';
+
+  @override
+  String get makeActiveConfirmTitle => 'Make Active?';
+
+  @override
+  String makeActiveConfirmBodyWithCurrent(String name) {
+    return 'Make \"$name\" your active program? Your current program will remain saved as a previous program.';
+  }
+
+  @override
+  String makeActiveConfirmBodyNoCurrent(String name) {
+    return 'Make \"$name\" your active program?';
+  }
+
+  @override
+  String get archiveActiveConfirmTitle => 'Archive Program?';
+
+  @override
+  String archiveActiveConfirmBody(String name) {
+    return 'Archive \"$name\"? It will move to Previous Programs — your workout history stays intact.';
+  }
+
+  @override
+  String get enterProgramNameValidation => 'Enter a program name.';
+
+  @override
+  String get unableToLoadProgramsError => 'Unable to load your programs.';
+
+  @override
+  String get workoutDaysPlaceholder =>
+      'Workout Days will be added in the next phase.';
+
+  @override
+  String get startedLabel => 'Started';
+
+  @override
+  String get endedLabel => 'Ended';
+
+  @override
+  String get workoutProgramsTooltip => 'My Programs';
+
+  @override
+  String get workoutDaysTitle => 'Workout Days';
+
+  @override
+  String get addWorkoutDayButton => 'Add Workout Day';
+
+  @override
+  String get createWorkoutDayTitle => 'Add Workout Day';
+
+  @override
+  String get renameWorkoutDayTitle => 'Rename Workout Day';
+
+  @override
+  String get workoutDayNameHint => 'Workout Day Name';
+
+  @override
+  String get noWorkoutDaysYetTitle => 'No workout days yet.';
+
+  @override
+  String get noWorkoutDaysYetSubtitle =>
+      'Add a workout day like \"Push 1\" to start building this program.';
+
+  @override
+  String get archiveWorkoutDayConfirmTitle => 'Archive Workout Day?';
+
+  @override
+  String archiveWorkoutDayConfirmBody(String name) {
+    return 'Archive \"$name\"? It will be hidden from this list, but any workout history stays intact.';
+  }
+
+  @override
+  String get enterWorkoutDayNameValidation => 'Enter a workout day name.';
+
+  @override
+  String get unableToLoadWorkoutDaysError => 'Unable to load workout days.';
+
+  @override
+  String get startWorkoutButton => 'Start Workout';
+
+  @override
+  String get moveUpTooltip => 'Move up';
+
+  @override
+  String get moveDownTooltip => 'Move down';
+
+  @override
+  String get startWorkoutComingSoon =>
+      'Starting a workout is coming in the next phase.';
+
+  @override
+  String get resumeWorkoutBannerTitle => 'Workout in progress';
+
+  @override
+  String resumeWorkoutBannerBody(String name, String elapsed) {
+    return '$name — started $elapsed ago';
+  }
+
+  @override
+  String get resumeWorkoutButton => 'Resume Workout';
+
+  @override
+  String get workoutInProgressConflictTitle => 'Workout Already In Progress';
+
+  @override
+  String workoutInProgressConflictBody(String name) {
+    return 'You already have \"$name\" in progress. Finish or cancel it before starting a new workout.';
+  }
+
+  @override
+  String get cancelWorkoutButton => 'Cancel Workout';
+
+  @override
+  String get cancelWorkoutConfirmTitle => 'Cancel this workout?';
+
+  @override
+  String get cancelWorkoutConfirmBody =>
+      'This workout session will be marked cancelled and won\'t count toward your history. This can\'t be undone.';
+
+  @override
+  String get finishWorkoutButton => 'Finish Workout';
+
+  @override
+  String get finishWorkoutComingSoon =>
+      'Finishing a workout is coming in the next phase.';
+
+  @override
+  String get elapsedTimeLabel => 'Elapsed Time';
+
+  @override
+  String get unableToStartWorkoutError => 'Unable to start the workout.';
+
+  @override
+  String get sessionExercisesTitle => 'Exercises';
+
+  @override
+  String get noExercisesLoggedYetBody =>
+      'No exercises logged yet. Tap \"New Exercise\" to add your first set.';
+
+  @override
+  String get suggestedFromLastTimeLabel => 'Suggested from last time';
+
+  @override
+  String get logFirstSetButton => 'Log Set';
+
+  @override
+  String get addSetTooltip => 'Add another set';
+
+  @override
+  String get deleteSetTooltip => 'Delete set';
+
+  @override
+  String get unableToLogSetError => 'Unable to log this set.';
+
+  @override
+  String get exerciseNameRequiredError => 'Please enter an exercise name.';
+
+  @override
+  String get lastTimeLabel => 'Last time';
+
+  @override
+  String get finishWorkoutConfirmTitle => 'Finish this workout?';
+
+  @override
+  String finishWorkoutConfirmBody(String volume) {
+    return 'Total volume logged: $volume kg. This will mark the session complete and save it to your history.';
+  }
+
+  @override
+  String workoutFinishedBody(String volume) {
+    return 'Workout completed! Total volume: $volume kg.';
+  }
+
+  @override
+  String get unableToFinishWorkoutError => 'Unable to finish the workout.';
+
+  @override
+  String get workoutSummaryTitle => 'Workout Summary';
+
+  @override
+  String get sessionTotalVolumeLabel => 'Total Volume';
+
+  @override
+  String get sinceLastTimeLabel => 'Since Last Time';
+
+  @override
+  String get noPreviousSessionBody =>
+      'No previous session for this workout day yet — next time you\'ll see how you compare.';
+
+  @override
+  String get newPersonalRecordsLabel => 'New Personal Records';
+
+  @override
+  String firstTimePrBody(String exercise) {
+    return 'First time logging $exercise!';
+  }
+
+  @override
+  String heaviestWeightPrBody(String exercise, String weight, String previous) {
+    return '$exercise: heaviest weight ever — $weight kg (was $previous kg)';
+  }
+
+  @override
+  String highestSetVolumePrBody(String exercise, String weight, int reps) {
+    return '$exercise: best single set ever — $weight kg × $reps';
+  }
+
+  @override
+  String get exerciseImprovedLabel => 'Improved';
+
+  @override
+  String get exerciseMaintainedLabel => 'Maintained';
+
+  @override
+  String get exerciseDeclinedLabel => 'Declined';
+
+  @override
+  String get exerciseNewLabel => 'New';
+
+  @override
+  String get doneButton => 'Done';
+
+  @override
+  String workoutHistoryTitle(String name) {
+    return '$name History';
+  }
+
+  @override
+  String get historyTooltip => 'History';
+
+  @override
+  String get noSessionsYetTitle => 'No sessions yet';
+
+  @override
+  String get noSessionsYetSubtitle =>
+      'Finish a workout for this day to start building its history.';
+
+  @override
+  String get sessionCompletedLabel => 'Completed';
+
+  @override
+  String get sessionCancelledLabel => 'Cancelled';
+
+  @override
+  String get sessionInProgressLabel => 'In Progress';
+
+  @override
+  String get sessionDurationLabel => 'Duration';
+
+  @override
+  String get viewWorkoutTrackerButton => 'View Workout Tracker';
+
+  @override
+  String get programAnalyticsTitle => 'Program Analytics';
+
+  @override
+  String get analyticsTooltip => 'Analytics';
+
+  @override
+  String get noAnalyticsYetTitle => 'No data yet';
+
+  @override
+  String get noAnalyticsYetSubtitle =>
+      'Finish a few workouts to start seeing trends here.';
+
+  @override
+  String sessionsLoggedLabel(int count) {
+    return '$count sessions';
+  }
+
+  @override
+  String get averageVolumeLabel => 'Avg volume';
+
+  @override
+  String get bestWeightLabel => 'Best';
+
+  @override
+  String get noExercisesForDayYetBody =>
+      'No completed sessions for this day yet.';
+
+  @override
+  String get thisWeekTitle => 'This Week';
+
+  @override
+  String totalSessionsThisWeekLabel(int count) {
+    return '$count sessions completed';
+  }
+
+  @override
+  String templateSessionsThisWeekLabel(int count) {
+    return '$count×';
+  }
+
+  @override
+  String get restTimerLabel => 'Rest Timer';
+
+  @override
+  String get startRestTimerButton => 'Start';
+
+  @override
+  String get stopRestTimerButton => 'Stop';
+
+  @override
+  String get resetRestTimerTooltip => 'Reset';
+
+  @override
+  String get setNotesHint => 'Notes (optional)';
+
+  @override
+  String get sessionNoteTooltip => 'Session Note';
+
+  @override
+  String get editSessionNoteTitle => 'Session Note';
+
+  @override
+  String get sessionNoteHint => 'How did this workout feel?';
+
+  @override
+  String get saveNoteButton => 'Save';
+
+  @override
+  String get unableToSaveNoteError => 'Unable to save the note.';
+
+  @override
+  String get consistencyTitle => 'Consistency';
+
+  @override
+  String get currentWeekStreakLabel => 'Current streak';
+
+  @override
+  String weeksUnit(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'weeks',
+      one: 'week',
+    );
+    return '$count $_temp0';
+  }
+
+  @override
+  String get longestWeekStreakLabel => 'Longest streak';
+
+  @override
+  String get averagePerWeekLabel => 'Avg per week';
+
+  @override
+  String get daysSinceLastSessionLabel => 'Last workout';
+
+  @override
+  String daysAgoLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'days ago',
+      one: 'day ago',
+      zero: 'days ago',
+    );
+    return '$count $_temp0';
+  }
+
+  @override
+  String get noConsistencyDataYetBody =>
+      'Complete a few workouts to see your consistency here.';
+
+  @override
+  String get kgUnit => 'kg';
+
+  @override
+  String currentVsPreviousVolumeLabel(String current, String previous) {
+    return '$current kg ($previous kg last time)';
+  }
+
+  @override
+  String durationHoursMinutesLabel(int hours, int minutes) {
+    return '${hours}h ${minutes}m';
+  }
+
+  @override
+  String durationMinutesOnlyLabel(int minutes) {
+    return '${minutes}m';
+  }
+
+  @override
+  String durationSecondsOnlyLabel(int seconds) {
+    return '${seconds}s';
+  }
+
+  @override
+  String exerciseBestLatestSummary(String bestWeight, String latestVolume) {
+    return 'Best: $bestWeight kg  •  $latestVolume kg latest';
+  }
+
+  @override
+  String get homeCurrentProgramLabel => 'Current Program';
+
+  @override
+  String homeWorkoutsCompletedThisWeekLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'workouts completed',
+      one: 'workout completed',
+      zero: 'workouts completed',
+    );
+    return '$count $_temp0';
+  }
+
+  @override
+  String get homeOpenProgramButton => 'Open Program';
+
+  @override
+  String get homeWorkoutInProgressLabel => 'Workout in Progress';
+
+  @override
+  String homeStartedAgoLabel(String duration) {
+    return 'Started $duration ago';
+  }
+
+  @override
+  String get homeRecentWorkoutsTitle => 'Recent Workouts';
+
+  @override
+  String homeExerciseCountLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Exercises',
+      one: 'Exercise',
+    );
+    return '$count $_temp0';
+  }
+
+  @override
+  String homeSetCountLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Sets',
+      one: 'Set',
+    );
+    return '$count $_temp0';
+  }
+
+  @override
+  String homeTotalVolumeLabel(String volume) {
+    return 'Total Volume: $volume kg';
+  }
+
+  @override
+  String get homeViewSessionButton => 'View Session';
+
+  @override
+  String get homeShowExercisesButton => 'Show exercises';
+
+  @override
+  String get homeHideExercisesButton => 'Hide exercises';
+
+  @override
+  String get homeNoActiveProgramTitle => 'No Active Program';
+
+  @override
+  String get homeNoActiveProgramBody =>
+      'Create or activate a program to start tracking structured workouts.';
+
+  @override
+  String get homeNoRecentWorkoutsBody => 'No completed workouts yet.';
+
+  @override
+  String get startWorkoutFabLabel => 'Start Workout';
+
+  @override
+  String get deleteProgramConfirmTitle => 'Delete this program permanently?';
+
+  @override
+  String deleteProgramConfirmBody(String name) {
+    return 'This will permanently delete \"$name\" and everything in it — every workout day, every session, every logged set. This cannot be undone.';
+  }
+
+  @override
+  String get deleteWorkoutDayConfirmTitle =>
+      'Delete this workout day permanently?';
+
+  @override
+  String deleteWorkoutDayConfirmBody(String name) {
+    return 'This will permanently delete \"$name\" and everything in it — every session, every logged set. This cannot be undone.';
+  }
+
+  @override
+  String get archivedWorkoutDaysTooltip => 'Archived';
+
+  @override
+  String get archivedWorkoutDaysTitle => 'Archived Workout Days';
+
+  @override
+  String get noArchivedWorkoutDaysBody => 'No archived workout days.';
+
+  @override
+  String get restoreButton => 'Restore';
 }

@@ -142,5 +142,246 @@
   "addPhotoPromptTitle": "تحب تضيف صورة متابعة؟",
   "addPhotoPromptBody": "عايز تضيف صورة لنتيجة النهاردة؟",
   "skip": "تخطي",
-  "unableToLoadPhotos": "تعذّر تحميل صور المتابعة."
+  "unableToLoadPhotos": "تعذّر تحميل صور المتابعة.",
+
+  "myProgramsTitle": "برامجي",
+  "activeProgramLabel": "البرنامج النشط",
+  "previousProgramsLabel": "البرامج السابقة",
+  "createProgramButton": "إنشاء برنامج",
+  "createProgramTitle": "إنشاء برنامج",
+  "programNameHint": "اسم البرنامج",
+  "descriptionOptionalHint": "الوصف (اختياري)",
+  "createButton": "إنشاء",
+  "createAndMakeActiveButton": "إنشاء وتفعيل",
+  "makeActiveButton": "تفعيل",
+  "renameButton": "إعادة تسمية",
+  "renameProgramTitle": "إعادة تسمية البرنامج",
+  "archiveButton": "أرشفة",
+  "openButton": "فتح",
+  "noProgramsYetTitle": "مفيش برامج لسه.",
+  "noProgramsYetSubtitle": "أنشئ أول برنامج ليك عشان تبدأ تنظّم تدريبك.",
+  "makeActiveConfirmTitle": "تفعيل البرنامج؟",
+  "makeActiveConfirmBodyWithCurrent": "تحب تفعّل \"{name}\"؟ برنامجك الحالي هيفضل محفوظ كبرنامج سابق.",
+  "makeActiveConfirmBodyNoCurrent": "تحب تفعّل \"{name}\"؟",
+  "archiveActiveConfirmTitle": "أرشفة البرنامج؟",
+  "archiveActiveConfirmBody": "تحب تؤرشف \"{name}\"؟ هينتقل لقائمة البرامج السابقة — سجل تمرينك هيفضل زي ما هو.",
+  "enterProgramNameValidation": "أدخل اسم البرنامج.",
+  "unableToLoadProgramsError": "تعذّر تحميل برامجك.",
+  "workoutDaysPlaceholder": "أيام التمرين هتتضاف في المرحلة الجاية.",
+  "startedLabel": "بدأ",
+  "endedLabel": "انتهى",
+  "workoutProgramsTooltip": "برامجي",
+
+  "workoutDaysTitle": "أيام التمرين",
+  "addWorkoutDayButton": "إضافة يوم تمرين",
+  "createWorkoutDayTitle": "إضافة يوم تمرين",
+  "renameWorkoutDayTitle": "إعادة تسمية يوم التمرين",
+  "workoutDayNameHint": "اسم يوم التمرين",
+  "noWorkoutDaysYetTitle": "مفيش أيام تمرين لسه.",
+  "noWorkoutDaysYetSubtitle": "ضيف يوم تمرين زي \"Push 1\" عشان تبدأ تبني البرنامج ده.",
+  "archiveWorkoutDayConfirmTitle": "أرشفة يوم التمرين؟",
+  "archiveWorkoutDayConfirmBody": "تحب تؤرشف \"{name}\"؟ هيتخفي من القايمة دي، بس سجل التمرين هيفضل زي ما هو.",
+  "enterWorkoutDayNameValidation": "أدخل اسم يوم التمرين.",
+  "unableToLoadWorkoutDaysError": "تعذّر تحميل أيام التمرين.",
+  "startWorkoutButton": "ابدأ التمرين",
+  "moveUpTooltip": "تحريك لأعلى",
+  "moveDownTooltip": "تحريك لأسفل",
+  "startWorkoutComingSoon": "بدء التمرين هييجي في المرحلة الجاية.",
+
+  "resumeWorkoutBannerTitle": "في تمرين شغال",
+  "resumeWorkoutBannerBody": "{name} — بدأ من {elapsed}",
+  "resumeWorkoutButton": "استكمال التمرين",
+  "workoutInProgressConflictTitle": "فيه تمرين شغال بالفعل",
+  "workoutInProgressConflictBody": "عندك بالفعل \"{name}\" شغال. خلّصه أو ألغيه قبل ما تبدأ تمرين جديد.",
+  "cancelWorkoutButton": "إلغاء التمرين",
+  "cancelWorkoutConfirmTitle": "تحب تلغي التمرين ده؟",
+  "cancelWorkoutConfirmBody": "التمرين ده هيتسجل كـ ملغي ومش هيتحسب في سجلك. الإجراء ده مش قابل للتراجع.",
+  "finishWorkoutButton": "إنهاء التمرين",
+  "finishWorkoutComingSoon": "إنهاء التمرين هييجي في المرحلة الجاية.",
+  "elapsedTimeLabel": "الوقت المنقضي",
+  "unableToStartWorkoutError": "تعذّر بدء التمرين.",
+  "sessionExercisesTitle": "التمارين",
+  "noExercisesLoggedYetBody": "لسه مفيش تمارين متسجلة. دوس على \"تمرين جديد\" عشان تسجل أول مجموعة.",
+  "suggestedFromLastTimeLabel": "مقترح من آخر مرة",
+  "logFirstSetButton": "سجّل المجموعة",
+  "addSetTooltip": "أضف مجموعة تانية",
+  "deleteSetTooltip": "احذف المجموعة",
+  "unableToLogSetError": "تعذّر تسجيل المجموعة.",
+  "exerciseNameRequiredError": "من فضلك اكتب اسم التمرين.",
+  "lastTimeLabel": "آخر مرة",
+  "finishWorkoutConfirmTitle": "تنهي التمرين ده؟",
+  "finishWorkoutConfirmBody": "إجمالي الحجم المسجَّل: {volume} كجم. ده هيسجل التمرين كمكتمل ويحفظه في سجلك.",
+  "@finishWorkoutConfirmBody": {
+    "placeholders": { "volume": { "type": "String" } }
+  },
+  "workoutFinishedBody": "التمرين خلص! إجمالي الحجم: {volume} كجم.",
+  "@workoutFinishedBody": {
+    "placeholders": { "volume": { "type": "String" } }
+  },
+  "unableToFinishWorkoutError": "تعذّر إنهاء التمرين.",
+  "workoutSummaryTitle": "ملخص التمرين",
+  "sessionTotalVolumeLabel": "إجمالي الحجم",
+  "sinceLastTimeLabel": "مقارنة بآخر مرة",
+  "noPreviousSessionBody": "لسه مفيش تمرين سابق لليوم ده — المرة الجاية هتشوف مقارنة أدائك.",
+  "newPersonalRecordsLabel": "أرقام قياسية جديدة",
+  "firstTimePrBody": "أول مرة تسجل {exercise}!",
+  "@firstTimePrBody": {
+    "placeholders": { "exercise": { "type": "String" } }
+  },
+  "heaviestWeightPrBody": "{exercise}: أتقل وزن على الإطلاق — {weight} كجم (كان {previous} كجم)",
+  "@heaviestWeightPrBody": {
+    "placeholders": {
+      "exercise": { "type": "String" },
+      "weight": { "type": "String" },
+      "previous": { "type": "String" }
+    }
+  },
+  "highestSetVolumePrBody": "{exercise}: أفضل مجموعة على الإطلاق — {weight} كجم × {reps}",
+  "@highestSetVolumePrBody": {
+    "placeholders": {
+      "exercise": { "type": "String" },
+      "weight": { "type": "String" },
+      "reps": { "type": "int" }
+    }
+  },
+  "exerciseImprovedLabel": "تحسّن",
+  "exerciseMaintainedLabel": "ثابت",
+  "exerciseDeclinedLabel": "قلّ",
+  "exerciseNewLabel": "جديد",
+  "doneButton": "تم",
+  "workoutHistoryTitle": "سجل {name}",
+  "@workoutHistoryTitle": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "historyTooltip": "السجل",
+  "noSessionsYetTitle": "لسه مفيش جلسات",
+  "noSessionsYetSubtitle": "خلّص تمرين لليوم ده عشان يبدأ سجله يتكوّن.",
+  "sessionCompletedLabel": "مكتمل",
+  "sessionCancelledLabel": "ملغي",
+  "sessionInProgressLabel": "جاري",
+  "sessionDurationLabel": "المدة",
+  "viewWorkoutTrackerButton": "افتح متتبع التمرين",
+  "programAnalyticsTitle": "تحليلات البرنامج",
+  "analyticsTooltip": "التحليلات",
+  "noAnalyticsYetTitle": "لسه مفيش بيانات",
+  "noAnalyticsYetSubtitle": "خلّص كام تمرين عشان تبدأ تشوف اتجاه أدائك هنا.",
+  "sessionsLoggedLabel": "{count} جلسة",
+  "@sessionsLoggedLabel": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "averageVolumeLabel": "متوسط الحجم",
+  "bestWeightLabel": "الأفضل",
+  "noExercisesForDayYetBody": "لسه مفيش جلسات مكتملة لليوم ده.",
+  "thisWeekTitle": "الأسبوع ده",
+  "totalSessionsThisWeekLabel": "{count} جلسة مكتملة",
+  "@totalSessionsThisWeekLabel": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "templateSessionsThisWeekLabel": "{count}×",
+  "@templateSessionsThisWeekLabel": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "restTimerLabel": "تايمر الراحة",
+  "startRestTimerButton": "ابدأ",
+  "stopRestTimerButton": "وقف",
+  "resetRestTimerTooltip": "تصفير",
+  "setNotesHint": "ملاحظات (اختياري)",
+  "sessionNoteTooltip": "ملاحظة الجلسة",
+  "editSessionNoteTitle": "ملاحظة الجلسة",
+  "sessionNoteHint": "التمرين ده كان حاسس بيه إزاي؟",
+  "saveNoteButton": "حفظ",
+  "unableToSaveNoteError": "تعذّر حفظ الملاحظة.",
+  "consistencyTitle": "الانتظام",
+  "currentWeekStreakLabel": "التتابع الحالي",
+  "weeksUnit": "{count} {count, plural, =1{أسبوع} other{أسابيع}}",
+  "@weeksUnit": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "longestWeekStreakLabel": "أطول تتابع",
+  "averagePerWeekLabel": "متوسط أسبوعي",
+  "daysSinceLastSessionLabel": "آخر تمرين",
+  "daysAgoLabel": "من {count} {count, plural, =0{يوم} =1{يوم} two{يومين} other{أيام}}",
+  "@daysAgoLabel": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "noConsistencyDataYetBody": "خلّص كام تمرين عشان تشوف انتظامك هنا.",
+  "kgUnit": "كجم",
+  "currentVsPreviousVolumeLabel": "{current} كجم ({previous} كجم آخر مرة)",
+  "@currentVsPreviousVolumeLabel": {
+    "placeholders": {
+      "current": { "type": "String" },
+      "previous": { "type": "String" }
+    }
+  },
+  "durationHoursMinutesLabel": "{hours}س {minutes}د",
+  "@durationHoursMinutesLabel": {
+    "placeholders": {
+      "hours": { "type": "int" },
+      "minutes": { "type": "int" }
+    }
+  },
+  "durationMinutesOnlyLabel": "{minutes}د",
+  "@durationMinutesOnlyLabel": {
+    "placeholders": {
+      "minutes": { "type": "int" }
+    }
+  },
+  "durationSecondsOnlyLabel": "{seconds}ث",
+  "@durationSecondsOnlyLabel": {
+    "placeholders": {
+      "seconds": { "type": "int" }
+    }
+  },
+  "exerciseBestLatestSummary": "أفضل: {bestWeight} كجم  •  {latestVolume} كجم آخر مرة",
+  "@exerciseBestLatestSummary": {
+    "placeholders": {
+      "bestWeight": { "type": "String" },
+      "latestVolume": { "type": "String" }
+    }
+  },
+  "homeCurrentProgramLabel": "البرنامج الحالي",
+  "homeWorkoutsCompletedThisWeekLabel": "{count} {count, plural, =0{تمرين مكتمل} =1{تمرين مكتمل} two{تمرينين مكتملين} other{تمارين مكتملة}}",
+  "@homeWorkoutsCompletedThisWeekLabel": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "homeOpenProgramButton": "افتح البرنامج",
+  "homeWorkoutInProgressLabel": "تمرين جاري",
+  "homeStartedAgoLabel": "بدأ من {duration}",
+  "@homeStartedAgoLabel": {
+    "placeholders": { "duration": { "type": "String" } }
+  },
+  "homeRecentWorkoutsTitle": "التمارين الأخيرة",
+  "homeExerciseCountLabel": "{count} {count, plural, =1{تمرين} two{تمرينين} other{تمارين}}",
+  "@homeExerciseCountLabel": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "homeSetCountLabel": "{count} {count, plural, =1{مجموعة} two{مجموعتين} other{مجموعات}}",
+  "@homeSetCountLabel": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "homeTotalVolumeLabel": "إجمالي الحجم: {volume} كجم",
+  "@homeTotalVolumeLabel": {
+    "placeholders": { "volume": { "type": "String" } }
+  },
+  "homeViewSessionButton": "شوف الجلسة",
+  "homeShowExercisesButton": "اعرض التمارين",
+  "homeHideExercisesButton": "اخفِ التمارين",
+  "homeNoActiveProgramTitle": "مفيش برنامج نشط",
+  "homeNoActiveProgramBody": "اعمل أو فعّل برنامج عشان تبدأ تتابع تمارينك بشكل منظم.",
+  "homeNoRecentWorkoutsBody": "لسه مفيش تمارين مكتملة.",
+  "startWorkoutFabLabel": "ابدأ تمرين",
+  "deleteProgramConfirmTitle": "تحذف البرنامج ده نهائي؟",
+  "deleteProgramConfirmBody": "ده هيحذف \"{name}\" نهائيًا وكل حاجة جواه — كل يوم تمرين، وكل جلسة، وكل تمرين اتسجل. الإجراء ده مش قابل للتراجع.",
+  "@deleteProgramConfirmBody": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "deleteWorkoutDayConfirmTitle": "تحذف يوم التمرين ده نهائي؟",
+  "deleteWorkoutDayConfirmBody": "ده هيحذف \"{name}\" نهائيًا وكل حاجة جواه — كل جلسة، وكل تمرين اتسجل. الإجراء ده مش قابل للتراجع.",
+  "@deleteWorkoutDayConfirmBody": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "archivedWorkoutDaysTooltip": "الأرشيف",
+  "archivedWorkoutDaysTitle": "أيام التمرين المؤرشفة",
+  "noArchivedWorkoutDaysBody": "مفيش أيام تمرين مؤرشفة.",
+  "restoreButton": "استرجاع"
 }

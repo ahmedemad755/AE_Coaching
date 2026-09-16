@@ -901,6 +901,894 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unable to load progress photos.'**
   String get unableToLoadPhotos;
+
+  /// No description provided for @myProgramsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'My Programs'**
+  String get myProgramsTitle;
+
+  /// No description provided for @activeProgramLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Active Program'**
+  String get activeProgramLabel;
+
+  /// No description provided for @previousProgramsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous Programs'**
+  String get previousProgramsLabel;
+
+  /// No description provided for @createProgramButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Program'**
+  String get createProgramButton;
+
+  /// No description provided for @createProgramTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Program'**
+  String get createProgramTitle;
+
+  /// No description provided for @programNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Program Name'**
+  String get programNameHint;
+
+  /// No description provided for @descriptionOptionalHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Description (optional)'**
+  String get descriptionOptionalHint;
+
+  /// No description provided for @createButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get createButton;
+
+  /// No description provided for @createAndMakeActiveButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Create & Make Active'**
+  String get createAndMakeActiveButton;
+
+  /// No description provided for @makeActiveButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Make Active'**
+  String get makeActiveButton;
+
+  /// No description provided for @renameButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename'**
+  String get renameButton;
+
+  /// No description provided for @renameProgramTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename Program'**
+  String get renameProgramTitle;
+
+  /// No description provided for @archiveButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive'**
+  String get archiveButton;
+
+  /// No description provided for @openButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get openButton;
+
+  /// No description provided for @noProgramsYetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No programs yet.'**
+  String get noProgramsYetTitle;
+
+  /// No description provided for @noProgramsYetSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your first program to start organizing your training.'**
+  String get noProgramsYetSubtitle;
+
+  /// No description provided for @makeActiveConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Make Active?'**
+  String get makeActiveConfirmTitle;
+
+  /// No description provided for @makeActiveConfirmBodyWithCurrent.
+  ///
+  /// In en, this message translates to:
+  /// **'Make \"{name}\" your active program? Your current program will remain saved as a previous program.'**
+  String makeActiveConfirmBodyWithCurrent(String name);
+
+  /// No description provided for @makeActiveConfirmBodyNoCurrent.
+  ///
+  /// In en, this message translates to:
+  /// **'Make \"{name}\" your active program?'**
+  String makeActiveConfirmBodyNoCurrent(String name);
+
+  /// No description provided for @archiveActiveConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive Program?'**
+  String get archiveActiveConfirmTitle;
+
+  /// No description provided for @archiveActiveConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive \"{name}\"? It will move to Previous Programs — your workout history stays intact.'**
+  String archiveActiveConfirmBody(String name);
+
+  /// No description provided for @enterProgramNameValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a program name.'**
+  String get enterProgramNameValidation;
+
+  /// No description provided for @unableToLoadProgramsError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to load your programs.'**
+  String get unableToLoadProgramsError;
+
+  /// No description provided for @workoutDaysPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout Days will be added in the next phase.'**
+  String get workoutDaysPlaceholder;
+
+  /// No description provided for @startedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Started'**
+  String get startedLabel;
+
+  /// No description provided for @endedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Ended'**
+  String get endedLabel;
+
+  /// No description provided for @workoutProgramsTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'My Programs'**
+  String get workoutProgramsTooltip;
+
+  /// No description provided for @workoutDaysTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout Days'**
+  String get workoutDaysTitle;
+
+  /// No description provided for @addWorkoutDayButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Workout Day'**
+  String get addWorkoutDayButton;
+
+  /// No description provided for @createWorkoutDayTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Workout Day'**
+  String get createWorkoutDayTitle;
+
+  /// No description provided for @renameWorkoutDayTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename Workout Day'**
+  String get renameWorkoutDayTitle;
+
+  /// No description provided for @workoutDayNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout Day Name'**
+  String get workoutDayNameHint;
+
+  /// No description provided for @noWorkoutDaysYetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No workout days yet.'**
+  String get noWorkoutDaysYetTitle;
+
+  /// No description provided for @noWorkoutDaysYetSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a workout day like \"Push 1\" to start building this program.'**
+  String get noWorkoutDaysYetSubtitle;
+
+  /// No description provided for @archiveWorkoutDayConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive Workout Day?'**
+  String get archiveWorkoutDayConfirmTitle;
+
+  /// No description provided for @archiveWorkoutDayConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive \"{name}\"? It will be hidden from this list, but any workout history stays intact.'**
+  String archiveWorkoutDayConfirmBody(String name);
+
+  /// No description provided for @enterWorkoutDayNameValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a workout day name.'**
+  String get enterWorkoutDayNameValidation;
+
+  /// No description provided for @unableToLoadWorkoutDaysError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to load workout days.'**
+  String get unableToLoadWorkoutDaysError;
+
+  /// No description provided for @startWorkoutButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Workout'**
+  String get startWorkoutButton;
+
+  /// No description provided for @moveUpTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Move up'**
+  String get moveUpTooltip;
+
+  /// No description provided for @moveDownTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Move down'**
+  String get moveDownTooltip;
+
+  /// No description provided for @startWorkoutComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Starting a workout is coming in the next phase.'**
+  String get startWorkoutComingSoon;
+
+  /// No description provided for @resumeWorkoutBannerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout in progress'**
+  String get resumeWorkoutBannerTitle;
+
+  /// No description provided for @resumeWorkoutBannerBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} — started {elapsed} ago'**
+  String resumeWorkoutBannerBody(String name, String elapsed);
+
+  /// No description provided for @resumeWorkoutButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Resume Workout'**
+  String get resumeWorkoutButton;
+
+  /// No description provided for @workoutInProgressConflictTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout Already In Progress'**
+  String get workoutInProgressConflictTitle;
+
+  /// No description provided for @workoutInProgressConflictBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You already have \"{name}\" in progress. Finish or cancel it before starting a new workout.'**
+  String workoutInProgressConflictBody(String name);
+
+  /// No description provided for @cancelWorkoutButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Workout'**
+  String get cancelWorkoutButton;
+
+  /// No description provided for @cancelWorkoutConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel this workout?'**
+  String get cancelWorkoutConfirmTitle;
+
+  /// No description provided for @cancelWorkoutConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This workout session will be marked cancelled and won\'t count toward your history. This can\'t be undone.'**
+  String get cancelWorkoutConfirmBody;
+
+  /// No description provided for @finishWorkoutButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish Workout'**
+  String get finishWorkoutButton;
+
+  /// No description provided for @finishWorkoutComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Finishing a workout is coming in the next phase.'**
+  String get finishWorkoutComingSoon;
+
+  /// No description provided for @elapsedTimeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Elapsed Time'**
+  String get elapsedTimeLabel;
+
+  /// No description provided for @unableToStartWorkoutError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to start the workout.'**
+  String get unableToStartWorkoutError;
+
+  /// No description provided for @sessionExercisesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercises'**
+  String get sessionExercisesTitle;
+
+  /// No description provided for @noExercisesLoggedYetBody.
+  ///
+  /// In en, this message translates to:
+  /// **'No exercises logged yet. Tap \"New Exercise\" to add your first set.'**
+  String get noExercisesLoggedYetBody;
+
+  /// No description provided for @suggestedFromLastTimeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested from last time'**
+  String get suggestedFromLastTimeLabel;
+
+  /// No description provided for @logFirstSetButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Log Set'**
+  String get logFirstSetButton;
+
+  /// No description provided for @addSetTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Add another set'**
+  String get addSetTooltip;
+
+  /// No description provided for @deleteSetTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete set'**
+  String get deleteSetTooltip;
+
+  /// No description provided for @unableToLogSetError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to log this set.'**
+  String get unableToLogSetError;
+
+  /// No description provided for @exerciseNameRequiredError.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter an exercise name.'**
+  String get exerciseNameRequiredError;
+
+  /// No description provided for @lastTimeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Last time'**
+  String get lastTimeLabel;
+
+  /// No description provided for @finishWorkoutConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish this workout?'**
+  String get finishWorkoutConfirmTitle;
+
+  /// No description provided for @finishWorkoutConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Total volume logged: {volume} kg. This will mark the session complete and save it to your history.'**
+  String finishWorkoutConfirmBody(String volume);
+
+  /// No description provided for @workoutFinishedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout completed! Total volume: {volume} kg.'**
+  String workoutFinishedBody(String volume);
+
+  /// No description provided for @unableToFinishWorkoutError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to finish the workout.'**
+  String get unableToFinishWorkoutError;
+
+  /// No description provided for @workoutSummaryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout Summary'**
+  String get workoutSummaryTitle;
+
+  /// No description provided for @sessionTotalVolumeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Volume'**
+  String get sessionTotalVolumeLabel;
+
+  /// No description provided for @sinceLastTimeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Since Last Time'**
+  String get sinceLastTimeLabel;
+
+  /// No description provided for @noPreviousSessionBody.
+  ///
+  /// In en, this message translates to:
+  /// **'No previous session for this workout day yet — next time you\'ll see how you compare.'**
+  String get noPreviousSessionBody;
+
+  /// No description provided for @newPersonalRecordsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'New Personal Records'**
+  String get newPersonalRecordsLabel;
+
+  /// No description provided for @firstTimePrBody.
+  ///
+  /// In en, this message translates to:
+  /// **'First time logging {exercise}!'**
+  String firstTimePrBody(String exercise);
+
+  /// No description provided for @heaviestWeightPrBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{exercise}: heaviest weight ever — {weight} kg (was {previous} kg)'**
+  String heaviestWeightPrBody(String exercise, String weight, String previous);
+
+  /// No description provided for @highestSetVolumePrBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{exercise}: best single set ever — {weight} kg × {reps}'**
+  String highestSetVolumePrBody(String exercise, String weight, int reps);
+
+  /// No description provided for @exerciseImprovedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Improved'**
+  String get exerciseImprovedLabel;
+
+  /// No description provided for @exerciseMaintainedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Maintained'**
+  String get exerciseMaintainedLabel;
+
+  /// No description provided for @exerciseDeclinedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Declined'**
+  String get exerciseDeclinedLabel;
+
+  /// No description provided for @exerciseNewLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get exerciseNewLabel;
+
+  /// No description provided for @doneButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get doneButton;
+
+  /// No description provided for @workoutHistoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} History'**
+  String workoutHistoryTitle(String name);
+
+  /// No description provided for @historyTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'History'**
+  String get historyTooltip;
+
+  /// No description provided for @noSessionsYetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No sessions yet'**
+  String get noSessionsYetTitle;
+
+  /// No description provided for @noSessionsYetSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish a workout for this day to start building its history.'**
+  String get noSessionsYetSubtitle;
+
+  /// No description provided for @sessionCompletedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get sessionCompletedLabel;
+
+  /// No description provided for @sessionCancelledLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get sessionCancelledLabel;
+
+  /// No description provided for @sessionInProgressLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'In Progress'**
+  String get sessionInProgressLabel;
+
+  /// No description provided for @sessionDurationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get sessionDurationLabel;
+
+  /// No description provided for @viewWorkoutTrackerButton.
+  ///
+  /// In en, this message translates to:
+  /// **'View Workout Tracker'**
+  String get viewWorkoutTrackerButton;
+
+  /// No description provided for @programAnalyticsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Program Analytics'**
+  String get programAnalyticsTitle;
+
+  /// No description provided for @analyticsTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Analytics'**
+  String get analyticsTooltip;
+
+  /// No description provided for @noAnalyticsYetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No data yet'**
+  String get noAnalyticsYetTitle;
+
+  /// No description provided for @noAnalyticsYetSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish a few workouts to start seeing trends here.'**
+  String get noAnalyticsYetSubtitle;
+
+  /// No description provided for @sessionsLoggedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} sessions'**
+  String sessionsLoggedLabel(int count);
+
+  /// No description provided for @averageVolumeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg volume'**
+  String get averageVolumeLabel;
+
+  /// No description provided for @bestWeightLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Best'**
+  String get bestWeightLabel;
+
+  /// No description provided for @noExercisesForDayYetBody.
+  ///
+  /// In en, this message translates to:
+  /// **'No completed sessions for this day yet.'**
+  String get noExercisesForDayYetBody;
+
+  /// No description provided for @thisWeekTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This Week'**
+  String get thisWeekTitle;
+
+  /// No description provided for @totalSessionsThisWeekLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} sessions completed'**
+  String totalSessionsThisWeekLabel(int count);
+
+  /// No description provided for @templateSessionsThisWeekLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}×'**
+  String templateSessionsThisWeekLabel(int count);
+
+  /// No description provided for @restTimerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rest Timer'**
+  String get restTimerLabel;
+
+  /// No description provided for @startRestTimerButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get startRestTimerButton;
+
+  /// No description provided for @stopRestTimerButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop'**
+  String get stopRestTimerButton;
+
+  /// No description provided for @resetRestTimerTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get resetRestTimerTooltip;
+
+  /// No description provided for @setNotesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes (optional)'**
+  String get setNotesHint;
+
+  /// No description provided for @sessionNoteTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Session Note'**
+  String get sessionNoteTooltip;
+
+  /// No description provided for @editSessionNoteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Session Note'**
+  String get editSessionNoteTitle;
+
+  /// No description provided for @sessionNoteHint.
+  ///
+  /// In en, this message translates to:
+  /// **'How did this workout feel?'**
+  String get sessionNoteHint;
+
+  /// No description provided for @saveNoteButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get saveNoteButton;
+
+  /// No description provided for @unableToSaveNoteError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to save the note.'**
+  String get unableToSaveNoteError;
+
+  /// No description provided for @consistencyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Consistency'**
+  String get consistencyTitle;
+
+  /// No description provided for @currentWeekStreakLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Current streak'**
+  String get currentWeekStreakLabel;
+
+  /// No description provided for @weeksUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} {count, plural, =1{week} other{weeks}}'**
+  String weeksUnit(int count);
+
+  /// No description provided for @longestWeekStreakLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Longest streak'**
+  String get longestWeekStreakLabel;
+
+  /// No description provided for @averagePerWeekLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg per week'**
+  String get averagePerWeekLabel;
+
+  /// No description provided for @daysSinceLastSessionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Last workout'**
+  String get daysSinceLastSessionLabel;
+
+  /// No description provided for @daysAgoLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} {count, plural, =0{days ago} =1{day ago} other{days ago}}'**
+  String daysAgoLabel(int count);
+
+  /// No description provided for @noConsistencyDataYetBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete a few workouts to see your consistency here.'**
+  String get noConsistencyDataYetBody;
+
+  /// No description provided for @kgUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'kg'**
+  String get kgUnit;
+
+  /// No description provided for @currentVsPreviousVolumeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{current} kg ({previous} kg last time)'**
+  String currentVsPreviousVolumeLabel(String current, String previous);
+
+  /// No description provided for @durationHoursMinutesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours}h {minutes}m'**
+  String durationHoursMinutesLabel(int hours, int minutes);
+
+  /// No description provided for @durationMinutesOnlyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes}m'**
+  String durationMinutesOnlyLabel(int minutes);
+
+  /// No description provided for @durationSecondsOnlyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{seconds}s'**
+  String durationSecondsOnlyLabel(int seconds);
+
+  /// No description provided for @exerciseBestLatestSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Best: {bestWeight} kg  •  {latestVolume} kg latest'**
+  String exerciseBestLatestSummary(String bestWeight, String latestVolume);
+
+  /// No description provided for @homeCurrentProgramLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Program'**
+  String get homeCurrentProgramLabel;
+
+  /// No description provided for @homeWorkoutsCompletedThisWeekLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} {count, plural, =0{workouts completed} =1{workout completed} other{workouts completed}}'**
+  String homeWorkoutsCompletedThisWeekLabel(int count);
+
+  /// No description provided for @homeOpenProgramButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Program'**
+  String get homeOpenProgramButton;
+
+  /// No description provided for @homeWorkoutInProgressLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout in Progress'**
+  String get homeWorkoutInProgressLabel;
+
+  /// No description provided for @homeStartedAgoLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Started {duration} ago'**
+  String homeStartedAgoLabel(String duration);
+
+  /// No description provided for @homeRecentWorkoutsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Workouts'**
+  String get homeRecentWorkoutsTitle;
+
+  /// No description provided for @homeExerciseCountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} {count, plural, =1{Exercise} other{Exercises}}'**
+  String homeExerciseCountLabel(int count);
+
+  /// No description provided for @homeSetCountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} {count, plural, =1{Set} other{Sets}}'**
+  String homeSetCountLabel(int count);
+
+  /// No description provided for @homeTotalVolumeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Volume: {volume} kg'**
+  String homeTotalVolumeLabel(String volume);
+
+  /// No description provided for @homeViewSessionButton.
+  ///
+  /// In en, this message translates to:
+  /// **'View Session'**
+  String get homeViewSessionButton;
+
+  /// No description provided for @homeShowExercisesButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Show exercises'**
+  String get homeShowExercisesButton;
+
+  /// No description provided for @homeHideExercisesButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide exercises'**
+  String get homeHideExercisesButton;
+
+  /// No description provided for @homeNoActiveProgramTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No Active Program'**
+  String get homeNoActiveProgramTitle;
+
+  /// No description provided for @homeNoActiveProgramBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Create or activate a program to start tracking structured workouts.'**
+  String get homeNoActiveProgramBody;
+
+  /// No description provided for @homeNoRecentWorkoutsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'No completed workouts yet.'**
+  String get homeNoRecentWorkoutsBody;
+
+  /// No description provided for @startWorkoutFabLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Workout'**
+  String get startWorkoutFabLabel;
+
+  /// No description provided for @deleteProgramConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this program permanently?'**
+  String get deleteProgramConfirmTitle;
+
+  /// No description provided for @deleteProgramConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This will permanently delete \"{name}\" and everything in it — every workout day, every session, every logged set. This cannot be undone.'**
+  String deleteProgramConfirmBody(String name);
+
+  /// No description provided for @deleteWorkoutDayConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this workout day permanently?'**
+  String get deleteWorkoutDayConfirmTitle;
+
+  /// No description provided for @deleteWorkoutDayConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This will permanently delete \"{name}\" and everything in it — every session, every logged set. This cannot be undone.'**
+  String deleteWorkoutDayConfirmBody(String name);
+
+  /// No description provided for @archivedWorkoutDaysTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Archived'**
+  String get archivedWorkoutDaysTooltip;
+
+  /// No description provided for @archivedWorkoutDaysTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Archived Workout Days'**
+  String get archivedWorkoutDaysTitle;
+
+  /// No description provided for @noArchivedWorkoutDaysBody.
+  ///
+  /// In en, this message translates to:
+  /// **'No archived workout days.'**
+  String get noArchivedWorkoutDaysBody;
+
+  /// No description provided for @restoreButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore'**
+  String get restoreButton;
 }
 
 class _AppLocalizationsDelegate
