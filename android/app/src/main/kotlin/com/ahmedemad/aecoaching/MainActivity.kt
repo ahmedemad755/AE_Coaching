@@ -1,4 +1,4 @@
-package com.example.ae_coaching
+package com.ahmedemad.aecoaching
 
 import io.flutter.embedding.android.FlutterActivity
 

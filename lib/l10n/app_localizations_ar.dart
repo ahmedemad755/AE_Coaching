@@ -120,6 +120,70 @@ class AppLocalizationsAr extends AppLocalizations {
   String get accountVerifiedMessage => 'تم تفعيل الحساب! من فضلك سجّل الدخول.';
 
   @override
+  String get completeRegistrationSetPasswordTitle => 'اختر كلمة مرور';
+
+  @override
+  String completeRegistrationSetPasswordSubtitle(String phone) {
+    return 'تم تفعيل رقم هاتفك $phone. اختر كلمة مرور لتأمين حسابك.';
+  }
+
+  @override
+  String get completeRegistrationFinishProfileTitle => 'أكمل ملفك الشخصي';
+
+  @override
+  String get completeRegistrationFinishProfileSubtitle =>
+      'محتاجين اسمك بس عشان نخلّص إعداد حسابك.';
+
+  @override
+  String get completeRegistrationCancelAndSignOut => 'دي مش أنا — ابدأ من جديد';
+
+  @override
+  String get sessionCheckingMessage => 'جاري التحقق من حسابك...';
+
+  @override
+  String get verifyPhoneMigrationTitle => 'تفعيل رقم هاتفك';
+
+  @override
+  String verifyPhoneMigrationSubtitle(String phone) {
+    return 'لأمان حسابك، أدخل الكود اللي اتبعت لـ $phone.';
+  }
+
+  @override
+  String get phoneVerifiedSuccessMessage => 'تم تفعيل رقم الهاتف بنجاح';
+
+  @override
+  String get forgotPasswordTitle => 'إعادة تعيين كلمة المرور';
+
+  @override
+  String get forgotPasswordSubtitle => 'أدخل رقم هاتفك وهنبعتلك كود تفعيل.';
+
+  @override
+  String get sendCodeButton => 'إرسال الكود';
+
+  @override
+  String get resetPasswordTitle => 'أدخل كلمة مرور جديدة';
+
+  @override
+  String resetPasswordSubtitle(String phone) {
+    return 'أدخل الكود اللي اتبعت لـ $phone واختر كلمة مرور جديدة.';
+  }
+
+  @override
+  String get confirmPasswordHint => 'تأكيد كلمة المرور';
+
+  @override
+  String get confirmPasswordRequired => 'من فضلك أكّد كلمة المرور';
+
+  @override
+  String get passwordsDoNotMatch => 'كلمتا المرور غير متطابقتين';
+
+  @override
+  String get resetPasswordButton => 'تغيير كلمة المرور';
+
+  @override
+  String get passwordChangedSuccessMessage => 'تم تغيير كلمة المرور بنجاح';
+
+  @override
   String get workoutTrackerSubtitle => 'متابعة التمرين';
 
   @override

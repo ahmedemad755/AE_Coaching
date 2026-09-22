@@ -44,6 +44,37 @@
   "verifyButton": "VERIFY",
   "accountVerifiedMessage": "Account Verified! Please Login.",
 
+  "completeRegistrationSetPasswordTitle": "Set a password",
+  "completeRegistrationSetPasswordSubtitle": "Your phone number {phone} is verified. Choose a password to secure your account.",
+  "@completeRegistrationSetPasswordSubtitle": {
+    "placeholders": { "phone": { "type": "String" } }
+  },
+  "completeRegistrationFinishProfileTitle": "Finish your profile",
+  "completeRegistrationFinishProfileSubtitle": "Just need your name to finish setting up your account.",
+  "completeRegistrationCancelAndSignOut": "This isn't me — start over",
+  "sessionCheckingMessage": "Checking your account...",
+
+  "verifyPhoneMigrationTitle": "Verify your phone",
+  "verifyPhoneMigrationSubtitle": "For your account's security, confirm the code sent to {phone}.",
+  "@verifyPhoneMigrationSubtitle": {
+    "placeholders": { "phone": { "type": "String" } }
+  },
+  "phoneVerifiedSuccessMessage": "Phone verified successfully",
+
+  "forgotPasswordTitle": "Reset your password",
+  "forgotPasswordSubtitle": "Enter your phone number and we'll send you a verification code.",
+  "sendCodeButton": "SEND CODE",
+  "resetPasswordTitle": "Enter new password",
+  "resetPasswordSubtitle": "Enter the code sent to {phone} and choose a new password.",
+  "@resetPasswordSubtitle": {
+    "placeholders": { "phone": { "type": "String" } }
+  },
+  "confirmPasswordHint": "Confirm password",
+  "confirmPasswordRequired": "Please confirm your password",
+  "passwordsDoNotMatch": "Passwords do not match",
+  "resetPasswordButton": "RESET PASSWORD",
+  "passwordChangedSuccessMessage": "Password changed successfully",
+
   "workoutTrackerSubtitle": "Workout Tracker",
   "logoutTooltip": "Logout",
   "logoutConfirmTitle": "Logout",

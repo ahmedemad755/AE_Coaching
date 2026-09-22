@@ -8,23 +8,40 @@ import 'package:ae_coaching/core/localization/locale_cubit.dart';
 import 'package:ae_coaching/core/routes/app_router.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:ae_coaching/service_locator.dart'; // تأكد من المسار الصحيح
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
 import 'package:firebase_core/firebase_core.dart'; // سطر مهم جداً
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:ae_coaching/firebase_options.dart'; // لو بتستخدم flutterfire configure
 
 void main() async {
   // 1. التأكد من تهيئة الـ Widgets
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // 2. تهيئة Firebase (هذا السطر هو الحل!)
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // Phase 5B: the trusted password-reset backend enforces App Check on
+  // both callable functions. In debug builds this uses the Android
+  // debug provider (prints a token to the console that must be
+  // registered in Firebase Console for local testing — not done as
+  // part of this stage). Release builds are wired to Play Integrity in
+  // CODE, but actually functioning still requires enabling the Play
+  // Integrity API and registering the release signing
+  // certificate/Play App Signing fingerprint in Firebase Console — a
+  // separate, later, human step, not performed here. iOS/Web App Check
+  // providers are intentionally left unconfigured in this stage (out
+  // of scope).
+  await FirebaseAppCheck.instance.activate(
+    providerAndroid: kDebugMode
+        ? const AndroidDebugProvider()
+        : const AndroidPlayIntegrityProvider(),
   );
 
   // 3. تشغيل الـ Service Locator
+  initCore(); // SessionStorage — cross-cutting, used by auth views, Hom, and WorkoutCubit
   initAuth();
   initWorkout();
   initMeasurements(); // Body Measurements feature — separate from Workout

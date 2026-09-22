@@ -1,6 +1,7 @@
 import 'package:ae_coaching/auth/data/models/Exercise_Set.dart';
 import 'package:ae_coaching/core/localization/locale_cubit.dart';
 import 'package:ae_coaching/core/routes/app_router.dart';
+import 'package:ae_coaching/core/session/session_storage.dart';
 import 'package:ae_coaching/features/analytics/presentation/workout_analytics_screen.dart';
 import 'package:ae_coaching/features/workout/presentation/bloc/workout_cubit.dart';
 import 'package:ae_coaching/features/workout/presentation/cubit/home_workout_overview_cubit.dart';
@@ -23,7 +24,8 @@ class Hom extends StatefulWidget {
 }
 
 class _HomState extends State<Hom> {
-  Box<ExerciseSet>? exerciseBox; // محتفظين بيه فقط للـ ValueListenableBuilder المحلى أو العرض السريع
+  Box<ExerciseSet>?
+  exerciseBox; // محتفظين بيه فقط للـ ValueListenableBuilder المحلى أو العرض السريع
   bool _isLoading = true;
   String _userName = 'User';
 
@@ -38,14 +40,13 @@ class _HomState extends State<Hom> {
   }
 
   Future<void> _initUserBox() async {
-    final authBox = Hive.box('authBox');
+    final sessionStorage = sl<SessionStorage>();
     final firebaseUser = FirebaseAuth.instance.currentUser;
-    final storedName =
-        (authBox.get('currentUserName', defaultValue: '') as String).trim();
+    final storedName = sessionStorage.currentUserName.trim();
     final uid = firebaseUser?.uid ?? '';
 
     if (uid.isEmpty) {
-      await authBox.put('isLoggedIn', false);
+      await sessionStorage.markLoggedOut();
       if (!mounted) return;
       setState(() => _isLoading = false);
       Navigator.pushNamedAndRemoveUntil(
@@ -56,8 +57,10 @@ class _HomState extends State<Hom> {
       return;
     }
 
-    _userName = storedName.isNotEmpty ? storedName : (firebaseUser?.displayName ?? 'User');
-    await authBox.put('currentUserUid', uid);
+    _userName = storedName.isNotEmpty
+        ? storedName
+        : (firebaseUser?.displayName ?? 'User');
+    await sessionStorage.updateCurrentUserUid(uid);
 
     // فتح الصندوق الخاص بالمستخدم الحالي
     exerciseBox = await Hive.openBox<ExerciseSet>('sets_$uid');
@@ -98,11 +101,7 @@ class _HomState extends State<Hom> {
           ),
           ElevatedButton(
             onPressed: () async {
-              final authBox = Hive.box('authBox');
-              await authBox.put('isLoggedIn', false);
-              await authBox.delete('currentUserUid');
-              await authBox.delete('currentUserName');
-              await authBox.delete('currentUserPhone');
+              await sl<SessionStorage>().clearSession();
 
               if (exerciseBox != null && exerciseBox!.isOpen) {
                 await exerciseBox!.close();
@@ -127,9 +126,14 @@ class _HomState extends State<Hom> {
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.redAccent,
               foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
-            child: Text(l10n.logoutTooltip, style: const TextStyle(fontWeight: FontWeight.w800)),
+            child: Text(
+              l10n.logoutTooltip,
+              style: const TextStyle(fontWeight: FontWeight.w800),
+            ),
           ),
         ],
       ),
@@ -145,9 +149,11 @@ class _HomState extends State<Hom> {
   double _calculateTodayVolume() {
     if (exerciseBox == null) return 0.0;
     final todayStr = DateFormat('yyyy-MM-dd', 'en_US').format(DateTime.now());
-    return exerciseBox!.values.where((set) {
-      return DateFormat('yyyy-MM-dd', 'en_US').format(set.date) == todayStr;
-    }).fold(0.0, (sum, set) => sum + (set.weight * set.reps));
+    return exerciseBox!.values
+        .where((set) {
+          return DateFormat('yyyy-MM-dd', 'en_US').format(set.date) == todayStr;
+        })
+        .fold(0.0, (sum, set) => sum + (set.weight * set.reps));
   }
 
   Map<String, double> _dailyVolumeFor(List<ExerciseSet> history) {
@@ -166,7 +172,9 @@ class _HomState extends State<Hom> {
     final allSets = exerciseBox!.values.toList();
     final exerciseHistory = <String, List<ExerciseSet>>{};
     for (final set in allSets) {
-      exerciseHistory.putIfAbsent(set.exerciseName.toLowerCase().trim(), () => []).add(set);
+      exerciseHistory
+          .putIfAbsent(set.exerciseName.toLowerCase().trim(), () => [])
+          .add(set);
     }
 
     showModalBottomSheet(
@@ -222,18 +230,20 @@ class _HomState extends State<Hom> {
                   const SizedBox(height: 28),
                   Text(
                     l10n.exerciseTrendsLabel,
-                    style: const TextStyle(color: _muted, fontWeight: FontWeight.w700),
+                    style: const TextStyle(
+                      color: _muted,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                   const SizedBox(height: 10),
                   if (exerciseHistory.isEmpty)
-                    _AnalyticsNoticeCard(
-                      text: l10n.needMoreDataForProgress,
-                    )
+                    _AnalyticsNoticeCard(text: l10n.needMoreDataForProgress)
                   else
                     ...exerciseHistory.entries.map((entry) {
                       final name = entry.key;
                       final dailyVolume = _dailyVolumeFor(entry.value);
-                      final dates = dailyVolume.keys.toList()..sort((a, b) => b.compareTo(a));
+                      final dates = dailyVolume.keys.toList()
+                        ..sort((a, b) => b.compareTo(a));
 
                       if (dates.length < 2) {
                         return _AnalyticsNoticeCard(
@@ -245,7 +255,9 @@ class _HomState extends State<Hom> {
                       final previousVol = dailyVolume[dates[1]]!;
                       final diff = currentVol - previousVol;
                       final isImproved = diff >= 0;
-                      final percentage = previousVol > 0 ? (diff / previousVol) * 100 : 0.0;
+                      final percentage = previousVol > 0
+                          ? (diff / previousVol) * 100
+                          : 0.0;
                       final progressDeltaStr = percentage.toStringAsFixed(1);
 
                       return GestureDetector(
@@ -280,8 +292,13 @@ class _HomState extends State<Hom> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: _blue,
                         foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 13),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 30,
+                          vertical: 13,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(22),
+                        ),
                         elevation: 8,
                       ),
                       child: Text(l10n.close),
@@ -337,16 +354,16 @@ class _HomState extends State<Hom> {
               colors: [Color(0xffdbe9f7), Color(0xff8fb6e6)],
             ),
           ),
-          child: const Center(
-            child: CircularProgressIndicator(color: _blue),
-          ),
+          child: const Center(child: CircularProgressIndicator(color: _blue)),
         ),
       );
     }
 
     return MultiBlocListener(
       listeners: [
-        BlocListener<WorkoutCubit, WorkoutState>(listener: _onWorkoutStateChanged),
+        BlocListener<WorkoutCubit, WorkoutState>(
+          listener: _onWorkoutStateChanged,
+        ),
         // Redesigned Home workout section (see HomeWorkoutOverviewCubit's
         // class docs): refreshes whenever the app-wide active-session
         // state settles, so starting/resuming/finishing/cancelling a
@@ -361,29 +378,27 @@ class _HomState extends State<Hom> {
       ],
       child: Scaffold(
         body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xffdbe9f7), Color(0xff8fb6e6)],
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Color(0xffdbe9f7), Color(0xff8fb6e6)],
+            ),
           ),
-        ),
-        child: SafeArea(
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 430),
-              child: Column(
-                children: [
-                  _buildTopPanel(l10n),
-                  const Expanded(
-                    child: HomeWorkoutOverviewSection(),
-                  ),
-                ],
+          child: SafeArea(
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 430),
+                child: Column(
+                  children: [
+                    _buildTopPanel(l10n),
+                    const Expanded(child: HomeWorkoutOverviewSection()),
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      ),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: _onStartWorkoutPressed,
           backgroundColor: _blue,
@@ -408,8 +423,9 @@ class _HomState extends State<Hom> {
   /// session.
   void _onStartWorkoutPressed() {
     final overviewState = context.read<HomeWorkoutOverviewCubit>().state;
-    final activeProgram =
-        overviewState is HomeWorkoutOverviewLoaded ? overviewState.overview.activeProgram?.program : null;
+    final activeProgram = overviewState is HomeWorkoutOverviewLoaded
+        ? overviewState.overview.activeProgram?.program
+        : null;
 
     if (activeProgram != null) {
       Navigator.pushNamed(
@@ -423,7 +439,8 @@ class _HomState extends State<Hom> {
   }
 
   Widget _buildTopPanel(AppLocalizations l10n) {
-    final headerName = 'c.${_userName.trim().isEmpty ? 'User' : _userName.trim()}';
+    final headerName =
+        'c.${_userName.trim().isEmpty ? 'User' : _userName.trim()}';
     final dateLocale = Localizations.localeOf(context).toString();
 
     return Container(
@@ -483,13 +500,17 @@ class _HomState extends State<Hom> {
                   tooltip: l10n.logoutTooltip,
                 ),
                 IconButton(
-                  onPressed: () => Navigator.pushNamed(context, AppNavigator.measurements),
+                  onPressed: () =>
+                      Navigator.pushNamed(context, AppNavigator.measurements),
                   icon: const Icon(Icons.straighten),
                   color: Colors.white,
                   tooltip: l10n.measurementsTooltip,
                 ),
                 IconButton(
-                  onPressed: () => Navigator.pushNamed(context, AppNavigator.workoutPrograms),
+                  onPressed: () => Navigator.pushNamed(
+                    context,
+                    AppNavigator.workoutPrograms,
+                  ),
                   icon: const Icon(Icons.assignment_outlined),
                   color: Colors.white,
                   tooltip: l10n.workoutProgramsTooltip,
@@ -529,7 +550,10 @@ class _HomState extends State<Hom> {
                           ),
                           const SizedBox(height: 6),
                           Text(
-                            DateFormat('EEE, MMM d', dateLocale).format(DateTime.now()),
+                            DateFormat(
+                              'EEE, MMM d',
+                              dateLocale,
+                            ).format(DateTime.now()),
                             style: TextStyle(
                               color: Colors.white.withValues(alpha: 0.78),
                               fontWeight: FontWeight.w600,
@@ -622,7 +646,10 @@ class _AnalyticsCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   subtitle,
-                  style: const TextStyle(color: Color(0xff7d8792), fontSize: 12),
+                  style: const TextStyle(
+                    color: Color(0xff7d8792),
+                    fontSize: 12,
+                  ),
                 ),
               ],
             ),
@@ -635,10 +662,17 @@ class _AnalyticsCard extends StatelessWidget {
             ),
             child: Column(
               children: [
-                Icon(improved ? Icons.arrow_upward : Icons.arrow_downward, color: color),
+                Icon(
+                  improved ? Icons.arrow_upward : Icons.arrow_downward,
+                  color: color,
+                ),
                 Text(
                   '${improved ? '+' : ''}${diff.toStringAsFixed(0)}',
-                  style: TextStyle(color: color, fontWeight: FontWeight.w900, fontSize: 11),
+                  style: TextStyle(
+                    color: color,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 11,
+                  ),
                 ),
               ],
             ),
@@ -664,7 +698,10 @@ class _AnalyticsNoticeCard extends StatelessWidget {
       ),
       child: Text(
         text,
-        style: const TextStyle(color: Color(0xff52606c), fontWeight: FontWeight.w700),
+        style: const TextStyle(
+          color: Color(0xff52606c),
+          fontWeight: FontWeight.w700,
+        ),
       ),
     );
   }

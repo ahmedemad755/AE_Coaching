@@ -2,7 +2,9 @@ import 'package:ae_coaching/auth/presentation/cubit/auth_cubit.dart';
 import 'package:ae_coaching/auth/presentation/cubit/auth_state.dart';
 import 'package:ae_coaching/core/localization/auth_message_localizer.dart';
 import 'package:ae_coaching/core/routes/app_router.dart';
+import 'package:ae_coaching/core/session/session_storage.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
+import 'package:ae_coaching/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -26,11 +28,17 @@ class OtpView extends StatefulWidget {
 
 class _OtpViewState extends State<OtpView> {
   final TextEditingController _otpController = TextEditingController();
+  late final TextEditingController _passwordController = TextEditingController(
+    text: widget.password,
+  );
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  bool _isPasswordObscured = true;
 
   @override
   void dispose() {
     _otpController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -49,22 +57,35 @@ class _OtpViewState extends State<OtpView> {
         child: BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) async {
             if (state is AuthSuccess) {
-              // شيلنا سطر الـ Hive لأن ده إنشاء حساب مش تسجيل دخول
-
-              if (mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(localizeAuthMessage(l10n, state.message))),
+              // Phase 3: registerWithOtp only reaches AuthSuccess after
+              // phone auth + password link + Firestore profile write all
+              // succeeded — safe to mark the local session complete now.
+              if (state.user != null) {
+                await sl<SessionStorage>().persistLoggedInSession(
+                  uid: state.user!.uid,
+                  name: state.user!.name,
+                  phone: state.user!.phoneNumber,
                 );
-                // 🔥 التوجيه لصفحة الـ Login بدل الـ Home
+              }
+
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(localizeAuthMessage(l10n, state.message)),
+                  ),
+                );
                 Navigator.pushNamedAndRemoveUntil(
                   context,
-                  AppNavigator.login,
+                  AppNavigator.home,
                   (route) => false,
                 );
               }
             } else if (state is AuthError) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(state.message), backgroundColor: Colors.red),
+                SnackBar(
+                  content: Text(state.message),
+                  backgroundColor: Colors.red,
+                ),
               );
             }
           },
@@ -105,7 +126,9 @@ class _OtpViewState extends State<OtpView> {
                                 IconButton(
                                   onPressed: state is AuthLoading
                                       ? null
-                                      : () => context.read<AuthCubit>().requestOtp(widget.phoneNumber),
+                                      : () => context
+                                            .read<AuthCubit>()
+                                            .requestOtp(widget.phoneNumber),
                                   icon: const Icon(Icons.refresh),
                                   color: const Color(0xff2f80ed),
                                   tooltip: l10n.resendCodeTooltip,
@@ -144,10 +167,14 @@ class _OtpViewState extends State<OtpView> {
                                 counterText: '',
                                 filled: true,
                                 fillColor: Colors.white,
-                                contentPadding: const EdgeInsets.symmetric(vertical: 17),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 17,
+                                ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide: const BorderSide(color: Color(0xff2f80ed)),
+                                  borderSide: const BorderSide(
+                                    color: Color(0xff2f80ed),
+                                  ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
@@ -158,7 +185,58 @@ class _OtpViewState extends State<OtpView> {
                                 ),
                               ),
                               validator: (value) =>
-                                  value == null || value.length < 6 ? l10n.enterSixDigitCodeValidator : null,
+                                  value == null || value.length < 6
+                                  ? l10n.enterSixDigitCodeValidator
+                                  : null,
+                            ),
+                            const SizedBox(height: 14),
+                            TextFormField(
+                              controller: _passwordController,
+                              obscureText: _isPasswordObscured,
+                              decoration: InputDecoration(
+                                hintText: l10n.passwordHint,
+                                prefixIcon: const Icon(
+                                  Icons.lock,
+                                  color: Color(0xff2f80ed),
+                                ),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _isPasswordObscured
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                    color: Colors.grey,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _isPasswordObscured =
+                                          !_isPasswordObscured;
+                                    });
+                                  },
+                                ),
+                                filled: true,
+                                fillColor: Colors.white,
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 15,
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: const BorderSide(
+                                    color: Color(0xff2f80ed),
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: const BorderSide(
+                                    color: Color(0xff2f80ed),
+                                    width: 1.6,
+                                  ),
+                                ),
+                              ),
+                              validator: (value) =>
+                                  value == null || value.length < 6
+                                  ? l10n.passwordTooShort
+                                  : null,
                             ),
                             const SizedBox(height: 18),
                             Row(
@@ -167,7 +245,9 @@ class _OtpViewState extends State<OtpView> {
                                   child: ElevatedButton(
                                     onPressed: state is AuthLoading
                                         ? null
-                                        : () => context.read<AuthCubit>().requestOtp(widget.phoneNumber),
+                                        : () => context
+                                              .read<AuthCubit>()
+                                              .requestOtp(widget.phoneNumber),
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: const Color(0xff2f80ed),
                                       foregroundColor: Colors.white,
@@ -178,7 +258,9 @@ class _OtpViewState extends State<OtpView> {
                                     ),
                                     child: Text(
                                       l10n.resendButton,
-                                      style: const TextStyle(fontWeight: FontWeight.w800),
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w800,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -188,13 +270,27 @@ class _OtpViewState extends State<OtpView> {
                                     onPressed: state is AuthLoading
                                         ? null
                                         : () {
-                                            if (_formKey.currentState!.validate()) {
+                                            if (_formKey.currentState!
+                                                .validate()) {
                                               context.read<AuthCubit>().registerWithOtp(
-                                                verificationId: widget.verificationId,
-                                                smsCode: _otpController.text.trim(),
-                                                name: widget.name, // مررنا الاسم
-                                                phone: widget.phoneNumber, // مررنا الرقم
-                                                password: widget.password, // مررنا الباسورد
+                                                verificationId:
+                                                    widget.verificationId,
+                                                smsCode: _otpController.text
+                                                    .trim(),
+                                                name:
+                                                    widget.name, // مررنا الاسم
+                                                phone: widget
+                                                    .phoneNumber, // مررنا الرقم
+                                                // Editable so a weak-password
+                                                // rejection can be retried
+                                                // with a stronger one against
+                                                // the SAME phone-authenticated
+                                                // session, without leaving
+                                                // this screen or re-verifying
+                                                // the OTP.
+                                                password: _passwordController
+                                                    .text
+                                                    .trim(),
                                               );
                                             }
                                           },
@@ -210,11 +306,15 @@ class _OtpViewState extends State<OtpView> {
                                         ? const SizedBox(
                                             height: 22,
                                             width: 22,
-                                            child: CircularProgressIndicator(strokeWidth: 2.4),
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 2.4,
+                                            ),
                                           )
                                         : Text(
                                             l10n.verifyButton,
-                                            style: const TextStyle(fontWeight: FontWeight.w800),
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.w800,
+                                            ),
                                           ),
                                   ),
                                 ),

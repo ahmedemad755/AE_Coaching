@@ -2,10 +2,12 @@ import 'package:ae_coaching/auth/presentation/cubit/auth_cubit.dart';
 import 'package:ae_coaching/auth/presentation/cubit/auth_state.dart';
 import 'package:ae_coaching/core/localization/auth_message_localizer.dart';
 import 'package:ae_coaching/core/routes/app_router.dart';
+import 'package:ae_coaching/core/session/session_storage.dart';
+import 'package:ae_coaching/core/utils/phone_normalizer.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
+import 'package:ae_coaching/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -30,18 +32,11 @@ class _RegisterViewState extends State<RegisterView> {
     super.dispose();
   }
 
-  // دالة لتعديل رقم الهاتف بإضافة كود الدولة تلقائياً
-  String formatPhoneNumber(String phone) {
-    String formatted = phone.trim();
-    if (formatted.startsWith('01')) {
-      formatted = '+20${formatted.substring(1)}';
-    } else if (!formatted.startsWith('+')) {
-      formatted = '+20$formatted';
-    }
-    return formatted;
-  }
-
-  InputDecoration _fieldDecoration(String hint, IconData icon, {Widget? suffixIcon}) {
+  InputDecoration _fieldDecoration(
+    String hint,
+    IconData icon, {
+    Widget? suffixIcon,
+  }) {
     return InputDecoration(
       hintText: hint,
       prefixIcon: Icon(icon, color: const Color(0xff2f80ed)),
@@ -83,13 +78,12 @@ class _RegisterViewState extends State<RegisterView> {
         child: BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) async {
             if (state is AuthSuccess) {
-              final authBox = Hive.box('authBox');
-              await authBox.put('isLoggedIn', true);
-
               if (state.user != null) {
-                await authBox.put('currentUserUid', state.user!.uid);
-                await authBox.put('currentUserName', state.user!.name);
-                await authBox.put('currentUserPhone', state.user!.phoneNumber);
+                await sl<SessionStorage>().persistLoggedInSession(
+                  uid: state.user!.uid,
+                  name: state.user!.name,
+                  phone: state.user!.phoneNumber,
+                );
               }
 
               if (!mounted) return;
@@ -108,7 +102,7 @@ class _RegisterViewState extends State<RegisterView> {
                 context,
                 AppNavigator.otp,
                 arguments: {
-                  'phone': formatPhoneNumber(_phoneController.text),
+                  'phone': state.phone,
                   'password': _passwordController.text.trim(),
                   'name': _nameController.text.trim(),
                   'verificationId': state.verificationId,
@@ -116,7 +110,10 @@ class _RegisterViewState extends State<RegisterView> {
               );
             } else if (state is AuthError) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(state.message), backgroundColor: Colors.red),
+                SnackBar(
+                  content: Text(state.message),
+                  backgroundColor: Colors.red,
+                ),
               );
             }
           },
@@ -172,17 +169,27 @@ class _RegisterViewState extends State<RegisterView> {
                             const SizedBox(height: 22),
                             TextFormField(
                               controller: _nameController,
-                              decoration: _fieldDecoration(l10n.fullNameHint, Icons.person),
+                              decoration: _fieldDecoration(
+                                l10n.fullNameHint,
+                                Icons.person,
+                              ),
                               validator: (value) =>
-                                  value == null || value.isEmpty ? l10n.fullNameRequired : null,
+                                  value == null || value.isEmpty
+                                  ? l10n.fullNameRequired
+                                  : null,
                             ),
                             const SizedBox(height: 14),
                             TextFormField(
                               controller: _phoneController,
                               keyboardType: TextInputType.phone,
-                              decoration: _fieldDecoration(l10n.phoneNumberFieldHint, Icons.phone),
+                              decoration: _fieldDecoration(
+                                l10n.phoneNumberFieldHint,
+                                Icons.phone,
+                              ),
                               validator: (value) =>
-                                  value == null || value.isEmpty ? l10n.phoneNumberRequiredRegister : null,
+                                  value == null || value.isEmpty
+                                  ? l10n.phoneNumberRequiredRegister
+                                  : null,
                             ),
                             const SizedBox(height: 14),
                             TextFormField(
@@ -193,18 +200,23 @@ class _RegisterViewState extends State<RegisterView> {
                                 Icons.lock,
                                 suffixIcon: IconButton(
                                   icon: Icon(
-                                    _isPasswordObscured ? Icons.visibility_off : Icons.visibility,
+                                    _isPasswordObscured
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
                                     color: Colors.grey,
                                   ),
                                   onPressed: () {
                                     setState(() {
-                                      _isPasswordObscured = !_isPasswordObscured;
+                                      _isPasswordObscured =
+                                          !_isPasswordObscured;
                                     });
                                   },
                                 ),
                               ),
                               validator: (value) =>
-                                  value == null || value.length < 6 ? l10n.passwordTooShort : null,
+                                  value == null || value.length < 6
+                                  ? l10n.passwordTooShort
+                                  : null,
                             ),
                             const SizedBox(height: 18),
                             SizedBox(
@@ -214,16 +226,34 @@ class _RegisterViewState extends State<RegisterView> {
                                     ? null
                                     : () {
                                         if (_formKey.currentState!.validate()) {
-                                          context
-                                              .read<AuthCubit>()
-                                              .registerWithPhonePassword(
-                                                name: _nameController.text.trim(),
-                                                phone: formatPhoneNumber(
+                                          try {
+                                            final normalizedPhone =
+                                                EgyptianPhoneNormalizer.normalize(
                                                   _phoneController.text,
-                                                ),
-                                                password:
-                                                    _passwordController.text.trim(),
-                                              );
+                                                );
+
+                                            // New registrations always go
+                                            // through OTP phone
+                                            // verification first (Phase 3)
+                                            // — password/name are held
+                                            // in memory and carried to
+                                            // OtpView once AuthOtpSent
+                                            // arrives.
+                                            context
+                                                .read<AuthCubit>()
+                                                .requestOtp(normalizedPhone);
+                                          } on PhoneNormalizationException catch (
+                                            e
+                                          ) {
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
+                                              SnackBar(
+                                                content: Text(e.message),
+                                                backgroundColor: Colors.red,
+                                              ),
+                                            );
+                                          }
                                         }
                                       },
                                 style: ElevatedButton.styleFrom(
@@ -233,7 +263,9 @@ class _RegisterViewState extends State<RegisterView> {
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   elevation: 8,
-                                  shadowColor: const Color(0xff2f80ed).withValues(alpha: 0.35),
+                                  shadowColor: const Color(
+                                    0xff2f80ed,
+                                  ).withValues(alpha: 0.35),
                                 ),
                                 child: state is AuthLoading
                                     ? const SizedBox(
@@ -246,7 +278,9 @@ class _RegisterViewState extends State<RegisterView> {
                                       )
                                     : Text(
                                         l10n.createAccountButton,
-                                        style: const TextStyle(fontWeight: FontWeight.w800),
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.w800,
+                                        ),
                                       ),
                               ),
                             ),

@@ -314,6 +314,120 @@ abstract class AppLocalizations {
   /// **'Account Verified! Please Login.'**
   String get accountVerifiedMessage;
 
+  /// No description provided for @completeRegistrationSetPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set a password'**
+  String get completeRegistrationSetPasswordTitle;
+
+  /// No description provided for @completeRegistrationSetPasswordSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your phone number {phone} is verified. Choose a password to secure your account.'**
+  String completeRegistrationSetPasswordSubtitle(String phone);
+
+  /// No description provided for @completeRegistrationFinishProfileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish your profile'**
+  String get completeRegistrationFinishProfileTitle;
+
+  /// No description provided for @completeRegistrationFinishProfileSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Just need your name to finish setting up your account.'**
+  String get completeRegistrationFinishProfileSubtitle;
+
+  /// No description provided for @completeRegistrationCancelAndSignOut.
+  ///
+  /// In en, this message translates to:
+  /// **'This isn\'t me — start over'**
+  String get completeRegistrationCancelAndSignOut;
+
+  /// No description provided for @sessionCheckingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking your account...'**
+  String get sessionCheckingMessage;
+
+  /// No description provided for @verifyPhoneMigrationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify your phone'**
+  String get verifyPhoneMigrationTitle;
+
+  /// No description provided for @verifyPhoneMigrationSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'For your account\'s security, confirm the code sent to {phone}.'**
+  String verifyPhoneMigrationSubtitle(String phone);
+
+  /// No description provided for @phoneVerifiedSuccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone verified successfully'**
+  String get phoneVerifiedSuccessMessage;
+
+  /// No description provided for @forgotPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset your password'**
+  String get forgotPasswordTitle;
+
+  /// No description provided for @forgotPasswordSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your phone number and we\'ll send you a verification code.'**
+  String get forgotPasswordSubtitle;
+
+  /// No description provided for @sendCodeButton.
+  ///
+  /// In en, this message translates to:
+  /// **'SEND CODE'**
+  String get sendCodeButton;
+
+  /// No description provided for @resetPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter new password'**
+  String get resetPasswordTitle;
+
+  /// No description provided for @resetPasswordSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the code sent to {phone} and choose a new password.'**
+  String resetPasswordSubtitle(String phone);
+
+  /// No description provided for @confirmPasswordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm password'**
+  String get confirmPasswordHint;
+
+  /// No description provided for @confirmPasswordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please confirm your password'**
+  String get confirmPasswordRequired;
+
+  /// No description provided for @passwordsDoNotMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get passwordsDoNotMatch;
+
+  /// No description provided for @resetPasswordButton.
+  ///
+  /// In en, this message translates to:
+  /// **'RESET PASSWORD'**
+  String get resetPasswordButton;
+
+  /// No description provided for @passwordChangedSuccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Password changed successfully'**
+  String get passwordChangedSuccessMessage;
+
   /// No description provided for @workoutTrackerSubtitle.
   ///
   /// In en, this message translates to:

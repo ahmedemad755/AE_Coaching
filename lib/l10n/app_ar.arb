@@ -41,6 +41,28 @@
   "verifyButton": "تأكيد",
   "accountVerifiedMessage": "تم تفعيل الحساب! من فضلك سجّل الدخول.",
 
+  "completeRegistrationSetPasswordTitle": "اختر كلمة مرور",
+  "completeRegistrationSetPasswordSubtitle": "تم تفعيل رقم هاتفك {phone}. اختر كلمة مرور لتأمين حسابك.",
+  "completeRegistrationFinishProfileTitle": "أكمل ملفك الشخصي",
+  "completeRegistrationFinishProfileSubtitle": "محتاجين اسمك بس عشان نخلّص إعداد حسابك.",
+  "completeRegistrationCancelAndSignOut": "دي مش أنا — ابدأ من جديد",
+  "sessionCheckingMessage": "جاري التحقق من حسابك...",
+
+  "verifyPhoneMigrationTitle": "تفعيل رقم هاتفك",
+  "verifyPhoneMigrationSubtitle": "لأمان حسابك، أدخل الكود اللي اتبعت لـ {phone}.",
+  "phoneVerifiedSuccessMessage": "تم تفعيل رقم الهاتف بنجاح",
+
+  "forgotPasswordTitle": "إعادة تعيين كلمة المرور",
+  "forgotPasswordSubtitle": "أدخل رقم هاتفك وهنبعتلك كود تفعيل.",
+  "sendCodeButton": "إرسال الكود",
+  "resetPasswordTitle": "أدخل كلمة مرور جديدة",
+  "resetPasswordSubtitle": "أدخل الكود اللي اتبعت لـ {phone} واختر كلمة مرور جديدة.",
+  "confirmPasswordHint": "تأكيد كلمة المرور",
+  "confirmPasswordRequired": "من فضلك أكّد كلمة المرور",
+  "passwordsDoNotMatch": "كلمتا المرور غير متطابقتين",
+  "resetPasswordButton": "تغيير كلمة المرور",
+  "passwordChangedSuccessMessage": "تم تغيير كلمة المرور بنجاح",
+
   "workoutTrackerSubtitle": "متابعة التمرين",
   "logoutTooltip": "تسجيل الخروج",
   "logoutConfirmTitle": "تسجيل الخروج",

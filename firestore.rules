@@ -1,0 +1,44 @@
+rules_version = '2';
+
+// ============================================================================
+// ⚠️  NOT YET DEPLOYED — LOCAL/EMULATOR USE ONLY. READ BEFORE DEPLOYING. ⚠️
+//
+// This file currently defines rules ONLY for the two new Phase 5B
+// password-reset collections. It is intentionally incomplete: it does
+// NOT include rules for any of the app's existing collections
+// (users/{uid}, workout data, measurements, photos, etc.), because
+// this repository does not have a tracked firestore.rules file today —
+// those collections' real production rules exist only in the Firebase
+// Console (or wherever they are currently managed) and are NOT visible
+// from this repo.
+//
+// Firestore security rules are deny-by-default per collection: running
+// `firebase deploy` (unscoped, or with --only firestore:rules) using
+// THIS file as-is would DELETE every existing rule for every other
+// collection, breaking read/write access for the entire rest of the
+// app. Before this file is ever deployed, it MUST be merged with the
+// project's actual, complete existing ruleset by someone with access
+// to review what's currently configured. This stage never runs
+// `firebase deploy` of any kind — this file is used only by the local
+// Firestore Emulator for Phase 5B's own automated tests.
+// ============================================================================
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Server-owned password-reset challenge state. Written and read
+    // exclusively by Cloud Functions via the Admin SDK, which bypasses
+    // these rules entirely — this rule exists solely to guarantee no
+    // CLIENT (however authenticated, or not) can ever read or write
+    // this collection directly.
+    match /passwordResetChallenges/{challengeId} {
+      allow read, write: if false;
+    }
+
+    // Server-owned per-phone rate-limit counters for
+    // requestPasswordReset. Same reasoning as above.
+    match /passwordResetRateLimits/{phone} {
+      allow read, write: if false;
+    }
+  }
+}

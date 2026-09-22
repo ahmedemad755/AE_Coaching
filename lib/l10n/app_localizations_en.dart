@@ -120,6 +120,72 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accountVerifiedMessage => 'Account Verified! Please Login.';
 
   @override
+  String get completeRegistrationSetPasswordTitle => 'Set a password';
+
+  @override
+  String completeRegistrationSetPasswordSubtitle(String phone) {
+    return 'Your phone number $phone is verified. Choose a password to secure your account.';
+  }
+
+  @override
+  String get completeRegistrationFinishProfileTitle => 'Finish your profile';
+
+  @override
+  String get completeRegistrationFinishProfileSubtitle =>
+      'Just need your name to finish setting up your account.';
+
+  @override
+  String get completeRegistrationCancelAndSignOut =>
+      'This isn\'t me — start over';
+
+  @override
+  String get sessionCheckingMessage => 'Checking your account...';
+
+  @override
+  String get verifyPhoneMigrationTitle => 'Verify your phone';
+
+  @override
+  String verifyPhoneMigrationSubtitle(String phone) {
+    return 'For your account\'s security, confirm the code sent to $phone.';
+  }
+
+  @override
+  String get phoneVerifiedSuccessMessage => 'Phone verified successfully';
+
+  @override
+  String get forgotPasswordTitle => 'Reset your password';
+
+  @override
+  String get forgotPasswordSubtitle =>
+      'Enter your phone number and we\'ll send you a verification code.';
+
+  @override
+  String get sendCodeButton => 'SEND CODE';
+
+  @override
+  String get resetPasswordTitle => 'Enter new password';
+
+  @override
+  String resetPasswordSubtitle(String phone) {
+    return 'Enter the code sent to $phone and choose a new password.';
+  }
+
+  @override
+  String get confirmPasswordHint => 'Confirm password';
+
+  @override
+  String get confirmPasswordRequired => 'Please confirm your password';
+
+  @override
+  String get passwordsDoNotMatch => 'Passwords do not match';
+
+  @override
+  String get resetPasswordButton => 'RESET PASSWORD';
+
+  @override
+  String get passwordChangedSuccessMessage => 'Password changed successfully';
+
+  @override
   String get workoutTrackerSubtitle => 'Workout Tracker';
 
   @override

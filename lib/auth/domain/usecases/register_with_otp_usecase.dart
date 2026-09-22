@@ -1,3 +1,4 @@
+import 'package:ae_coaching/auth/domain/entities/auth_user.dart';
 import 'package:ae_coaching/auth/domain/repositories/auth_repository.dart';
 
 class RegisterWithOtpUseCase {
@@ -6,7 +7,7 @@ class RegisterWithOtpUseCase {
   RegisterWithOtpUseCase(this.repository);
 
   /// إتمام عملية التسجيل باستخدام الكود ومعرف التحقق وباقي بيانات المستخدم
-  Future<void> call({
+  Future<AuthUser> call({
     required String verificationId,
     required String smsCode,
     required String name,

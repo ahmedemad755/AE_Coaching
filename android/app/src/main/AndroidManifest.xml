@@ -4,7 +4,7 @@
          Photo Picker and needs no storage permission. -->
     <uses-permission android:name="android.permission.CAMERA"/>
     <application
-        android:label="ae_coaching"
+        android:label="AE Coaching"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity

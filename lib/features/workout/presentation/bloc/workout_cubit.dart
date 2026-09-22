@@ -1,4 +1,5 @@
 import 'package:ae_coaching/auth/data/models/Exercise_Set.dart';
+import 'package:ae_coaching/core/session/session_storage.dart';
 import 'package:ae_coaching/features/workout/data/models/Exercise_Set.dart';
 import 'package:ae_coaching/features/workout/domain/usecases/delete_and_sync_workout_usecase.dart';
 import 'package:ae_coaching/features/workout/domain/usecases/delete_multiple_and_sync_usecase.dart';
@@ -14,13 +15,16 @@ class WorkoutCubit extends Cubit<WorkoutState> {
   final SaveAndSyncWorkoutUseCase saveAndSyncWorkoutUseCase;
   final DeleteAndSyncWorkoutUseCase deleteAndSyncWorkoutUseCase;
   final DeleteMultipleAndSyncUseCase deleteMultipleAndSyncUseCase;
-  final FetchAndSyncFromRemoteUseCase fetchAndSyncFromRemoteUseCase; // الحقل الجديد للـ UseCase
+  final FetchAndSyncFromRemoteUseCase
+  fetchAndSyncFromRemoteUseCase; // الحقل الجديد للـ UseCase
+  final SessionStorage sessionStorage;
 
   WorkoutCubit({
     required this.saveAndSyncWorkoutUseCase,
     required this.deleteAndSyncWorkoutUseCase,
     required this.deleteMultipleAndSyncUseCase,
     required this.fetchAndSyncFromRemoteUseCase, // تمرير عبر الـ Constructor
+    required this.sessionStorage,
   }) : super(const WorkoutInitial());
 
   // 1. جلب وتحميل الـ Box ومزامنته السحابية الكاملة لضمان جلب بيانات الأجهزة الأخرى
@@ -29,7 +33,7 @@ class WorkoutCubit extends Cubit<WorkoutState> {
 
     try {
       final box = await _getWorkoutBox();
-      
+
       // إشارة نجاح أولية عشان الـ UI يعرض الداتا المحلية الكاش فوراً لو موجودة (Offline-First)
       emit(
         WorkoutSuccess(
@@ -41,7 +45,9 @@ class WorkoutCubit extends Cubit<WorkoutState> {
 
       // الآن نعمل الـ Sync الصامت لجلب أي تمارين جديدة تمت من أي جهاز أخر
       emit(const WorkoutLoading(operation: WorkoutOperation.sync));
-      await fetchAndSyncFromRemoteUseCase(FetchAndSyncFromRemoteParams(box: box));
+      await fetchAndSyncFromRemoteUseCase(
+        FetchAndSyncFromRemoteParams(box: box),
+      );
 
       // تأكيد النجاح الكامل والنهائي بعد مزامنة داتا الفايرستور والـ Hive معاً
       emit(
@@ -70,11 +76,7 @@ class WorkoutCubit extends Cubit<WorkoutState> {
       final resolvedKey = _resolveWorkoutKey(key, set);
 
       await saveAndSyncWorkoutUseCase(
-        SaveAndSyncWorkoutParams(
-          box: box,
-          key: resolvedKey,
-          set: set,
-        ),
+        SaveAndSyncWorkoutParams(box: box, key: resolvedKey, set: set),
       );
 
       emit(
@@ -107,9 +109,7 @@ class WorkoutCubit extends Cubit<WorkoutState> {
         throw Exception('Workout set is not stored in Hive.');
       }
 
-      await deleteAndSyncWorkoutUseCase(
-        DeleteAndSyncWorkoutParams(set: set),
-      );
+      await deleteAndSyncWorkoutUseCase(DeleteAndSyncWorkoutParams(set: set));
 
       emit(
         WorkoutSuccess(
@@ -145,10 +145,7 @@ class WorkoutCubit extends Cubit<WorkoutState> {
       }
 
       await deleteMultipleAndSyncUseCase(
-        DeleteMultipleAndSyncParams(
-          box: box,
-          keys: formattedKeys,
-        ),
+        DeleteMultipleAndSyncParams(box: box, keys: formattedKeys),
       );
 
       emit(
@@ -171,10 +168,6 @@ class WorkoutCubit extends Cubit<WorkoutState> {
 
   // Helpers الأقوياء بتوعك
   Future<Box<ExerciseSet>> _getWorkoutBox() async {
-    final authBox = Hive.isBoxOpen('authBox')
-        ? Hive.box('authBox')
-        : await Hive.openBox('authBox');
-
     final firebaseUid = FirebaseAuth.instance.currentUser?.uid ?? '';
     final uid = firebaseUid;
 
@@ -182,7 +175,7 @@ class WorkoutCubit extends Cubit<WorkoutState> {
       throw Exception('User not authenticated');
     }
 
-    await authBox.put('currentUserUid', uid);
+    await sessionStorage.updateCurrentUserUid(uid);
 
     final boxName = 'sets_$uid';
     if (Hive.isBoxOpen(boxName)) {

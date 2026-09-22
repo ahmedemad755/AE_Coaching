@@ -7,6 +7,25 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:18077133053:android:b98cf7892b93d68d49b694",
+        "android_client_info": {
+          "package_name": "com.ahmedemad.aecoaching"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVPuWxe4bhoPfGTMeZ2NB6Ou93tKDEICY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:18077133053:android:d6158ec0cef6a4a549b694",
         "android_client_info": {
           "package_name": "com.example.ae_coaching"

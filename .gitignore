@@ -43,3 +43,25 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Android release signing
+android/key.properties
+android/*.jks
+android/*.keystore
+
+# Phase 5B backend (Cloud Functions) — Node tooling artifacts
+functions/node_modules/
+functions/lib/
+functions/*.log
+firestore-debug.log
+ui-debug.log
+firebase-debug.log
+.firebase/
+
+# Phase 5B Stage 3 — local-only Functions Emulator test config/artifacts.
+# .secret.local holds FAKE placeholder values only (see functions/README.md);
+# never a real secret. The SMS outbox is a local file the emulator-only
+# EmulatorFileSmsProvider writes to so E2E tests can read the OTP a
+# separate emulator process "sent" — never created outside emulator mode.
+functions/.secret.local
+functions/.emulator-sms-outbox.jsonl

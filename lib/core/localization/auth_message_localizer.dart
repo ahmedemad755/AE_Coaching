@@ -16,6 +16,10 @@ String localizeAuthMessage(AppLocalizations l10n, String? message) {
       return l10n.accountCreatedSuccess;
     case 'Account Verified! Please Login.':
       return l10n.accountVerifiedMessage;
+    case 'Phone verified successfully':
+      return l10n.phoneVerifiedSuccessMessage;
+    case 'Password changed successfully':
+      return l10n.passwordChangedSuccessMessage;
     default:
       return message ?? l10n.genericSuccess;
   }

@@ -3,10 +3,13 @@ import 'package:ae_coaching/auth/presentation/cubit/auth_state.dart';
 import 'package:ae_coaching/core/localization/auth_message_localizer.dart';
 import 'package:ae_coaching/core/localization/locale_cubit.dart';
 import 'package:ae_coaching/core/routes/app_router.dart';
+import 'package:ae_coaching/core/session/session_storage.dart';
+import 'package:ae_coaching/auth/presentation/view/verify_phone_migration_view.dart';
+import 'package:ae_coaching/core/utils/phone_normalizer.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
+import 'package:ae_coaching/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -16,7 +19,8 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  final TextEditingController _emailController = TextEditingController(); // بيستقبل رقم الهاتف
+  final TextEditingController _emailController =
+      TextEditingController(); // بيستقبل رقم الهاتف
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -27,17 +31,6 @@ class _LoginViewState extends State<LoginView> {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
-  }
-
-  // 🔥 ضفنا دالة التنسيق هنا عشان نوحد شكل الرقم قبل ما نبحث عنه في الداتا بيز
-  String formatPhoneNumber(String phone) {
-    String formatted = phone.trim();
-    if (formatted.startsWith('01')) {
-      formatted = '+20${formatted.substring(1)}';
-    } else if (!formatted.startsWith('+')) {
-      formatted = '+20$formatted';
-    }
-    return formatted;
   }
 
   InputDecoration _fieldDecoration({
@@ -88,18 +81,52 @@ class _LoginViewState extends State<LoginView> {
             BlocConsumer<AuthCubit, AuthState>(
               listener: (context, state) async {
                 if (state is AuthSuccess) {
-                  final authBox = Hive.box('authBox');
-                  await authBox.put('isLoggedIn', true);
-
-                  if (state.user != null) {
-                    await authBox.put('currentUserUid', state.user!.uid);
-                    await authBox.put('currentUserName', state.user!.name);
-                    await authBox.put('currentUserPhone', state.user!.phoneNumber);
+                  // Phase 4 restart-bypass fix: a legacy account that
+                  // still needs phone migration must NOT have a
+                  // completed Hive session written yet — otherwise
+                  // killing the app on VerifyPhoneMigrationView before
+                  // finishing OTP lets a restart reach Home via the
+                  // Hive fast-path without ever completing migration.
+                  // VerifyPhoneMigrationView already persists the same
+                  // session (idempotently) once migration actually
+                  // succeeds, so this branch deliberately writes
+                  // nothing to Hive and only navigates.
+                  if (state.user?.needsPhoneVerification == true) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            localizeAuthMessage(l10n, state.message),
+                          ),
+                        ),
+                      );
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        AppNavigator.verifyPhoneMigration,
+                        (route) => false,
+                        arguments: VerifyPhoneMigrationArgs(
+                          uid: state.user!.uid,
+                          name: state.user!.name,
+                          phone: state.user!.phoneNumber,
+                        ),
+                      );
+                    }
+                    return;
                   }
 
-                  if (mounted) {
+                  if (state.user != null) {
+                    await sl<SessionStorage>().persistLoggedInSession(
+                      uid: state.user!.uid,
+                      name: state.user!.name,
+                      phone: state.user!.phoneNumber,
+                    );
+                  }
+
+                  if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(localizeAuthMessage(l10n, state.message))),
+                      SnackBar(
+                        content: Text(localizeAuthMessage(l10n, state.message)),
+                      ),
                     );
                     Navigator.pushNamedAndRemoveUntil(
                       context,
@@ -167,18 +194,23 @@ class _LoginViewState extends State<LoginView> {
                                 Text(
                                   l10n.loginSubtitle,
                                   textAlign: TextAlign.center,
-                                  style: const TextStyle(color: Color(0xff7d8792)),
+                                  style: const TextStyle(
+                                    color: Color(0xff7d8792),
+                                  ),
                                 ),
                                 const SizedBox(height: 20),
                                 TextFormField(
                                   controller: _emailController,
-                                  keyboardType: TextInputType.phone, // خليناها أرقام عشان تجربة المستخدم
+                                  keyboardType: TextInputType
+                                      .phone, // خليناها أرقام عشان تجربة المستخدم
                                   decoration: _fieldDecoration(
                                     hint: l10n.phoneNumberHint,
                                     icon: Icons.phone,
                                   ),
                                   validator: (value) =>
-                                      value == null || value.isEmpty ? l10n.phoneNumberRequired : null,
+                                      value == null || value.isEmpty
+                                      ? l10n.phoneNumberRequired
+                                      : null,
                                 ),
                                 const SizedBox(height: 14),
                                 TextFormField(
@@ -189,18 +221,23 @@ class _LoginViewState extends State<LoginView> {
                                     icon: Icons.lock,
                                     suffixIcon: IconButton(
                                       icon: Icon(
-                                        _isPasswordObscured ? Icons.visibility_off : Icons.visibility,
+                                        _isPasswordObscured
+                                            ? Icons.visibility_off
+                                            : Icons.visibility,
                                         color: Colors.grey,
                                       ),
                                       onPressed: () {
                                         setState(() {
-                                          _isPasswordObscured = !_isPasswordObscured;
+                                          _isPasswordObscured =
+                                              !_isPasswordObscured;
                                         });
                                       },
                                     ),
                                   ),
                                   validator: (value) =>
-                                      value == null || value.isEmpty ? l10n.passwordRequired : null,
+                                      value == null || value.isEmpty
+                                      ? l10n.passwordRequired
+                                      : null,
                                 ),
                                 const SizedBox(height: 16),
                                 SizedBox(
@@ -209,14 +246,31 @@ class _LoginViewState extends State<LoginView> {
                                     onPressed: state is AuthLoading
                                         ? null
                                         : () {
-                                            if (_formKey.currentState!.validate()) {
-                                              // 🔥 هنا بنستخدم دالة الـ Format قبل ما نبعت الرقم للكيوبيت
-                                              String formattedPhone = formatPhoneNumber(_emailController.text);
+                                            if (_formKey.currentState!
+                                                .validate()) {
+                                              try {
+                                                final normalizedPhone =
+                                                    EgyptianPhoneNormalizer.normalize(
+                                                      _emailController.text,
+                                                    );
 
-                                              context.read<AuthCubit>().login(
-                                                    formattedPhone,
-                                                    _passwordController.text.trim(),
-                                                  );
+                                                context.read<AuthCubit>().login(
+                                                  normalizedPhone,
+                                                  _passwordController.text
+                                                      .trim(),
+                                                );
+                                              } on PhoneNormalizationException catch (
+                                                e
+                                              ) {
+                                                ScaffoldMessenger.of(
+                                                  context,
+                                                ).showSnackBar(
+                                                  SnackBar(
+                                                    content: Text(e.message),
+                                                    backgroundColor: Colors.red,
+                                                  ),
+                                                );
+                                              }
                                             }
                                           },
                                     style: ElevatedButton.styleFrom(
@@ -226,7 +280,9 @@ class _LoginViewState extends State<LoginView> {
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                       elevation: 8,
-                                      shadowColor: const Color(0xff2f80ed).withValues(alpha: 0.35),
+                                      shadowColor: const Color(
+                                        0xff2f80ed,
+                                      ).withValues(alpha: 0.35),
                                     ),
                                     child: state is AuthLoading
                                         ? const SizedBox(
@@ -239,7 +295,9 @@ class _LoginViewState extends State<LoginView> {
                                           )
                                         : Text(
                                             l10n.loginButton,
-                                            style: const TextStyle(fontWeight: FontWeight.w800),
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.w800,
+                                            ),
                                           ),
                                   ),
                                 ),
@@ -248,12 +306,23 @@ class _LoginViewState extends State<LoginView> {
                                   children: [
                                     Expanded(
                                       child: OutlinedButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          Navigator.pushNamed(
+                                            context,
+                                            AppNavigator.forgotPassword,
+                                          );
+                                        },
                                         style: OutlinedButton.styleFrom(
-                                          foregroundColor: const Color(0xff2f80ed),
-                                          side: const BorderSide(color: Color(0xff2f80ed)),
+                                          foregroundColor: const Color(
+                                            0xff2f80ed,
+                                          ),
+                                          side: const BorderSide(
+                                            color: Color(0xff2f80ed),
+                                          ),
                                           shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(6),
+                                            borderRadius: BorderRadius.circular(
+                                              6,
+                                            ),
                                           ),
                                         ),
                                         child: Text(l10n.forgotPassword),
@@ -263,13 +332,22 @@ class _LoginViewState extends State<LoginView> {
                                     Expanded(
                                       child: TextButton(
                                         onPressed: () {
-                                          Navigator.pushNamed(context, AppNavigator.register);
+                                          Navigator.pushNamed(
+                                            context,
+                                            AppNavigator.register,
+                                          );
                                         },
                                         style: TextButton.styleFrom(
-                                          backgroundColor: const Color(0xffeef2f5),
-                                          foregroundColor: const Color(0xff2f80ed),
+                                          backgroundColor: const Color(
+                                            0xffeef2f5,
+                                          ),
+                                          foregroundColor: const Color(
+                                            0xff2f80ed,
+                                          ),
                                           shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(6),
+                                            borderRadius: BorderRadius.circular(
+                                              6,
+                                            ),
                                           ),
                                         ),
                                         child: Text(l10n.registerNow),

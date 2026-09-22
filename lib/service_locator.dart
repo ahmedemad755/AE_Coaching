@@ -1,10 +1,17 @@
 import 'package:ae_coaching/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:ae_coaching/auth/data/repositories/auth_repository_impl.dart';
 import 'package:ae_coaching/auth/domain/repositories/auth_repository.dart';
+import 'package:ae_coaching/auth/domain/usecases/complete_profile_for_current_user_usecase.dart';
+import 'package:ae_coaching/auth/domain/usecases/inspect_session_usecase.dart';
+import 'package:ae_coaching/auth/domain/usecases/link_password_to_current_user_usecase.dart';
+import 'package:ae_coaching/auth/domain/usecases/link_phone_migration_usecase.dart';
 import 'package:ae_coaching/auth/domain/usecases/login_usecase.dart';
 import 'package:ae_coaching/auth/domain/usecases/register_with_phone_password_usecase.dart';
 import 'package:ae_coaching/auth/domain/usecases/register_with_otp_usecase.dart';
 import 'package:ae_coaching/auth/domain/usecases/request_otp_usecase.dart';
+import 'package:ae_coaching/auth/domain/usecases/request_phone_migration_otp_usecase.dart';
+import 'package:ae_coaching/auth/domain/usecases/request_password_reset_otp_usecase.dart';
+import 'package:ae_coaching/auth/domain/usecases/reset_password_with_otp_usecase.dart';
 import 'package:ae_coaching/auth/presentation/cubit/auth_cubit.dart';
 import 'package:ae_coaching/features/workout/data/datasources/workout_remote_data_source.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_repository_impl.dart';
@@ -34,9 +41,20 @@ import 'package:ae_coaching/features/workout/presentation/cubit/program_overview
 import 'package:ae_coaching/features/workout/presentation/cubit/rest_timer_cubit.dart';
 import 'package:ae_coaching/features/workout/presentation/cubit/program_consistency_cubit.dart';
 import 'package:ae_coaching/features/workout/presentation/cubit/home_workout_overview_cubit.dart';
+import 'package:ae_coaching/core/session/session_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 final sl = GetIt.instance;
+
+// Cross-cutting, not tied to any one feature — SessionStorage wraps the
+// already-open global `authBox` (main.dart awaits Hive.openBox('authBox')
+// before runApp(), so by the time anything actually resolves this lazy
+// singleton via sl(), the box is guaranteed open, exactly like every
+// other init*() registration below that doesn't run until first use).
+void initCore() {
+  sl.registerLazySingleton(() => SessionStorage(Hive.box('authBox')));
+}
 
 void initAuth() {
   // 1. UseCases
@@ -44,6 +62,13 @@ void initAuth() {
   sl.registerLazySingleton(() => RegisterWithOtpUseCase(sl()));
   sl.registerLazySingleton(() => RegisterWithPhonePasswordUseCase(sl()));
   sl.registerLazySingleton(() => LoginUseCase(sl()));
+  sl.registerLazySingleton(() => InspectSessionUseCase(sl()));
+  sl.registerLazySingleton(() => LinkPasswordToCurrentUserUseCase(sl()));
+  sl.registerLazySingleton(() => CompleteProfileForCurrentUserUseCase(sl()));
+  sl.registerLazySingleton(() => RequestPhoneMigrationOtpUseCase(sl()));
+  sl.registerLazySingleton(() => LinkPhoneMigrationUseCase(sl()));
+  sl.registerLazySingleton(() => RequestPasswordResetOtpUseCase(sl()));
+  sl.registerLazySingleton(() => ResetPasswordWithOtpUseCase(sl()));
 
   // 2. Repository
   sl.registerLazySingleton<AuthRepository>(
@@ -56,12 +81,21 @@ void initAuth() {
   );
 
   // الـ AuthCubit Factory
-  sl.registerFactory(() => AuthCubit(
-        requestOtpUseCase: sl(),
-        registerWithOtpUseCase: sl(),
-        registerWithPhonePasswordUseCase: sl(),
-        loginUseCase: sl(),
-      ));
+  sl.registerFactory(
+    () => AuthCubit(
+      requestOtpUseCase: sl(),
+      registerWithOtpUseCase: sl(),
+      registerWithPhonePasswordUseCase: sl(),
+      loginUseCase: sl(),
+      inspectSessionUseCase: sl(),
+      linkPasswordToCurrentUserUseCase: sl(),
+      completeProfileForCurrentUserUseCase: sl(),
+      requestPhoneMigrationOtpUseCase: sl(),
+      linkPhoneMigrationUseCase: sl(),
+      requestPasswordResetOtpUseCase: sl(),
+      resetPasswordWithOtpUseCase: sl(),
+    ),
+  );
 }
 
 void initWorkout() {
@@ -69,7 +103,9 @@ void initWorkout() {
   sl.registerLazySingleton(() => SaveAndSyncWorkoutUseCase(sl()));
   sl.registerLazySingleton(() => DeleteAndSyncWorkoutUseCase(sl()));
   sl.registerLazySingleton(() => DeleteMultipleAndSyncUseCase(sl()));
-  sl.registerLazySingleton(() => FetchAndSyncFromRemoteUseCase(sl())); // تسجيل الـ UseCase الجديد
+  sl.registerLazySingleton(
+    () => FetchAndSyncFromRemoteUseCase(sl()),
+  ); // تسجيل الـ UseCase الجديد
 
   // 2. Repository
   sl.registerLazySingleton<WorkoutRepository>(
@@ -87,7 +123,9 @@ void initWorkout() {
       saveAndSyncWorkoutUseCase: sl(),
       deleteAndSyncWorkoutUseCase: sl(),
       deleteMultipleAndSyncUseCase: sl(),
-      fetchAndSyncFromRemoteUseCase: sl(), // حقن الحقل الجديد تلقائياً عبر GetIt
+      fetchAndSyncFromRemoteUseCase:
+          sl(), // حقن الحقل الجديد تلقائياً عبر GetIt
+      sessionStorage: sl(),
     ),
   );
 }
@@ -103,13 +141,9 @@ void initMeasurements() {
     () => MeasurementRemoteDataSourceImpl(),
   );
 
-  sl.registerLazySingleton(
-    () => MeasurementRepository(remoteDataSource: sl()),
-  );
+  sl.registerLazySingleton(() => MeasurementRepository(remoteDataSource: sl()));
 
-  sl.registerFactory(
-    () => MeasurementCubit(repository: sl()),
-  );
+  sl.registerFactory(() => MeasurementCubit(repository: sl()));
 }
 
 // Progress Photos feature — completely separate from Workout and
@@ -119,9 +153,7 @@ void initMeasurements() {
 void initProgressPhotos() {
   sl.registerLazySingleton(() => ProgressPhotoRepository());
 
-  sl.registerFactory(
-    () => ProgressPhotoCubit(repository: sl()),
-  );
+  sl.registerFactory(() => ProgressPhotoCubit(repository: sl()));
 }
 
 // Workout Programs feature (Phase 5 UI) — completely separate from
@@ -176,7 +208,9 @@ void initWorkoutSessions() {
 // the app-wide WorkoutSessionCubit singleton above.
 void initSessionExercises() {
   sl.registerLazySingleton(() => SessionExerciseRepository());
-  sl.registerFactory(() => SessionExerciseCubit(repository: sl(), sessionRepository: sl()));
+  sl.registerFactory(
+    () => SessionExerciseCubit(repository: sl(), sessionRepository: sl()),
+  );
 }
 
 // Workout History (Phase 14) — screen-scoped, read-only. Reuses the
@@ -190,7 +224,11 @@ void initWorkoutHistory() {
 // already-registered Template/Session/Set repository singletons.
 void initProgramAnalytics() {
   sl.registerFactory(
-    () => ProgramAnalyticsCubit(templateRepository: sl(), sessionRepository: sl(), setRepository: sl()),
+    () => ProgramAnalyticsCubit(
+      templateRepository: sl(),
+      sessionRepository: sl(),
+      setRepository: sl(),
+    ),
   );
 }
 
@@ -198,7 +236,10 @@ void initProgramAnalytics() {
 // summary. Reuses the already-registered Template/Session repository
 // singletons.
 void initProgramOverview() {
-  sl.registerFactory(() => ProgramOverviewCubit(templateRepository: sl(), sessionRepository: sl()));
+  sl.registerFactory(
+    () =>
+        ProgramOverviewCubit(templateRepository: sl(), sessionRepository: sl()),
+  );
 }
 
 // Rest Timer (Phase 17) — screen-scoped, in-memory only, no storage.

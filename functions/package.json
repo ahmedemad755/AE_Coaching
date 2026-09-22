@@ -1,0 +1,32 @@
+{
+  "name": "ae-coaching-functions",
+  "description": "Phase 5B trusted backend: phone-OTP password reset for AE Coaching. Never creates or deletes Firebase Auth users.",
+  "private": true,
+  "engines": {
+    "node": "20"
+  },
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "lint": "echo \"(no lint step configured)\"",
+    "test:unit": "jest --config jest.config.js --selectProjects unit",
+    "test:emulator": "jest --config jest.config.js --selectProjects emulator --runInBand --forceExit",
+    "test:e2e": "jest --config jest.config.js --selectProjects e2e --runInBand --forceExit",
+    "emulators": "firebase emulators:start --only auth,firestore,functions --project ae-coaching-test",
+    "test:emulator:exec": "firebase emulators:exec --only auth,firestore,functions --project ae-coaching-test \"npm run test:emulator\"",
+    "test:e2e:exec": "firebase emulators:exec --only auth,firestore,functions --project ae-coaching-test \"npm run test:e2e\""
+  },
+  "dependencies": {
+    "firebase-admin": "^12.7.0",
+    "firebase-functions": "^5.1.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.13",
+    "@types/node": "^20.16.5",
+    "firebase-functions-test": "^3.4.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "typescript": "^5.5.4"
+  }
+}
