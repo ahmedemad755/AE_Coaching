@@ -7,7 +7,7 @@ class LoginUseCase {
   LoginUseCase(this.repository);
 
   /// تنفيذ عملية تسجيل الدخول
-  /// تم تعديل النوع لـ Future<void> ليتوافق مع الـ Repository الجديد
+  /// تم تعديل النوع لـ `Future<void>` ليتوافق مع الـ Repository الجديد
   Future<AuthUser> call(String phone, String password) async {
     return await repository.login(phone, password);
   }

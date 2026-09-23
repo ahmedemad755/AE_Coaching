@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'Exercise_Set.dart';
+part of 'exercise_set.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator

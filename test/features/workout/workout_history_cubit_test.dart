@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:ae_coaching/features/workout/data/models/Exercise_Set.dart';
+import 'package:ae_coaching/features/workout/data/models/exercise_set.dart';
 import 'package:ae_coaching/core/storage/user_storage_manager.dart';
 import 'package:ae_coaching/features/workout/data/datasources/workout_session_remote_data_source.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_session.dart';

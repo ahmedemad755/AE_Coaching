@@ -1,4 +1,4 @@
-import 'package:ae_coaching/features/workout/data/models/Exercise_Set.dart';
+import 'package:ae_coaching/features/workout/data/models/exercise_set.dart';
 import 'package:ae_coaching/features/workout/data/datasources/workout_remote_data_source.dart';
 import 'package:ae_coaching/features/workout/domain/repositories/workout_repository.dart';
 import 'package:flutter/foundation.dart';

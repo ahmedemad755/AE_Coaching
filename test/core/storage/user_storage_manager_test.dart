@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:ae_coaching/features/workout/data/models/Exercise_Set.dart';
+import 'package:ae_coaching/features/workout/data/models/exercise_set.dart';
 import 'package:ae_coaching/auth/data/models/body_measurement.dart';
 import 'package:ae_coaching/core/storage/user_storage_manager.dart';
 import 'package:ae_coaching/features/progress_photos/data/models/progress_photo.dart';

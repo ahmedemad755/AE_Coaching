@@ -21,6 +21,12 @@ import 'package:hive_flutter/hive_flutter.dart';
 /// - `currentUserName` (String, default '')
 /// - `currentUserPhone` (String — write/delete only; nothing in this
 ///   codebase reads it back, so no getter is exposed for it)
+///
+/// Ownership note (Stage 8 audit): [LocaleCubit] also owns a key
+/// (`appLocale`) in this same `authBox`, independently of this class.
+/// The two key sets are disjoint by design; see [LocaleCubit]'s doc
+/// comment for the full rationale for leaving this shared-box
+/// arrangement unchanged.
 class SessionStorage {
   final Box _box;
 

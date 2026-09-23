@@ -1,4 +1,4 @@
-import 'package:ae_coaching/features/workout/data/models/Exercise_Set.dart';
+import 'package:ae_coaching/features/workout/data/models/exercise_set.dart';
 import 'package:ae_coaching/core/errors/exception_message_mapper.dart';
 import 'package:ae_coaching/core/session/session_storage.dart';
 import 'package:ae_coaching/core/storage/user_storage_manager.dart';

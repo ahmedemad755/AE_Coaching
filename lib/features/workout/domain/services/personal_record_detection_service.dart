@@ -1,4 +1,4 @@
-import 'package:ae_coaching/features/workout/data/models/Exercise_Set.dart';
+import 'package:ae_coaching/features/workout/data/models/exercise_set.dart';
 
 /// Which kind of personal record was broken.
 enum PersonalRecordType {

@@ -1,4 +1,4 @@
-import 'package:ae_coaching/features/workout/data/models/Exercise_Set.dart';
+import 'package:ae_coaching/features/workout/data/models/exercise_set.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_session.dart';
 import 'package:ae_coaching/features/workout/domain/services/workout_progress_comparison_service.dart';
 import 'package:flutter_test/flutter_test.dart';

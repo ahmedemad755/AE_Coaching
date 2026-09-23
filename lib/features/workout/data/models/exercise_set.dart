@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 
 // هذا الملف سيتم إنتاجه بواسطة hive_generator
-part 'Exercise_Set.g.dart';
+part 'exercise_set.g.dart';
 
 @HiveType(typeId: 0) // الـ typeId الخاص بالـ Model
 class ExerciseSet extends HiveObject {
@@ -56,7 +56,11 @@ class ExerciseSet extends HiveObject {
   /// rejects it automatically — this exists so a future save path (or
   /// a test) can check it explicitly.
   bool get hasConsistentSessionLinkage {
-    final linkedCount = [programId, workoutTemplateId, workoutSessionId].where((v) => v != null).length;
+    final linkedCount = [
+      programId,
+      workoutTemplateId,
+      workoutSessionId,
+    ].where((v) => v != null).length;
     return linkedCount == 0 || linkedCount == 3;
   }
 
