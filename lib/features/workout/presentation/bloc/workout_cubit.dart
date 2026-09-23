@@ -2,10 +2,7 @@ import 'package:ae_coaching/features/workout/data/models/Exercise_Set.dart';
 import 'package:ae_coaching/core/errors/exception_message_mapper.dart';
 import 'package:ae_coaching/core/session/session_storage.dart';
 import 'package:ae_coaching/core/storage/user_storage_manager.dart';
-import 'package:ae_coaching/features/workout/domain/usecases/delete_and_sync_workout_usecase.dart';
-import 'package:ae_coaching/features/workout/domain/usecases/delete_multiple_and_sync_usecase.dart';
-import 'package:ae_coaching/features/workout/domain/usecases/save_and_sync_workout_usecase.dart';
-import 'package:ae_coaching/features/workout/domain/usecases/fetch_and_sync_from_remote_usecase.dart'; // Import الـ UseCase الجديد
+import 'package:ae_coaching/features/workout/domain/repositories/workout_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -13,11 +10,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 part 'workout_state.dart';
 
 class WorkoutCubit extends Cubit<WorkoutState> {
-  final SaveAndSyncWorkoutUseCase saveAndSyncWorkoutUseCase;
-  final DeleteAndSyncWorkoutUseCase deleteAndSyncWorkoutUseCase;
-  final DeleteMultipleAndSyncUseCase deleteMultipleAndSyncUseCase;
-  final FetchAndSyncFromRemoteUseCase
-  fetchAndSyncFromRemoteUseCase; // الحقل الجديد للـ UseCase
+  final WorkoutRepository repository;
   final SessionStorage sessionStorage;
   final UserStorageManager storageManager;
   late final UserBox<ExerciseSet> _userBox = UserBox<ExerciseSet>(
@@ -25,11 +18,18 @@ class WorkoutCubit extends Cubit<WorkoutState> {
     prefix: 'sets',
   );
 
+  // Stage 7: the four use cases this Cubit used to depend on
+  // (SaveAndSyncWorkoutUseCase, DeleteAndSyncWorkoutUseCase,
+  // DeleteMultipleAndSyncUseCase, FetchAndSyncFromRemoteUseCase) were
+  // each a pure single-repository-method pass-through with no
+  // validation/transformation/orchestration of their own — and, unlike
+  // every Auth use case (which uniformly wraps 100% of that feature's
+  // operations), they were the only place left in the whole Workout
+  // feature still using this indirection; every newer workout Cubit
+  // (Program/Template/Session/SessionExercise/...) already injects its
+  // repository directly. Removed; repository injected directly instead.
   WorkoutCubit({
-    required this.saveAndSyncWorkoutUseCase,
-    required this.deleteAndSyncWorkoutUseCase,
-    required this.deleteMultipleAndSyncUseCase,
-    required this.fetchAndSyncFromRemoteUseCase, // تمرير عبر الـ Constructor
+    required this.repository,
     required this.sessionStorage,
     required this.storageManager,
   }) : super(const WorkoutInitial());
@@ -52,9 +52,7 @@ class WorkoutCubit extends Cubit<WorkoutState> {
 
       // الآن نعمل الـ Sync الصامت لجلب أي تمارين جديدة تمت من أي جهاز أخر
       emit(const WorkoutLoading(operation: WorkoutOperation.sync));
-      await fetchAndSyncFromRemoteUseCase(
-        FetchAndSyncFromRemoteParams(box: box),
-      );
+      await repository.fetchAndSyncFromRemote(box);
 
       // تأكيد النجاح الكامل والنهائي بعد مزامنة داتا الفايرستور والـ Hive معاً
       emit(
@@ -82,9 +80,7 @@ class WorkoutCubit extends Cubit<WorkoutState> {
       final box = await _getWorkoutBox();
       final resolvedKey = _resolveWorkoutKey(key, set);
 
-      await saveAndSyncWorkoutUseCase(
-        SaveAndSyncWorkoutParams(box: box, key: resolvedKey, set: set),
-      );
+      await repository.saveAndSyncWorkout(box, resolvedKey, set);
 
       emit(
         WorkoutSuccess(
@@ -116,7 +112,7 @@ class WorkoutCubit extends Cubit<WorkoutState> {
         throw Exception('Workout set is not stored in Hive.');
       }
 
-      await deleteAndSyncWorkoutUseCase(DeleteAndSyncWorkoutParams(set: set));
+      await repository.deleteAndSyncWorkout(set);
 
       emit(
         WorkoutSuccess(
@@ -151,9 +147,7 @@ class WorkoutCubit extends Cubit<WorkoutState> {
         throw Exception('No workout sets selected for deletion.');
       }
 
-      await deleteMultipleAndSyncUseCase(
-        DeleteMultipleAndSyncParams(box: box, keys: formattedKeys),
-      );
+      await repository.deleteMultipleAndSync(box, formattedKeys);
 
       emit(
         WorkoutSuccess(

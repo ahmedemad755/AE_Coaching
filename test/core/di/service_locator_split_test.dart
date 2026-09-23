@@ -28,10 +28,6 @@ import 'package:ae_coaching/features/workout/data/repositories/workout_template_
 import 'package:ae_coaching/features/workout/data/repositories/workout_session_repository.dart';
 import 'package:ae_coaching/features/workout/data/repositories/session_exercise_repository.dart';
 import 'package:ae_coaching/features/workout/domain/repositories/workout_repository.dart';
-import 'package:ae_coaching/features/workout/domain/usecases/delete_and_sync_workout_usecase.dart';
-import 'package:ae_coaching/features/workout/domain/usecases/delete_multiple_and_sync_usecase.dart';
-import 'package:ae_coaching/features/workout/domain/usecases/save_and_sync_workout_usecase.dart';
-import 'package:ae_coaching/features/workout/domain/usecases/fetch_and_sync_from_remote_usecase.dart';
 import 'package:ae_coaching/features/workout/presentation/bloc/workout_cubit.dart';
 import 'package:ae_coaching/features/workout/presentation/cubit/workout_program_cubit.dart';
 import 'package:ae_coaching/features/workout/presentation/cubit/workout_template_cubit.dart';
@@ -109,7 +105,7 @@ void main() {
   });
 
   group('complete registration inventory survives the split', () {
-    test('all 30 lazy-singleton types remain registered', () {
+    test('all 26 lazy-singleton types remain registered', () {
       // Core
       expect(sl.isRegistered<SessionStorage>(), isTrue);
       expect(sl.isRegistered<UserStorageManager>(), isTrue);
@@ -127,11 +123,8 @@ void main() {
       expect(sl.isRegistered<ResetPasswordWithOtpUseCase>(), isTrue);
       expect(sl.isRegistered<AuthRepository>(), isTrue);
       expect(sl.isRegistered<AuthRemoteDataSource>(), isTrue);
-      // Legacy workout
-      expect(sl.isRegistered<SaveAndSyncWorkoutUseCase>(), isTrue);
-      expect(sl.isRegistered<DeleteAndSyncWorkoutUseCase>(), isTrue);
-      expect(sl.isRegistered<DeleteMultipleAndSyncUseCase>(), isTrue);
-      expect(sl.isRegistered<FetchAndSyncFromRemoteUseCase>(), isTrue);
+      // Legacy workout (Stage 7 removed its four use-case wrappers —
+      // WorkoutCubit now depends on WorkoutRepository directly)
       expect(sl.isRegistered<WorkoutRepository>(), isTrue);
       expect(sl.isRegistered<WorkoutRemoteDataSource>(), isTrue);
       // Measurements
