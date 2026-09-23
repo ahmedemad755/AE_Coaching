@@ -1,4 +1,5 @@
 import 'package:ae_coaching/auth/data/models/Exercise_Set.dart';
+import 'package:ae_coaching/core/errors/exception_message_mapper.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_session.dart';
 import 'package:ae_coaching/features/workout/data/repositories/session_exercise_repository.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_session_repository.dart';
@@ -26,14 +27,17 @@ class ProgramAnalyticsCubit extends Cubit<ProgramAnalyticsState> {
     required this.sessionRepository,
     required this.setRepository,
     ProgramAnalyticsService? service,
-  })  : service = service ?? const ProgramAnalyticsService(),
-        super(const ProgramAnalyticsInitial());
+  }) : service = service ?? const ProgramAnalyticsService(),
+       super(const ProgramAnalyticsInitial());
 
   Future<void> loadAnalytics(String programId) async {
     emit(const ProgramAnalyticsLoading());
     try {
       final templateBox = await templateRepository.getUserBox();
-      final templates = templateRepository.getTemplatesForProgram(templateBox, programId);
+      final templates = templateRepository.getTemplatesForProgram(
+        templateBox,
+        programId,
+      );
 
       final sessionBox = await sessionRepository.getUserBox();
       final setBox = await setRepository.getUserBox();
@@ -42,10 +46,16 @@ class ProgramAnalyticsCubit extends Cubit<ProgramAnalyticsState> {
       final setsBySessionId = <String, List<ExerciseSet>>{};
 
       for (final template in templates) {
-        final completed = sessionRepository.getCompletedSessionsForTemplate(sessionBox, template.id);
+        final completed = sessionRepository.getCompletedSessionsForTemplate(
+          sessionBox,
+          template.id,
+        );
         completedSessionsByTemplate[template.id] = completed;
         for (final session in completed) {
-          setsBySessionId[session.id] = setRepository.getSetsForSession(setBox, session.id);
+          setsBySessionId[session.id] = setRepository.getSetsForSession(
+            setBox,
+            session.id,
+          );
         }
       }
 
@@ -58,7 +68,7 @@ class ProgramAnalyticsCubit extends Cubit<ProgramAnalyticsState> {
 
       emit(ProgramAnalyticsLoaded(summary));
     } catch (error) {
-      emit(ProgramAnalyticsError(error.toString()));
+      emit(ProgramAnalyticsError(mapGenericExceptionToMessage(error)));
     }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:ae_coaching/auth/data/models/Exercise_Set.dart';
+import 'package:ae_coaching/core/errors/exception_message_mapper.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_session.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_template.dart';
 import 'package:ae_coaching/features/workout/data/repositories/session_exercise_repository.dart';
@@ -37,8 +38,8 @@ class HomeWorkoutOverviewCubit extends Cubit<HomeWorkoutOverviewState> {
     required this.templateRepository,
     required this.setRepository,
     HomeWorkoutOverviewService? service,
-  })  : service = service ?? const HomeWorkoutOverviewService(),
-        super(const HomeWorkoutOverviewInitial());
+  }) : service = service ?? const HomeWorkoutOverviewService(),
+       super(const HomeWorkoutOverviewInitial());
 
   Future<void> loadOverview() async {
     emit(const HomeWorkoutOverviewLoading());
@@ -51,9 +52,14 @@ class HomeWorkoutOverviewCubit extends Cubit<HomeWorkoutOverviewState> {
 
       final activeProgramCompletedSessions = activeProgram == null
           ? const <WorkoutSession>[]
-          : sessionRepository.getCompletedSessionsForProgram(sessionBox, activeProgram.id);
+          : sessionRepository.getCompletedSessionsForProgram(
+              sessionBox,
+              activeProgram.id,
+            );
 
-      final allCompletedSessions = sessionRepository.getAllCompletedSessions(sessionBox);
+      final allCompletedSessions = sessionRepository.getAllCompletedSessions(
+        sessionBox,
+      );
 
       final templateBox = await templateRepository.getUserBox();
       final setBox = await setRepository.getUserBox();
@@ -61,9 +67,17 @@ class HomeWorkoutOverviewCubit extends Cubit<HomeWorkoutOverviewState> {
       final templatesByTemplateId = <String, WorkoutTemplate>{};
       final setsBySessionId = <String, List<ExerciseSet>>{};
       for (final session in allCompletedSessions) {
-        final template = templateRepository.getTemplateById(templateBox, session.workoutTemplateId);
-        if (template != null) templatesByTemplateId[session.workoutTemplateId] = template;
-        setsBySessionId[session.id] = setRepository.getSetsForSession(setBox, session.id);
+        final template = templateRepository.getTemplateById(
+          templateBox,
+          session.workoutTemplateId,
+        );
+        if (template != null) {
+          templatesByTemplateId[session.workoutTemplateId] = template;
+        }
+        setsBySessionId[session.id] = setRepository.getSetsForSession(
+          setBox,
+          session.id,
+        );
       }
 
       final overview = service.build(
@@ -78,7 +92,7 @@ class HomeWorkoutOverviewCubit extends Cubit<HomeWorkoutOverviewState> {
 
       emit(HomeWorkoutOverviewLoaded(overview));
     } catch (error) {
-      emit(HomeWorkoutOverviewError(error.toString()));
+      emit(HomeWorkoutOverviewError(mapGenericExceptionToMessage(error)));
     }
   }
 }

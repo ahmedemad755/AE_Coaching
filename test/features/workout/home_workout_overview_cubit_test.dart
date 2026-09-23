@@ -26,34 +26,41 @@ class _FakeWorkoutRemoteDataSource implements WorkoutRemoteDataSource {
   @override
   Future<void> deleteMultipleSets(List<String> keys) async {}
   @override
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> fetchAllRemoteSets() async => const [];
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
+  fetchAllRemoteSets() async => const [];
 }
 
-class _FakeWorkoutSessionRemoteDataSource implements WorkoutSessionRemoteDataSource {
+class _FakeWorkoutSessionRemoteDataSource
+    implements WorkoutSessionRemoteDataSource {
   @override
   Future<void> syncSession(String id, WorkoutSession session) async {}
   @override
   Future<void> deleteSession(String id) async {}
   @override
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> fetchAllRemoteSessions() async => const [];
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
+  fetchAllRemoteSessions() async => const [];
 }
 
-class _FakeWorkoutTemplateRemoteDataSource implements WorkoutTemplateRemoteDataSource {
+class _FakeWorkoutTemplateRemoteDataSource
+    implements WorkoutTemplateRemoteDataSource {
   @override
   Future<void> syncTemplate(String id, WorkoutTemplate template) async {}
   @override
   Future<void> deleteTemplate(String id) async {}
   @override
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> fetchAllRemoteTemplates() async => const [];
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
+  fetchAllRemoteTemplates() async => const [];
 }
 
-class _FakeWorkoutProgramRemoteDataSource implements WorkoutProgramRemoteDataSource {
+class _FakeWorkoutProgramRemoteDataSource
+    implements WorkoutProgramRemoteDataSource {
   @override
   Future<void> syncProgram(String id, WorkoutProgram program) async {}
   @override
   Future<void> deleteProgram(String id) async {}
   @override
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> fetchAllRemotePrograms() async => const [];
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
+  fetchAllRemotePrograms() async => const [];
 }
 
 void main() {
@@ -68,10 +75,18 @@ void main() {
   setUp(() async {
     tempDir = await Directory.systemTemp.createTemp('home_overview_test_');
     Hive.init(tempDir.path);
-    if (!Hive.isAdapterRegistered(0)) Hive.registerAdapter(ExerciseSetAdapter());
-    if (!Hive.isAdapterRegistered(1)) Hive.registerAdapter(WorkoutProgramAdapter());
-    if (!Hive.isAdapterRegistered(4)) Hive.registerAdapter(WorkoutTemplateAdapter());
-    if (!Hive.isAdapterRegistered(5)) Hive.registerAdapter(WorkoutSessionAdapter());
+    if (!Hive.isAdapterRegistered(0)) {
+      Hive.registerAdapter(ExerciseSetAdapter());
+    }
+    if (!Hive.isAdapterRegistered(1)) {
+      Hive.registerAdapter(WorkoutProgramAdapter());
+    }
+    if (!Hive.isAdapterRegistered(4)) {
+      Hive.registerAdapter(WorkoutTemplateAdapter());
+    }
+    if (!Hive.isAdapterRegistered(5)) {
+      Hive.registerAdapter(WorkoutSessionAdapter());
+    }
 
     // Fresh, isolated manager per test — never the production instance.
     storageManager = UserStorageManager();
@@ -113,161 +128,271 @@ void main() {
     }
   });
 
-  test('no active program and no completed workouts: both empty states load correctly', () async {
-    await cubit.loadOverview();
+  test(
+    'no active program and no completed workouts: both empty states load correctly',
+    () async {
+      await cubit.loadOverview();
 
-    final state = cubit.state as HomeWorkoutOverviewLoaded;
-    expect(state.overview.activeSession, isNull);
-    expect(state.overview.activeProgram, isNull);
-    expect(state.overview.recentSessions, isEmpty);
-  });
+      final state = cubit.state as HomeWorkoutOverviewLoaded;
+      expect(state.overview.activeSession, isNull);
+      expect(state.overview.activeProgram, isNull);
+      expect(state.overview.recentSessions, isEmpty);
+    },
+  );
 
-  test('an in-progress session takes priority and is surfaced regardless of completed history', () async {
-    final program = await programRepository.createProgram(name: 'PPL', makeActive: true);
-    final push = await templateRepository.createTemplate(programId: program.id, name: 'Push');
-    final pull = await templateRepository.createTemplate(programId: program.id, name: 'Pull');
+  test(
+    'an in-progress session takes priority and is surfaced regardless of completed history',
+    () async {
+      final program = await programRepository.createProgram(
+        name: 'PPL',
+        makeActive: true,
+      );
+      final push = await templateRepository.createTemplate(
+        programId: program.id,
+        name: 'Push',
+      );
+      final pull = await templateRepository.createTemplate(
+        programId: program.id,
+        name: 'Pull',
+      );
 
-    // An older completed Pull session...
-    final pullSession = await sessionRepository.startWorkoutSession(
-      programId: program.id,
-      workoutTemplateId: pull.id,
-      workoutNameSnapshot: 'Pull',
+      // An older completed Pull session...
+      final pullSession = await sessionRepository.startWorkoutSession(
+        programId: program.id,
+        workoutTemplateId: pull.id,
+        workoutNameSnapshot: 'Pull',
+      );
+      await sessionRepository.completeWorkoutSession(
+        sessionId: pullSession.id,
+        totalVolume: 5110,
+      );
+
+      // ...then a currently in-progress Push session.
+      final activePush = await sessionRepository.startWorkoutSession(
+        programId: program.id,
+        workoutTemplateId: push.id,
+        workoutNameSnapshot: 'Push',
+      );
+
+      await cubit.loadOverview();
+
+      final state = cubit.state as HomeWorkoutOverviewLoaded;
+      expect(state.overview.activeSession?.id, equals(activePush.id));
+      expect(state.overview.activeSession?.workoutNameSnapshot, equals('Push'));
+    },
+  );
+
+  test(
+    'Push and Pull completed sessions stay separate, newest first, with correct per-session counts',
+    () async {
+      final program = await programRepository.createProgram(
+        name: 'PPL',
+        makeActive: true,
+      );
+      final push = await templateRepository.createTemplate(
+        programId: program.id,
+        name: 'Push',
+      );
+      final pull = await templateRepository.createTemplate(
+        programId: program.id,
+        name: 'Pull',
+      );
+
+      final pullSession = await sessionRepository.startWorkoutSession(
+        programId: program.id,
+        workoutTemplateId: pull.id,
+        workoutNameSnapshot: 'Pull',
+      );
+      await setRepository.addSet(
+        programId: program.id,
+        workoutTemplateId: pull.id,
+        workoutSessionId: pullSession.id,
+        exerciseName: 'Lat Pulldown',
+        weight: 60,
+        reps: 10,
+      );
+      await sessionRepository.completeWorkoutSession(
+        sessionId: pullSession.id,
+        totalVolume: 5110,
+      );
+
+      final pushSession = await sessionRepository.startWorkoutSession(
+        programId: program.id,
+        workoutTemplateId: push.id,
+        workoutNameSnapshot: 'Push',
+      );
+      await setRepository.addSet(
+        programId: program.id,
+        workoutTemplateId: push.id,
+        workoutSessionId: pushSession.id,
+        exerciseName: 'Bench Press',
+        weight: 80,
+        reps: 8,
+      );
+      await setRepository.addSet(
+        programId: program.id,
+        workoutTemplateId: push.id,
+        workoutSessionId: pushSession.id,
+        exerciseName: 'Incline Press',
+        weight: 60,
+        reps: 8,
+      );
+      await sessionRepository.completeWorkoutSession(
+        sessionId: pushSession.id,
+        totalVolume: 4820,
+      );
+
+      await cubit.loadOverview();
+
+      final state = cubit.state as HomeWorkoutOverviewLoaded;
+      expect(state.overview.recentSessions, hasLength(2));
+
+      // Newest first — Push was completed after Pull.
+      final newest = state.overview.recentSessions.first;
+      final oldest = state.overview.recentSessions.last;
+      expect(newest.session.workoutNameSnapshot, equals('Push'));
+      expect(newest.exerciseCount, equals(2));
+      expect(newest.setCount, equals(2));
+      expect(newest.session.totalVolume, equals(4820));
+      expect(newest.template?.name, equals('Push'));
+
+      expect(oldest.session.workoutNameSnapshot, equals('Pull'));
+      expect(oldest.exerciseCount, equals(1));
+      expect(oldest.setCount, equals(1));
+      expect(oldest.session.totalVolume, equals(5110));
+    },
+  );
+
+  test(
+    'a legacy (unlinked) ExerciseSet never appears as a recent session or affects counts',
+    () async {
+      // A pre-Phase-4 legacy set with no session/program/template link.
+      final setBox = await setRepository.getUserBox();
+      await setBox.add(
+        ExerciseSet(
+          exerciseName: 'Old Bench',
+          weight: 50,
+          reps: 10,
+          date: DateTime(2020, 1, 1),
+        ),
+      );
+
+      final program = await programRepository.createProgram(
+        name: 'PPL',
+        makeActive: true,
+      );
+      final push = await templateRepository.createTemplate(
+        programId: program.id,
+        name: 'Push',
+      );
+      final session = await sessionRepository.startWorkoutSession(
+        programId: program.id,
+        workoutTemplateId: push.id,
+        workoutNameSnapshot: 'Push',
+      );
+      await setRepository.addSet(
+        programId: program.id,
+        workoutTemplateId: push.id,
+        workoutSessionId: session.id,
+        exerciseName: 'Bench Press',
+        weight: 80,
+        reps: 8,
+      );
+      await sessionRepository.completeWorkoutSession(
+        sessionId: session.id,
+        totalVolume: 640,
+      );
+
+      await cubit.loadOverview();
+
+      final state = cubit.state as HomeWorkoutOverviewLoaded;
+      expect(state.overview.recentSessions, hasLength(1));
+      expect(state.overview.recentSessions.single.exerciseCount, equals(1));
+      expect(
+        state.overview.recentSessions.single.exerciseNames,
+        equals(['Bench Press']),
+      );
+    },
+  );
+
+  test(
+    'the active program summary reflects a real "this week" count, scoped to that program only',
+    () async {
+      final activeProgram = await programRepository.createProgram(
+        name: 'PPL',
+        makeActive: true,
+      );
+      final otherProgram = await programRepository.createProgram(
+        name: 'Old Split',
+      );
+
+      final push = await templateRepository.createTemplate(
+        programId: activeProgram.id,
+        name: 'Push',
+      );
+      final pushSession = await sessionRepository.startWorkoutSession(
+        programId: activeProgram.id,
+        workoutTemplateId: push.id,
+        workoutNameSnapshot: 'Push',
+      );
+      await sessionRepository.completeWorkoutSession(
+        sessionId: pushSession.id,
+        totalVolume: 100,
+      );
+
+      final otherTemplate = await templateRepository.createTemplate(
+        programId: otherProgram.id,
+        name: 'Legs',
+      );
+      final otherSession = await sessionRepository.startWorkoutSession(
+        programId: otherProgram.id,
+        workoutTemplateId: otherTemplate.id,
+        workoutNameSnapshot: 'Legs',
+      );
+      await sessionRepository.completeWorkoutSession(
+        sessionId: otherSession.id,
+        totalVolume: 999,
+      );
+
+      await cubit.loadOverview();
+
+      final state = cubit.state as HomeWorkoutOverviewLoaded;
+      expect(
+        state.overview.activeProgram?.program.id,
+        equals(activeProgram.id),
+      );
+      // Only the ACTIVE program's own session counts toward its "this
+      // week" figure — the other program's session must not leak in.
+      expect(
+        state.overview.activeProgram?.sessionsCompletedThisWeek,
+        equals(1),
+      );
+    },
+  );
+
+  test('Stage 4: a real repository failure (unauthenticated uid) maps to '
+      'its exact known-safe message via the shared generic mapper, never '
+      'the previous raw error.toString() output', () async {
+    final unauthenticatedSessionRepository = WorkoutSessionRepository(
+      remoteDataSource: _FakeWorkoutSessionRemoteDataSource(),
+      storageManager: storageManager,
+      uidOverride: () => '',
     );
-    await sessionRepository.completeWorkoutSession(sessionId: pullSession.id, totalVolume: 5110);
-
-    // ...then a currently in-progress Push session.
-    final activePush = await sessionRepository.startWorkoutSession(
-      programId: program.id,
-      workoutTemplateId: push.id,
-      workoutNameSnapshot: 'Push',
+    final unauthenticatedCubit = HomeWorkoutOverviewCubit(
+      sessionRepository: unauthenticatedSessionRepository,
+      programRepository: programRepository,
+      templateRepository: templateRepository,
+      setRepository: setRepository,
     );
 
-    await cubit.loadOverview();
+    await unauthenticatedCubit.loadOverview();
 
-    final state = cubit.state as HomeWorkoutOverviewLoaded;
-    expect(state.overview.activeSession?.id, equals(activePush.id));
-    expect(state.overview.activeSession?.workoutNameSnapshot, equals('Push'));
-  });
-
-  test('Push and Pull completed sessions stay separate, newest first, with correct per-session counts', () async {
-    final program = await programRepository.createProgram(name: 'PPL', makeActive: true);
-    final push = await templateRepository.createTemplate(programId: program.id, name: 'Push');
-    final pull = await templateRepository.createTemplate(programId: program.id, name: 'Pull');
-
-    final pullSession = await sessionRepository.startWorkoutSession(
-      programId: program.id,
-      workoutTemplateId: pull.id,
-      workoutNameSnapshot: 'Pull',
+    expect(unauthenticatedCubit.state, isA<HomeWorkoutOverviewError>());
+    expect(
+      (unauthenticatedCubit.state as HomeWorkoutOverviewError).message,
+      equals('User not authenticated'),
     );
-    await setRepository.addSet(
-      programId: program.id,
-      workoutTemplateId: pull.id,
-      workoutSessionId: pullSession.id,
-      exerciseName: 'Lat Pulldown',
-      weight: 60,
-      reps: 10,
-    );
-    await sessionRepository.completeWorkoutSession(sessionId: pullSession.id, totalVolume: 5110);
 
-    final pushSession = await sessionRepository.startWorkoutSession(
-      programId: program.id,
-      workoutTemplateId: push.id,
-      workoutNameSnapshot: 'Push',
-    );
-    await setRepository.addSet(
-      programId: program.id,
-      workoutTemplateId: push.id,
-      workoutSessionId: pushSession.id,
-      exerciseName: 'Bench Press',
-      weight: 80,
-      reps: 8,
-    );
-    await setRepository.addSet(
-      programId: program.id,
-      workoutTemplateId: push.id,
-      workoutSessionId: pushSession.id,
-      exerciseName: 'Incline Press',
-      weight: 60,
-      reps: 8,
-    );
-    await sessionRepository.completeWorkoutSession(sessionId: pushSession.id, totalVolume: 4820);
-
-    await cubit.loadOverview();
-
-    final state = cubit.state as HomeWorkoutOverviewLoaded;
-    expect(state.overview.recentSessions, hasLength(2));
-
-    // Newest first — Push was completed after Pull.
-    final newest = state.overview.recentSessions.first;
-    final oldest = state.overview.recentSessions.last;
-    expect(newest.session.workoutNameSnapshot, equals('Push'));
-    expect(newest.exerciseCount, equals(2));
-    expect(newest.setCount, equals(2));
-    expect(newest.session.totalVolume, equals(4820));
-    expect(newest.template?.name, equals('Push'));
-
-    expect(oldest.session.workoutNameSnapshot, equals('Pull'));
-    expect(oldest.exerciseCount, equals(1));
-    expect(oldest.setCount, equals(1));
-    expect(oldest.session.totalVolume, equals(5110));
-  });
-
-  test('a legacy (unlinked) ExerciseSet never appears as a recent session or affects counts', () async {
-    // A pre-Phase-4 legacy set with no session/program/template link.
-    final setBox = await setRepository.getUserBox();
-    await setBox.add(ExerciseSet(exerciseName: 'Old Bench', weight: 50, reps: 10, date: DateTime(2020, 1, 1)));
-
-    final program = await programRepository.createProgram(name: 'PPL', makeActive: true);
-    final push = await templateRepository.createTemplate(programId: program.id, name: 'Push');
-    final session = await sessionRepository.startWorkoutSession(
-      programId: program.id,
-      workoutTemplateId: push.id,
-      workoutNameSnapshot: 'Push',
-    );
-    await setRepository.addSet(
-      programId: program.id,
-      workoutTemplateId: push.id,
-      workoutSessionId: session.id,
-      exerciseName: 'Bench Press',
-      weight: 80,
-      reps: 8,
-    );
-    await sessionRepository.completeWorkoutSession(sessionId: session.id, totalVolume: 640);
-
-    await cubit.loadOverview();
-
-    final state = cubit.state as HomeWorkoutOverviewLoaded;
-    expect(state.overview.recentSessions, hasLength(1));
-    expect(state.overview.recentSessions.single.exerciseCount, equals(1));
-    expect(state.overview.recentSessions.single.exerciseNames, equals(['Bench Press']));
-  });
-
-  test('the active program summary reflects a real "this week" count, scoped to that program only', () async {
-    final activeProgram = await programRepository.createProgram(name: 'PPL', makeActive: true);
-    final otherProgram = await programRepository.createProgram(name: 'Old Split');
-
-    final push = await templateRepository.createTemplate(programId: activeProgram.id, name: 'Push');
-    final pushSession = await sessionRepository.startWorkoutSession(
-      programId: activeProgram.id,
-      workoutTemplateId: push.id,
-      workoutNameSnapshot: 'Push',
-    );
-    await sessionRepository.completeWorkoutSession(sessionId: pushSession.id, totalVolume: 100);
-
-    final otherTemplate = await templateRepository.createTemplate(programId: otherProgram.id, name: 'Legs');
-    final otherSession = await sessionRepository.startWorkoutSession(
-      programId: otherProgram.id,
-      workoutTemplateId: otherTemplate.id,
-      workoutNameSnapshot: 'Legs',
-    );
-    await sessionRepository.completeWorkoutSession(sessionId: otherSession.id, totalVolume: 999);
-
-    await cubit.loadOverview();
-
-    final state = cubit.state as HomeWorkoutOverviewLoaded;
-    expect(state.overview.activeProgram?.program.id, equals(activeProgram.id));
-    // Only the ACTIVE program's own session counts toward its "this
-    // week" figure — the other program's session must not leak in.
-    expect(state.overview.activeProgram?.sessionsCompletedThisWeek, equals(1));
+    await unauthenticatedCubit.close();
   });
 }

@@ -1,4 +1,5 @@
 import 'package:ae_coaching/auth/data/models/Exercise_Set.dart';
+import 'package:ae_coaching/core/errors/exception_message_mapper.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_session.dart';
 import 'package:ae_coaching/features/workout/data/repositories/session_exercise_repository.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_session_repository.dart';
@@ -18,7 +19,10 @@ class WorkoutCompletionResult {
   final WorkoutProgressSummary progressSummary;
   final List<PersonalRecordResult> personalRecords;
 
-  const WorkoutCompletionResult({required this.progressSummary, required this.personalRecords});
+  const WorkoutCompletionResult({
+    required this.progressSummary,
+    required this.personalRecords,
+  });
 }
 
 /// Drives the exercise-logging list on [ActiveWorkoutSessionScreen]
@@ -44,13 +48,21 @@ class SessionExerciseCubit extends Cubit<SessionExerciseState> {
     try {
       final box = await repository.getUserBox();
       final rows = await _buildRows(box, session);
-      emit(SessionExerciseLoaded(rows: rows, hasReferenceSession: rows.any((r) => r.isReferenceOnly)));
+      emit(
+        SessionExerciseLoaded(
+          rows: rows,
+          hasReferenceSession: rows.any((r) => r.isReferenceOnly),
+        ),
+      );
     } catch (error) {
-      emit(SessionExerciseError(error.toString()));
+      emit(SessionExerciseError(mapGenericExceptionToMessage(error)));
     }
   }
 
-  Future<List<SessionExerciseRow>> _buildRows(Box<ExerciseSet> box, WorkoutSession session) async {
+  Future<List<SessionExerciseRow>> _buildRows(
+    Box<ExerciseSet> box,
+    WorkoutSession session,
+  ) async {
     final loggedNames = repository.getExerciseNamesForSession(box, session.id);
 
     // Previous performance (Phase 9) is scoped to the previous
@@ -81,16 +93,21 @@ class SessionExerciseCubit extends Cubit<SessionExerciseState> {
     ];
 
     if (previous != null) {
-      final referenceNames = repository.getExerciseNamesForSession(box, previous.id);
+      final referenceNames = repository.getExerciseNamesForSession(
+        box,
+        previous.id,
+      );
       final loggedSet = loggedNames.toSet();
       for (final name in referenceNames) {
         if (!loggedSet.contains(name)) {
-          rows.add(SessionExerciseRow(
-            exerciseName: name,
-            sets: const [],
-            isReferenceOnly: true,
-            previousSets: previousSetsFor(name),
-          ));
+          rows.add(
+            SessionExerciseRow(
+              exerciseName: name,
+              sets: const [],
+              isReferenceOnly: true,
+              previousSets: previousSetsFor(name),
+            ),
+          );
         }
       }
     }
@@ -134,7 +151,9 @@ class SessionExerciseCubit extends Cubit<SessionExerciseState> {
   /// [PersonalRecordDetectionService]'s class docs for why that is
   /// global-across-programs by design, unlike the strictly
   /// same-program/same-template progress comparison right above it.
-  Future<WorkoutCompletionResult> buildCompletionSummary(WorkoutSession finishedSession) async {
+  Future<WorkoutCompletionResult> buildCompletionSummary(
+    WorkoutSession finishedSession,
+  ) async {
     final box = await repository.getUserBox();
     final currentSets = repository.getSetsForSession(box, finishedSession.id);
 
@@ -145,7 +164,9 @@ class SessionExerciseCubit extends Cubit<SessionExerciseState> {
       finishedSession.workoutTemplateId,
       excludeSessionId: finishedSession.id,
     );
-    final previousSets = previous == null ? const <ExerciseSet>[] : repository.getSetsForSession(box, previous.id);
+    final previousSets = previous == null
+        ? const <ExerciseSet>[]
+        : repository.getSetsForSession(box, previous.id);
 
     final progressSummary = const WorkoutProgressComparisonService().compare(
       currentSession: finishedSession,
@@ -154,12 +175,17 @@ class SessionExerciseCubit extends Cubit<SessionExerciseState> {
       previousSets: previousSets,
     );
 
-    final historicalSets = box.values.where((s) => s.workoutSessionId != finishedSession.id).toList();
+    final historicalSets = box.values
+        .where((s) => s.workoutSessionId != finishedSession.id)
+        .toList();
     final personalRecords = const PersonalRecordDetectionService().detect(
       newSets: currentSets,
       historicalSets: historicalSets,
     );
 
-    return WorkoutCompletionResult(progressSummary: progressSummary, personalRecords: personalRecords);
+    return WorkoutCompletionResult(
+      progressSummary: progressSummary,
+      personalRecords: personalRecords,
+    );
   }
 }

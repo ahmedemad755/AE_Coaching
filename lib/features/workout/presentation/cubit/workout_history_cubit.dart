@@ -1,3 +1,4 @@
+import 'package:ae_coaching/core/errors/exception_message_mapper.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_session.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_session_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,11 +21,14 @@ class WorkoutHistoryCubit extends Cubit<WorkoutHistoryState> {
     emit(const WorkoutHistoryLoading());
     try {
       final sessionBox = await sessionRepository.getUserBox();
-      final sessions = sessionRepository.getSessionsForTemplate(sessionBox, workoutTemplateId);
+      final sessions = sessionRepository.getSessionsForTemplate(
+        sessionBox,
+        workoutTemplateId,
+      );
 
       emit(WorkoutHistoryLoaded(sessions: sessions));
     } catch (error) {
-      emit(WorkoutHistoryError(error.toString()));
+      emit(WorkoutHistoryError(mapGenericExceptionToMessage(error)));
     }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:ae_coaching/core/errors/exception_message_mapper.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_session.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_session_repository.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_template_repository.dart';
@@ -20,19 +21,25 @@ class ProgramOverviewCubit extends Cubit<ProgramOverviewState> {
     required this.templateRepository,
     required this.sessionRepository,
     ProgramWeeklyOverviewService? service,
-  })  : service = service ?? const ProgramWeeklyOverviewService(),
-        super(const ProgramOverviewInitial());
+  }) : service = service ?? const ProgramWeeklyOverviewService(),
+       super(const ProgramOverviewInitial());
 
   Future<void> loadOverview(String programId) async {
     emit(const ProgramOverviewLoading());
     try {
       final templateBox = await templateRepository.getUserBox();
-      final templates = templateRepository.getTemplatesForProgram(templateBox, programId);
+      final templates = templateRepository.getTemplatesForProgram(
+        templateBox,
+        programId,
+      );
 
       final sessionBox = await sessionRepository.getUserBox();
       final completedSessionsByTemplate = <String, List<WorkoutSession>>{
         for (final template in templates)
-          template.id: sessionRepository.getCompletedSessionsForTemplate(sessionBox, template.id),
+          template.id: sessionRepository.getCompletedSessionsForTemplate(
+            sessionBox,
+            template.id,
+          ),
       };
 
       final overview = service.build(
@@ -43,7 +50,7 @@ class ProgramOverviewCubit extends Cubit<ProgramOverviewState> {
 
       emit(ProgramOverviewLoaded(overview));
     } catch (error) {
-      emit(ProgramOverviewError(error.toString()));
+      emit(ProgramOverviewError(mapGenericExceptionToMessage(error)));
     }
   }
 }

@@ -27,12 +27,14 @@ class _FakeWorkoutRemoteDataSource implements WorkoutRemoteDataSource {
   Future<void> deleteMultipleSets(List<String> keys) async {}
 
   @override
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> fetchAllRemoteSets() async {
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
+  fetchAllRemoteSets() async {
     return <QueryDocumentSnapshot<Map<String, dynamic>>>[];
   }
 }
 
-class _FakeWorkoutSessionRemoteDataSource implements WorkoutSessionRemoteDataSource {
+class _FakeWorkoutSessionRemoteDataSource
+    implements WorkoutSessionRemoteDataSource {
   @override
   Future<void> syncSession(String id, WorkoutSession session) async {}
 
@@ -40,7 +42,8 @@ class _FakeWorkoutSessionRemoteDataSource implements WorkoutSessionRemoteDataSou
   Future<void> deleteSession(String id) async {}
 
   @override
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> fetchAllRemoteSessions() async {
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
+  fetchAllRemoteSessions() async {
     return <QueryDocumentSnapshot<Map<String, dynamic>>>[];
   }
 }
@@ -57,8 +60,12 @@ void main() {
   setUp(() async {
     tempDir = await Directory.systemTemp.createTemp('session_exercise_test_');
     Hive.init(tempDir.path);
-    if (!Hive.isAdapterRegistered(0)) Hive.registerAdapter(ExerciseSetAdapter());
-    if (!Hive.isAdapterRegistered(5)) Hive.registerAdapter(WorkoutSessionAdapter());
+    if (!Hive.isAdapterRegistered(0)) {
+      Hive.registerAdapter(ExerciseSetAdapter());
+    }
+    if (!Hive.isAdapterRegistered(5)) {
+      Hive.registerAdapter(WorkoutSessionAdapter());
+    }
 
     final storageManager = UserStorageManager();
     setRepository = SessionExerciseRepository(
@@ -80,62 +87,79 @@ void main() {
     }
   });
 
-  test('addSet links exerciseName/weight/reps to the given session/program/template', () async {
-    final sessionBox = await sessionRepository.getUserBox();
-    final session = await sessionRepository.startWorkoutSession(
-      programId: programA,
-      workoutTemplateId: push1,
-      workoutNameSnapshot: 'Push 1',
-    );
+  test(
+    'addSet links exerciseName/weight/reps to the given session/program/template',
+    () async {
+      final sessionBox = await sessionRepository.getUserBox();
+      final session = await sessionRepository.startWorkoutSession(
+        programId: programA,
+        workoutTemplateId: push1,
+        workoutNameSnapshot: 'Push 1',
+      );
 
-    final set = await setRepository.addSet(
-      programId: programA,
-      workoutTemplateId: push1,
-      workoutSessionId: session.id,
-      exerciseName: 'Bench Press',
-      weight: 60,
-      reps: 8,
-    );
+      final set = await setRepository.addSet(
+        programId: programA,
+        workoutTemplateId: push1,
+        workoutSessionId: session.id,
+        exerciseName: 'Bench Press',
+        weight: 60,
+        reps: 8,
+      );
 
-    expect(set.programId, equals(programA));
-    expect(set.workoutTemplateId, equals(push1));
-    expect(set.workoutSessionId, equals(session.id));
-    expect(set.hasConsistentSessionLinkage, isTrue);
+      expect(set.programId, equals(programA));
+      expect(set.workoutTemplateId, equals(push1));
+      expect(set.workoutSessionId, equals(session.id));
+      expect(set.hasConsistentSessionLinkage, isTrue);
 
-    final box = await setRepository.getUserBox();
-    expect(setRepository.getSetsForSession(box, session.id), hasLength(1));
-    sessionBox.close();
-  });
+      final box = await setRepository.getUserBox();
+      expect(setRepository.getSetsForSession(box, session.id), hasLength(1));
+      sessionBox.close();
+    },
+  );
 
-  test('getExerciseNamesForSession preserves first-appearance order with no duplicates', () async {
-    final session = await sessionRepository.startWorkoutSession(
-      programId: programA,
-      workoutTemplateId: push1,
-      workoutNameSnapshot: 'Push 1',
-    );
+  test(
+    'getExerciseNamesForSession preserves first-appearance order with no duplicates',
+    () async {
+      final session = await sessionRepository.startWorkoutSession(
+        programId: programA,
+        workoutTemplateId: push1,
+        workoutNameSnapshot: 'Push 1',
+      );
 
-    Future<void> log(String name, double w, int r) => setRepository
-        .addSet(
-          programId: programA,
-          workoutTemplateId: push1,
-          workoutSessionId: session.id,
-          exerciseName: name,
-          weight: w,
-          reps: r,
-        )
-        .then((_) {});
+      Future<void> log(String name, double w, int r) => setRepository
+          .addSet(
+            programId: programA,
+            workoutTemplateId: push1,
+            workoutSessionId: session.id,
+            exerciseName: name,
+            weight: w,
+            reps: r,
+          )
+          .then((_) {});
 
-    await log('Bench Press', 60, 8);
-    await log('Incline Press', 40, 10);
-    await log('Bench Press', 62.5, 8); // second set, same exercise — must not duplicate the name
+      await log('Bench Press', 60, 8);
+      await log('Incline Press', 40, 10);
+      await log(
+        'Bench Press',
+        62.5,
+        8,
+      ); // second set, same exercise — must not duplicate the name
 
-    final box = await setRepository.getUserBox();
-    expect(
-      setRepository.getExerciseNamesForSession(box, session.id),
-      equals(['Bench Press', 'Incline Press']),
-    );
-    expect(setRepository.getSetsForExerciseInSession(box, session.id, 'Bench Press'), hasLength(2));
-  });
+      final box = await setRepository.getUserBox();
+      expect(
+        setRepository.getExerciseNamesForSession(box, session.id),
+        equals(['Bench Press', 'Incline Press']),
+      );
+      expect(
+        setRepository.getSetsForExerciseInSession(
+          box,
+          session.id,
+          'Bench Press',
+        ),
+        hasLength(2),
+      );
+    },
+  );
 
   test(
     'Push 1 and Push 2 sessions never mix exercises even though both link to the same programId',
@@ -153,7 +177,10 @@ void main() {
         weight: 60,
         reps: 8,
       );
-      await sessionRepository.completeWorkoutSession(sessionId: push1Session.id, totalVolume: 480);
+      await sessionRepository.completeWorkoutSession(
+        sessionId: push1Session.id,
+        totalVolume: 480,
+      );
 
       final push2Session = await sessionRepository.startWorkoutSession(
         programId: programA,
@@ -170,58 +197,77 @@ void main() {
       );
 
       final box = await setRepository.getUserBox();
-      expect(setRepository.getExerciseNamesForSession(box, push1Session.id), equals(['Bench Press']));
-      expect(setRepository.getExerciseNamesForSession(box, push2Session.id), equals(['Overhead Press']));
+      expect(
+        setRepository.getExerciseNamesForSession(box, push1Session.id),
+        equals(['Bench Press']),
+      );
+      expect(
+        setRepository.getExerciseNamesForSession(box, push2Session.id),
+        equals(['Overhead Press']),
+      );
     },
   );
 
-  test('deleteSet removes only that set, never cascades to the rest of the session', () async {
-    final session = await sessionRepository.startWorkoutSession(
-      programId: programA,
-      workoutTemplateId: push1,
-      workoutNameSnapshot: 'Push 1',
-    );
-    final first = await setRepository.addSet(
-      programId: programA,
-      workoutTemplateId: push1,
-      workoutSessionId: session.id,
-      exerciseName: 'Bench Press',
-      weight: 60,
-      reps: 8,
-    );
-    await setRepository.addSet(
-      programId: programA,
-      workoutTemplateId: push1,
-      workoutSessionId: session.id,
-      exerciseName: 'Bench Press',
-      weight: 62.5,
-      reps: 8,
-    );
-
-    await setRepository.deleteSet(first);
-
-    final box = await setRepository.getUserBox();
-    final remaining = setRepository.getSetsForExerciseInSession(box, session.id, 'Bench Press');
-    expect(remaining, hasLength(1));
-    expect(remaining.first.weight, equals(62.5));
-  });
-
-  group('SessionExerciseCubit — auto-loaded structure (Phase 8)', () {
-    test('a brand-new session with no previous history has no reference rows', () async {
+  test(
+    'deleteSet removes only that set, never cascades to the rest of the session',
+    () async {
       final session = await sessionRepository.startWorkoutSession(
         programId: programA,
         workoutTemplateId: push1,
         workoutNameSnapshot: 'Push 1',
       );
+      final first = await setRepository.addSet(
+        programId: programA,
+        workoutTemplateId: push1,
+        workoutSessionId: session.id,
+        exerciseName: 'Bench Press',
+        weight: 60,
+        reps: 8,
+      );
+      await setRepository.addSet(
+        programId: programA,
+        workoutTemplateId: push1,
+        workoutSessionId: session.id,
+        exerciseName: 'Bench Press',
+        weight: 62.5,
+        reps: 8,
+      );
 
-      final cubit = SessionExerciseCubit(repository: setRepository, sessionRepository: sessionRepository);
-      await cubit.loadForSession(session);
+      await setRepository.deleteSet(first);
 
-      final state = cubit.state as SessionExerciseLoaded;
-      expect(state.rows, isEmpty);
-      expect(state.hasReferenceSession, isFalse);
-      await cubit.close();
-    });
+      final box = await setRepository.getUserBox();
+      final remaining = setRepository.getSetsForExerciseInSession(
+        box,
+        session.id,
+        'Bench Press',
+      );
+      expect(remaining, hasLength(1));
+      expect(remaining.first.weight, equals(62.5));
+    },
+  );
+
+  group('SessionExerciseCubit — auto-loaded structure (Phase 8)', () {
+    test(
+      'a brand-new session with no previous history has no reference rows',
+      () async {
+        final session = await sessionRepository.startWorkoutSession(
+          programId: programA,
+          workoutTemplateId: push1,
+          workoutNameSnapshot: 'Push 1',
+        );
+
+        final cubit = SessionExerciseCubit(
+          repository: setRepository,
+          sessionRepository: sessionRepository,
+        );
+        await cubit.loadForSession(session);
+
+        final state = cubit.state as SessionExerciseLoaded;
+        expect(state.rows, isEmpty);
+        expect(state.hasReferenceSession, isFalse);
+        await cubit.close();
+      },
+    );
 
     test(
       'the previous COMPLETED same-template session\'s exercises appear as reference-only '
@@ -240,7 +286,10 @@ void main() {
           weight: 60,
           reps: 8,
         );
-        await sessionRepository.completeWorkoutSession(sessionId: firstSession.id, totalVolume: 480);
+        await sessionRepository.completeWorkoutSession(
+          sessionId: firstSession.id,
+          totalVolume: 480,
+        );
 
         final secondSession = await sessionRepository.startWorkoutSession(
           programId: programA,
@@ -248,7 +297,10 @@ void main() {
           workoutNameSnapshot: 'Push 1',
         );
 
-        final cubit = SessionExerciseCubit(repository: setRepository, sessionRepository: sessionRepository);
+        final cubit = SessionExerciseCubit(
+          repository: setRepository,
+          sessionRepository: sessionRepository,
+        );
         await cubit.loadForSession(secondSession);
 
         final state = cubit.state as SessionExerciseLoaded;
@@ -262,41 +314,55 @@ void main() {
       },
     );
 
-    test('logging a set for a reference-only exercise moves it out of the suggestion list', () async {
-      final firstSession = await sessionRepository.startWorkoutSession(
-        programId: programA,
-        workoutTemplateId: push1,
-        workoutNameSnapshot: 'Push 1',
-      );
-      await setRepository.addSet(
-        programId: programA,
-        workoutTemplateId: push1,
-        workoutSessionId: firstSession.id,
-        exerciseName: 'Bench Press',
-        weight: 60,
-        reps: 8,
-      );
-      await sessionRepository.completeWorkoutSession(sessionId: firstSession.id, totalVolume: 480);
+    test(
+      'logging a set for a reference-only exercise moves it out of the suggestion list',
+      () async {
+        final firstSession = await sessionRepository.startWorkoutSession(
+          programId: programA,
+          workoutTemplateId: push1,
+          workoutNameSnapshot: 'Push 1',
+        );
+        await setRepository.addSet(
+          programId: programA,
+          workoutTemplateId: push1,
+          workoutSessionId: firstSession.id,
+          exerciseName: 'Bench Press',
+          weight: 60,
+          reps: 8,
+        );
+        await sessionRepository.completeWorkoutSession(
+          sessionId: firstSession.id,
+          totalVolume: 480,
+        );
 
-      final secondSession = await sessionRepository.startWorkoutSession(
-        programId: programA,
-        workoutTemplateId: push1,
-        workoutNameSnapshot: 'Push 1',
-      );
+        final secondSession = await sessionRepository.startWorkoutSession(
+          programId: programA,
+          workoutTemplateId: push1,
+          workoutNameSnapshot: 'Push 1',
+        );
 
-      final cubit = SessionExerciseCubit(repository: setRepository, sessionRepository: sessionRepository);
-      await cubit.loadForSession(secondSession);
+        final cubit = SessionExerciseCubit(
+          repository: setRepository,
+          sessionRepository: sessionRepository,
+        );
+        await cubit.loadForSession(secondSession);
 
-      await cubit.logSet(session: secondSession, exerciseName: 'Bench Press', weight: 65, reps: 8);
+        await cubit.logSet(
+          session: secondSession,
+          exerciseName: 'Bench Press',
+          weight: 65,
+          reps: 8,
+        );
 
-      final state = cubit.state as SessionExerciseLoaded;
-      expect(state.rows, hasLength(1));
-      expect(state.rows.single.isReferenceOnly, isFalse);
-      expect(state.rows.single.sets, hasLength(1));
-      expect(state.rows.single.sets.single.weight, equals(65));
+        final state = cubit.state as SessionExerciseLoaded;
+        expect(state.rows, hasLength(1));
+        expect(state.rows.single.isReferenceOnly, isFalse);
+        expect(state.rows.single.sets, hasLength(1));
+        expect(state.rows.single.sets.single.weight, equals(65));
 
-      await cubit.close();
-    });
+        await cubit.close();
+      },
+    );
 
     test(
       'previousSets carries the previous COMPLETED session\'s actual weight/reps for that '
@@ -323,7 +389,10 @@ void main() {
           weight: 62.5,
           reps: 8,
         );
-        await sessionRepository.completeWorkoutSession(sessionId: firstSession.id, totalVolume: 980);
+        await sessionRepository.completeWorkoutSession(
+          sessionId: firstSession.id,
+          totalVolume: 980,
+        );
 
         final secondSession = await sessionRepository.startWorkoutSession(
           programId: programA,
@@ -331,7 +400,10 @@ void main() {
           workoutNameSnapshot: 'Push 1',
         );
 
-        final cubit = SessionExerciseCubit(repository: setRepository, sessionRepository: sessionRepository);
+        final cubit = SessionExerciseCubit(
+          repository: setRepository,
+          sessionRepository: sessionRepository,
+        );
         await cubit.loadForSession(secondSession);
 
         // Reference-only row: not logged yet in this session, but its
@@ -340,11 +412,19 @@ void main() {
         final referenceRow = state.rows.single;
         expect(referenceRow.isReferenceOnly, isTrue);
         expect(referenceRow.previousSets, hasLength(2));
-        expect(referenceRow.previousSets.map((s) => s.weight), equals([60.0, 62.5]));
+        expect(
+          referenceRow.previousSets.map((s) => s.weight),
+          equals([60.0, 62.5]),
+        );
 
         // After logging a new set for it, previousSets must still show
         // (never disappear once it's no longer reference-only).
-        await cubit.logSet(session: secondSession, exerciseName: 'Bench Press', weight: 65, reps: 8);
+        await cubit.logSet(
+          session: secondSession,
+          exerciseName: 'Bench Press',
+          weight: 65,
+          reps: 8,
+        );
         state = cubit.state as SessionExerciseLoaded;
         final loggedRow = state.rows.single;
         expect(loggedRow.isReferenceOnly, isFalse);
@@ -370,7 +450,10 @@ void main() {
           weight: 60,
           reps: 8,
         );
-        await sessionRepository.completeWorkoutSession(sessionId: push1First.id, totalVolume: 480);
+        await sessionRepository.completeWorkoutSession(
+          sessionId: push1First.id,
+          totalVolume: 480,
+        );
 
         final push2Session = await sessionRepository.startWorkoutSession(
           programId: programA,
@@ -378,7 +461,10 @@ void main() {
           workoutNameSnapshot: 'Push 2',
         );
 
-        final cubit = SessionExerciseCubit(repository: setRepository, sessionRepository: sessionRepository);
+        final cubit = SessionExerciseCubit(
+          repository: setRepository,
+          sessionRepository: sessionRepository,
+        );
         await cubit.loadForSession(push2Session);
 
         final state = cubit.state as SessionExerciseLoaded;
@@ -391,52 +477,66 @@ void main() {
   });
 
   group('SessionExerciseLoaded.totalVolume (Phase 10)', () {
-    test('sums weight × reps across every real set, ignoring reference-only rows', () async {
-      final firstSession = await sessionRepository.startWorkoutSession(
-        programId: programA,
-        workoutTemplateId: push1,
-        workoutNameSnapshot: 'Push 1',
-      );
-      await setRepository.addSet(
-        programId: programA,
-        workoutTemplateId: push1,
-        workoutSessionId: firstSession.id,
-        exerciseName: 'Bench Press',
-        weight: 60,
-        reps: 8,
-      );
-      await setRepository.addSet(
-        programId: programA,
-        workoutTemplateId: push1,
-        workoutSessionId: firstSession.id,
-        exerciseName: 'Incline Press',
-        weight: 40,
-        reps: 10,
-      );
-      await sessionRepository.completeWorkoutSession(sessionId: firstSession.id, totalVolume: 880);
+    test(
+      'sums weight × reps across every real set, ignoring reference-only rows',
+      () async {
+        final firstSession = await sessionRepository.startWorkoutSession(
+          programId: programA,
+          workoutTemplateId: push1,
+          workoutNameSnapshot: 'Push 1',
+        );
+        await setRepository.addSet(
+          programId: programA,
+          workoutTemplateId: push1,
+          workoutSessionId: firstSession.id,
+          exerciseName: 'Bench Press',
+          weight: 60,
+          reps: 8,
+        );
+        await setRepository.addSet(
+          programId: programA,
+          workoutTemplateId: push1,
+          workoutSessionId: firstSession.id,
+          exerciseName: 'Incline Press',
+          weight: 40,
+          reps: 10,
+        );
+        await sessionRepository.completeWorkoutSession(
+          sessionId: firstSession.id,
+          totalVolume: 880,
+        );
 
-      final secondSession = await sessionRepository.startWorkoutSession(
-        programId: programA,
-        workoutTemplateId: push1,
-        workoutNameSnapshot: 'Push 1',
-      );
+        final secondSession = await sessionRepository.startWorkoutSession(
+          programId: programA,
+          workoutTemplateId: push1,
+          workoutNameSnapshot: 'Push 1',
+        );
 
-      final cubit = SessionExerciseCubit(repository: setRepository, sessionRepository: sessionRepository);
-      await cubit.loadForSession(secondSession);
+        final cubit = SessionExerciseCubit(
+          repository: setRepository,
+          sessionRepository: sessionRepository,
+        );
+        await cubit.loadForSession(secondSession);
 
-      // Both exercises from the previous session are reference-only —
-      // no real sets yet, so volume must be zero.
-      var state = cubit.state as SessionExerciseLoaded;
-      expect(state.totalVolume, equals(0));
+        // Both exercises from the previous session are reference-only —
+        // no real sets yet, so volume must be zero.
+        var state = cubit.state as SessionExerciseLoaded;
+        expect(state.totalVolume, equals(0));
 
-      // Logging one real set (65kg × 8 = 520) must count; the
-      // remaining reference-only suggestion must not contribute.
-      await cubit.logSet(session: secondSession, exerciseName: 'Bench Press', weight: 65, reps: 8);
-      state = cubit.state as SessionExerciseLoaded;
-      expect(state.totalVolume, equals(520));
+        // Logging one real set (65kg × 8 = 520) must count; the
+        // remaining reference-only suggestion must not contribute.
+        await cubit.logSet(
+          session: secondSession,
+          exerciseName: 'Bench Press',
+          weight: 65,
+          reps: 8,
+        );
+        state = cubit.state as SessionExerciseLoaded;
+        expect(state.totalVolume, equals(520));
 
-      await cubit.close();
-    });
+        await cubit.close();
+      },
+    );
   });
 
   group('SessionExerciseCubit.buildCompletionSummary (Phase 13)', () {
@@ -457,7 +557,10 @@ void main() {
           weight: 60,
           reps: 8,
         );
-        await sessionRepository.completeWorkoutSession(sessionId: firstSession.id, totalVolume: 480);
+        await sessionRepository.completeWorkoutSession(
+          sessionId: firstSession.id,
+          totalVolume: 480,
+        );
 
         final secondSession = await sessionRepository.startWorkoutSession(
           programId: programA,
@@ -477,15 +580,23 @@ void main() {
           totalVolume: 520,
         );
 
-        final cubit = SessionExerciseCubit(repository: setRepository, sessionRepository: sessionRepository);
+        final cubit = SessionExerciseCubit(
+          repository: setRepository,
+          sessionRepository: sessionRepository,
+        );
         final result = await cubit.buildCompletionSummary(completedSecond);
 
         expect(result.progressSummary.hasPreviousSession, isTrue);
-        expect(result.progressSummary.exerciseResults.single.trend, equals(PerformanceTrend.improved));
+        expect(
+          result.progressSummary.exerciseResults.single.trend,
+          equals(PerformanceTrend.improved),
+        );
         expect(result.progressSummary.currentTotalVolume, equals(520));
 
         expect(result.personalRecords, isNotEmpty);
-        final weightPr = result.personalRecords.firstWhere((r) => r.type == PersonalRecordType.heaviestWeight);
+        final weightPr = result.personalRecords.firstWhere(
+          (r) => r.type == PersonalRecordType.heaviestWeight,
+        );
         expect(weightPr.previousBest, equals(60));
         expect(weightPr.newBest, equals(65));
 
@@ -510,7 +621,10 @@ void main() {
           weight: 60,
           reps: 8,
         );
-        await sessionRepository.completeWorkoutSession(sessionId: push1Session.id, totalVolume: 480);
+        await sessionRepository.completeWorkoutSession(
+          sessionId: push1Session.id,
+          totalVolume: 480,
+        );
 
         final push2Session = await sessionRepository.startWorkoutSession(
           programId: programA,
@@ -522,7 +636,8 @@ void main() {
           workoutTemplateId: push2,
           workoutSessionId: push2Session.id,
           exerciseName: 'Bench Press',
-          weight: 70, // heavier than Push 1's ever -> still a valid PR (global by design)
+          weight:
+              70, // heavier than Push 1's ever -> still a valid PR (global by design)
           reps: 5,
         );
         final completedPush2 = await sessionRepository.completeWorkoutSession(
@@ -530,16 +645,24 @@ void main() {
           totalVolume: 350,
         );
 
-        final cubit = SessionExerciseCubit(repository: setRepository, sessionRepository: sessionRepository);
+        final cubit = SessionExerciseCubit(
+          repository: setRepository,
+          sessionRepository: sessionRepository,
+        );
         final result = await cubit.buildCompletionSummary(completedPush2);
 
         // No previous Push 2 session exists yet — Push 1's session must
         // never be picked up as "previous" for the progress comparison.
         expect(result.progressSummary.hasPreviousSession, isFalse);
-        expect(result.progressSummary.exerciseResults.single.trend, equals(PerformanceTrend.newExercise));
+        expect(
+          result.progressSummary.exerciseResults.single.trend,
+          equals(PerformanceTrend.newExercise),
+        );
 
         // But the PR check is correctly global: 70kg beats Push 1's 60kg.
-        final weightPr = result.personalRecords.firstWhere((r) => r.type == PersonalRecordType.heaviestWeight);
+        final weightPr = result.personalRecords.firstWhere(
+          (r) => r.type == PersonalRecordType.heaviestWeight,
+        );
         expect(weightPr.previousBest, equals(60));
         expect(weightPr.newBest, equals(70));
 
@@ -569,24 +692,27 @@ void main() {
       expect(set.notes, equals('felt easy'));
     });
 
-    test('omitting notes leaves it null, exactly like every legacy set before this phase', () async {
-      final session = await sessionRepository.startWorkoutSession(
-        programId: programA,
-        workoutTemplateId: push1,
-        workoutNameSnapshot: 'Push 1',
-      );
+    test(
+      'omitting notes leaves it null, exactly like every legacy set before this phase',
+      () async {
+        final session = await sessionRepository.startWorkoutSession(
+          programId: programA,
+          workoutTemplateId: push1,
+          workoutNameSnapshot: 'Push 1',
+        );
 
-      final set = await setRepository.addSet(
-        programId: programA,
-        workoutTemplateId: push1,
-        workoutSessionId: session.id,
-        exerciseName: 'Bench Press',
-        weight: 60,
-        reps: 8,
-      );
+        final set = await setRepository.addSet(
+          programId: programA,
+          workoutTemplateId: push1,
+          workoutSessionId: session.id,
+          exerciseName: 'Bench Press',
+          weight: 60,
+          reps: 8,
+        );
 
-      expect(set.notes, isNull);
-    });
+        expect(set.notes, isNull);
+      },
+    );
 
     test('an empty or whitespace-only note is normalized to null', () async {
       final session = await sessionRepository.startWorkoutSession(
@@ -607,5 +733,35 @@ void main() {
 
       expect(set.notes, isNull);
     });
+  });
+
+  test('Stage 4: a real repository failure (unauthenticated uid) maps to '
+      'its exact known-safe message via the shared generic mapper, never '
+      'the previous raw error.toString() output', () async {
+    final session = await sessionRepository.startWorkoutSession(
+      programId: programA,
+      workoutTemplateId: push1,
+      workoutNameSnapshot: 'Push 1',
+    );
+
+    final unauthenticatedSetRepository = SessionExerciseRepository(
+      remoteDataSource: _FakeWorkoutRemoteDataSource(),
+      storageManager: UserStorageManager(),
+      uidOverride: () => '',
+    );
+    final cubit = SessionExerciseCubit(
+      repository: unauthenticatedSetRepository,
+      sessionRepository: sessionRepository,
+    );
+
+    await cubit.loadForSession(session);
+
+    expect(cubit.state, isA<SessionExerciseError>());
+    expect(
+      (cubit.state as SessionExerciseError).message,
+      equals('User not authenticated'),
+    );
+
+    await cubit.close();
   });
 }

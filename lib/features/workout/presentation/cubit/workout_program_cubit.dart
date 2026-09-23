@@ -1,3 +1,4 @@
+import 'package:ae_coaching/core/errors/exception_message_mapper.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_program.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_cascade_deletion_service.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_program_repository.dart';
@@ -18,10 +19,8 @@ class WorkoutProgramCubit extends Cubit<WorkoutProgramState> {
   // zero-arg fallbacks are dead code nothing exercises, and
   // WorkoutCascadeDeletionService's own fallbacks were removed for the
   // same reason.
-  WorkoutProgramCubit({
-    required this.repository,
-    required this.deletionService,
-  }) : super(const WorkoutProgramInitial());
+  WorkoutProgramCubit({required this.repository, required this.deletionService})
+    : super(const WorkoutProgramInitial());
 
   /// Offline-first load: shows whatever is cached on-device immediately,
   /// then silently syncs with Firestore in the background — same
@@ -38,7 +37,7 @@ class WorkoutProgramCubit extends Cubit<WorkoutProgramState> {
       emit(
         WorkoutProgramError(
           operation: WorkoutProgramOperation.load,
-          message: _mapExceptionToMessage(error),
+          message: mapGenericExceptionToMessage(error),
         ),
       );
     }
@@ -55,7 +54,7 @@ class WorkoutProgramCubit extends Cubit<WorkoutProgramState> {
       emit(
         WorkoutProgramError(
           operation: WorkoutProgramOperation.load,
-          message: _mapExceptionToMessage(error),
+          message: mapGenericExceptionToMessage(error),
         ),
       );
     }
@@ -66,16 +65,22 @@ class WorkoutProgramCubit extends Cubit<WorkoutProgramState> {
     String? description,
     bool makeActive = false,
   }) async {
-    emit(const WorkoutProgramLoading(operation: WorkoutProgramOperation.create));
+    emit(
+      const WorkoutProgramLoading(operation: WorkoutProgramOperation.create),
+    );
     try {
-      await repository.createProgram(name: name, description: description, makeActive: makeActive);
+      await repository.createProgram(
+        name: name,
+        description: description,
+        makeActive: makeActive,
+      );
       final box = await repository.getUserBox();
       emit(WorkoutProgramLoaded(box: box));
     } catch (error) {
       emit(
         WorkoutProgramError(
           operation: WorkoutProgramOperation.create,
-          message: _mapExceptionToMessage(error),
+          message: mapGenericExceptionToMessage(error),
         ),
       );
     }
@@ -84,8 +89,13 @@ class WorkoutProgramCubit extends Cubit<WorkoutProgramState> {
   /// Renames a program without touching anything else — id, createdAt,
   /// startedAt, endedAt, isActive all pass through untouched via
   /// [WorkoutProgram.copyWith].
-  Future<void> renameProgram({required String programId, required String newName}) async {
-    emit(const WorkoutProgramLoading(operation: WorkoutProgramOperation.rename));
+  Future<void> renameProgram({
+    required String programId,
+    required String newName,
+  }) async {
+    emit(
+      const WorkoutProgramLoading(operation: WorkoutProgramOperation.rename),
+    );
     try {
       final box = await repository.getUserBox();
       final existing = box.get(programId);
@@ -99,7 +109,7 @@ class WorkoutProgramCubit extends Cubit<WorkoutProgramState> {
       emit(
         WorkoutProgramError(
           operation: WorkoutProgramOperation.rename,
-          message: _mapExceptionToMessage(error),
+          message: mapGenericExceptionToMessage(error),
         ),
       );
     }
@@ -108,7 +118,9 @@ class WorkoutProgramCubit extends Cubit<WorkoutProgramState> {
   /// Delegates entirely to the repository's single-active-program
   /// invariant — no active/previous logic is duplicated here.
   Future<void> setActiveProgram(String programId) async {
-    emit(const WorkoutProgramLoading(operation: WorkoutProgramOperation.setActive));
+    emit(
+      const WorkoutProgramLoading(operation: WorkoutProgramOperation.setActive),
+    );
     try {
       await repository.setActiveProgram(programId);
       final box = await repository.getUserBox();
@@ -117,14 +129,16 @@ class WorkoutProgramCubit extends Cubit<WorkoutProgramState> {
       emit(
         WorkoutProgramError(
           operation: WorkoutProgramOperation.setActive,
-          message: _mapExceptionToMessage(error),
+          message: mapGenericExceptionToMessage(error),
         ),
       );
     }
   }
 
   Future<void> archiveProgram(String programId) async {
-    emit(const WorkoutProgramLoading(operation: WorkoutProgramOperation.archive));
+    emit(
+      const WorkoutProgramLoading(operation: WorkoutProgramOperation.archive),
+    );
     try {
       await repository.archiveProgram(programId);
       final box = await repository.getUserBox();
@@ -133,7 +147,7 @@ class WorkoutProgramCubit extends Cubit<WorkoutProgramState> {
       emit(
         WorkoutProgramError(
           operation: WorkoutProgramOperation.archive,
-          message: _mapExceptionToMessage(error),
+          message: mapGenericExceptionToMessage(error),
         ),
       );
     }
@@ -146,7 +160,9 @@ class WorkoutProgramCubit extends Cubit<WorkoutProgramState> {
   /// action and should be preferred by the UI's default flow. Only
   /// call this after an explicit, unambiguous user confirmation.
   Future<void> deleteProgram(String programId) async {
-    emit(const WorkoutProgramLoading(operation: WorkoutProgramOperation.delete));
+    emit(
+      const WorkoutProgramLoading(operation: WorkoutProgramOperation.delete),
+    );
     try {
       await deletionService.deleteProgramCascade(programId);
       final box = await repository.getUserBox();
@@ -155,13 +171,9 @@ class WorkoutProgramCubit extends Cubit<WorkoutProgramState> {
       emit(
         WorkoutProgramError(
           operation: WorkoutProgramOperation.delete,
-          message: _mapExceptionToMessage(error),
+          message: mapGenericExceptionToMessage(error),
         ),
       );
     }
-  }
-
-  String _mapExceptionToMessage(Object error) {
-    return error.toString().replaceFirst('Exception: ', '');
   }
 }

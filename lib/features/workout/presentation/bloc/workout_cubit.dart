@@ -1,4 +1,5 @@
 import 'package:ae_coaching/auth/data/models/Exercise_Set.dart';
+import 'package:ae_coaching/core/errors/exception_message_mapper.dart';
 import 'package:ae_coaching/core/session/session_storage.dart';
 import 'package:ae_coaching/core/storage/user_storage_manager.dart';
 import 'package:ae_coaching/features/workout/data/models/Exercise_Set.dart';
@@ -68,7 +69,7 @@ class WorkoutCubit extends Cubit<WorkoutState> {
       emit(
         WorkoutError(
           operation: WorkoutOperation.load,
-          message: _mapExceptionToMessage(error),
+          message: mapGenericExceptionToMessage(error),
         ),
       );
     }
@@ -98,7 +99,7 @@ class WorkoutCubit extends Cubit<WorkoutState> {
       emit(
         WorkoutError(
           operation: WorkoutOperation.save,
-          message: _mapExceptionToMessage(error),
+          message: mapGenericExceptionToMessage(error),
         ),
       );
     }
@@ -130,7 +131,7 @@ class WorkoutCubit extends Cubit<WorkoutState> {
       emit(
         WorkoutError(
           operation: WorkoutOperation.delete,
-          message: _mapExceptionToMessage(error),
+          message: mapGenericExceptionToMessage(error),
         ),
       );
     }
@@ -167,7 +168,7 @@ class WorkoutCubit extends Cubit<WorkoutState> {
       emit(
         WorkoutError(
           operation: WorkoutOperation.deleteMultiple,
-          message: _mapExceptionToMessage(error),
+          message: mapGenericExceptionToMessage(error),
         ),
       );
     }
@@ -205,9 +206,5 @@ class WorkoutCubit extends Cubit<WorkoutState> {
     }
 
     return 'workout_${DateTime.now().microsecondsSinceEpoch}';
-  }
-
-  String _mapExceptionToMessage(Object error) {
-    return error.toString().replaceFirst('Exception: ', '');
   }
 }

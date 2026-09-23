@@ -9,7 +9,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
 
-class _FakeWorkoutSessionRemoteDataSource implements WorkoutSessionRemoteDataSource {
+class _FakeWorkoutSessionRemoteDataSource
+    implements WorkoutSessionRemoteDataSource {
   @override
   Future<void> syncSession(String id, WorkoutSession session) async {}
 
@@ -17,7 +18,8 @@ class _FakeWorkoutSessionRemoteDataSource implements WorkoutSessionRemoteDataSou
   Future<void> deleteSession(String id) async {}
 
   @override
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> fetchAllRemoteSessions() async {
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
+  fetchAllRemoteSessions() async {
     return <QueryDocumentSnapshot<Map<String, dynamic>>>[];
   }
 }
@@ -31,7 +33,9 @@ void main() {
   const push2 = 'template_push2';
 
   setUp(() async {
-    tempDir = await Directory.systemTemp.createTemp('workout_session_cubit_test_');
+    tempDir = await Directory.systemTemp.createTemp(
+      'workout_session_cubit_test_',
+    );
     Hive.init(tempDir.path);
     if (!Hive.isAdapterRegistered(5)) {
       Hive.registerAdapter(WorkoutSessionAdapter());
@@ -54,13 +58,20 @@ void main() {
     }
   });
 
-  test('checkActiveSession emits None when nothing has been started yet', () async {
-    await cubit.checkActiveSession();
-    expect(cubit.state, isA<WorkoutSessionNone>());
-  });
+  test(
+    'checkActiveSession emits None when nothing has been started yet',
+    () async {
+      await cubit.checkActiveSession();
+      expect(cubit.state, isA<WorkoutSessionNone>());
+    },
+  );
 
   test('startWorkout emits Active with the new session', () async {
-    await cubit.startWorkout(programId: programA, workoutTemplateId: push1, workoutNameSnapshot: 'Push 1');
+    await cubit.startWorkout(
+      programId: programA,
+      workoutTemplateId: push1,
+      workoutNameSnapshot: 'Push 1',
+    );
 
     expect(cubit.state, isA<WorkoutSessionActive>());
     final session = (cubit.state as WorkoutSessionActive).session;
@@ -68,52 +79,87 @@ void main() {
     expect(session.isInProgress, isTrue);
   });
 
-  test('checkActiveSession reflects the session started via startWorkout', () async {
-    await cubit.startWorkout(programId: programA, workoutTemplateId: push1, workoutNameSnapshot: 'Push 1');
-    final startedId = (cubit.state as WorkoutSessionActive).session.id;
+  test(
+    'checkActiveSession reflects the session started via startWorkout',
+    () async {
+      await cubit.startWorkout(
+        programId: programA,
+        workoutTemplateId: push1,
+        workoutNameSnapshot: 'Push 1',
+      );
+      final startedId = (cubit.state as WorkoutSessionActive).session.id;
 
-    // Simulates re-opening the app / the Programs hub — this is what
-    // makes "survives app restart" work: it just re-reads Hive.
-    await cubit.checkActiveSession();
+      // Simulates re-opening the app / the Programs hub — this is what
+      // makes "survives app restart" work: it just re-reads Hive.
+      await cubit.checkActiveSession();
 
-    expect(cubit.state, isA<WorkoutSessionActive>());
-    expect((cubit.state as WorkoutSessionActive).session.id, equals(startedId));
-  });
+      expect(cubit.state, isA<WorkoutSessionActive>());
+      expect(
+        (cubit.state as WorkoutSessionActive).session.id,
+        equals(startedId),
+      );
+    },
+  );
 
-  test('starting a second workout while one is active never silently creates a second '
-      'session — it emits Conflict carrying the existing one', () async {
-    await cubit.startWorkout(programId: programA, workoutTemplateId: push1, workoutNameSnapshot: 'Push 1');
-    final firstId = (cubit.state as WorkoutSessionActive).session.id;
+  test(
+    'starting a second workout while one is active never silently creates a second '
+    'session — it emits Conflict carrying the existing one',
+    () async {
+      await cubit.startWorkout(
+        programId: programA,
+        workoutTemplateId: push1,
+        workoutNameSnapshot: 'Push 1',
+      );
+      final firstId = (cubit.state as WorkoutSessionActive).session.id;
 
-    await cubit.startWorkout(programId: programA, workoutTemplateId: push2, workoutNameSnapshot: 'Push 2');
+      await cubit.startWorkout(
+        programId: programA,
+        workoutTemplateId: push2,
+        workoutNameSnapshot: 'Push 2',
+      );
 
-    expect(cubit.state, isA<WorkoutSessionConflict>());
-    expect((cubit.state as WorkoutSessionConflict).existingSession.id, equals(firstId));
+      expect(cubit.state, isA<WorkoutSessionConflict>());
+      expect(
+        (cubit.state as WorkoutSessionConflict).existingSession.id,
+        equals(firstId),
+      );
 
-    // Confirm no second session was created in storage.
-    final box = await cubit.repository.getUserBox();
-    expect(box.values.where((s) => s.isInProgress).length, equals(1));
-  });
+      // Confirm no second session was created in storage.
+      final box = await cubit.repository.getUserBox();
+      expect(box.values.where((s) => s.isInProgress).length, equals(1));
+    },
+  );
 
-  test('cancelWorkout requires an explicit call and results in None afterward', () async {
-    await cubit.startWorkout(programId: programA, workoutTemplateId: push1, workoutNameSnapshot: 'Push 1');
-    final sessionId = (cubit.state as WorkoutSessionActive).session.id;
+  test(
+    'cancelWorkout requires an explicit call and results in None afterward',
+    () async {
+      await cubit.startWorkout(
+        programId: programA,
+        workoutTemplateId: push1,
+        workoutNameSnapshot: 'Push 1',
+      );
+      final sessionId = (cubit.state as WorkoutSessionActive).session.id;
 
-    await cubit.cancelWorkout(sessionId);
+      await cubit.cancelWorkout(sessionId);
 
-    expect(cubit.state, isA<WorkoutSessionNone>());
+      expect(cubit.state, isA<WorkoutSessionNone>());
 
-    final box = await cubit.repository.getUserBox();
-    final cancelled = box.get(sessionId);
-    expect(cancelled, isNotNull);
-    expect(cancelled!.isCancelled, isTrue);
-  });
+      final box = await cubit.repository.getUserBox();
+      final cancelled = box.get(sessionId);
+      expect(cancelled, isNotNull);
+      expect(cancelled!.isCancelled, isTrue);
+    },
+  );
 
   test(
     'finishWorkout persists the caller-computed totalVolume, marks the session completed, '
     'and results in None afterward (Phase 10)',
     () async {
-      await cubit.startWorkout(programId: programA, workoutTemplateId: push1, workoutNameSnapshot: 'Push 1');
+      await cubit.startWorkout(
+        programId: programA,
+        workoutTemplateId: push1,
+        workoutNameSnapshot: 'Push 1',
+      );
       final sessionId = (cubit.state as WorkoutSessionActive).session.id;
 
       await cubit.finishWorkout(sessionId: sessionId, totalVolume: 480);
@@ -129,26 +175,78 @@ void main() {
     },
   );
 
-  test('finishWorkout on an already-finished session emits an Error and never overwrites it', () async {
-    await cubit.startWorkout(programId: programA, workoutTemplateId: push1, workoutNameSnapshot: 'Push 1');
-    final sessionId = (cubit.state as WorkoutSessionActive).session.id;
-    await cubit.finishWorkout(sessionId: sessionId, totalVolume: 480);
+  test(
+    'finishWorkout on an already-finished session emits an Error and never overwrites it',
+    () async {
+      await cubit.startWorkout(
+        programId: programA,
+        workoutTemplateId: push1,
+        workoutNameSnapshot: 'Push 1',
+      );
+      final sessionId = (cubit.state as WorkoutSessionActive).session.id;
+      await cubit.finishWorkout(sessionId: sessionId, totalVolume: 480);
 
-    await cubit.finishWorkout(sessionId: sessionId, totalVolume: 999);
+      await cubit.finishWorkout(sessionId: sessionId, totalVolume: 999);
 
-    expect(cubit.state, isA<WorkoutSessionError>());
-    expect((cubit.state as WorkoutSessionError).operation, equals(WorkoutSessionOperation.finish));
+      expect(cubit.state, isA<WorkoutSessionError>());
+      expect(
+        (cubit.state as WorkoutSessionError).operation,
+        equals(WorkoutSessionOperation.finish),
+      );
+      // Stage 4: InvalidWorkoutSessionStateException is a domain-specific
+      // exception whose toString() is already the exact crafted reason
+      // (no 'Exception: ' wrapper) — it must be caught explicitly ahead
+      // of the generic mapper and preserved verbatim, never replaced by
+      // the generic fallback.
+      expect(
+        (cubit.state as WorkoutSessionError).message,
+        equals(
+          'Only an inProgress session can be completed (current status: completed).',
+        ),
+      );
 
-    final box = await cubit.repository.getUserBox();
-    // The original completed volume must survive untouched.
-    expect(box.get(sessionId)!.totalVolume, equals(480));
-  });
+      final box = await cubit.repository.getUserBox();
+      // The original completed volume must survive untouched.
+      expect(box.get(sessionId)!.totalVolume, equals(480));
+    },
+  );
+
+  test(
+    'cancelWorkout on a session that is not inProgress emits Error with the exact crafted reason',
+    () async {
+      await cubit.startWorkout(
+        programId: programA,
+        workoutTemplateId: push1,
+        workoutNameSnapshot: 'Push 1',
+      );
+      final sessionId = (cubit.state as WorkoutSessionActive).session.id;
+      await cubit.finishWorkout(sessionId: sessionId, totalVolume: 480);
+
+      await cubit.cancelWorkout(sessionId);
+
+      expect(cubit.state, isA<WorkoutSessionError>());
+      expect(
+        (cubit.state as WorkoutSessionError).operation,
+        equals(WorkoutSessionOperation.cancel),
+      );
+      expect(
+        (cubit.state as WorkoutSessionError).message,
+        equals(
+          'Only an inProgress session can be cancelled (current status: completed).',
+        ),
+      );
+    },
+  );
 
   test(
     'reset() clears a leftover Active state back to Initial (Phase 21 audit fix — '
     'this Cubit is a process-lifetime singleton and must not leak state across a logout)',
     () async {
-      await cubit.startWorkout(programId: programA, workoutTemplateId: push1, workoutNameSnapshot: 'Push 1');
+      await cubit.startWorkout(
+        programId: programA,
+        workoutTemplateId: push1,
+        workoutNameSnapshot: 'Push 1',
+      );
       expect(cubit.state, isA<WorkoutSessionActive>());
 
       cubit.reset();

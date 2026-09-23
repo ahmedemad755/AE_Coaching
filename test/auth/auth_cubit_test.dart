@@ -458,8 +458,23 @@ void main() {
         repo.errorToThrow = Exception('Incorrect phone number or password.');
         await cubit.login('+201012345678', 'wrong-password');
         expect(cubit.state, isA<AuthError>());
+        expect(
+          (cubit.state as AuthError).message,
+          equals('Incorrect phone number or password.'),
+        );
       },
     );
+
+    test('Stage 4: the shared generic mapper uses replaceFirst semantics — '
+        'only the first "Exception: " occurrence is stripped, so a message '
+        'that itself contains that literal text is preserved rather than '
+        'fully unwrapped (this replaces AuthCubit\'s previous replaceAll '
+        'behavior, normalized to match the other six mappers)', () async {
+      repo.errorToThrow = Exception('Exception: nested');
+      await cubit.login('+201012345678', 'wrong-password');
+      expect(cubit.state, isA<AuthError>());
+      expect((cubit.state as AuthError).message, equals('Exception: nested'));
+    });
   });
 
   group('Phase 4: legacy password-only login triggers migration '

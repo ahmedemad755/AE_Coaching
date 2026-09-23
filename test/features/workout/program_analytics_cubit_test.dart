@@ -23,25 +23,30 @@ class _FakeWorkoutRemoteDataSource implements WorkoutRemoteDataSource {
   @override
   Future<void> deleteMultipleSets(List<String> keys) async {}
   @override
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> fetchAllRemoteSets() async => const [];
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
+  fetchAllRemoteSets() async => const [];
 }
 
-class _FakeWorkoutSessionRemoteDataSource implements WorkoutSessionRemoteDataSource {
+class _FakeWorkoutSessionRemoteDataSource
+    implements WorkoutSessionRemoteDataSource {
   @override
   Future<void> syncSession(String id, WorkoutSession session) async {}
   @override
   Future<void> deleteSession(String id) async {}
   @override
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> fetchAllRemoteSessions() async => const [];
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
+  fetchAllRemoteSessions() async => const [];
 }
 
-class _FakeWorkoutTemplateRemoteDataSource implements WorkoutTemplateRemoteDataSource {
+class _FakeWorkoutTemplateRemoteDataSource
+    implements WorkoutTemplateRemoteDataSource {
   @override
   Future<void> syncTemplate(String id, WorkoutTemplate template) async {}
   @override
   Future<void> deleteTemplate(String id) async {}
   @override
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> fetchAllRemoteTemplates() async => const [];
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
+  fetchAllRemoteTemplates() async => const [];
 }
 
 void main() {
@@ -57,9 +62,15 @@ void main() {
   setUp(() async {
     tempDir = await Directory.systemTemp.createTemp('program_analytics_test_');
     Hive.init(tempDir.path);
-    if (!Hive.isAdapterRegistered(0)) Hive.registerAdapter(ExerciseSetAdapter());
-    if (!Hive.isAdapterRegistered(4)) Hive.registerAdapter(WorkoutTemplateAdapter());
-    if (!Hive.isAdapterRegistered(5)) Hive.registerAdapter(WorkoutSessionAdapter());
+    if (!Hive.isAdapterRegistered(0)) {
+      Hive.registerAdapter(ExerciseSetAdapter());
+    }
+    if (!Hive.isAdapterRegistered(4)) {
+      Hive.registerAdapter(WorkoutTemplateAdapter());
+    }
+    if (!Hive.isAdapterRegistered(5)) {
+      Hive.registerAdapter(WorkoutSessionAdapter());
+    }
 
     storageManager = UserStorageManager();
 
@@ -100,42 +111,82 @@ void main() {
     expect(state.summary.days, isEmpty);
   });
 
-  test('builds a full Program -> Day -> Exercise summary from real stored data', () async {
-    final template = await templateRepository.createTemplate(programId: programA, name: 'Push 1');
+  test(
+    'builds a full Program -> Day -> Exercise summary from real stored data',
+    () async {
+      final template = await templateRepository.createTemplate(
+        programId: programA,
+        name: 'Push 1',
+      );
 
-    final session = await sessionRepository.startWorkoutSession(
-      programId: programA,
-      workoutTemplateId: template.id,
-      workoutNameSnapshot: 'Push 1',
+      final session = await sessionRepository.startWorkoutSession(
+        programId: programA,
+        workoutTemplateId: template.id,
+        workoutNameSnapshot: 'Push 1',
+      );
+      await setRepository.addSet(
+        programId: programA,
+        workoutTemplateId: template.id,
+        workoutSessionId: session.id,
+        exerciseName: 'Bench Press',
+        weight: 60,
+        reps: 8,
+      );
+      await sessionRepository.completeWorkoutSession(
+        sessionId: session.id,
+        totalVolume: 480,
+      );
+
+      await cubit.loadAnalytics(programA);
+
+      final state = cubit.state as ProgramAnalyticsLoaded;
+      expect(state.summary.days, hasLength(1));
+      final day = state.summary.days.single;
+      expect(day.workoutTemplateId, equals(template.id));
+      expect(day.completedSessionsCount, equals(1));
+      expect(day.exercises.single.exerciseName, equals('Bench Press'));
+      expect(day.exercises.single.bestWeight, equals(60));
+    },
+  );
+
+  test(
+    'an archived template is excluded, matching the Workout Days screen',
+    () async {
+      final template = await templateRepository.createTemplate(
+        programId: programA,
+        name: 'Push 1',
+      );
+      await templateRepository.archiveTemplate(template.id);
+
+      await cubit.loadAnalytics(programA);
+
+      final state = cubit.state as ProgramAnalyticsLoaded;
+      expect(state.summary.days, isEmpty);
+    },
+  );
+
+  test('Stage 4: a real repository failure (unauthenticated uid) maps to '
+      'its exact known-safe message via the shared generic mapper, never '
+      'the previous raw error.toString() output', () async {
+    final unauthenticatedTemplateRepository = WorkoutTemplateRepository(
+      remoteDataSource: _FakeWorkoutTemplateRemoteDataSource(),
+      storageManager: storageManager,
+      uidOverride: () => '',
     );
-    await setRepository.addSet(
-      programId: programA,
-      workoutTemplateId: template.id,
-      workoutSessionId: session.id,
-      exerciseName: 'Bench Press',
-      weight: 60,
-      reps: 8,
+    final unauthenticatedCubit = ProgramAnalyticsCubit(
+      templateRepository: unauthenticatedTemplateRepository,
+      sessionRepository: sessionRepository,
+      setRepository: setRepository,
     );
-    await sessionRepository.completeWorkoutSession(sessionId: session.id, totalVolume: 480);
 
-    await cubit.loadAnalytics(programA);
+    await unauthenticatedCubit.loadAnalytics(programA);
 
-    final state = cubit.state as ProgramAnalyticsLoaded;
-    expect(state.summary.days, hasLength(1));
-    final day = state.summary.days.single;
-    expect(day.workoutTemplateId, equals(template.id));
-    expect(day.completedSessionsCount, equals(1));
-    expect(day.exercises.single.exerciseName, equals('Bench Press'));
-    expect(day.exercises.single.bestWeight, equals(60));
-  });
+    expect(unauthenticatedCubit.state, isA<ProgramAnalyticsError>());
+    expect(
+      (unauthenticatedCubit.state as ProgramAnalyticsError).message,
+      equals('User not authenticated'),
+    );
 
-  test('an archived template is excluded, matching the Workout Days screen', () async {
-    final template = await templateRepository.createTemplate(programId: programA, name: 'Push 1');
-    await templateRepository.archiveTemplate(template.id);
-
-    await cubit.loadAnalytics(programA);
-
-    final state = cubit.state as ProgramAnalyticsLoaded;
-    expect(state.summary.days, isEmpty);
+    await unauthenticatedCubit.close();
   });
 }

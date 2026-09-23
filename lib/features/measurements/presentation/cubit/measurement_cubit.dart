@@ -1,4 +1,5 @@
 import 'package:ae_coaching/auth/data/models/body_measurement.dart';
+import 'package:ae_coaching/core/errors/exception_message_mapper.dart';
 import 'package:ae_coaching/features/measurements/data/repositories/measurement_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -50,7 +51,7 @@ class MeasurementCubit extends Cubit<MeasurementState> {
       emit(
         MeasurementError(
           operation: MeasurementOperation.load,
-          message: _mapExceptionToMessage(error),
+          message: mapGenericExceptionToMessage(error),
         ),
       );
     }
@@ -72,13 +73,16 @@ class MeasurementCubit extends Cubit<MeasurementState> {
       emit(
         MeasurementError(
           operation: MeasurementOperation.add,
-          message: _mapExceptionToMessage(error),
+          message: mapGenericExceptionToMessage(error),
         ),
       );
     }
   }
 
-  Future<void> updateMeasurement(dynamic key, BodyMeasurement measurement) async {
+  Future<void> updateMeasurement(
+    dynamic key,
+    BodyMeasurement measurement,
+  ) async {
     emit(const MeasurementLoading(operation: MeasurementOperation.update));
     try {
       await repository.updateMeasurement(key, measurement);
@@ -94,7 +98,7 @@ class MeasurementCubit extends Cubit<MeasurementState> {
       emit(
         MeasurementError(
           operation: MeasurementOperation.update,
-          message: _mapExceptionToMessage(error),
+          message: mapGenericExceptionToMessage(error),
         ),
       );
     }
@@ -116,13 +120,9 @@ class MeasurementCubit extends Cubit<MeasurementState> {
       emit(
         MeasurementError(
           operation: MeasurementOperation.delete,
-          message: _mapExceptionToMessage(error),
+          message: mapGenericExceptionToMessage(error),
         ),
       );
     }
-  }
-
-  String _mapExceptionToMessage(Object error) {
-    return error.toString().replaceFirst('Exception: ', '');
   }
 }

@@ -19,7 +19,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
 
-class _FakeWorkoutTemplateRemoteDataSource implements WorkoutTemplateRemoteDataSource {
+class _FakeWorkoutTemplateRemoteDataSource
+    implements WorkoutTemplateRemoteDataSource {
   final Map<String, Map<String, dynamic>> store = {};
 
   @override
@@ -33,27 +34,32 @@ class _FakeWorkoutTemplateRemoteDataSource implements WorkoutTemplateRemoteDataS
   }
 
   @override
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> fetchAllRemoteTemplates() async {
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
+  fetchAllRemoteTemplates() async {
     return <QueryDocumentSnapshot<Map<String, dynamic>>>[];
   }
 }
 
-class _FakeWorkoutProgramRemoteDataSource implements WorkoutProgramRemoteDataSource {
+class _FakeWorkoutProgramRemoteDataSource
+    implements WorkoutProgramRemoteDataSource {
   @override
   Future<void> syncProgram(String id, WorkoutProgram program) async {}
   @override
   Future<void> deleteProgram(String id) async {}
   @override
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> fetchAllRemotePrograms() async => const [];
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
+  fetchAllRemotePrograms() async => const [];
 }
 
-class _FakeWorkoutSessionRemoteDataSource implements WorkoutSessionRemoteDataSource {
+class _FakeWorkoutSessionRemoteDataSource
+    implements WorkoutSessionRemoteDataSource {
   @override
   Future<void> syncSession(String id, WorkoutSession session) async {}
   @override
   Future<void> deleteSession(String id) async {}
   @override
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> fetchAllRemoteSessions() async => const [];
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
+  fetchAllRemoteSessions() async => const [];
 }
 
 class _FakeWorkoutRemoteDataSource implements WorkoutRemoteDataSource {
@@ -64,7 +70,8 @@ class _FakeWorkoutRemoteDataSource implements WorkoutRemoteDataSource {
   @override
   Future<void> deleteMultipleSets(List<String> keys) async {}
   @override
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> fetchAllRemoteSets() async => const [];
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
+  fetchAllRemoteSets() async => const [];
 }
 
 void main() {
@@ -77,12 +84,22 @@ void main() {
   const programA = 'program_A';
 
   setUp(() async {
-    tempDir = await Directory.systemTemp.createTemp('workout_template_cubit_test_');
+    tempDir = await Directory.systemTemp.createTemp(
+      'workout_template_cubit_test_',
+    );
     Hive.init(tempDir.path);
-    if (!Hive.isAdapterRegistered(0)) Hive.registerAdapter(ExerciseSetAdapter());
-    if (!Hive.isAdapterRegistered(1)) Hive.registerAdapter(WorkoutProgramAdapter());
-    if (!Hive.isAdapterRegistered(4)) Hive.registerAdapter(WorkoutTemplateAdapter());
-    if (!Hive.isAdapterRegistered(5)) Hive.registerAdapter(WorkoutSessionAdapter());
+    if (!Hive.isAdapterRegistered(0)) {
+      Hive.registerAdapter(ExerciseSetAdapter());
+    }
+    if (!Hive.isAdapterRegistered(1)) {
+      Hive.registerAdapter(WorkoutProgramAdapter());
+    }
+    if (!Hive.isAdapterRegistered(4)) {
+      Hive.registerAdapter(WorkoutTemplateAdapter());
+    }
+    if (!Hive.isAdapterRegistered(5)) {
+      Hive.registerAdapter(WorkoutSessionAdapter());
+    }
 
     final storageManager = UserStorageManager();
     templateRepository = WorkoutTemplateRepository(
@@ -124,23 +141,32 @@ void main() {
     }
   });
 
-  test('loadTemplates transitions to Loaded with an empty box when nothing exists yet', () async {
-    await cubit.loadTemplates();
-    expect(cubit.state, isA<WorkoutTemplateLoaded>());
-    expect((cubit.state as WorkoutTemplateLoaded).box.values, isEmpty);
-  });
+  test(
+    'loadTemplates transitions to Loaded with an empty box when nothing exists yet',
+    () async {
+      await cubit.loadTemplates();
+      expect(cubit.state, isA<WorkoutTemplateLoaded>());
+      expect((cubit.state as WorkoutTemplateLoaded).box.values, isEmpty);
+    },
+  );
 
-  test('createTemplate appends new templates in creation order via orderIndex', () async {
-    await cubit.loadTemplates();
-    await cubit.createTemplate(programId: programA, name: 'Push 1');
-    await cubit.createTemplate(programId: programA, name: 'Pull 1');
-    await cubit.createTemplate(programId: programA, name: 'Legs');
+  test(
+    'createTemplate appends new templates in creation order via orderIndex',
+    () async {
+      await cubit.loadTemplates();
+      await cubit.createTemplate(programId: programA, name: 'Push 1');
+      await cubit.createTemplate(programId: programA, name: 'Pull 1');
+      await cubit.createTemplate(programId: programA, name: 'Legs');
 
-    final box = (cubit.state as WorkoutTemplateLoaded).box;
-    final ordered = cubit.repository.getTemplatesForProgram(box, programA);
+      final box = (cubit.state as WorkoutTemplateLoaded).box;
+      final ordered = cubit.repository.getTemplatesForProgram(box, programA);
 
-    expect(ordered.map((t) => t.name).toList(), equals(['Push 1', 'Pull 1', 'Legs']));
-  });
+      expect(
+        ordered.map((t) => t.name).toList(),
+        equals(['Push 1', 'Pull 1', 'Legs']),
+      );
+    },
+  );
 
   test('renameTemplate updates only the name', () async {
     await cubit.loadTemplates();
@@ -156,96 +182,140 @@ void main() {
     expect(renamed.id, equals(template.id));
   });
 
-  test('archiveTemplate removes it from the normal ordered list but keeps the record', () async {
-    await cubit.loadTemplates();
-    await cubit.createTemplate(programId: programA, name: 'Push 1');
-    final box = (cubit.state as WorkoutTemplateLoaded).box;
-    final template = box.values.first;
+  test(
+    'archiveTemplate removes it from the normal ordered list but keeps the record',
+    () async {
+      await cubit.loadTemplates();
+      await cubit.createTemplate(programId: programA, name: 'Push 1');
+      final box = (cubit.state as WorkoutTemplateLoaded).box;
+      final template = box.values.first;
 
-    await cubit.archiveTemplate(template.id);
+      await cubit.archiveTemplate(template.id);
 
-    expect(box.get(template.id), isNotNull);
-    expect(box.get(template.id)!.isArchived, isTrue);
-    expect(cubit.repository.getTemplatesForProgram(box, programA), isEmpty);
-  });
+      expect(box.get(template.id), isNotNull);
+      expect(box.get(template.id)!.isArchived, isTrue);
+      expect(cubit.repository.getTemplatesForProgram(box, programA), isEmpty);
+    },
+  );
 
-  test('reorderTemplates re-sequences orderIndex to match the given order', () async {
-    await cubit.loadTemplates();
-    await cubit.createTemplate(programId: programA, name: 'Push 1');
-    await cubit.createTemplate(programId: programA, name: 'Pull 1');
-    await cubit.createTemplate(programId: programA, name: 'Legs');
+  test(
+    'reorderTemplates re-sequences orderIndex to match the given order',
+    () async {
+      await cubit.loadTemplates();
+      await cubit.createTemplate(programId: programA, name: 'Push 1');
+      await cubit.createTemplate(programId: programA, name: 'Pull 1');
+      await cubit.createTemplate(programId: programA, name: 'Legs');
 
-    final box = (cubit.state as WorkoutTemplateLoaded).box;
-    final current = cubit.repository.getTemplatesForProgram(box, programA);
-    // Reverse the order: Legs, Pull 1, Push 1
-    final newOrder = current.reversed.map((t) => t.id).toList();
+      final box = (cubit.state as WorkoutTemplateLoaded).box;
+      final current = cubit.repository.getTemplatesForProgram(box, programA);
+      // Reverse the order: Legs, Pull 1, Push 1
+      final newOrder = current.reversed.map((t) => t.id).toList();
 
-    await cubit.reorderTemplates(newOrder);
+      await cubit.reorderTemplates(newOrder);
 
-    final reOrdered = cubit.repository.getTemplatesForProgram(box, programA);
-    expect(reOrdered.map((t) => t.name).toList(), equals(['Legs', 'Pull 1', 'Push 1']));
-  });
+      final reOrdered = cubit.repository.getTemplatesForProgram(box, programA);
+      expect(
+        reOrdered.map((t) => t.name).toList(),
+        equals(['Legs', 'Pull 1', 'Push 1']),
+      );
+    },
+  );
 
-  test('an error is emitted safely when renaming a template that does not exist', () async {
-    await cubit.loadTemplates();
-    await cubit.renameTemplate(templateId: 'does-not-exist', newName: 'X');
+  test(
+    'an error is emitted safely when renaming a template that does not exist',
+    () async {
+      await cubit.loadTemplates();
+      await cubit.renameTemplate(templateId: 'does-not-exist', newName: 'X');
 
-    expect(cubit.state, isA<WorkoutTemplateError>());
-    expect((cubit.state as WorkoutTemplateError).operation, equals(WorkoutTemplateOperation.rename));
-  });
+      expect(cubit.state, isA<WorkoutTemplateError>());
+      expect(
+        (cubit.state as WorkoutTemplateError).operation,
+        equals(WorkoutTemplateOperation.rename),
+      );
+      // Stage 4: proves the shared generic mapper is wired in and
+      // preserves this repository-crafted message exactly — no
+      // "Exception: " prefix, no generic fallback substituted for a
+      // known, safe message.
+      expect(
+        (cubit.state as WorkoutTemplateError).message,
+        equals('Workout template not found.'),
+      );
+    },
+  );
 
-  test('restoreTemplate reverses archiveTemplate — the day is visible in the active list again', () async {
-    await cubit.loadTemplates();
-    await cubit.createTemplate(programId: programA, name: 'Push 1');
-    final box = (cubit.state as WorkoutTemplateLoaded).box;
-    final template = box.values.first;
+  test(
+    'restoreTemplate reverses archiveTemplate — the day is visible in the active list again',
+    () async {
+      await cubit.loadTemplates();
+      await cubit.createTemplate(programId: programA, name: 'Push 1');
+      final box = (cubit.state as WorkoutTemplateLoaded).box;
+      final template = box.values.first;
 
-    await cubit.archiveTemplate(template.id);
-    expect(cubit.repository.getTemplatesForProgram(box, programA), isEmpty);
+      await cubit.archiveTemplate(template.id);
+      expect(cubit.repository.getTemplatesForProgram(box, programA), isEmpty);
 
-    await cubit.restoreTemplate(template.id);
+      await cubit.restoreTemplate(template.id);
 
-    expect(box.get(template.id)!.isArchived, isFalse);
-    expect(cubit.repository.getTemplatesForProgram(box, programA).map((t) => t.id), contains(template.id));
-  });
+      expect(box.get(template.id)!.isArchived, isFalse);
+      expect(
+        cubit.repository.getTemplatesForProgram(box, programA).map((t) => t.id),
+        contains(template.id),
+      );
+    },
+  );
 
-  test('deleteTemplate permanently removes the template and refreshes the loaded box', () async {
-    await cubit.loadTemplates();
-    await cubit.createTemplate(programId: programA, name: 'Push 1');
-    final box = (cubit.state as WorkoutTemplateLoaded).box;
-    final template = box.values.first;
+  test(
+    'deleteTemplate permanently removes the template and refreshes the loaded box',
+    () async {
+      await cubit.loadTemplates();
+      await cubit.createTemplate(programId: programA, name: 'Push 1');
+      final box = (cubit.state as WorkoutTemplateLoaded).box;
+      final template = box.values.first;
 
-    await cubit.deleteTemplate(template.id);
+      await cubit.deleteTemplate(template.id);
 
-    expect(cubit.state, isA<WorkoutTemplateLoaded>());
-    expect((cubit.state as WorkoutTemplateLoaded).box.get(template.id), isNull);
-  });
+      expect(cubit.state, isA<WorkoutTemplateLoaded>());
+      expect(
+        (cubit.state as WorkoutTemplateLoaded).box.get(template.id),
+        isNull,
+      );
+    },
+  );
 
-  test('deleteTemplate cascades to its sessions and sets — nothing is left orphaned', () async {
-    await cubit.loadTemplates();
-    await cubit.createTemplate(programId: programA, name: 'Push 1');
-    final template = (cubit.state as WorkoutTemplateLoaded).box.values.first;
+  test(
+    'deleteTemplate cascades to its sessions and sets — nothing is left orphaned',
+    () async {
+      await cubit.loadTemplates();
+      await cubit.createTemplate(programId: programA, name: 'Push 1');
+      final template = (cubit.state as WorkoutTemplateLoaded).box.values.first;
 
-    final session = await sessionRepository.startWorkoutSession(
-      programId: programA,
-      workoutTemplateId: template.id,
-      workoutNameSnapshot: 'Push 1',
-    );
-    await setRepository.addSet(
-      programId: programA,
-      workoutTemplateId: template.id,
-      workoutSessionId: session.id,
-      exerciseName: 'Bench Press',
-      weight: 60,
-      reps: 8,
-    );
-    await sessionRepository.completeWorkoutSession(sessionId: session.id, totalVolume: 480);
+      final session = await sessionRepository.startWorkoutSession(
+        programId: programA,
+        workoutTemplateId: template.id,
+        workoutNameSnapshot: 'Push 1',
+      );
+      await setRepository.addSet(
+        programId: programA,
+        workoutTemplateId: template.id,
+        workoutSessionId: session.id,
+        exerciseName: 'Bench Press',
+        weight: 60,
+        reps: 8,
+      );
+      await sessionRepository.completeWorkoutSession(
+        sessionId: session.id,
+        totalVolume: 480,
+      );
 
-    await cubit.deleteTemplate(template.id);
+      await cubit.deleteTemplate(template.id);
 
-    final sessionBox = await sessionRepository.getUserBox();
-    final setBox = await setRepository.getUserBox();
-    expect(sessionBox.get(session.id), isNull);
-    expect(setBox.values.where((s) => s.workoutSessionId == session.id), isEmpty);
-  });
+      final sessionBox = await sessionRepository.getUserBox();
+      final setBox = await setRepository.getUserBox();
+      expect(sessionBox.get(session.id), isNull);
+      expect(
+        setBox.values.where((s) => s.workoutSessionId == session.id),
+        isEmpty,
+      );
+    },
+  );
 }

@@ -1,3 +1,4 @@
+import 'package:ae_coaching/core/errors/exception_message_mapper.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_session.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_session_exceptions.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_session_repository.dart';
@@ -29,9 +30,18 @@ class WorkoutSessionCubit extends Cubit<WorkoutSessionState> {
     try {
       final box = await repository.getUserBox();
       final active = repository.getActiveSession(box);
-      emit(active != null ? WorkoutSessionActive(session: active) : const WorkoutSessionNone());
+      emit(
+        active != null
+            ? WorkoutSessionActive(session: active)
+            : const WorkoutSessionNone(),
+      );
     } catch (error) {
-      emit(WorkoutSessionError(operation: WorkoutSessionOperation.load, message: _mapExceptionToMessage(error)));
+      emit(
+        WorkoutSessionError(
+          operation: WorkoutSessionOperation.load,
+          message: mapGenericExceptionToMessage(error),
+        ),
+      );
     }
   }
 
@@ -54,7 +64,12 @@ class WorkoutSessionCubit extends Cubit<WorkoutSessionState> {
     } on ActiveWorkoutSessionExistsException catch (e) {
       emit(WorkoutSessionConflict(existingSession: e.existingSession));
     } catch (error) {
-      emit(WorkoutSessionError(operation: WorkoutSessionOperation.start, message: _mapExceptionToMessage(error)));
+      emit(
+        WorkoutSessionError(
+          operation: WorkoutSessionOperation.start,
+          message: mapGenericExceptionToMessage(error),
+        ),
+      );
     }
   }
 
@@ -62,12 +77,30 @@ class WorkoutSessionCubit extends Cubit<WorkoutSessionState> {
   /// user action (a confirmed "Cancel Workout" button), never
   /// automatically.
   Future<void> cancelWorkout(String sessionId) async {
-    emit(const WorkoutSessionLoading(operation: WorkoutSessionOperation.cancel));
+    emit(
+      const WorkoutSessionLoading(operation: WorkoutSessionOperation.cancel),
+    );
     try {
       await repository.cancelWorkoutSession(sessionId);
       emit(const WorkoutSessionNone());
+    } on InvalidWorkoutSessionStateException catch (e) {
+      // Domain-specific: e.toString() is already the exact crafted
+      // reason (no 'Exception: ' wrapper), so it must be preserved
+      // verbatim — never passed to the generic mapper, which would
+      // incorrectly replace it with the generic fallback.
+      emit(
+        WorkoutSessionError(
+          operation: WorkoutSessionOperation.cancel,
+          message: e.toString(),
+        ),
+      );
     } catch (error) {
-      emit(WorkoutSessionError(operation: WorkoutSessionOperation.cancel, message: _mapExceptionToMessage(error)));
+      emit(
+        WorkoutSessionError(
+          operation: WorkoutSessionOperation.cancel,
+          message: mapGenericExceptionToMessage(error),
+        ),
+      );
     }
   }
 
@@ -84,14 +117,37 @@ class WorkoutSessionCubit extends Cubit<WorkoutSessionState> {
   /// `completedAt`/`totalVolume`/`previousSessionId`) on success, or
   /// `null` on failure — Phase 13's completion summary needs the
   /// finished record itself, not just a "did it work" signal.
-  Future<WorkoutSession?> finishWorkout({required String sessionId, required double totalVolume}) async {
-    emit(const WorkoutSessionLoading(operation: WorkoutSessionOperation.finish));
+  Future<WorkoutSession?> finishWorkout({
+    required String sessionId,
+    required double totalVolume,
+  }) async {
+    emit(
+      const WorkoutSessionLoading(operation: WorkoutSessionOperation.finish),
+    );
     try {
-      final completed = await repository.completeWorkoutSession(sessionId: sessionId, totalVolume: totalVolume);
+      final completed = await repository.completeWorkoutSession(
+        sessionId: sessionId,
+        totalVolume: totalVolume,
+      );
       emit(const WorkoutSessionNone());
       return completed;
+    } on InvalidWorkoutSessionStateException catch (e) {
+      // See cancelWorkout — same domain-specific precedence, same
+      // exact-reason preservation requirement.
+      emit(
+        WorkoutSessionError(
+          operation: WorkoutSessionOperation.finish,
+          message: e.toString(),
+        ),
+      );
+      return null;
     } catch (error) {
-      emit(WorkoutSessionError(operation: WorkoutSessionOperation.finish, message: _mapExceptionToMessage(error)));
+      emit(
+        WorkoutSessionError(
+          operation: WorkoutSessionOperation.finish,
+          message: mapGenericExceptionToMessage(error),
+        ),
+      );
       return null;
     }
   }
@@ -105,7 +161,10 @@ class WorkoutSessionCubit extends Cubit<WorkoutSessionState> {
   /// those unrelated listeners on whichever other screen happens to be
   /// mounted at the time. The caller (the active session screen) awaits
   /// this directly and handles its own success/failure feedback.
-  Future<WorkoutSession> updateSessionNote({required String sessionId, required String? note}) {
+  Future<WorkoutSession> updateSessionNote({
+    required String sessionId,
+    required String? note,
+  }) {
     return repository.updateSessionNote(sessionId: sessionId, note: note);
   }
 
@@ -128,9 +187,5 @@ class WorkoutSessionCubit extends Cubit<WorkoutSessionState> {
   /// than "eventually, once something else happens to re-check".
   void reset() {
     if (state is! WorkoutSessionInitial) emit(const WorkoutSessionInitial());
-  }
-
-  String _mapExceptionToMessage(Object error) {
-    return error.toString().replaceFirst('Exception: ', '');
   }
 }

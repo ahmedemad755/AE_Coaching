@@ -14,6 +14,7 @@ import 'package:ae_coaching/auth/domain/usecases/request_phone_migration_otp_use
 import 'package:ae_coaching/auth/domain/usecases/request_password_reset_otp_usecase.dart';
 import 'package:ae_coaching/auth/domain/usecases/reset_password_with_otp_usecase.dart';
 import 'package:ae_coaching/auth/presentation/cubit/auth_state.dart';
+import 'package:ae_coaching/core/errors/exception_message_mapper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -60,7 +61,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthSuccess(message: "Logged in successfully", user: user));
     } catch (e, stackTrace) {
       _logError('Login Failed', e, stackTrace);
-      emit(AuthError(_mapExceptionToMessage(e)));
+      emit(AuthError(mapGenericExceptionToMessage(e)));
     }
   }
 
@@ -80,7 +81,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthOtpSent(verificationId, phoneNumber));
     } catch (e, stackTrace) {
       _logError('Request OTP Failed', e, stackTrace);
-      emit(AuthError(_mapExceptionToMessage(e)));
+      emit(AuthError(mapGenericExceptionToMessage(e)));
     }
   }
 
@@ -112,7 +113,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthSuccess(message: "Account created successfully", user: user));
     } catch (e, stackTrace) {
       _logError('Register With OTP Failed', e, stackTrace);
-      emit(AuthError(_mapExceptionToMessage(e)));
+      emit(AuthError(mapGenericExceptionToMessage(e)));
     }
   }
 
@@ -140,7 +141,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthSuccess(message: "Account created successfully", user: user));
     } catch (e, stackTrace) {
       _logError('Register Phone/Password Failed', e, stackTrace);
-      emit(AuthError(_mapExceptionToMessage(e)));
+      emit(AuthError(mapGenericExceptionToMessage(e)));
     }
   }
 
@@ -183,7 +184,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthInitial());
     } catch (e, stackTrace) {
       _logError('Reconcile Session Failed', e, stackTrace);
-      emit(AuthError(_mapExceptionToMessage(e)));
+      emit(AuthError(mapGenericExceptionToMessage(e)));
     }
   }
 
@@ -212,7 +213,7 @@ class AuthCubit extends Cubit<AuthState> {
       );
     } catch (e, stackTrace) {
       _logError('Link Password Resume Failed', e, stackTrace);
-      emit(AuthError(_mapExceptionToMessage(e)));
+      emit(AuthError(mapGenericExceptionToMessage(e)));
     }
   }
 
@@ -239,7 +240,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthSuccess(message: "Account setup complete", user: user));
     } catch (e, stackTrace) {
       _logError('Complete Profile Resume Failed', e, stackTrace);
-      emit(AuthError(_mapExceptionToMessage(e)));
+      emit(AuthError(mapGenericExceptionToMessage(e)));
     }
   }
 
@@ -262,7 +263,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthOtpSent(verificationId, phone));
     } catch (e, stackTrace) {
       _logError('Request Migration OTP Failed', e, stackTrace);
-      emit(AuthError(_mapExceptionToMessage(e)));
+      emit(AuthError(mapGenericExceptionToMessage(e)));
     }
   }
 
@@ -305,7 +306,7 @@ class AuthCubit extends Cubit<AuthState> {
       );
     } catch (e, stackTrace) {
       _logError('Link Phone Migration Failed', e, stackTrace);
-      emit(AuthError(_mapExceptionToMessage(e)));
+      emit(AuthError(mapGenericExceptionToMessage(e)));
     }
   }
 
@@ -330,7 +331,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthPasswordResetOtpSent(challengeId: challengeId, phone: phone));
     } catch (e, stackTrace) {
       _logError('Request Password Reset OTP Failed', e, stackTrace);
-      emit(AuthError(_mapExceptionToMessage(e)));
+      emit(AuthError(mapGenericExceptionToMessage(e)));
     }
   }
 
@@ -360,7 +361,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthPasswordResetSuccess("Password changed successfully"));
     } catch (e, stackTrace) {
       _logError('Reset Password Failed', e, stackTrace);
-      emit(AuthError(_mapExceptionToMessage(e)));
+      emit(AuthError(mapGenericExceptionToMessage(e)));
     }
   }
 
@@ -376,9 +377,5 @@ class AuthCubit extends Cubit<AuthState> {
       error: error,
       stackTrace: stackTrace,
     );
-  }
-
-  String _mapExceptionToMessage(Object e) {
-    return e.toString().replaceAll('Exception: ', '');
   }
 }

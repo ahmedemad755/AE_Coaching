@@ -1,3 +1,4 @@
+import 'package:ae_coaching/core/errors/exception_message_mapper.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_session_repository.dart';
 import 'package:ae_coaching/features/workout/domain/services/program_consistency_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,18 +17,22 @@ class ProgramConsistencyCubit extends Cubit<ProgramConsistencyState> {
   ProgramConsistencyCubit({
     required this.sessionRepository,
     ProgramConsistencyService? service,
-  })  : service = service ?? const ProgramConsistencyService(),
-        super(const ProgramConsistencyInitial());
+  }) : service = service ?? const ProgramConsistencyService(),
+       super(const ProgramConsistencyInitial());
 
   Future<void> loadConsistency(String programId) async {
     emit(const ProgramConsistencyLoading());
     try {
       final box = await sessionRepository.getUserBox();
-      final completedSessions = sessionRepository.getCompletedSessionsForProgram(box, programId);
-      final summary = service.build(now: DateTime.now(), completedSessions: completedSessions);
+      final completedSessions = sessionRepository
+          .getCompletedSessionsForProgram(box, programId);
+      final summary = service.build(
+        now: DateTime.now(),
+        completedSessions: completedSessions,
+      );
       emit(ProgramConsistencyLoaded(summary));
     } catch (error) {
-      emit(ProgramConsistencyError(error.toString()));
+      emit(ProgramConsistencyError(mapGenericExceptionToMessage(error)));
     }
   }
 }

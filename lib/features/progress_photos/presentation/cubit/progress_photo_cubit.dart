@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ae_coaching/core/errors/exception_message_mapper.dart';
 import 'package:ae_coaching/features/progress_photos/data/models/progress_photo.dart';
 import 'package:ae_coaching/features/progress_photos/data/repositories/progress_photo_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,7 +34,7 @@ class ProgressPhotoCubit extends Cubit<ProgressPhotoState> {
       emit(
         ProgressPhotoError(
           operation: ProgressPhotoOperation.load,
-          message: _mapExceptionToMessage(error),
+          message: mapGenericExceptionToMessage(error),
         ),
       );
     }
@@ -59,7 +60,7 @@ class ProgressPhotoCubit extends Cubit<ProgressPhotoState> {
       emit(
         ProgressPhotoError(
           operation: ProgressPhotoOperation.add,
-          message: _mapExceptionToMessage(error),
+          message: mapGenericExceptionToMessage(error),
         ),
       );
     }
@@ -81,13 +82,9 @@ class ProgressPhotoCubit extends Cubit<ProgressPhotoState> {
       emit(
         ProgressPhotoError(
           operation: ProgressPhotoOperation.delete,
-          message: _mapExceptionToMessage(error),
+          message: mapGenericExceptionToMessage(error),
         ),
       );
     }
-  }
-
-  String _mapExceptionToMessage(Object error) {
-    return error.toString().replaceFirst('Exception: ', '');
   }
 }
