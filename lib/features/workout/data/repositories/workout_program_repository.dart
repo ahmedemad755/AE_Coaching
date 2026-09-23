@@ -1,7 +1,7 @@
+import 'package:ae_coaching/core/storage/user_storage_manager.dart';
 import 'package:ae_coaching/features/workout/data/datasources/workout_program_remote_data_source.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_program.dart';
 import 'package:ae_coaching/features/workout/data/workout_id_generator.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -19,6 +19,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 /// `progress_photos_$uid` — entirely separate box.
 class WorkoutProgramRepository {
   final WorkoutProgramRemoteDataSource remoteDataSource;
+  final UserBox<WorkoutProgram> _userBox;
 
   /// Overrides the resolved uid instead of reading
   /// `FirebaseAuth.instance.currentUser`. Exists only so unit tests can
@@ -29,23 +30,16 @@ class WorkoutProgramRepository {
 
   WorkoutProgramRepository({
     WorkoutProgramRemoteDataSource? remoteDataSource,
+    required UserStorageManager storageManager,
     @visibleForTesting this.uidOverride,
-  }) : remoteDataSource = remoteDataSource ?? WorkoutProgramRemoteDataSourceImpl();
+  })  : remoteDataSource = remoteDataSource ?? WorkoutProgramRemoteDataSourceImpl(),
+        _userBox = UserBox<WorkoutProgram>(
+          manager: storageManager,
+          prefix: 'workout_programs',
+          uidOverride: uidOverride,
+        );
 
-  Future<Box<WorkoutProgram>> getUserBox() async {
-    final uid = uidOverride?.call() ?? FirebaseAuth.instance.currentUser?.uid ?? '';
-
-    if (uid.isEmpty) {
-      throw Exception('User not authenticated');
-    }
-
-    final boxName = 'workout_programs_$uid';
-    if (Hive.isBoxOpen(boxName)) {
-      return Hive.box<WorkoutProgram>(boxName);
-    }
-
-    return Hive.openBox<WorkoutProgram>(boxName);
-  }
+  Future<Box<WorkoutProgram>> getUserBox() => _userBox.getUserBox();
 
   /// Creates a new program. Pass [makeActive] to also run the
   /// single-active-program invariant (deactivating whatever was active

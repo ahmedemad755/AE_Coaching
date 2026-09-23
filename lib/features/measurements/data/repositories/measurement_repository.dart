@@ -1,6 +1,6 @@
 import 'package:ae_coaching/auth/data/models/body_measurement.dart';
+import 'package:ae_coaching/core/storage/user_storage_manager.dart';
 import 'package:ae_coaching/features/measurements/data/datasources/measurement_remote_data_source.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -18,26 +18,27 @@ import 'package:hive_flutter/hive_flutter.dart';
 /// existing Workout feature already has.
 class MeasurementRepository {
   final MeasurementRemoteDataSource remoteDataSource;
+  final UserBox<BodyMeasurement> _userBox;
 
-  MeasurementRepository({MeasurementRemoteDataSource? remoteDataSource})
-      : remoteDataSource = remoteDataSource ?? MeasurementRemoteDataSourceImpl();
+  /// @visibleForTesting seam — same convention as the Workout
+  /// repositories, previously missing here (Stage 3).
+  @visibleForTesting
+  final String? Function()? uidOverride;
+
+  MeasurementRepository({
+    MeasurementRemoteDataSource? remoteDataSource,
+    required UserStorageManager storageManager,
+    @visibleForTesting this.uidOverride,
+  })  : remoteDataSource = remoteDataSource ?? MeasurementRemoteDataSourceImpl(),
+        _userBox = UserBox<BodyMeasurement>(
+          manager: storageManager,
+          prefix: 'measurements',
+          uidOverride: uidOverride,
+        );
 
   /// Opens (or returns the already-open) Hive box that belongs to the
   /// currently signed-in Firebase user.
-  Future<Box<BodyMeasurement>> getUserBox() async {
-    final uid = FirebaseAuth.instance.currentUser?.uid ?? '';
-
-    if (uid.isEmpty) {
-      throw Exception('User not authenticated');
-    }
-
-    final boxName = 'measurements_$uid';
-    if (Hive.isBoxOpen(boxName)) {
-      return Hive.box<BodyMeasurement>(boxName);
-    }
-
-    return Hive.openBox<BodyMeasurement>(boxName);
-  }
+  Future<Box<BodyMeasurement>> getUserBox() => _userBox.getUserBox();
 
   Future<void> addMeasurement(BodyMeasurement measurement) async {
     final box = await getUserBox();

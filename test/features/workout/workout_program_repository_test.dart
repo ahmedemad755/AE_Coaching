@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ae_coaching/core/storage/user_storage_manager.dart';
 import 'package:ae_coaching/features/workout/data/datasources/workout_program_remote_data_source.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_program.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_program_repository.dart';
@@ -46,6 +47,7 @@ void main() {
 
     repository = WorkoutProgramRepository(
       remoteDataSource: _FakeWorkoutProgramRemoteDataSource(),
+      storageManager: UserStorageManager(),
       // No Firebase app exists in this test environment — uidOverride
       // is the @visibleForTesting seam added specifically for this.
       uidOverride: () => 'test-uid',

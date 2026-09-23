@@ -12,11 +12,11 @@ class ProgramConsistencyCubit extends Cubit<ProgramConsistencyState> {
   final WorkoutSessionRepository sessionRepository;
   final ProgramConsistencyService service;
 
+  // Stage 3: see HomeWorkoutOverviewCubit.
   ProgramConsistencyCubit({
-    WorkoutSessionRepository? sessionRepository,
+    required this.sessionRepository,
     ProgramConsistencyService? service,
-  })  : sessionRepository = sessionRepository ?? WorkoutSessionRepository(),
-        service = service ?? const ProgramConsistencyService(),
+  })  : service = service ?? const ProgramConsistencyService(),
         super(const ProgramConsistencyInitial());
 
   Future<void> loadConsistency(String programId) async {

@@ -8,6 +8,7 @@ import 'package:ae_coaching/features/workout/data/datasources/workout_program_re
 import 'package:ae_coaching/features/workout/data/models/workout_program.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_session.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_template.dart';
+import 'package:ae_coaching/core/storage/user_storage_manager.dart';
 import 'package:ae_coaching/features/workout/data/repositories/session_exercise_repository.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_program_repository.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_session_repository.dart';
@@ -62,6 +63,7 @@ void main() {
   late WorkoutTemplateRepository templateRepository;
   late WorkoutSessionRepository sessionRepository;
   late SessionExerciseRepository setRepository;
+  late UserStorageManager storageManager;
 
   setUp(() async {
     tempDir = await Directory.systemTemp.createTemp('home_overview_test_');
@@ -71,20 +73,27 @@ void main() {
     if (!Hive.isAdapterRegistered(4)) Hive.registerAdapter(WorkoutTemplateAdapter());
     if (!Hive.isAdapterRegistered(5)) Hive.registerAdapter(WorkoutSessionAdapter());
 
+    // Fresh, isolated manager per test — never the production instance.
+    storageManager = UserStorageManager();
+
     programRepository = WorkoutProgramRepository(
       remoteDataSource: _FakeWorkoutProgramRemoteDataSource(),
+      storageManager: storageManager,
       uidOverride: () => 'test-uid',
     );
     templateRepository = WorkoutTemplateRepository(
       remoteDataSource: _FakeWorkoutTemplateRemoteDataSource(),
+      storageManager: storageManager,
       uidOverride: () => 'test-uid',
     );
     sessionRepository = WorkoutSessionRepository(
       remoteDataSource: _FakeWorkoutSessionRemoteDataSource(),
+      storageManager: storageManager,
       uidOverride: () => 'test-uid',
     );
     setRepository = SessionExerciseRepository(
       remoteDataSource: _FakeWorkoutRemoteDataSource(),
+      storageManager: storageManager,
       uidOverride: () => 'test-uid',
     );
 

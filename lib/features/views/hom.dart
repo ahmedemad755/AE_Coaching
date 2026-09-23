@@ -2,6 +2,7 @@ import 'package:ae_coaching/auth/data/models/Exercise_Set.dart';
 import 'package:ae_coaching/core/localization/locale_cubit.dart';
 import 'package:ae_coaching/core/routes/app_router.dart';
 import 'package:ae_coaching/core/session/session_storage.dart';
+import 'package:ae_coaching/core/storage/user_storage_manager.dart';
 import 'package:ae_coaching/features/analytics/presentation/workout_analytics_screen.dart';
 import 'package:ae_coaching/features/workout/presentation/bloc/workout_cubit.dart';
 import 'package:ae_coaching/features/workout/presentation/cubit/home_workout_overview_cubit.dart';
@@ -62,8 +63,15 @@ class _HomState extends State<Hom> {
         : (firebaseUser?.displayName ?? 'User');
     await sessionStorage.updateCurrentUserUid(uid);
 
-    // فتح الصندوق الخاص بالمستخدم الحالي
-    exerciseBox = await Hive.openBox<ExerciseSet>('sets_$uid');
+    // فتح الصندوق الخاص بالمستخدم الحالي — through the shared
+    // UserStorageManager (Stage 3): Hom no longer opens this box
+    // independently. It still keeps the returned reference locally
+    // because ValueListenableBuilder genuinely needs a Box instance,
+    // but opening and (on logout) closing are both owned centrally now.
+    exerciseBox = await sl<UserStorageManager>().getUserBox<ExerciseSet>(
+      'sets',
+      uid,
+    );
 
     // 🔥 تلميح هندسي: هنا تقدر تعمل Trigger لـ Load Workouts من الـ Cubit بتاعك:
     if (mounted) {
@@ -101,26 +109,65 @@ class _HomState extends State<Hom> {
           ),
           ElevatedButton(
             onPressed: () async {
-              await sl<SessionStorage>().clearSession();
+              // 1. Capture the OUTGOING uid FIRST — before anything
+              //    else can invalidate it (FirebaseAuth.signOut below
+              //    makes currentUser null).
+              final outgoingUid = FirebaseAuth.instance.currentUser?.uid;
 
-              if (exerciseBox != null && exerciseBox!.isOpen) {
-                await exerciseBox!.close();
-              }
+              try {
+                // 2. Reset WorkoutSessionCubit's in-memory state first
+                //    (Phase 21 audit fix, unchanged) — its last-emitted
+                //    state must never leak into whichever user signs in
+                //    next on this device/process.
+                sl<WorkoutSessionCubit>().reset();
 
-              // Phase 21 audit fix: WorkoutSessionCubit is a
-              // process-lifetime singleton (see its class docs) — its
-              // last-emitted state must not leak into whichever user
-              // signs in next on this device/process.
-              sl<WorkoutSessionCubit>().reset();
+                // 3. Close every per-user box owned for the outgoing
+                //    uid through the central manager. Never deletes
+                //    data. Propagates failure — a close problem must
+                //    not be treated as a successful logout.
+                if (outgoingUid != null && outgoingUid.isNotEmpty) {
+                  await sl<UserStorageManager>().closeForUser(outgoingUid);
+                }
+                // 4. Drop Hom's own cached reference — it's now closed
+                //    (or, on failure below, we're about to show an
+                //    error and stay on this screen regardless).
+                exerciseBox = null;
 
-              await FirebaseAuth.instance.signOut();
+                // 5. Clear the local Hive session record.
+                await sl<SessionStorage>().clearSession();
 
-              if (mounted) {
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  AppNavigator.login,
-                  (route) => false,
-                );
+                // 6. Sign out of Firebase last.
+                await FirebaseAuth.instance.signOut();
+
+                // 7. Navigate only after every step above succeeded.
+                if (mounted) {
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    AppNavigator.login,
+                    (route) => false,
+                  );
+                }
+              } catch (error, stackTrace) {
+                // Never show raw exception/infrastructure details to
+                // the user; log the real cause through the project's
+                // existing debug convention instead. Logout is
+                // retryable, not transactional — earlier steps that
+                // already succeeded (e.g. WorkoutSessionCubit.reset())
+                // are not rolled back, but nothing here deletes data,
+                // and the user remains on this screen rather than
+                // being navigated away as if logout fully completed.
+                debugPrint('Logout failed: $error\n$stackTrace');
+                // Use the State's own `context` (guaranteed correct
+                // ScaffoldMessenger ancestry), guarded by this State's
+                // own `mounted` — the same pattern this screen already
+                // uses on the success path above.
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Logout failed. Please try again.'),
+                    ),
+                  );
+                }
               }
             },
             style: ElevatedButton.styleFrom(

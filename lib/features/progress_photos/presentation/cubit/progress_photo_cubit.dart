@@ -14,9 +14,9 @@ part 'progress_photo_state.dart';
 class ProgressPhotoCubit extends Cubit<ProgressPhotoState> {
   final ProgressPhotoRepository repository;
 
-  ProgressPhotoCubit({ProgressPhotoRepository? repository})
-      : repository = repository ?? ProgressPhotoRepository(),
-        super(const ProgressPhotoInitial());
+  // Stage 3: see MeasurementCubit.
+  ProgressPhotoCubit({required this.repository})
+    : super(const ProgressPhotoInitial());
 
   Future<void> loadPhotos() async {
     emit(const ProgressPhotoLoading(operation: ProgressPhotoOperation.load));

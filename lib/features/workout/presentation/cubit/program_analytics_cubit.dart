@@ -18,15 +18,15 @@ class ProgramAnalyticsCubit extends Cubit<ProgramAnalyticsState> {
   final SessionExerciseRepository setRepository;
   final ProgramAnalyticsService service;
 
+  // Stage 3: see HomeWorkoutOverviewCubit — required rather than
+  // defaulted, since the zero-arg repository fallback is dead code
+  // nothing exercises.
   ProgramAnalyticsCubit({
-    WorkoutTemplateRepository? templateRepository,
-    WorkoutSessionRepository? sessionRepository,
-    SessionExerciseRepository? setRepository,
+    required this.templateRepository,
+    required this.sessionRepository,
+    required this.setRepository,
     ProgramAnalyticsService? service,
-  })  : templateRepository = templateRepository ?? WorkoutTemplateRepository(),
-        sessionRepository = sessionRepository ?? WorkoutSessionRepository(),
-        setRepository = setRepository ?? SessionExerciseRepository(),
-        service = service ?? const ProgramAnalyticsService(),
+  })  : service = service ?? const ProgramAnalyticsService(),
         super(const ProgramAnalyticsInitial());
 
   Future<void> loadAnalytics(String programId) async {

@@ -1,8 +1,13 @@
 import 'dart:io';
 
+import 'package:ae_coaching/core/storage/user_storage_manager.dart';
 import 'package:ae_coaching/features/workout/data/datasources/workout_program_remote_data_source.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_program.dart';
+import 'package:ae_coaching/features/workout/data/repositories/session_exercise_repository.dart';
+import 'package:ae_coaching/features/workout/data/repositories/workout_cascade_deletion_service.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_program_repository.dart';
+import 'package:ae_coaching/features/workout/data/repositories/workout_session_repository.dart';
+import 'package:ae_coaching/features/workout/data/repositories/workout_template_repository.dart';
 import 'package:ae_coaching/features/workout/presentation/cubit/workout_program_cubit.dart';
 import 'package:ae_coaching/features/workout/presentation/screens/workout_programs_screen.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
@@ -58,10 +63,32 @@ void main() {
       Hive.registerAdapter(WorkoutProgramAdapter());
     }
 
+    final storageManager = UserStorageManager();
+    final programRepository = WorkoutProgramRepository(
+      remoteDataSource: _FakeWorkoutProgramRemoteDataSource(),
+      storageManager: storageManager,
+      uidOverride: () => 'test-uid',
+    );
+
     cubit = WorkoutProgramCubit(
-      repository: WorkoutProgramRepository(
-        remoteDataSource: _FakeWorkoutProgramRemoteDataSource(),
-        uidOverride: () => 'test-uid',
+      repository: programRepository,
+      // WorkoutCascadeDeletionService is now a required dependency
+      // (Stage 3) — this screen test never exercises cascade delete,
+      // but the Cubit still needs a valid instance to construct.
+      deletionService: WorkoutCascadeDeletionService(
+        programRepository: programRepository,
+        templateRepository: WorkoutTemplateRepository(
+          storageManager: storageManager,
+          uidOverride: () => 'test-uid',
+        ),
+        sessionRepository: WorkoutSessionRepository(
+          storageManager: storageManager,
+          uidOverride: () => 'test-uid',
+        ),
+        setRepository: SessionExerciseRepository(
+          storageManager: storageManager,
+          uidOverride: () => 'test-uid',
+        ),
       ),
     );
   });

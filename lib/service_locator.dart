@@ -42,6 +42,7 @@ import 'package:ae_coaching/features/workout/presentation/cubit/rest_timer_cubit
 import 'package:ae_coaching/features/workout/presentation/cubit/program_consistency_cubit.dart';
 import 'package:ae_coaching/features/workout/presentation/cubit/home_workout_overview_cubit.dart';
 import 'package:ae_coaching/core/session/session_storage.dart';
+import 'package:ae_coaching/core/storage/user_storage_manager.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -52,8 +53,16 @@ final sl = GetIt.instance;
 // before runApp(), so by the time anything actually resolves this lazy
 // singleton via sl(), the box is guaranteed open, exactly like every
 // other init*() registration below that doesn't run until first use).
+//
+// UserStorageManager is the ONE production lifecycle owner for every
+// per-user Hive box — deliberately NOT a static/shared singleton on the
+// class itself (Stage 3 design correction); this GetIt registration is
+// the only place that decides what "the" production instance is. Every
+// repository/Cubit that needs it receives it by constructor injection
+// below, never by calling GetIt itself.
 void initCore() {
   sl.registerLazySingleton(() => SessionStorage(Hive.box('authBox')));
+  sl.registerLazySingleton(() => UserStorageManager());
 }
 
 void initAuth() {
@@ -126,6 +135,7 @@ void initWorkout() {
       fetchAndSyncFromRemoteUseCase:
           sl(), // حقن الحقل الجديد تلقائياً عبر GetIt
       sessionStorage: sl(),
+      storageManager: sl(),
     ),
   );
 }
@@ -141,7 +151,9 @@ void initMeasurements() {
     () => MeasurementRemoteDataSourceImpl(),
   );
 
-  sl.registerLazySingleton(() => MeasurementRepository(remoteDataSource: sl()));
+  sl.registerLazySingleton(
+    () => MeasurementRepository(remoteDataSource: sl(), storageManager: sl()),
+  );
 
   sl.registerFactory(() => MeasurementCubit(repository: sl()));
 }
@@ -151,7 +163,7 @@ void initMeasurements() {
 // no remote data source, photos live in the per-user
 // `progress_photos_$uid` Hive box + the app's documents directory.
 void initProgressPhotos() {
-  sl.registerLazySingleton(() => ProgressPhotoRepository());
+  sl.registerLazySingleton(() => ProgressPhotoRepository(storageManager: sl()));
 
   sl.registerFactory(() => ProgressPhotoCubit(repository: sl()));
 }
@@ -161,7 +173,7 @@ void initProgressPhotos() {
 // `workout_programs_$uid` via WorkoutProgramRepository (already built
 // in Phase 1).
 void initWorkoutPrograms() {
-  sl.registerLazySingleton(() => WorkoutProgramRepository());
+  sl.registerLazySingleton(() => WorkoutProgramRepository(storageManager: sl()));
 
   sl.registerFactory(
     () => WorkoutProgramCubit(repository: sl(), deletionService: sl()),
@@ -172,7 +184,9 @@ void initWorkoutPrograms() {
 // touches `workout_templates_$uid` via WorkoutTemplateRepository
 // (already built in Phase 2).
 void initWorkoutTemplates() {
-  sl.registerLazySingleton(() => WorkoutTemplateRepository());
+  sl.registerLazySingleton(
+    () => WorkoutTemplateRepository(storageManager: sl()),
+  );
 
   sl.registerFactory(
     () => WorkoutTemplateCubit(repository: sl(), deletionService: sl()),
@@ -199,7 +213,9 @@ void initWorkoutCascadeDeletion() {
 // Programs hub, Workout Days screen, and the active-session screen —
 // they must all observe the exact same instance to stay in sync.
 void initWorkoutSessions() {
-  sl.registerLazySingleton(() => WorkoutSessionRepository());
+  sl.registerLazySingleton(
+    () => WorkoutSessionRepository(storageManager: sl()),
+  );
   sl.registerLazySingleton(() => WorkoutSessionCubit(repository: sl()));
 }
 
@@ -207,7 +223,9 @@ void initWorkoutSessions() {
 // Cubit is screen-scoped (one active-session screen at a time), unlike
 // the app-wide WorkoutSessionCubit singleton above.
 void initSessionExercises() {
-  sl.registerLazySingleton(() => SessionExerciseRepository());
+  sl.registerLazySingleton(
+    () => SessionExerciseRepository(storageManager: sl()),
+  );
   sl.registerFactory(
     () => SessionExerciseCubit(repository: sl(), sessionRepository: sl()),
   );

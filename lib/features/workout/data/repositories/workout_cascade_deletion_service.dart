@@ -26,15 +26,19 @@ class WorkoutCascadeDeletionService {
   final WorkoutSessionRepository sessionRepository;
   final SessionExerciseRepository setRepository;
 
+  // Stage 3: the zero-arg fallback each repository constructor used to
+  // have (e.g. `WorkoutProgramRepository()`) required a
+  // UserStorageManager; since every real call site here (production
+  // DI and every test) already passes all four repositories
+  // explicitly, these are now required rather than optional-with-a-
+  // now-impossible-default — removing genuinely dead code instead of
+  // threading a UserStorageManager through a path nothing exercises.
   WorkoutCascadeDeletionService({
-    WorkoutProgramRepository? programRepository,
-    WorkoutTemplateRepository? templateRepository,
-    WorkoutSessionRepository? sessionRepository,
-    SessionExerciseRepository? setRepository,
-  })  : programRepository = programRepository ?? WorkoutProgramRepository(),
-        templateRepository = templateRepository ?? WorkoutTemplateRepository(),
-        sessionRepository = sessionRepository ?? WorkoutSessionRepository(),
-        setRepository = setRepository ?? SessionExerciseRepository();
+    required this.programRepository,
+    required this.templateRepository,
+    required this.sessionRepository,
+    required this.setRepository,
+  });
 
   /// Deletes [templateId] and everything under it: every
   /// [WorkoutSession] for this exact template (a templateId already

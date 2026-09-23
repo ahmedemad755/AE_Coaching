@@ -1,5 +1,6 @@
 import 'package:ae_coaching/auth/data/models/Exercise_Set.dart';
 import 'package:ae_coaching/core/session/session_storage.dart';
+import 'package:ae_coaching/core/storage/user_storage_manager.dart';
 import 'package:ae_coaching/features/workout/data/models/Exercise_Set.dart';
 import 'package:ae_coaching/features/workout/domain/usecases/delete_and_sync_workout_usecase.dart';
 import 'package:ae_coaching/features/workout/domain/usecases/delete_multiple_and_sync_usecase.dart';
@@ -18,6 +19,11 @@ class WorkoutCubit extends Cubit<WorkoutState> {
   final FetchAndSyncFromRemoteUseCase
   fetchAndSyncFromRemoteUseCase; // الحقل الجديد للـ UseCase
   final SessionStorage sessionStorage;
+  final UserStorageManager storageManager;
+  late final UserBox<ExerciseSet> _userBox = UserBox<ExerciseSet>(
+    manager: storageManager,
+    prefix: 'sets',
+  );
 
   WorkoutCubit({
     required this.saveAndSyncWorkoutUseCase,
@@ -25,6 +31,7 @@ class WorkoutCubit extends Cubit<WorkoutState> {
     required this.deleteMultipleAndSyncUseCase,
     required this.fetchAndSyncFromRemoteUseCase, // تمرير عبر الـ Constructor
     required this.sessionStorage,
+    required this.storageManager,
   }) : super(const WorkoutInitial());
 
   // 1. جلب وتحميل الـ Box ومزامنته السحابية الكاملة لضمان جلب بيانات الأجهزة الأخرى
@@ -167,9 +174,15 @@ class WorkoutCubit extends Cubit<WorkoutState> {
   }
 
   // Helpers الأقوياء بتوعك
+  //
+  // Stage 3: box selection/opening now goes entirely through the
+  // shared UserStorageManager via _userBox — this Cubit no longer
+  // duplicates the 'sets_$uid' open-or-reuse logic that also lived
+  // (independently) in SessionExerciseRepository and hom.dart. The
+  // sessionStorage.updateCurrentUserUid side effect (Stage 1) and the
+  // exact historical empty-uid check/exception are preserved unchanged.
   Future<Box<ExerciseSet>> _getWorkoutBox() async {
-    final firebaseUid = FirebaseAuth.instance.currentUser?.uid ?? '';
-    final uid = firebaseUid;
+    final uid = FirebaseAuth.instance.currentUser?.uid ?? '';
 
     if (uid.isEmpty) {
       throw Exception('User not authenticated');
@@ -177,12 +190,7 @@ class WorkoutCubit extends Cubit<WorkoutState> {
 
     await sessionStorage.updateCurrentUserUid(uid);
 
-    final boxName = 'sets_$uid';
-    if (Hive.isBoxOpen(boxName)) {
-      return Hive.box<ExerciseSet>(boxName);
-    }
-
-    return Hive.openBox<ExerciseSet>(boxName);
+    return _userBox.getUserBox();
   }
 
   String _resolveWorkoutKey(String? eventKey, ExerciseSet set) {

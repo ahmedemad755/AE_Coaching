@@ -1,7 +1,7 @@
+import 'package:ae_coaching/core/storage/user_storage_manager.dart';
 import 'package:ae_coaching/features/workout/data/datasources/workout_template_remote_data_source.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_template.dart';
 import 'package:ae_coaching/features/workout/data/workout_id_generator.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -19,6 +19,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 /// separate box. No WorkoutSession logic here yet (Phase 3).
 class WorkoutTemplateRepository {
   final WorkoutTemplateRemoteDataSource remoteDataSource;
+  final UserBox<WorkoutTemplate> _userBox;
 
   /// @visibleForTesting seam — see WorkoutProgramRepository for why
   /// this exists (no real Firebase app in a unit-test environment).
@@ -27,23 +28,16 @@ class WorkoutTemplateRepository {
 
   WorkoutTemplateRepository({
     WorkoutTemplateRemoteDataSource? remoteDataSource,
+    required UserStorageManager storageManager,
     @visibleForTesting this.uidOverride,
-  }) : remoteDataSource = remoteDataSource ?? WorkoutTemplateRemoteDataSourceImpl();
+  })  : remoteDataSource = remoteDataSource ?? WorkoutTemplateRemoteDataSourceImpl(),
+        _userBox = UserBox<WorkoutTemplate>(
+          manager: storageManager,
+          prefix: 'workout_templates',
+          uidOverride: uidOverride,
+        );
 
-  Future<Box<WorkoutTemplate>> getUserBox() async {
-    final uid = uidOverride?.call() ?? FirebaseAuth.instance.currentUser?.uid ?? '';
-
-    if (uid.isEmpty) {
-      throw Exception('User not authenticated');
-    }
-
-    final boxName = 'workout_templates_$uid';
-    if (Hive.isBoxOpen(boxName)) {
-      return Hive.box<WorkoutTemplate>(boxName);
-    }
-
-    return Hive.openBox<WorkoutTemplate>(boxName);
-  }
+  Future<Box<WorkoutTemplate>> getUserBox() => _userBox.getUserBox();
 
   /// Creates a new workout day template under [programId]. This is the
   /// only place a template's programId is ever set — there is no way

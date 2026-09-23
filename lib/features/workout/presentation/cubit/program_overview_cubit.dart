@@ -15,13 +15,12 @@ class ProgramOverviewCubit extends Cubit<ProgramOverviewState> {
   final WorkoutSessionRepository sessionRepository;
   final ProgramWeeklyOverviewService service;
 
+  // Stage 3: see HomeWorkoutOverviewCubit.
   ProgramOverviewCubit({
-    WorkoutTemplateRepository? templateRepository,
-    WorkoutSessionRepository? sessionRepository,
+    required this.templateRepository,
+    required this.sessionRepository,
     ProgramWeeklyOverviewService? service,
-  })  : templateRepository = templateRepository ?? WorkoutTemplateRepository(),
-        sessionRepository = sessionRepository ?? WorkoutSessionRepository(),
-        service = service ?? const ProgramWeeklyOverviewService(),
+  })  : service = service ?? const ProgramWeeklyOverviewService(),
         super(const ProgramOverviewInitial());
 
   Future<void> loadOverview(String programId) async {

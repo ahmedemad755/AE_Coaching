@@ -12,10 +12,9 @@ part 'workout_history_state.dart';
 class WorkoutHistoryCubit extends Cubit<WorkoutHistoryState> {
   final WorkoutSessionRepository sessionRepository;
 
-  WorkoutHistoryCubit({
-    WorkoutSessionRepository? sessionRepository,
-  })  : sessionRepository = sessionRepository ?? WorkoutSessionRepository(),
-        super(const WorkoutHistoryInitial());
+  // Stage 3: see HomeWorkoutOverviewCubit.
+  WorkoutHistoryCubit({required this.sessionRepository})
+    : super(const WorkoutHistoryInitial());
 
   Future<void> loadHistory(String workoutTemplateId) async {
     emit(const WorkoutHistoryLoading());

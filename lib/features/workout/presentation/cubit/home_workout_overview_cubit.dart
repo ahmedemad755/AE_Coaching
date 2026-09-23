@@ -26,17 +26,18 @@ class HomeWorkoutOverviewCubit extends Cubit<HomeWorkoutOverviewState> {
   final SessionExerciseRepository setRepository;
   final HomeWorkoutOverviewService service;
 
+  // Stage 3: each repository's zero-arg fallback now needs a
+  // UserStorageManager; since every real call site (production DI and
+  // every test) already passes all four repositories explicitly, they
+  // are required here rather than threading UserStorageManager through
+  // a fallback path nothing exercises.
   HomeWorkoutOverviewCubit({
-    WorkoutSessionRepository? sessionRepository,
-    WorkoutProgramRepository? programRepository,
-    WorkoutTemplateRepository? templateRepository,
-    SessionExerciseRepository? setRepository,
+    required this.sessionRepository,
+    required this.programRepository,
+    required this.templateRepository,
+    required this.setRepository,
     HomeWorkoutOverviewService? service,
-  })  : sessionRepository = sessionRepository ?? WorkoutSessionRepository(),
-        programRepository = programRepository ?? WorkoutProgramRepository(),
-        templateRepository = templateRepository ?? WorkoutTemplateRepository(),
-        setRepository = setRepository ?? SessionExerciseRepository(),
-        service = service ?? const HomeWorkoutOverviewService(),
+  })  : service = service ?? const HomeWorkoutOverviewService(),
         super(const HomeWorkoutOverviewInitial());
 
   Future<void> loadOverview() async {

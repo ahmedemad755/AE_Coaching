@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:ae_coaching/auth/data/models/Exercise_Set.dart';
+import 'package:ae_coaching/core/storage/user_storage_manager.dart';
 import 'package:ae_coaching/features/workout/data/datasources/workout_program_remote_data_source.dart';
 import 'package:ae_coaching/features/workout/data/datasources/workout_remote_data_source.dart';
 import 'package:ae_coaching/features/workout/data/datasources/workout_session_remote_data_source.dart';
@@ -82,20 +83,25 @@ void main() {
     if (!Hive.isAdapterRegistered(4)) Hive.registerAdapter(WorkoutTemplateAdapter());
     if (!Hive.isAdapterRegistered(5)) Hive.registerAdapter(WorkoutSessionAdapter());
 
+    final storageManager = UserStorageManager();
     programRepository = WorkoutProgramRepository(
       remoteDataSource: _FakeWorkoutProgramRemoteDataSource(),
+      storageManager: storageManager,
       uidOverride: () => 'test-uid',
     );
     templateRepository = WorkoutTemplateRepository(
       remoteDataSource: _FakeWorkoutTemplateRemoteDataSource(),
+      storageManager: storageManager,
       uidOverride: () => 'test-uid',
     );
     sessionRepository = WorkoutSessionRepository(
       remoteDataSource: _FakeWorkoutSessionRemoteDataSource(),
+      storageManager: storageManager,
       uidOverride: () => 'test-uid',
     );
     setRepository = SessionExerciseRepository(
       remoteDataSource: _FakeWorkoutRemoteDataSource(),
+      storageManager: storageManager,
       uidOverride: () => 'test-uid',
     );
 

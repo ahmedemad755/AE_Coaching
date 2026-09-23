@@ -13,9 +13,12 @@ part 'measurement_state.dart';
 class MeasurementCubit extends Cubit<MeasurementState> {
   final MeasurementRepository repository;
 
-  MeasurementCubit({MeasurementRepository? repository})
-      : repository = repository ?? MeasurementRepository(),
-        super(const MeasurementInitial());
+  // Stage 3: the zero-arg fallback (`MeasurementRepository()`) is dead
+  // code — every real call site already passes it explicitly — and
+  // now needs a UserStorageManager it has no way to source here, so
+  // this is required instead.
+  MeasurementCubit({required this.repository})
+    : super(const MeasurementInitial());
 
   /// Offline-first load: shows whatever is cached on-device immediately,
   /// then silently syncs with Firestore in the background so the latest

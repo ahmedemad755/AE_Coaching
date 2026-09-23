@@ -14,12 +14,14 @@ class WorkoutProgramCubit extends Cubit<WorkoutProgramState> {
   final WorkoutProgramRepository repository;
   final WorkoutCascadeDeletionService deletionService;
 
+  // Stage 3: see HomeWorkoutOverviewCubit — both dependencies' own
+  // zero-arg fallbacks are dead code nothing exercises, and
+  // WorkoutCascadeDeletionService's own fallbacks were removed for the
+  // same reason.
   WorkoutProgramCubit({
-    WorkoutProgramRepository? repository,
-    WorkoutCascadeDeletionService? deletionService,
-  })  : repository = repository ?? WorkoutProgramRepository(),
-        deletionService = deletionService ?? WorkoutCascadeDeletionService(),
-        super(const WorkoutProgramInitial());
+    required this.repository,
+    required this.deletionService,
+  }) : super(const WorkoutProgramInitial());
 
   /// Offline-first load: shows whatever is cached on-device immediately,
   /// then silently syncs with Firestore in the background — same

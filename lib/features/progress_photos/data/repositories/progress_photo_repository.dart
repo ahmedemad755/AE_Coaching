@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:ae_coaching/core/storage/user_storage_manager.dart';
 import 'package:ae_coaching/features/progress_photos/data/models/progress_photo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -14,20 +16,25 @@ import 'package:path_provider/path_provider.dart';
 /// separate box so this feature never touches workout or measurement
 /// data.
 class ProgressPhotoRepository {
-  Future<Box<ProgressPhoto>> getUserBox() async {
-    final uid = FirebaseAuth.instance.currentUser?.uid ?? '';
+  final UserBox<ProgressPhoto> _userBox;
 
-    if (uid.isEmpty) {
-      throw Exception('User not authenticated');
-    }
+  /// @visibleForTesting seam — same convention as the Workout
+  /// repositories, previously missing here (Stage 3). Only affects box
+  /// selection; [addPhoto]'s own filename-uniqueness uid read is
+  /// unrelated to box identity and is unchanged.
+  @visibleForTesting
+  final String? Function()? uidOverride;
 
-    final boxName = 'progress_photos_$uid';
-    if (Hive.isBoxOpen(boxName)) {
-      return Hive.box<ProgressPhoto>(boxName);
-    }
+  ProgressPhotoRepository({
+    required UserStorageManager storageManager,
+    @visibleForTesting this.uidOverride,
+  }) : _userBox = UserBox<ProgressPhoto>(
+          manager: storageManager,
+          prefix: 'progress_photos',
+          uidOverride: uidOverride,
+        );
 
-    return Hive.openBox<ProgressPhoto>(boxName);
-  }
+  Future<Box<ProgressPhoto>> getUserBox() => _userBox.getUserBox();
 
   /// Copies [sourceFile] into the app's documents directory (so it
   /// survives the OS ever clearing a cache/temp dir the picker used)

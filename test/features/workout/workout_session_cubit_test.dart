@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ae_coaching/core/storage/user_storage_manager.dart';
 import 'package:ae_coaching/features/workout/data/datasources/workout_session_remote_data_source.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_session.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_session_repository.dart';
@@ -39,6 +40,7 @@ void main() {
     cubit = WorkoutSessionCubit(
       repository: WorkoutSessionRepository(
         remoteDataSource: _FakeWorkoutSessionRemoteDataSource(),
+        storageManager: UserStorageManager(),
         uidOverride: () => 'test-uid',
       ),
     );

@@ -14,12 +14,11 @@ class WorkoutTemplateCubit extends Cubit<WorkoutTemplateState> {
   final WorkoutTemplateRepository repository;
   final WorkoutCascadeDeletionService deletionService;
 
+  // Stage 3: see HomeWorkoutOverviewCubit.
   WorkoutTemplateCubit({
-    WorkoutTemplateRepository? repository,
-    WorkoutCascadeDeletionService? deletionService,
-  })  : repository = repository ?? WorkoutTemplateRepository(),
-        deletionService = deletionService ?? WorkoutCascadeDeletionService(),
-        super(const WorkoutTemplateInitial());
+    required this.repository,
+    required this.deletionService,
+  }) : super(const WorkoutTemplateInitial());
 
   Future<void> loadTemplates() async {
     emit(const WorkoutTemplateLoading(operation: WorkoutTemplateOperation.load));

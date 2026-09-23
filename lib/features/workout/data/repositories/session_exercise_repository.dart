@@ -1,6 +1,6 @@
 import 'package:ae_coaching/auth/data/models/Exercise_Set.dart';
+import 'package:ae_coaching/core/storage/user_storage_manager.dart';
 import 'package:ae_coaching/features/workout/data/datasources/workout_remote_data_source.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -17,27 +17,23 @@ import 'package:hive_flutter/hive_flutter.dart';
 /// separate, additive code path that happens to share storage.
 class SessionExerciseRepository {
   final WorkoutRemoteDataSource remoteDataSource;
+  final UserBox<ExerciseSet> _userBox;
 
   @visibleForTesting
   final String? Function()? uidOverride;
 
   SessionExerciseRepository({
     WorkoutRemoteDataSource? remoteDataSource,
+    required UserStorageManager storageManager,
     @visibleForTesting this.uidOverride,
-  }) : remoteDataSource = remoteDataSource ?? WorkoutRemoteDataSourceImpl();
+  })  : remoteDataSource = remoteDataSource ?? WorkoutRemoteDataSourceImpl(),
+        _userBox = UserBox<ExerciseSet>(
+          manager: storageManager,
+          prefix: 'sets',
+          uidOverride: uidOverride,
+        );
 
-  Future<Box<ExerciseSet>> getUserBox() async {
-    final uid = uidOverride?.call() ?? FirebaseAuth.instance.currentUser?.uid ?? '';
-    if (uid.isEmpty) {
-      throw Exception('User not authenticated');
-    }
-
-    final boxName = 'sets_$uid';
-    if (Hive.isBoxOpen(boxName)) {
-      return Hive.box<ExerciseSet>(boxName);
-    }
-    return Hive.openBox<ExerciseSet>(boxName);
-  }
+  Future<Box<ExerciseSet>> getUserBox() => _userBox.getUserBox();
 
   /// Every set belonging to [sessionId], in insertion order.
   List<ExerciseSet> getSetsForSession(Box<ExerciseSet> box, String sessionId) {

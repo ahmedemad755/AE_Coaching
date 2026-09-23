@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ae_coaching/core/storage/user_storage_manager.dart';
 import 'package:ae_coaching/features/workout/data/datasources/workout_template_remote_data_source.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_template.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_template_repository.dart';
@@ -44,6 +45,7 @@ void main() {
 
     repository = WorkoutTemplateRepository(
       remoteDataSource: _FakeWorkoutTemplateRemoteDataSource(),
+      storageManager: UserStorageManager(),
       uidOverride: () => 'test-uid',
     );
   });

@@ -16,9 +16,9 @@ part 'workout_session_state.dart';
 class WorkoutSessionCubit extends Cubit<WorkoutSessionState> {
   final WorkoutSessionRepository repository;
 
-  WorkoutSessionCubit({WorkoutSessionRepository? repository})
-      : repository = repository ?? WorkoutSessionRepository(),
-        super(const WorkoutSessionInitial());
+  // Stage 3: see HomeWorkoutOverviewCubit.
+  WorkoutSessionCubit({required this.repository})
+    : super(const WorkoutSessionInitial());
 
   /// Checks whether an inProgress session already exists. Safe to call
   /// repeatedly (e.g. every time the Programs hub is opened) — this is

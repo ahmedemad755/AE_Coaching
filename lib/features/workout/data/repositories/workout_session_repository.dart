@@ -1,8 +1,8 @@
+import 'package:ae_coaching/core/storage/user_storage_manager.dart';
 import 'package:ae_coaching/features/workout/data/datasources/workout_session_remote_data_source.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_session.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_session_exceptions.dart';
 import 'package:ae_coaching/features/workout/data/workout_id_generator.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -19,29 +19,23 @@ import 'package:hive_flutter/hive_flutter.dart';
 /// — no UI/Cubit wiring in this phase.
 class WorkoutSessionRepository {
   final WorkoutSessionRemoteDataSource remoteDataSource;
+  final UserBox<WorkoutSession> _userBox;
 
   @visibleForTesting
   final String? Function()? uidOverride;
 
   WorkoutSessionRepository({
     WorkoutSessionRemoteDataSource? remoteDataSource,
+    required UserStorageManager storageManager,
     @visibleForTesting this.uidOverride,
-  }) : remoteDataSource = remoteDataSource ?? WorkoutSessionRemoteDataSourceImpl();
+  })  : remoteDataSource = remoteDataSource ?? WorkoutSessionRemoteDataSourceImpl(),
+        _userBox = UserBox<WorkoutSession>(
+          manager: storageManager,
+          prefix: 'workout_sessions',
+          uidOverride: uidOverride,
+        );
 
-  Future<Box<WorkoutSession>> getUserBox() async {
-    final uid = uidOverride?.call() ?? FirebaseAuth.instance.currentUser?.uid ?? '';
-
-    if (uid.isEmpty) {
-      throw Exception('User not authenticated');
-    }
-
-    final boxName = 'workout_sessions_$uid';
-    if (Hive.isBoxOpen(boxName)) {
-      return Hive.box<WorkoutSession>(boxName);
-    }
-
-    return Hive.openBox<WorkoutSession>(boxName);
-  }
+  Future<Box<WorkoutSession>> getUserBox() => _userBox.getUserBox();
 
   // ==================== Start / Complete / Cancel ====================
 

@@ -33,12 +33,11 @@ class SessionExerciseCubit extends Cubit<SessionExerciseState> {
   final SessionExerciseRepository repository;
   final WorkoutSessionRepository sessionRepository;
 
+  // Stage 3: see HomeWorkoutOverviewCubit.
   SessionExerciseCubit({
-    SessionExerciseRepository? repository,
-    WorkoutSessionRepository? sessionRepository,
-  })  : repository = repository ?? SessionExerciseRepository(),
-        sessionRepository = sessionRepository ?? WorkoutSessionRepository(),
-        super(const SessionExerciseInitial());
+    required this.repository,
+    required this.sessionRepository,
+  }) : super(const SessionExerciseInitial());
 
   Future<void> loadForSession(WorkoutSession session) async {
     emit(const SessionExerciseLoading());
