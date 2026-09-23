@@ -28,7 +28,19 @@ void main() {
       'lib/core/storage/user_storage_manager.dart',
     ).readAsStringSync();
     managerCode = stripLineComments(managerSource);
-    serviceLocatorSource = File('lib/service_locator.dart').readAsStringSync();
+    // Stage 5 split service_locator.dart's registration code into
+    // lib/core/di/*.dart (service_locator.dart itself is now a pure
+    // `export`-only barrel with no registration text of its own —
+    // `export` doesn't inline source, so the patterns this file checks
+    // now live across these 5 files instead of in service_locator.dart
+    // directly).
+    serviceLocatorSource = [
+      'lib/core/di/core_dependencies.dart',
+      'lib/core/di/workout_dependencies.dart',
+      'lib/core/di/measurements_dependencies.dart',
+      'lib/core/di/progress_photos_dependencies.dart',
+      'lib/core/di/workout_programs_dependencies.dart',
+    ].map((path) => File(path).readAsStringSync()).join('\n');
     repositorySources = {
       'WorkoutProgramRepository': File(
         'lib/features/workout/data/repositories/workout_program_repository.dart',
