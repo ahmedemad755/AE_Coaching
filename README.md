@@ -78,8 +78,7 @@ lib/
 │   │   │   ├── repositories/      # Offline-first Hive+Firestore repositories, cascade delete service
 │   │   │   └── workout_id_generator.dart
 │   │   ├── domain/
-│   │   │   ├── services/          # Pure comparison/analytics/consistency/home-overview services
-│   │   │   └── usecases/          # Legacy Workout Tracker use cases
+│   │   │   └── services/          # Pure comparison/analytics/consistency/home-overview services
 │   │   └── presentation/
 │   │       ├── cubit/             # One Cubit per screen/section (Programs, Days, Session, Analytics, ...)
 │   │       ├── screens/           # Programs, Workout Days, Active Session, Summary, History, Analytics, Archive
@@ -91,8 +90,9 @@ lib/
 │   └── views/hom.dart           # Home screen (redesigned workout overview + legacy panel)
 ├── l10n/                      # ARB source files + generated AppLocalizations
 ├── firebase_options.dart      # FlutterFire-generated config
-├── service_locator.dart       # GetIt registrations
-└── main.dart                  # App entry point, Hive/adapters bootstrap
+├── core/di/                   # GetIt registrations, split by feature (see docs/architecture.md)
+├── service_locator.dart       # Re-export barrel for core/di/ — import path unchanged
+└── main.dart                  # App entry point (delegates to AppBootstrap)
 ```
 
 Each feature (`workout`, `measurements`, `progress_photos`) is self-contained: its own Hive box(es), Cubit(s), and screens, so they never interfere with one another. Within `workout`, every new Hive field was added additively (never renumbered or repurposed) so pre-existing exercise history keeps loading exactly as it always did.
