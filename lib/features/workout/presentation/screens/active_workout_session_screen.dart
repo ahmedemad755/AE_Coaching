@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:ae_coaching/auth/data/models/Exercise_Set.dart';
+import 'package:ae_coaching/features/workout/data/models/Exercise_Set.dart';
 import 'package:ae_coaching/core/routes/app_router.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_session.dart';
 import 'package:ae_coaching/features/workout/presentation/cubit/session_exercise_cubit.dart';

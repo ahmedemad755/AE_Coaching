@@ -1,4 +1,4 @@
-import 'package:ae_coaching/auth/data/models/Exercise_Set.dart';
+import 'package:ae_coaching/features/workout/data/models/Exercise_Set.dart';
 import 'package:ae_coaching/core/localization/locale_cubit.dart';
 import 'package:ae_coaching/core/routes/app_router.dart';
 import 'package:ae_coaching/core/session/session_storage.dart';

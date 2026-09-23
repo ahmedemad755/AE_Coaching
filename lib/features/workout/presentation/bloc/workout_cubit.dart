@@ -1,8 +1,7 @@
-import 'package:ae_coaching/auth/data/models/Exercise_Set.dart';
+import 'package:ae_coaching/features/workout/data/models/Exercise_Set.dart';
 import 'package:ae_coaching/core/errors/exception_message_mapper.dart';
 import 'package:ae_coaching/core/session/session_storage.dart';
 import 'package:ae_coaching/core/storage/user_storage_manager.dart';
-import 'package:ae_coaching/features/workout/data/models/Exercise_Set.dart';
 import 'package:ae_coaching/features/workout/domain/usecases/delete_and_sync_workout_usecase.dart';
 import 'package:ae_coaching/features/workout/domain/usecases/delete_multiple_and_sync_usecase.dart';
 import 'package:ae_coaching/features/workout/domain/usecases/save_and_sync_workout_usecase.dart';

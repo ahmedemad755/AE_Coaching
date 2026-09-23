@@ -1,4 +1,4 @@
-import 'package:ae_coaching/auth/data/models/Exercise_Set.dart';
+import 'package:ae_coaching/features/workout/data/models/Exercise_Set.dart';
 import 'package:ae_coaching/features/workout/domain/services/personal_record_detection_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 

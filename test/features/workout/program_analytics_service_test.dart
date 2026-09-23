@@ -1,4 +1,4 @@
-import 'package:ae_coaching/auth/data/models/Exercise_Set.dart';
+import 'package:ae_coaching/features/workout/data/models/Exercise_Set.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_session.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_template.dart';
 import 'package:ae_coaching/features/workout/domain/services/program_analytics_service.dart';

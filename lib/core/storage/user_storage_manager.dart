@@ -1,4 +1,4 @@
-import 'package:ae_coaching/auth/data/models/Exercise_Set.dart';
+import 'package:ae_coaching/features/workout/data/models/Exercise_Set.dart';
 import 'package:ae_coaching/auth/data/models/body_measurement.dart';
 import 'package:ae_coaching/features/progress_photos/data/models/progress_photo.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_program.dart';
@@ -257,7 +257,8 @@ class UserBox<T> {
   });
 
   Future<Box<T>> getUserBox() {
-    final uid = uidOverride?.call() ?? FirebaseAuth.instance.currentUser?.uid ?? '';
+    final uid =
+        uidOverride?.call() ?? FirebaseAuth.instance.currentUser?.uid ?? '';
     // Preserves the EXACT historical exception (type and message) every
     // repository's own getUserBox() already threw for this case, before
     // this refactor existed — callers/tests that expect
