@@ -86,7 +86,7 @@ class _RegisterViewState extends State<RegisterView> {
                 );
               }
 
-              if (!mounted) return;
+              if (!context.mounted) return;
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(localizeAuthMessage(l10n, state.message)),

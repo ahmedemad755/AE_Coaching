@@ -39,9 +39,11 @@ Future<void> captureAndShareWorkout(ScreenshotController controller) async {
 
     await snapshotFile.writeAsBytes(imageBytes, flush: true);
 
-    await Share.shareXFiles(
-      [XFile(snapshotFile.path, mimeType: 'image/png')],
-      text: 'بص نظرة على حجم التطور بتاعي النهاردة في الجيم! 🏋️‍♂️📊 #AECoaching',
+    await SharePlus.instance.share(
+      ShareParams(
+        files: [XFile(snapshotFile.path, mimeType: 'image/png')],
+        text: 'بص نظرة على حجم التطور بتاعي النهاردة في الجيم! 🏋️‍♂️📊 #AECoaching',
+      ),
     );
   } on FileSystemException catch (error, stackTrace) {
     debugPrint(
