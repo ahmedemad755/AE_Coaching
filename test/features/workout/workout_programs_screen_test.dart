@@ -15,6 +15,7 @@ import 'package:ae_coaching/features/workout/data/repositories/workout_program_r
 import 'package:ae_coaching/features/workout/data/repositories/workout_session_repository.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_template_repository.dart';
 import 'package:ae_coaching/features/workout/presentation/cubit/workout_program_cubit.dart';
+import 'package:ae_coaching/features/workout/presentation/cubit/workout_session_cubit.dart';
 import 'package:ae_coaching/features/workout/presentation/screens/workout_programs_screen.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -94,13 +95,16 @@ class _FakeWorkoutRemoteDataSource implements WorkoutRemoteDataSource {
   }
 }
 
-Widget _wrap(WorkoutProgramCubit cubit) {
+Widget _wrap(WorkoutProgramCubit cubit, WorkoutSessionCubit sessionCubit) {
   return MaterialApp(
     locale: const Locale('en'),
     localizationsDelegates: AppLocalizations.localizationsDelegates,
     supportedLocales: AppLocalizations.supportedLocales,
-    home: BlocProvider.value(
-      value: cubit,
+    home: MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: cubit),
+        BlocProvider.value(value: sessionCubit),
+      ],
       child: const WorkoutProgramsScreen(),
     ),
   );
@@ -113,21 +117,39 @@ Widget _wrap(WorkoutProgramCubit cubit) {
 /// few bounded pumps are enough to drain the (fake, synchronous) load
 /// + sync Futures and land on the Loaded state deterministically.
 ///
-/// Stage 9 note: WorkoutProgramsScreen.initState() also reads
-/// WorkoutSessionCubit via context.read() (to check for an active
-/// session), which this test's widget tree does not provide — a real
-/// gap, distinct from the Firebase-touching remoteDataSource fallback
-/// fixed below. An attempt to add a second BlocProvider for it produced
-/// an unexplained hang partway through the suite rather than a clean
-/// pass, so it was reverted rather than left in a state that could
-/// block a future full-suite run indefinitely. This screen's 3 tests
-/// remain a documented, known failure (ProviderNotFoundException for
-/// WorkoutSessionCubit) — see docs/architecture.md's Known Limitations.
+/// WorkoutProgramsScreen.initState() also reads WorkoutSessionCubit via
+/// context.read() (to check for an active session) and consumes it via
+/// a BlocBuilder further down the tree, so it must be provided
+/// alongside WorkoutProgramCubit.
+///
+/// Root cause found while diagnosing this file's original flakiness,
+/// confirmed by instrumenting `cubit.state` directly:
+/// `WorkoutProgramCubit.loadPrograms()`/`WorkoutSessionCubit.checkActiveSession()`
+/// each await a REAL `Hive.openBox` (this test uses a real temp
+/// directory, never mocked Hive) the FIRST time their box is opened.
+/// `AutomatedTestWidgetsFlutterBinding`'s `pump()` only advances a FAKE
+/// clock and flushes the microtask queue — it never services genuine,
+/// real-event-loop disk I/O, and `tester.runAsync()` cannot retroactively
+/// rescue a Future that was already created inside `initState()`'s fake
+/// zone (confirmed: the Cubit was still `WorkoutProgramLoading` after 2
+/// full simulated seconds of pumping AND after a 5-real-second
+/// `runAsync` wait). The fix lives in `setUp()`: both boxes are opened
+/// for real there — `setUp`/`tearDown` run in a plain zone, so genuine
+/// I/O completes normally — before the widget is ever pumped, so
+/// `UserStorageManager`'s already-open-box fast path (no real I/O, a
+/// resolved value through one microtask hop) is what `initState()`
+/// actually hits, and ordinary bounded `pump()` calls are sufficient.
+/// The same rule applies to the tests' own seeding: `createProgram`
+/// performs real Hive writes, so awaiting it directly inside a
+/// `testWidgets` body (fake zone) never completes — it hung the run
+/// indefinitely. Seeding goes through `tester.runAsync`, where the
+/// Future is created in the real zone.
 Future<void> _pumpUntilLoaded(
   WidgetTester tester,
   WorkoutProgramCubit cubit,
+  WorkoutSessionCubit sessionCubit,
 ) async {
-  await tester.pumpWidget(_wrap(cubit));
+  await tester.pumpWidget(_wrap(cubit, sessionCubit));
   await tester.pump();
   await tester.pump(const Duration(milliseconds: 300));
   await tester.pump(const Duration(milliseconds: 300));
@@ -136,6 +158,7 @@ Future<void> _pumpUntilLoaded(
 void main() {
   late Directory tempDir;
   late WorkoutProgramCubit cubit;
+  late WorkoutSessionCubit sessionCubit;
 
   setUp(() async {
     tempDir = await Directory.systemTemp.createTemp(
@@ -145,12 +168,26 @@ void main() {
     if (!Hive.isAdapterRegistered(1)) {
       Hive.registerAdapter(WorkoutProgramAdapter());
     }
+    if (!Hive.isAdapterRegistered(5)) {
+      Hive.registerAdapter(WorkoutSessionAdapter());
+    }
 
     final storageManager = UserStorageManager();
     final programRepository = WorkoutProgramRepository(
       remoteDataSource: _FakeWorkoutProgramRemoteDataSource(),
       storageManager: storageManager,
       uidOverride: () => 'test-uid',
+    );
+
+    // WorkoutProgramsScreen.initState() reads WorkoutSessionCubit
+    // directly — matches app_router.dart's real provider tree for this
+    // screen, which provides both Cubits side by side.
+    sessionCubit = WorkoutSessionCubit(
+      repository: WorkoutSessionRepository(
+        remoteDataSource: _FakeWorkoutSessionRemoteDataSource(),
+        storageManager: storageManager,
+        uidOverride: () => 'test-uid',
+      ),
     );
 
     cubit = WorkoutProgramCubit(
@@ -177,10 +214,18 @@ void main() {
         ),
       ),
     );
+
+    // Pre-warm both boxes for real, here in setUp() (a plain zone,
+    // where genuine Hive disk I/O completes normally) — see
+    // _pumpUntilLoaded's doc comment for why this must happen before
+    // the widget (and its initState()) is ever pumped.
+    await programRepository.getUserBox();
+    await sessionCubit.repository.getUserBox();
   });
 
   tearDown(() async {
     await cubit.close();
+    await sessionCubit.close();
     await Hive.deleteFromDisk();
     if (await tempDir.exists()) {
       await tempDir.delete(recursive: true);
@@ -190,7 +235,7 @@ void main() {
   testWidgets('shows the empty state when there are no programs', (
     tester,
   ) async {
-    await _pumpUntilLoaded(tester, cubit);
+    await _pumpUntilLoaded(tester, cubit, sessionCubit);
 
     expect(find.text('No programs yet.'), findsOneWidget);
   });
@@ -198,9 +243,11 @@ void main() {
   testWidgets(
     'shows the active program section once a program is created active',
     (tester) async {
-      await cubit.createProgram(name: 'Push Pull Legs V1', makeActive: true);
+      await tester.runAsync(
+        () => cubit.createProgram(name: 'Push Pull Legs V1', makeActive: true),
+      );
 
-      await _pumpUntilLoaded(tester, cubit);
+      await _pumpUntilLoaded(tester, cubit, sessionCubit);
 
       // Appears twice: the section label and the small badge on the card.
       expect(find.text('Active Program'), findsWidgets);
@@ -211,13 +258,15 @@ void main() {
   testWidgets('shows the previous programs section for inactive programs', (
     tester,
   ) async {
-    await cubit.createProgram(name: 'Program A', makeActive: true);
-    await cubit.createProgram(
-      name: 'Program B',
-      makeActive: true,
-    ); // deactivates A
+    await tester.runAsync(() async {
+      await cubit.createProgram(name: 'Program A', makeActive: true);
+      await cubit.createProgram(
+        name: 'Program B',
+        makeActive: true,
+      ); // deactivates A
+    });
 
-    await _pumpUntilLoaded(tester, cubit);
+    await _pumpUntilLoaded(tester, cubit, sessionCubit);
 
     expect(find.text('Previous Programs'), findsOneWidget);
     expect(find.text('Program A'), findsOneWidget);
