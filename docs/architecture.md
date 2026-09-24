@@ -221,33 +221,14 @@ no benefit.
 
 ## Known limitations
 
-- `test/features/workout/workout_programs_screen_test.dart`'s 3 tests still
-  fail, for a partially-diagnosed, partially-fixed reason:
-  - **Fixed**: the test's `WorkoutCascadeDeletionService` construction built
-    `WorkoutTemplateRepository`/`WorkoutSessionRepository`/
-    `SessionExerciseRepository` without an explicit fake remote data source,
-    so each fell back to a real `XxxRemoteDataSourceImpl()` that touches
-    `FirebaseAuth.instance`/`FirebaseFirestore.instance` at construction
-    time — unavailable without `Firebase.initializeApp()`, which has no
-    platform channel in this test environment. Fixed by injecting the same
-    kind of local fake already used elsewhere in the same file.
-  - **Diagnosed but not fixed**: with that resolved, the test now fails
-    earlier and more precisely on a `ProviderNotFoundException` —
-    `WorkoutProgramsScreen.initState()` also calls
-    `context.read<WorkoutSessionCubit>()`, which this test's widget tree
-    never provided (production's `app_router.dart` provides both Cubits;
-    the test only provided `WorkoutProgramCubit`). An attempt to add a
-    second `BlocProvider` for `WorkoutSessionCubit` compiled and ran, but
-    produced an unexplained repeating/non-terminating symptom partway
-    through a full-suite run rather than a clean pass or a clean failure.
-    Rather than leave a change in the tree that could hang a future test
-    run, it was reverted, and the test was left in the `ProviderNotFoundException`
-    state — a clean, fast, deterministic failure, not a hang. Whoever picks
-    this up next should add the missing `WorkoutSessionCubit` provider and
-    investigate the hang symptom in isolation (a single-file run, not the
-    full suite) before deciding whether it's specific to this test's setup
-    or something broader in the interaction between real (non-mocked) Hive
-    I/O and widget pumping.
+- **Real disk I/O and widget tests don't mix by default.** Flutter's default
+  `testWidgets` runs inside a fake-async zone, where a genuine `Hive.openBox`
+  or `box.put` can never complete. Anything a widget's `initState()` opens
+  must be pre-opened in `setUp()` (a plain zone) so the widget hits
+  `UserStorageManager`'s already-open fast path, and any test-body seeding
+  that writes to Hive must go through `tester.runAsync`. See
+  `test/features/workout/workout_programs_screen_test.dart`; awaiting real
+  I/O directly in a `testWidgets` body hangs rather than fails.
 - `docs/architecture.md` (this file) is a snapshot as of the cleanup
   described above — treat it as a starting map, not a substitute for reading
   the code for any area under active change.
