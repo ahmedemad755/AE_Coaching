@@ -1,8 +1,7 @@
-# AE Coaching — Phase 5B Password Reset Backend
+# AE Coaching — Firebase Functions
 
-Trusted backend for signed-out Forgot Password, using Cloud Functions
-2nd gen + Firebase Admin SDK. See the Phase 5B architecture reports in
-the project conversation history for the full design rationale.
+Trusted backend using Cloud Functions 2nd gen + Firebase Admin SDK.
+Includes signed-out password reset and scheduled inactivity reminders.
 
 **Status: local/emulator only. Nothing here has been deployed.**
 
@@ -17,7 +16,8 @@ the project conversation history for the full design rationale.
 - `src/rateLimiter.ts` — per-phone rate limiting / resend cooldown
 - `src/passwordPolicy.ts` — server-side password validation
 - `src/challengeStore.ts` — the approved challenge state machine (transactions #1/#2)
-- `src/requestPasswordReset.ts`, `src/completePasswordReset.ts` — the two callable functions
+- `src/requestPasswordReset.ts`, `src/completePasswordReset.ts` — password-reset callable functions
+- `src/inactivityReminder.ts` — retained backend prototype; it is not exported or deployed. Workout inactivity reminders are scheduled locally on each device.
 - `src/index.ts` — exports
 
 ## Running tests locally
@@ -33,9 +33,12 @@ npm run test:emulator:exec # spins up Auth + Firestore emulators, runs test/emul
 - No secrets have been created (`OTP_HMAC_PEPPER`, `PASSWORD_INTENT_HMAC_PEPPER`,
   `SMS_PROVIDER_ACCOUNT_SID`, `SMS_PROVIDER_AUTH_TOKEN`, `SMS_PROVIDER_FROM_NUMBER`).
 - No deployment (`firebase deploy`) has been run.
-- `firestore.rules` (repo root) is drafted but NOT deployed — it currently
-  contains rules for ONLY the two new Phase 5B collections and must be
-  merged with the project's actual existing rules before any deploy.
+- The inactivity scheduler is disabled in the Functions export and has not
+  been deployed. Workout inactivity reminders are now local notifications.
+- `firestore.rules` (repo root) is local and NOT deployed — it includes FCM,
+  inactivity-state, and password-reset rules, but is still incomplete and must
+  be merged with the project's actual existing rules before any deploy.
 - App Check is configured in code (`enforceAppCheck: true`) but not
   verified against a real device/Play Integrity attestation.
-- Flutter has not been changed to call these functions yet.
+- Inactivity reminders use the app's current language and are scheduled
+  locally on the device.

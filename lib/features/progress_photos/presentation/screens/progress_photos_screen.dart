@@ -6,6 +6,7 @@ import 'package:ae_coaching/features/progress_photos/presentation/screens/progre
 import 'package:ae_coaching/features/progress_photos/presentation/widgets/add_photo_preview_dialog.dart';
 import 'package:ae_coaching/features/progress_photos/presentation/widgets/before_after_card.dart';
 import 'package:ae_coaching/features/progress_photos/presentation/widgets/photo_source_sheet.dart';
+import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,9 +27,6 @@ class ProgressPhotosScreen extends StatefulWidget {
 }
 
 class _ProgressPhotosScreenState extends State<ProgressPhotosScreen> {
-  static const Color _blue = Color(0xff2f80ed);
-  static const Color _muted = Color(0xff7d8792);
-
   Box<ProgressPhoto>? _box;
 
   @override
@@ -41,7 +39,10 @@ class _ProgressPhotosScreenState extends State<ProgressPhotosScreen> {
     final source = await showPhotoSourceSheet(context);
     if (source == null || !mounted) return;
 
-    final XFile? picked = await ImagePicker().pickImage(source: source, imageQuality: 85);
+    final XFile? picked = await ImagePicker().pickImage(
+      source: source,
+      imageQuality: 85,
+    );
     if (picked == null || !mounted) return;
 
     final confirmedDate = await showDialog<DateTime>(
@@ -53,7 +54,10 @@ class _ProgressPhotosScreenState extends State<ProgressPhotosScreen> {
     );
 
     if (confirmedDate != null && mounted) {
-      context.read<ProgressPhotoCubit>().addPhoto(sourceFile: File(picked.path), date: confirmedDate);
+      context.read<ProgressPhotoCubit>().addPhoto(
+        sourceFile: File(picked.path),
+        date: confirmedDate,
+      );
     }
   }
 
@@ -73,19 +77,21 @@ class _ProgressPhotosScreenState extends State<ProgressPhotosScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      backgroundColor: const Color(0xfff5f9fc),
       appBar: AppBar(
-        backgroundColor: _blue,
-        foregroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Theme.of(context).colorScheme.onPrimary,
         title: Text(l10n.progressPhotosTitle),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _addPhoto,
-        backgroundColor: _blue,
-        foregroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Theme.of(context).colorScheme.onPrimary,
         elevation: 10,
         icon: const Icon(Icons.add_a_photo_outlined),
-        label: Text(l10n.addPhotoButton, style: const TextStyle(fontWeight: FontWeight.w800)),
+        label: Text(
+          l10n.addPhotoButton,
+          style: const TextStyle(fontWeight: FontWeight.w800),
+        ),
       ),
       body: BlocConsumer<ProgressPhotoCubit, ProgressPhotoState>(
         listener: (context, state) {
@@ -94,7 +100,10 @@ class _ProgressPhotosScreenState extends State<ProgressPhotosScreen> {
           }
           if (state is ProgressPhotoError) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message), backgroundColor: Colors.redAccent),
+              SnackBar(
+                content: Text(state.message),
+                backgroundColor: Theme.of(context).colorScheme.error,
+              ),
             );
           }
         },
@@ -112,12 +121,23 @@ class _ProgressPhotosScreenState extends State<ProgressPhotosScreen> {
                       Text(
                         l10n.unableToLoadPhotos,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(color: _muted, fontWeight: FontWeight.w700),
+                        style: TextStyle(
+                          color: context.appColors.textMuted,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                       const SizedBox(height: 12),
                       ElevatedButton(
-                        onPressed: () => context.read<ProgressPhotoCubit>().loadPhotos(),
-                        style: ElevatedButton.styleFrom(backgroundColor: _blue, foregroundColor: Colors.white),
+                        onPressed: () =>
+                            context.read<ProgressPhotoCubit>().loadPhotos(),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Theme.of(
+                            context,
+                          ).colorScheme.primary,
+                          foregroundColor: Theme.of(
+                            context,
+                          ).colorScheme.onPrimary,
+                        ),
                         child: Text(l10n.retry),
                       ),
                     ],
@@ -125,13 +145,18 @@ class _ProgressPhotosScreenState extends State<ProgressPhotosScreen> {
                 ),
               );
             }
-            return const Center(child: CircularProgressIndicator(color: _blue));
+            return Center(
+              child: CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            );
           }
 
           return ValueListenableBuilder(
             valueListenable: box.listenable(),
             builder: (context, Box<ProgressPhoto> liveBox, _) {
-              final ascending = liveBox.values.toList()..sort((a, b) => a.date.compareTo(b.date));
+              final ascending = liveBox.values.toList()
+                ..sort((a, b) => a.date.compareTo(b.date));
 
               return ListView(
                 padding: const EdgeInsets.fromLTRB(18, 18, 18, 100),
@@ -143,12 +168,17 @@ class _ProgressPhotosScreenState extends State<ProgressPhotosScreen> {
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: const Color(0xffdce6eb),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.surfaceContainerHighest,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
                           l10n.notEnoughDataYet,
-                          style: const TextStyle(color: Color(0xff52606c), fontWeight: FontWeight.w700),
+                          style: TextStyle(
+                            color: context.appColors.textMuted,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       )
                     else ...[
@@ -167,14 +197,24 @@ class _ProgressPhotosScreenState extends State<ProgressPhotosScreen> {
                   const SizedBox(height: 8),
                   OutlinedButton.icon(
                     onPressed: _openHistory,
-                    icon: const Icon(Icons.history, color: _blue),
-                    label: Text(l10n.historyButton, style: const TextStyle(fontWeight: FontWeight.w800)),
+                    icon: Icon(
+                      Icons.history,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    label: Text(
+                      l10n.historyButton,
+                      style: const TextStyle(fontWeight: FontWeight.w800),
+                    ),
                     style: OutlinedButton.styleFrom(
-                      foregroundColor: _blue,
-                      side: const BorderSide(color: _blue),
+                      foregroundColor: Theme.of(context).colorScheme.primary,
+                      side: BorderSide(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                       minimumSize: const Size.fromHeight(48),
-                      backgroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      backgroundColor: Theme.of(context).colorScheme.surface,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
                   ),
                 ],
@@ -192,36 +232,49 @@ class _EmptyState extends StatelessWidget {
 
   const _EmptyState({required this.onAdd});
 
-  static const Color _blue = Color(0xff2f80ed);
-  static const Color _dark = Color(0xff202936);
-  static const Color _muted = Color(0xff7d8792);
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final scheme = Theme.of(context).colorScheme;
+    final colors = context.appColors;
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: scheme.surface,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
-          BoxShadow(color: Colors.black.withValues(alpha: 0.06), blurRadius: 18, offset: const Offset(0, 9)),
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.06),
+            blurRadius: 18,
+            offset: const Offset(0, 9),
+          ),
         ],
       ),
       child: Column(
         children: [
-          const Icon(Icons.photo_camera_back_outlined, color: _blue, size: 40),
+          Icon(
+            Icons.photo_camera_back_outlined,
+            color: scheme.primary,
+            size: 40,
+          ),
           const SizedBox(height: 14),
           Text(
             l10n.noPhotosYetTitle,
             textAlign: TextAlign.center,
-            style: const TextStyle(color: _dark, fontWeight: FontWeight.w900, fontSize: 16),
+            style: TextStyle(
+              color: colors.textPrimary,
+              fontWeight: FontWeight.w900,
+              fontSize: 16,
+            ),
           ),
           const SizedBox(height: 6),
           Text(
             l10n.addFirstPhotoSubtitle,
             textAlign: TextAlign.center,
-            style: const TextStyle(color: _muted, fontWeight: FontWeight.w600),
+            style: TextStyle(
+              color: colors.textMuted,
+              fontWeight: FontWeight.w600,
+            ),
           ),
           const SizedBox(height: 18),
           ElevatedButton.icon(
@@ -229,9 +282,11 @@ class _EmptyState extends StatelessWidget {
             icon: const Icon(Icons.add_a_photo_outlined),
             label: Text(l10n.addPhotoButton),
             style: ElevatedButton.styleFrom(
-              backgroundColor: _blue,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              backgroundColor: scheme.primary,
+              foregroundColor: scheme.onPrimary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             ),
           ),

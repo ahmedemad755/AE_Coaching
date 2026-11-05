@@ -9,6 +9,73 @@ class AppLocalizationsAr extends AppLocalizations {
   AppLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
+  String get activeSessionOnly => 'هذه الجلسة فقط';
+
+  @override
+  String get activeSessionAndProgram => 'هذه الجلسة + البرنامج';
+
+  @override
+  String get activeExerciseScopeBody =>
+      'حدّث التمرين الحالي فورًا. يتغير يوم البرنامج أيضًا فقط عند اختيار الجلسة + البرنامج.';
+
+  @override
+  String get activeApplyEdit => 'تطبيق';
+
+  @override
+  String get activeSessionEditSaved => 'تم تحديث الجلسة دون تغيير البرنامج.';
+
+  @override
+  String get activeProgramEditSaved => 'تم تحديث الجلسة ويوم البرنامج.';
+
+  @override
+  String get activeLoggedExerciseProtected =>
+      'لهذا التمرين مجموعات مسجلة. احتفظ به لحماية سجلك وأضف تمرينًا آخر بدلًا منه. يمكنك تعديل الأهداف والترتيب.';
+
+  @override
+  String get activeProgramConflict =>
+      'يختلف يوم البرنامج عن هذه الجلسة. اختر هذه الجلسة فقط، أو طبّق تمارين البرنامج قبل تعديل الاثنين.';
+
+  @override
+  String get activeProgramPending =>
+      'تم حفظ تغييرات الجلسة، لكن تحديث البرنامج لم يكتمل. أعد المحاولة لإكماله. إيقاف المحاولات يحتفظ بالجلسة وأي تغيير تم حفظه بالفعل في البرنامج.';
+
+  @override
+  String get activeDuplicateExercise =>
+      'هذا التمرين موجود بالفعل. لم تتم إضافة نسخة مكررة.';
+
+  @override
+  String get activeWorkoutNoLongerActive =>
+      'لم تعد هذه الجلسة نشطة. أعد فتح تمرينك الحالي.';
+
+  @override
+  String get activeApplyProgram => 'تطبيق تمارين البرنامج';
+
+  @override
+  String get activeApplyProgramBody =>
+      'تعديلات البرنامج من خارج الجلسة تخص التمارين القادمة فقط. هل تريد تطبيق يوم البرنامج الحالي على هذه الجلسة الآن؟ سيستبدل ذلك تعديلات تمارين الجلسة وأهدافها. تبقى المجموعات المسجلة محفوظة، ويُمنع أي تغيير يحذف تمرينًا له مجموعات مسجلة.';
+
+  @override
+  String get activeRetryProgramEdit => 'إعادة محاولة تحديث البرنامج';
+
+  @override
+  String get activeKeepSessionEdit => 'الاحتفاظ بالتغييرات وإيقاف المحاولات';
+
+  @override
+  String get appearanceTitle => 'المظهر';
+
+  @override
+  String get themeSystemDefault => 'حسب إعداد الجهاز';
+
+  @override
+  String get themeLight => 'فاتح';
+
+  @override
+  String get themeDark => 'داكن';
+
+  @override
+  String get themePreferenceSaveError => 'تعذر حفظ تفضيل المظهر.';
+
+  @override
   String get appBrandShort => 'AE';
 
   @override
@@ -34,6 +101,106 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get languageToggleTooltip => 'تغيير اللغة';
+
+  @override
+  String get inactivityRemindersTitle => 'تذكيرات الانقطاع عن التمرين';
+
+  @override
+  String get inactivityReminderSaveFailed =>
+      'تعذر حفظ إعداد التنبيهات. حاول مجددًا.';
+
+  @override
+  String get repdbInstructions => 'طريقة الأداء';
+
+  @override
+  String get repdbPrimaryMuscles => 'العضلات الأساسية';
+
+  @override
+  String get repdbSecondaryMuscles => 'العضلات المساعدة';
+
+  @override
+  String get repdbStartPosition => 'وضع البداية';
+
+  @override
+  String get repdbPeakPosition => 'وضع الانقباض أو النهاية';
+
+  @override
+  String get repdbDataSources => 'حقوق ومصادر بيانات التمارين';
+
+  @override
+  String get repdbSourceLicense => 'ترخيص RepDB المجاني';
+
+  @override
+  String get repdbTranslationPending =>
+      'الترجمة العربية لطريقة الأداء قيد المراجعة. تُعرض تعليمات المصدر الإنجليزية أدناه.';
+
+  @override
+  String get repdbUnknownMetadata => 'غير مذكور في المصدر';
+
+  @override
+  String get repdbFormCues => 'إرشادات الأداء';
+
+  @override
+  String get repdbDatasetVersion => 'إصدار البيانات';
+
+  @override
+  String get repdbAddToWorkout => 'إضافة إلى التمرين';
+
+  @override
+  String get repdbLegacyReference =>
+      'تمرين من المكتبة القديمة. يمكنك استبداله بتمرين من المكتبة الجديدة إذا أردت تحديثه.';
+
+  @override
+  String get repdbResolveBeforeSave =>
+      'استبدل التمارين القديمة المتبقية قبل حفظ نسخة جديدة. تظل التمارين المحفوظة سابقًا كما هي.';
+
+  @override
+  String get homeGreetingMorning => 'صباح الخير';
+
+  @override
+  String get homeGreetingAfternoon => 'نهارك سعيد';
+
+  @override
+  String get homeGreetingEvening => 'مساء الخير';
+
+  @override
+  String get homeGreetingSubtitle => 'مستعد لتمرين اليوم؟';
+
+  @override
+  String get homeDashboardSubtitle => 'خطط وتمرّن وتابع تقدمك';
+
+  @override
+  String get homeManagePrograms => 'إدارة برامجك التدريبية';
+
+  @override
+  String get homeExploreTemplates => 'استكشف البرامج واحفظها';
+
+  @override
+  String get homeBeginSession => 'ابدأ جلسة تدريبية';
+
+  @override
+  String get homeProgress => 'التقدم';
+
+  @override
+  String get homeTrackResults => 'تابع نتائجك';
+
+  @override
+  String get homeQuickActions => 'إجراءات سريعة';
+
+  @override
+  String get homeLogWorkout => 'تسجيل تمرين';
+
+  @override
+  String get homeBodyMetrics => 'قياسات الجسم';
+
+  @override
+  String get homeNavigationHome => 'الرئيسية';
+
+  @override
+  String get homeNavigationPrograms => 'البرامج';
+
+  @override
+  String get homeNavigationMore => 'المزيد';
 
   @override
   String get loginSubtitle => 'تسجيل الدخول لحسابك';
@@ -205,9 +372,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get startFirstExercise => 'ابدأ بإضافة أول تمرين ليك.';
 
   @override
-  String get newExerciseButton => 'تمرين جديد';
-
-  @override
   String get todaysVolumeLabel => 'حجم تمرين النهاردة: [كجم]';
 
   @override
@@ -221,6 +385,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get exerciseTrendsLabel => 'اتجاهات التمرين';
+
+  @override
+  String get progressSelectProgram => 'البرنامج';
+
+  @override
+  String get progressSelectWorkoutDay => 'يوم التمرين';
+
+  @override
+  String get progressSelectExercise => 'التمرين';
+
+  @override
+  String get progressNoCompletedHistory =>
+      'لا يوجد سجل مرتبط لتمارين مكتملة حتى الآن.';
 
   @override
   String get needMoreDataForProgress =>
@@ -596,6 +773,50 @@ class AppLocalizationsAr extends AppLocalizations {
   String get addWorkoutDayButton => 'إضافة يوم تمرين';
 
   @override
+  String get manageTemplateExercisesButton => 'إدارة التمارين';
+
+  @override
+  String manageTemplateExercisesTitle(String name) {
+    return 'تمارين $name';
+  }
+
+  @override
+  String get searchExerciseLibraryHint => 'ابحث عن تمرين';
+
+  @override
+  String get assignedTemplateExercisesTitle => 'خطة التمرين';
+
+  @override
+  String assignedTemplateExercisesCount(int count) {
+    return 'التمارين · $count';
+  }
+
+  @override
+  String get noAssignedTemplateExercises =>
+      'لم تتم إضافة تمارين بعد. أضف التمارين هنا لتكون جاهزة كلما بدأت يوم التمرين ده.';
+
+  @override
+  String get exerciseLibraryTitle => 'مكتبة التمارين';
+
+  @override
+  String get noExerciseSearchResults => 'لا توجد تمارين مطابقة للبحث.';
+
+  @override
+  String get removeAssignedExerciseTooltip => 'إزالة التمرين من يوم التدريب';
+
+  @override
+  String get addAssignedExerciseTooltip => 'إضافة التمرين إلى يوم التدريب';
+
+  @override
+  String get templateExerciseDuplicateError => 'هذا التمرين مضاف بالفعل.';
+
+  @override
+  String get templateExerciseSaveError => 'تعذر حفظ تمارين يوم التدريب.';
+
+  @override
+  String get exerciseLibraryLoadError => 'تعذر تحميل مكتبة التمارين.';
+
+  @override
   String get createWorkoutDayTitle => 'إضافة يوم تمرين';
 
   @override
@@ -716,6 +937,46 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get discardEmptyWorkoutTitle => 'تحب تلغي التمرين الفاضي؟';
+
+  @override
+  String get discardEmptyWorkoutBody =>
+      'مفيش أي مجموعة مكتملة اتسجلت. كمل تمرينك أو الغي التمرين؟';
+
+  @override
+  String get keepTrainingButton => 'كمل التمرين';
+
+  @override
+  String get discardWorkoutButton => 'إلغاء التمرين';
+
+  @override
+  String get workoutCelebrationHeading => 'عاش يا بطل! 💪🔥';
+
+  @override
+  String get workoutCelebrationSubtitle =>
+      'خلصت تمرينك بنجاح. كل تمرينة بتقربك من هدفك!';
+
+  @override
+  String get completionExercisesLabel => 'التمارين';
+
+  @override
+  String get completionSetsLabel => 'المجموعات';
+
+  @override
+  String get completionVolumeLabel => 'الحجم التدريبي';
+
+  @override
+  String get workoutDurationLabel => 'المدة';
+
+  @override
+  String completionDurationMinutes(int minutes) {
+    return '$minutes دقيقة';
+  }
+
+  @override
+  String get backToHomeButton => 'العودة للرئيسية';
+
+  @override
   String workoutFinishedBody(String volume) {
     return 'التمرين خلص! إجمالي الحجم: $volume كجم.';
   }
@@ -803,6 +1064,64 @@ class AppLocalizationsAr extends AppLocalizations {
   String get programAnalyticsTitle => 'تحليلات البرنامج';
 
   @override
+  String get analyticsSelectDay => 'يوم التمرين';
+
+  @override
+  String get analyticsSelectExercise => 'التمرين';
+
+  @override
+  String get analyticsWeightTitle => 'تطور الوزن';
+
+  @override
+  String get analyticsRepsTitle => 'تطور التكرارات';
+
+  @override
+  String get analyticsVolumeTitle => 'تطور حجم التدريب';
+
+  @override
+  String get analyticsRepsUnit => 'تكرار';
+
+  @override
+  String get analyticsVolumeUnit => 'كجم × تكرار';
+
+  @override
+  String analyticsRepsAtWeight(String weight) {
+    return 'أفضل تكرارات عند $weight كجم';
+  }
+
+  @override
+  String analyticsPreviousValue(String date, String value, String unit) {
+    return 'السابق ($date): $value $unit';
+  }
+
+  @override
+  String analyticsLatestValue(String date, String value, String unit) {
+    return 'الأحدث ($date): $value $unit';
+  }
+
+  @override
+  String analyticsAbsoluteChange(String change, String unit) {
+    return 'التغير: $change $unit';
+  }
+
+  @override
+  String analyticsPercentChange(String change) {
+    return 'التغير: $change%';
+  }
+
+  @override
+  String get analyticsPercentageUnavailable =>
+      'لا يمكن حساب النسبة لأن القيمة السابقة تساوي صفرًا.';
+
+  @override
+  String get analyticsNeedMoreSessions =>
+      'أكمل جلستين على الأقل لهذا التمرين لمقارنة التطور.';
+
+  @override
+  String get analyticsNoComparableReps =>
+      'لا يوجد وزن مشترك في آخر جلستين، لذلك لا يمكن مقارنة التكرارات.';
+
+  @override
   String get analyticsTooltip => 'التحليلات';
 
   @override
@@ -841,6 +1160,25 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get restTimerLabel => 'تايمر الراحة';
+
+  @override
+  String get restDurationLabel => 'مدة الراحة';
+
+  @override
+  String get restMinutesLabel => 'دقيقة';
+
+  @override
+  String get restSecondsLabel => 'ثانية';
+
+  @override
+  String get setDoneLabel => 'تم';
+
+  @override
+  String get waitForRestTimerLabel => 'انتظر حتى ينتهي وقت الراحة.';
+
+  @override
+  String get markPreviousSetDoneLabel =>
+      'علّم المجموعة السابقة بأنها تمت لبدء الراحة.';
 
   @override
   String get startRestTimerButton => 'ابدأ';
@@ -942,6 +1280,18 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get homeCurrentProgramLabel => 'البرنامج الحالي';
+
+  @override
+  String get homeWorkoutPlansTitle => 'خطط التمرين';
+
+  @override
+  String get homeViewAllPlansButton => 'عرض الكل';
+
+  @override
+  String get homeNoWorkoutPlansBody => 'أنشئ أول خطة تمرين لتنظيم أيام تمرينك.';
+
+  @override
+  String get homeCreateWorkoutPlanButton => 'إنشاء خطة تمرين';
 
   @override
   String homeWorkoutsCompletedThisWeekLabel(int count) {
@@ -1048,4 +1398,395 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get restoreButton => 'استرجاع';
+
+  @override
+  String get exercisePickerTitle => 'اختر التمارين';
+
+  @override
+  String get exerciseFiltersTitle => 'تصفية التمارين';
+
+  @override
+  String get muscleGroupLabel => 'المجموعة العضلية';
+
+  @override
+  String get equipmentLabel => 'المعدات';
+
+  @override
+  String get createCustomExerciseButton => 'إنشاء تمرين مخصص';
+
+  @override
+  String addSelectedExercisesButton(int count) {
+    return 'إضافة المحدد ($count)';
+  }
+
+  @override
+  String get customExerciseDuplicateError => 'يوجد تمرين بهذا الاسم بالفعل.';
+
+  @override
+  String get customExerciseSaveError => 'تعذر حفظ التمرين المخصص.';
+
+  @override
+  String get createCustomExerciseTitle => 'إنشاء تمرين مخصص';
+
+  @override
+  String get exerciseNameLabel => 'اسم التمرين';
+
+  @override
+  String get muscleGroupOptionalLabel => 'المجموعة العضلية (اختياري)';
+
+  @override
+  String get equipmentOptionalLabel => 'المعدات (اختياري)';
+
+  @override
+  String get addExerciseButton => 'إضافة تمرين';
+
+  @override
+  String get addExerciseToTitle => 'إضافة التمارين إلى';
+
+  @override
+  String get addExerciseToBody =>
+      'اختر إضافة التمارين لهذا التمرين الحالي فقط، أو حفظها في يوم التمرين لاستخدامها لاحقًا.';
+
+  @override
+  String get currentSessionOnlyAction => 'التمرين الحالي فقط';
+
+  @override
+  String get saveToWorkoutDayAction => 'حفظ في يوم التمرين';
+
+  @override
+  String get exerciseLibrarySaveError => 'تعذرت إضافة التمارين المحددة.';
+
+  @override
+  String get newExerciseButton => 'إضافة تمرين';
+
+  @override
+  String get sessionOnlyExerciseLabel => 'مضاف لهذا التمرين الحالي فقط';
+
+  @override
+  String get replaceExerciseAction => 'استبدال التمرين';
+
+  @override
+  String get removeExerciseAction => 'إزالة التمرين';
+
+  @override
+  String get exerciseChangeDestinationTitle => 'أين تريد تطبيق التغيير؟';
+
+  @override
+  String get exerciseChangeDestinationBody =>
+      'اختر تطبيقه على التمرين الحالي فقط أو حفظه في يوم التمرين للجلسات القادمة. الحفظ في يوم التمرين لا يغير الجلسة الحالية.';
+
+  @override
+  String get exerciseChangeFutureOnlyNote =>
+      'حفظ التغيير في يوم التمرين يؤثر على الجلسات القادمة فقط، ولا يغير التمرين الحالي.';
+
+  @override
+  String removeExerciseLoggedSetsBody(Object name, int count) {
+    return 'يحتوي $name على $count مجموعة مسجلة. إزالته تخفيه من قائمة هذه الجلسة فقط؛ وتظل المجموعات محفوظة في سجل التمرين والإجماليات.';
+  }
+
+  @override
+  String get personalHubTitle => 'الملف الشخصي';
+
+  @override
+  String get profileHeaderSubtitle => 'تدريبك وبيانات حسابك في مكان واحد';
+
+  @override
+  String get profileEditName => 'تعديل الاسم';
+
+  @override
+  String get profilePhoneLabel => 'رقم الهاتف';
+
+  @override
+  String get profileAddPhoto => 'إضافة صورة';
+
+  @override
+  String get profileChangePhoto => 'تغيير الصورة';
+
+  @override
+  String get profileRemovePhoto => 'إزالة الصورة';
+
+  @override
+  String get profilePhotoPreviewTitle => 'معاينة صورة الملف الشخصي';
+
+  @override
+  String get profilePhotoSaved => 'تم حفظ الصورة الشخصية.';
+
+  @override
+  String get profilePhotoRemoved => 'تمت إزالة الصورة الشخصية.';
+
+  @override
+  String get profilePhotoSaveFailed =>
+      'تعذر حفظ صورة الملف الشخصي. جرّب صورة أخرى.';
+
+  @override
+  String get profilePhotoRemoveFailed =>
+      'تعذرت إزالة صورة الملف الشخصي. حاول مجددًا.';
+
+  @override
+  String get profilePhotoRemoveConfirm =>
+      'إزالة صورة الملف الشخصي فقط؟ سيظل حسابك وبيانات التمرين كما هي.';
+
+  @override
+  String get profileNameSaved => 'تم تحديث اسمك.';
+
+  @override
+  String get profileNameSaveFailed =>
+      'تعذر تحديث الاسم. تحقق من الاتصال وحاول مجددًا.';
+
+  @override
+  String get profilePhoneVerificationNote =>
+      'تغيير رقم الهاتف يتطلب التحقق برسالة SMS.';
+
+  @override
+  String get profileProgressAction => 'تقدمي';
+
+  @override
+  String get appSettingsTitle => 'إعدادات التطبيق';
+
+  @override
+  String get myProgressTitle => 'تقدمي';
+
+  @override
+  String get progressCompletedWorkoutsLabel => 'التمارين المكتملة';
+
+  @override
+  String get progressThisWeekLabel => 'هذا الأسبوع';
+
+  @override
+  String get progressThisMonthLabel => 'هذا الشهر';
+
+  @override
+  String get progressWeeklyActivity => 'النشاط الأسبوعي';
+
+  @override
+  String get progressPersonalRecords => 'أرقامك القياسية';
+
+  @override
+  String get progressHeaviestWeightRecord => 'أثقل وزن';
+
+  @override
+  String get progressHighestSetVolumeRecord => 'أعلى حجم لمجموعة';
+
+  @override
+  String get progressProgramAnalytics => 'تحليلات البرامج';
+
+  @override
+  String get progressRecentWorkouts => 'سجل التمارين';
+
+  @override
+  String get progressNoCompletedWorkouts =>
+      'ستظهر تمارينك هنا بعد إكمال أول تمرين.';
+
+  @override
+  String get progressDataUnavailable => 'تعذر تحميل تقدمك التدريبي الآن.';
+
+  @override
+  String get profileNameUnavailable => 'الاسم غير متاح';
+
+  @override
+  String get profileNameInvalid => 'أدخل اسمًا لا يتجاوز 80 حرفًا.';
+
+  @override
+  String get settingsLanguage => 'اللغة';
+
+  @override
+  String get settingsNotifications => 'الإشعارات والتذكيرات';
+
+  @override
+  String get settingsNotificationAuthorized => 'إشعارات الجهاز مسموح بها';
+
+  @override
+  String get settingsNotificationDenied => 'إشعارات الجهاز متوقفة';
+
+  @override
+  String get settingsNotificationNotRequested =>
+      'لم يُطلب إذن إشعارات الجهاز بعد';
+
+  @override
+  String get settingsNotificationPermissionNote =>
+      'مفتاح تذكير التمرين منفصل عن إذن الإشعارات في الهاتف.';
+
+  @override
+  String get settingsPermissionHelpAction => 'طريقة تفعيل الإشعارات';
+
+  @override
+  String get settingsPermissionHelpBody =>
+      'افتح إعدادات الهاتف، ثم التطبيقات، واختر AE Coaching، وبعدها اسمح بالإشعارات.';
+
+  @override
+  String get settingsLogoutDescription =>
+      'تسجيل الخروج من هذا الجهاز. ستظل تمارينك وبيانات حسابك محفوظة.';
+
+  @override
+  String get profileNameEditTitle => 'تعديل اسمك';
+
+  @override
+  String get exercisePickerAlternateTitle => 'Select Exercises';
+
+  @override
+  String get exerciseIllustrationUnavailable => 'الصورة غير متاحة بعد';
+
+  @override
+  String get exercisePreviewAction => 'معاينة التمرين';
+
+  @override
+  String get exerciseCustomBadge => 'مخصص';
+
+  @override
+  String get exerciseAllFilter => 'الكل';
+
+  @override
+  String get exerciseWatchVideo => 'شاهد على MuscleWiki (في المتصفح الخارجي)';
+
+  @override
+  String get exerciseBrowserLaunchFailed => 'تعذر فتح المتصفح. حاول مرة أخرى.';
+
+  @override
+  String get exerciseArtworkCredits => 'حقوق الرسم التوضيحي';
+
+  @override
+  String get exerciseArtworkSource => 'عرض مصدر الرسم التوضيحي';
+
+  @override
+  String get exerciseArtworkLicense => 'قراءة ترخيص الرسم دون إنترنت';
+
+  @override
+  String exerciseMuscleName(String muscle) {
+    String _temp0 = intl.Intl.selectLogic(muscle, {
+      'chest': 'الصدر',
+      'back': 'الظهر',
+      'shoulders': 'الأكتاف',
+      'biceps': 'بايسبس',
+      'triceps': 'ترايسبس',
+      'quadriceps': 'الفخذ الأمامي',
+      'hamstrings_glutes': 'الفخذ الخلفي / الأرداف',
+      'calves': 'السمانة',
+      'abs_core': 'البطن / الجذع',
+      'full_body': 'الجسم بالكامل',
+      'other': '$muscle',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String exerciseEquipmentName(String equipment) {
+    String _temp0 = intl.Intl.selectLogic(equipment, {
+      'barbell': 'بار',
+      'dumbbell': 'دمبل',
+      'cable': 'كابل',
+      'machine': 'جهاز',
+      'bodyweight': 'وزن الجسم',
+      'smith_machine': 'جهاز سميث',
+      'ez_bar': 'بار متعرج',
+      'kettlebell': 'كيتل بيل',
+      'plate': 'قرص وزن',
+      'trap_bar': 'بار سداسي',
+      'ab_wheel': 'عجلة البطن',
+      'other': '$equipment',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get workoutTemplatesTitle => 'قوالب التمارين';
+
+  @override
+  String get standardTemplatesIntro =>
+      'اختر تقسيمة، واستعرض أيامها، ثم خصّص نسختك المستقلة.';
+
+  @override
+  String get useWorkoutTemplate => 'استخدم القالب';
+
+  @override
+  String get customizeTemplateTitle => 'تخصيص البرنامج';
+
+  @override
+  String get saveToMyPrograms => 'حفظ في برامجي';
+
+  @override
+  String get standardTemplateSaved => 'تم حفظ البرنامج في برامجي.';
+
+  @override
+  String get standardTemplateSavedLocally =>
+      'تم حفظ البرنامج على هذا الجهاز. النسخ السحابي غير مكتمل؛ أعد فتح برامجي وأيام البرنامج عند الاتصال.';
+
+  @override
+  String get standardTemplateLoadError => 'تعذر تحميل قوالب التمارين.';
+
+  @override
+  String get standardTemplatesEmpty => 'لا توجد قوالب تمارين متاحة.';
+
+  @override
+  String get standardTemplateProgrammingNote =>
+      'المجموعات الفعلية لا تشمل الإحماء. ابدأ بأوزان تتيح نحو ١–٣ تكرارات إضافية قبل العجز. قلّل الحجم عند الحاجة، وزد الوزن تدريجيًا ضمن نطاق التكرارات، وراعِ التعافي. يمكنك زيادة الراحة عند الحاجة. هذه خطط بداية قابلة للتعديل وليست وصفة فردية.';
+
+  @override
+  String get standardTemplateAdvancedNote =>
+      'ستة أيام تدريب تناسب المتمرنين ذوي الخبرة والتعافي الكافي. جلسات أ/ب توزّع الحمل الأسبوعي وليست تكرارًا مضاعفًا لخطة الثلاثة أيام. أضف أيام راحة إذا تراجع التعافي.';
+
+  @override
+  String get standardTemplateAnteriorPosteriorNote =>
+      'تقسيمة تركيز عملية: الأيام الأمامية للصدر والعضلات الأمامية للفخذ والأكتاف والبايسبس والبطن؛ والخلفية للظهر والخلفية للفخذ والجلوتس والأكتاف الخلفية والترايسبس والسمانة. يوجد تداخل طبيعي بين الحركات.';
+
+  @override
+  String get suggestedTrainingWeek => 'تسلسل مقترح لسبعة أيام';
+
+  @override
+  String get standardRestDay => 'راحة';
+
+  @override
+  String get workingSetsLabel => 'المجموعات الفعلية';
+
+  @override
+  String get minimumRepsLabel => 'أقل تكرارات';
+
+  @override
+  String get maximumRepsLabel => 'أعلى تكرارات';
+
+  @override
+  String get exerciseRestSecondsLabel => 'الراحة (ثوانٍ)';
+
+  @override
+  String get editExerciseTargets => 'تعديل المجموعات والتكرارات والراحة';
+
+  @override
+  String get exerciseTargetsValidation =>
+      'استخدم ١–١٠ مجموعات، و١–١٠٠ تكرار (الأقل لا يتجاوز الأعلى)، و١٥–٦٠٠ ثانية راحة.';
+
+  @override
+  String get standardDraftInvalid =>
+      'أدخل اسم البرنامج واسم كل يوم، واترك تمرينًا واحدًا على الأقل في كل يوم، وتحقق من أهداف التمارين.';
+
+  @override
+  String get standardDraftSaveError =>
+      'تعذر حفظ البرنامج. مسودتك ما زالت متاحة؛ حاول مجددًا.';
+
+  @override
+  String get standardDraftAccountChanged =>
+      'تم تغيير الحساب. أعد فتح قوالب التمارين للحساب الحالي.';
+
+  @override
+  String get discardProgramDraftTitle => 'تجاهل هذه المسودة؟';
+
+  @override
+  String get discardProgramDraftBody =>
+      'لم يُحفظ هذا البرنامج. المغادرة ستتجاهل تخصيصاتك.';
+
+  @override
+  String get discardProgramDraft => 'تجاهل المسودة';
+
+  @override
+  String templateDaysPerWeek(int count) {
+    return '$count أيام / أسبوع';
+  }
+
+  @override
+  String suggestedSequenceDay(int day) {
+    return 'اليوم $day';
+  }
+
+  @override
+  String exerciseTargetSummary(int sets, int min, int max, int seconds) {
+    return 'الخطة: $sets مجموعات × $min–$max تكرار · راحة $seconds ث';
+  }
 }

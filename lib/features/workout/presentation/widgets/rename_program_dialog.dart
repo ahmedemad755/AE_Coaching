@@ -1,3 +1,4 @@
+import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
@@ -14,10 +15,9 @@ class RenameProgramDialog extends StatefulWidget {
 }
 
 class _RenameProgramDialogState extends State<RenameProgramDialog> {
-  static const Color _blue = Color(0xff2f80ed);
-  static const Color _muted = Color(0xff7d8792);
-
-  late final TextEditingController _nameController = TextEditingController(text: widget.currentName);
+  late final TextEditingController _nameController = TextEditingController(
+    text: widget.currentName,
+  );
 
   @override
   void dispose() {
@@ -30,7 +30,10 @@ class _RenameProgramDialogState extends State<RenameProgramDialog> {
     final name = _nameController.text.trim();
     if (name.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.enterProgramNameValidation), backgroundColor: Colors.redAccent),
+        SnackBar(
+          content: Text(l10n.enterProgramNameValidation),
+          backgroundColor: context.appColors.error,
+        ),
       );
       return;
     }
@@ -40,38 +43,33 @@ class _RenameProgramDialogState extends State<RenameProgramDialog> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final colors = context.appColors;
+    final primary = Theme.of(context).colorScheme.primary;
     return AlertDialog(
-      backgroundColor: const Color(0xfff5f9fc),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       title: Text(
         l10n.renameProgramTitle,
-        style: const TextStyle(color: Color(0xff202936), fontWeight: FontWeight.w900),
+        style: TextStyle(
+          color: colors.textPrimary,
+          fontWeight: FontWeight.w900,
+        ),
       ),
       content: TextField(
         controller: _nameController,
         autofocus: true,
-        decoration: InputDecoration(
-          hintText: l10n.programNameHint,
-          filled: true,
-          fillColor: Colors.white,
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: Color(0xffd5e3f2)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: _blue),
-          ),
-        ),
+        decoration: InputDecoration(hintText: l10n.programNameHint),
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text(l10n.cancel, style: const TextStyle(color: _muted)),
+          child: Text(l10n.cancel, style: TextStyle(color: colors.textMuted)),
         ),
         ElevatedButton(
           onPressed: _submit,
-          style: ElevatedButton.styleFrom(backgroundColor: _blue, foregroundColor: Colors.white),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: primary,
+            foregroundColor: Theme.of(context).colorScheme.onPrimary,
+          ),
           child: Text(l10n.save),
         ),
       ],

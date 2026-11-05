@@ -1,14 +1,23 @@
-import 'package:ae_coaching/features/workout/data/models/exercise_set.dart';
+import 'dart:async';
 import 'package:ae_coaching/core/localization/locale_cubit.dart';
+import 'package:ae_coaching/core/notifications/fcm_device_service.dart';
+import 'package:ae_coaching/core/notifications/inactivity_reminder_service.dart';
 import 'package:ae_coaching/core/routes/app_router.dart';
 import 'package:ae_coaching/core/session/session_storage.dart';
 import 'package:ae_coaching/core/storage/user_storage_manager.dart';
+import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/features/analytics/presentation/workout_analytics_screen.dart';
+import 'package:ae_coaching/features/profile/data/local_profile_photo_store.dart';
+import 'package:ae_coaching/features/profile/presentation/profile_navigation.dart';
+import 'package:ae_coaching/features/views/widgets/home_dashboard.dart';
+import 'package:ae_coaching/features/workout/data/models/exercise_set.dart';
+import 'package:ae_coaching/features/workout/data/repositories/workout_program_repository.dart';
+import 'package:ae_coaching/features/workout/data/repositories/workout_session_repository.dart';
+import 'package:ae_coaching/features/workout/data/repositories/workout_template_repository.dart';
+import 'package:ae_coaching/features/workout/domain/services/home_progress_comparison_service.dart';
 import 'package:ae_coaching/features/workout/presentation/bloc/workout_cubit.dart';
 import 'package:ae_coaching/features/workout/presentation/cubit/home_workout_overview_cubit.dart';
 import 'package:ae_coaching/features/workout/presentation/cubit/workout_session_cubit.dart';
-import 'package:ae_coaching/features/workout/presentation/screens/workout_program_details_screen.dart';
-import 'package:ae_coaching/features/workout/presentation/widgets/home_workout_overview_section.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:ae_coaching/service_locator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -29,21 +38,63 @@ class _HomState extends State<Hom> {
   exerciseBox; // محتفظين بيه فقط للـ ValueListenableBuilder المحلى أو العرض السريع
   bool _isLoading = true;
   String _userName = 'User';
-
-  static const Color _blue = Color(0xff2f80ed);
-  static const Color _dark = Color(0xff202936);
-  static const Color _muted = Color(0xff7d8792);
+  String _profilePhotoUid = '';
+  String? _profilePhotoPath;
+  StreamSubscription<User?>? _authSubscription;
 
   @override
   void initState() {
     super.initState();
+    _authSubscription = FirebaseAuth.instance.authStateChanges().listen(
+      _handleAuthStateChanged,
+    );
     _initUserBox();
   }
+
+  void _handleAuthStateChanged(User? user) {
+    final uid = user?.uid ?? '';
+    if (uid == _profilePhotoUid) return;
+    _profilePhotoUid = uid;
+    if (mounted) {
+      setState(() {
+        _profilePhotoPath = null;
+        _userName = _resolveUserName(user);
+      });
+    }
+    if (uid.isNotEmpty) unawaited(_loadProfilePhoto(uid));
+  }
+
+  String _resolveUserName(User? user) {
+    if (user == null) return 'User';
+    final session = sl<SessionStorage>();
+    final storedName = session.currentUserUid == user.uid
+        ? session.currentUserName.trim()
+        : '';
+    if (storedName.isNotEmpty) return storedName;
+    final displayName = user.displayName?.trim() ?? '';
+    return displayName.isEmpty ? 'User' : displayName;
+  }
+
+  Future<void> _loadProfilePhoto(String uid) async {
+    try {
+      final path = await sl<LocalProfilePhotoStore>().getPhotoPath(uid);
+      if (_ownsProfilePhoto(uid)) {
+        setState(() => _profilePhotoPath = path);
+      }
+    } catch (_) {
+      if (_ownsProfilePhoto(uid)) setState(() => _profilePhotoPath = null);
+    }
+  }
+
+  bool _ownsProfilePhoto(String uid) =>
+      mounted &&
+      uid.isNotEmpty &&
+      _profilePhotoUid == uid &&
+      FirebaseAuth.instance.currentUser?.uid == uid;
 
   Future<void> _initUserBox() async {
     final sessionStorage = sl<SessionStorage>();
     final firebaseUser = FirebaseAuth.instance.currentUser;
-    final storedName = sessionStorage.currentUserName.trim();
     final uid = firebaseUser?.uid ?? '';
 
     if (uid.isEmpty) {
@@ -58,12 +109,15 @@ class _HomState extends State<Hom> {
       return;
     }
 
-    _userName = storedName.isNotEmpty
-        ? storedName
-        : (firebaseUser?.displayName ?? 'User');
+    _userName = _resolveUserName(firebaseUser);
+    _profilePhotoUid = uid;
+    unawaited(_loadProfilePhoto(uid));
+    await sl<InactivityReminderService>().syncLanguage(
+      context.read<LocaleCubit>().state.languageCode,
+    );
     await sessionStorage.updateCurrentUserUid(uid);
 
-    // فتح الصندوق الخاص بالمستخدم الحالي — through the shared
+    // فتح ال[ص]ندوق الخاص بالمستخدم الحالي — through the shared
     // UserStorageManager (Stage 3): Hom no longer opens this box
     // independently. It still keeps the returned reference locally
     // because ValueListenableBuilder genuinely needs a Box instance,
@@ -89,23 +143,27 @@ class _HomState extends State<Hom> {
 
   Future<void> _logout() async {
     final l10n = AppLocalizations.of(context)!;
+    final colors = context.appColors;
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xfff5f9fc),
+        backgroundColor: Theme.of(ctx).colorScheme.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         title: Text(
           l10n.logoutConfirmTitle,
-          style: const TextStyle(fontWeight: FontWeight.w900, color: _dark),
+          style: TextStyle(
+            fontWeight: FontWeight.w900,
+            color: colors.textPrimary,
+          ),
         ),
         content: Text(
-          l10n.logoutConfirmBody,
-          style: const TextStyle(color: _muted),
+          '${l10n.logoutConfirmBody}\n\n${l10n.settingsLogoutDescription}',
+          style: TextStyle(color: colors.textMuted),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: Text(l10n.cancel, style: const TextStyle(color: _blue)),
+            child: Text(l10n.cancel),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -115,6 +173,24 @@ class _HomState extends State<Hom> {
               final outgoingUid = FirebaseAuth.instance.currentUser?.uid;
 
               try {
+                if (outgoingUid != null && outgoingUid.isNotEmpty) {
+                  try {
+                    await sl<InactivityReminderService>().cancelForLogout(
+                      expectedUid: outgoingUid,
+                    );
+                  } catch (error, stackTrace) {
+                    debugPrint(
+                      'Local inactivity reminder cancellation failed: '
+                      '$error\n$stackTrace',
+                    );
+                  }
+                }
+                if (outgoingUid != null && outgoingUid.isNotEmpty) {
+                  await sl<FcmDeviceService>().unregisterCurrentDeviceToken(
+                    expectedUid: outgoingUid,
+                  );
+                }
+
                 // 2. Reset WorkoutSessionCubit's in-memory state first
                 //    (Phase 21 audit fix, unchanged) — its last-emitted
                 //    state must never leak into whichever user signs in
@@ -171,8 +247,8 @@ class _HomState extends State<Hom> {
               }
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.redAccent,
-              foregroundColor: Colors.white,
+              backgroundColor: Theme.of(ctx).colorScheme.error,
+              foregroundColor: Theme.of(ctx).colorScheme.onError,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -187,11 +263,35 @@ class _HomState extends State<Hom> {
     );
   }
 
+  Future<void> _openPersonalHub() async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return;
+    await Navigator.pushNamed(
+      context,
+      AppNavigator.personalHub,
+      arguments: PersonalHubArgs(onLogout: _logout),
+    );
+    if (!mounted || FirebaseAuth.instance.currentUser?.uid != uid) return;
+    final savedName = sl<SessionStorage>().currentUserName.trim();
+    if (savedName.isNotEmpty && savedName != _userName) {
+      setState(() => _userName = savedName);
+    }
+    await _loadProfilePhoto(uid);
+  }
+
+  Future<void> _openAppSettings() async {
+    await Navigator.pushNamed(
+      context,
+      AppNavigator.appSettings,
+      arguments: AppSettingsArgs(onLogout: _logout),
+    );
+  }
+
   // _groupExercises (the old date|exerciseName grouping used by Home's
   // flat exercise-card list) was removed along with that list — Home
   // now shows session-level cards via HomeWorkoutOverviewSection. The
-  // identical grouping pattern still lives on, unchanged, inside
-  // _showProgressAnalysis below, which this redesign does not touch.
+  // progress analysis below uses completed session links so comparisons
+  // stay within the selected program and workout day.
 
   double _calculateTodayVolume() {
     if (exerciseBox == null) return 0.0;
@@ -203,40 +303,96 @@ class _HomState extends State<Hom> {
         .fold(0.0, (sum, set) => sum + (set.weight * set.reps));
   }
 
-  Map<String, double> _dailyVolumeFor(List<ExerciseSet> history) {
-    final dailyVolume = <String, double>{};
-    for (final set in history) {
-      final day = DateFormat('yyyy-MM-dd', 'en_US').format(set.date);
-      dailyVolume[day] = (dailyVolume[day] ?? 0) + (set.weight * set.reps);
-    }
-    return dailyVolume;
-  }
-
-  void _showProgressAnalysis() {
+  Future<void> _showProgressAnalysis() async {
     if (exerciseBox == null) return;
     final l10n = AppLocalizations.of(context)!;
+    final colors = context.appColors;
     final analyticsScreenContext = context;
-    final allSets = exerciseBox!.values.toList();
-    final exerciseHistory = <String, List<ExerciseSet>>{};
-    for (final set in allSets) {
-      exerciseHistory
-          .putIfAbsent(set.exerciseName.toLowerCase().trim(), () => [])
-          .add(set);
+    late final List<HomeExerciseProgressHistory> histories;
+    try {
+      final programRepository = sl<WorkoutProgramRepository>();
+      final templateRepository = sl<WorkoutTemplateRepository>();
+      final sessionRepository = sl<WorkoutSessionRepository>();
+      final programBox = await programRepository.getUserBox();
+      final templateBox = await templateRepository.getUserBox();
+      final sessionBox = await sessionRepository.getUserBox();
+      histories = const HomeProgressComparisonService().build(
+        programs: programBox.values.toList(),
+        templates: templateBox.values.toList(),
+        sessions: sessionBox.values.toList(),
+        sets: exerciseBox!.values.toList(),
+      );
+    } catch (error, stackTrace) {
+      debugPrint('Home progress history load failed: $error\n$stackTrace');
+      return;
     }
+    if (!mounted) return;
+
+    final programs = <String, String>{};
+    for (final history in histories) {
+      programs.putIfAbsent(history.programId, () => history.programName);
+    }
+    String? selectedProgramId = programs.keys.firstOrNull;
+    String? selectedTemplateId = histories
+        .where((history) => history.programId == selectedProgramId)
+        .map((history) => history.workoutTemplateId)
+        .firstOrNull;
+    String? selectedExerciseKey = histories
+        .where(
+          (history) =>
+              history.programId == selectedProgramId &&
+              history.workoutTemplateId == selectedTemplateId,
+        )
+        .map((history) => history.exerciseKey)
+        .firstOrNull;
 
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) {
-        return DraggableScrollableSheet(
-          initialChildSize: 0.82,
-          minChildSize: 0.45,
-          maxChildSize: 0.92,
-          builder: (context, scrollController) {
-            return Container(
-              decoration: const BoxDecoration(
-                color: Color(0xfff5f9fc),
+      builder: (sheetContext) => StatefulBuilder(
+        builder: (sheetContext, setSheetState) {
+          final templates = <String, String>{};
+          for (final history in histories.where(
+            (history) => history.programId == selectedProgramId,
+          )) {
+            templates.putIfAbsent(
+              history.workoutTemplateId,
+              () => history.workoutTemplateName,
+            );
+          }
+          final exercises = <String, String>{};
+          for (final history in histories.where(
+            (history) =>
+                history.programId == selectedProgramId &&
+                history.workoutTemplateId == selectedTemplateId,
+          )) {
+            exercises.putIfAbsent(
+              history.exerciseKey,
+              () => history.exerciseName,
+            );
+          }
+          final selectedHistory = histories
+              .where(
+                (history) =>
+                    history.programId == selectedProgramId &&
+                    history.workoutTemplateId == selectedTemplateId &&
+                    history.exerciseKey == selectedExerciseKey,
+              )
+              .firstOrNull;
+          final currentVolume = selectedHistory?.currentVolume;
+          final previousVolume = selectedHistory?.previousVolume;
+          final diff = currentVolume != null && previousVolume != null
+              ? currentVolume - previousVolume
+              : 0.0;
+
+          return DraggableScrollableSheet(
+            initialChildSize: 0.82,
+            minChildSize: 0.45,
+            maxChildSize: 0.92,
+            builder: (context, scrollController) => Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
               ),
               child: ListView(
@@ -246,99 +402,138 @@ class _HomState extends State<Hom> {
                   Row(
                     children: [
                       IconButton(
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: () => Navigator.pop(sheetContext),
                         icon: const Icon(Icons.arrow_back_ios_new),
-                        color: _blue,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                       const Spacer(),
                       TextButton.icon(
                         onPressed: () {},
                         icon: const Icon(Icons.history),
                         label: Text(l10n.historyLabel),
-                        style: TextButton.styleFrom(foregroundColor: _blue),
+                        style: TextButton.styleFrom(
+                          foregroundColor: Theme.of(
+                            context,
+                          ).colorScheme.primary,
+                        ),
                       ),
                       TextButton.icon(
                         onPressed: () {},
                         icon: const Icon(Icons.analytics_outlined),
                         label: Text(l10n.analyticsLabel),
-                        style: TextButton.styleFrom(foregroundColor: _blue),
+                        style: TextButton.styleFrom(
+                          foregroundColor: Theme.of(
+                            context,
+                          ).colorScheme.primary,
+                        ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 8),
                   Text(
                     l10n.progressAnalyticsTitle,
-                    style: const TextStyle(
-                      color: _dark,
+                    style: TextStyle(
+                      color: colors.textPrimary,
                       fontSize: 25,
                       fontWeight: FontWeight.w900,
                     ),
                   ),
-                  const SizedBox(height: 28),
-                  Text(
-                    l10n.exerciseTrendsLabel,
-                    style: const TextStyle(
-                      color: _muted,
-                      fontWeight: FontWeight.w700,
+                  const SizedBox(height: 20),
+                  if (histories.isEmpty)
+                    _AnalyticsNoticeCard(text: l10n.progressNoCompletedHistory)
+                  else ...[
+                    _progressDropdown<String>(
+                      label: l10n.progressSelectProgram,
+                      value: selectedProgramId,
+                      options: programs,
+                      onChanged: (value) => setSheetState(() {
+                        selectedProgramId = value;
+                        selectedTemplateId = histories
+                            .where((history) => history.programId == value)
+                            .map((history) => history.workoutTemplateId)
+                            .firstOrNull;
+                        selectedExerciseKey = histories
+                            .where(
+                              (history) =>
+                                  history.programId == value &&
+                                  history.workoutTemplateId ==
+                                      selectedTemplateId,
+                            )
+                            .map((history) => history.exerciseKey)
+                            .firstOrNull;
+                      }),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  if (exerciseHistory.isEmpty)
-                    _AnalyticsNoticeCard(text: l10n.needMoreDataForProgress)
-                  else
-                    ...exerciseHistory.entries.map((entry) {
-                      final name = entry.key;
-                      final dailyVolume = _dailyVolumeFor(entry.value);
-                      final dates = dailyVolume.keys.toList()
-                        ..sort((a, b) => b.compareTo(a));
-
-                      if (dates.length < 2) {
-                        return _AnalyticsNoticeCard(
-                          text: l10n.exerciseNeedsMoreData(_titleCase(name)),
-                        );
-                      }
-
-                      final currentVol = dailyVolume[dates[0]]!;
-                      final previousVol = dailyVolume[dates[1]]!;
-                      final diff = currentVol - previousVol;
-                      final isImproved = diff >= 0;
-                      final percentage = previousVol > 0
-                          ? (diff / previousVol) * 100
-                          : 0.0;
-                      final progressDeltaStr = percentage.toStringAsFixed(1);
-
-                      return GestureDetector(
+                    const SizedBox(height: 12),
+                    _progressDropdown<String>(
+                      label: l10n.progressSelectWorkoutDay,
+                      value: selectedTemplateId,
+                      options: templates,
+                      onChanged: (value) => setSheetState(() {
+                        selectedTemplateId = value;
+                        selectedExerciseKey = histories
+                            .where(
+                              (history) =>
+                                  history.programId == selectedProgramId &&
+                                  history.workoutTemplateId == value,
+                            )
+                            .map((history) => history.exerciseKey)
+                            .firstOrNull;
+                      }),
+                    ),
+                    const SizedBox(height: 12),
+                    _progressDropdown<String>(
+                      label: l10n.progressSelectExercise,
+                      value: selectedExerciseKey,
+                      options: exercises,
+                      onChanged: (value) =>
+                          setSheetState(() => selectedExerciseKey = value),
+                    ),
+                    const SizedBox(height: 18),
+                    if (selectedHistory == null || previousVolume == null)
+                      _AnalyticsNoticeCard(
+                        text: l10n.exerciseNeedsMoreData(
+                          selectedHistory?.exerciseName ?? '',
+                        ),
+                      )
+                    else
+                      GestureDetector(
                         behavior: HitTestBehavior.opaque,
                         onTap: () {
-                          Navigator.pop(context);
+                          Navigator.pop(sheetContext);
+                          final percentage = previousVolume > 0
+                              ? (diff / previousVolume) * 100
+                              : 0.0;
                           Navigator.pushNamed(
                             analyticsScreenContext,
                             AppNavigator.workoutAnalytics,
                             arguments: WorkoutAnalyticsArgs(
-                              exerciseName: _titleCase(name),
-                              totalVolume: currentVol.toStringAsFixed(0),
-                              progressDelta: progressDeltaStr,
+                              exerciseName: selectedHistory.exerciseName,
+                              totalVolume: selectedHistory.currentVolume
+                                  .toStringAsFixed(0),
+                              progressDelta: percentage.toStringAsFixed(1),
                             ),
                           );
                         },
                         child: _AnalyticsCard(
-                          title: _titleCase(name),
+                          title: selectedHistory.exerciseName,
                           subtitle: l10n.lastPreviousVolume(
-                            currentVol.toStringAsFixed(0),
-                            previousVol.toStringAsFixed(0),
+                            selectedHistory.currentVolume.toStringAsFixed(0),
+                            previousVolume.toStringAsFixed(0),
                           ),
-                          improved: isImproved,
+                          improved: diff >= 0,
                           diff: diff,
                         ),
-                      );
-                    }),
+                      ),
+                  ],
                   const SizedBox(height: 24),
                   Center(
                     child: ElevatedButton(
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () => Navigator.pop(sheetContext),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: _blue,
-                        foregroundColor: Colors.white,
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        foregroundColor: Theme.of(
+                          context,
+                        ).colorScheme.onPrimary,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 30,
                           vertical: 13,
@@ -353,20 +548,43 @@ class _HomState extends State<Hom> {
                   ),
                 ],
               ),
-            );
-          },
-        );
-      },
+            ),
+          );
+        },
+      ),
     );
   }
 
-  String _titleCase(String text) {
-    if (text.isEmpty) return text;
-    return text
-        .split(' ')
-        .where((part) => part.isNotEmpty)
-        .map((part) => '${part[0].toUpperCase()}${part.substring(1)}')
-        .join(' ');
+  Widget _progressDropdown<T>({
+    required String label,
+    required T? value,
+    required Map<T, String> options,
+    required ValueChanged<T?> onChanged,
+  }) {
+    return DropdownButtonFormField<T>(
+      key: ValueKey('$label:$value'),
+      initialValue: options.containsKey(value) ? value : null,
+      isExpanded: true,
+      decoration: InputDecoration(
+        labelText: label,
+        filled: true,
+        fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+      ),
+      items: options.entries
+          .map(
+            (entry) => DropdownMenuItem<T>(
+              value: entry.key,
+              child: Text(
+                entry.value,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          )
+          .toList(),
+      onChanged: options.isEmpty ? null : onChanged,
+    );
   }
 
   void _onWorkoutStateChanged(BuildContext context, WorkoutState state) {
@@ -381,7 +599,7 @@ class _HomState extends State<Hom> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(state.message),
-          backgroundColor: Colors.redAccent,
+          backgroundColor: Theme.of(context).colorScheme.error,
         ),
       );
     }
@@ -389,32 +607,14 @@ class _HomState extends State<Hom> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-
     if (_isLoading) {
-      return Scaffold(
-        body: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Color(0xffdbe9f7), Color(0xff8fb6e6)],
-            ),
-          ),
-          child: const Center(child: CircularProgressIndicator(color: _blue)),
-        ),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
-
     return MultiBlocListener(
       listeners: [
         BlocListener<WorkoutCubit, WorkoutState>(
           listener: _onWorkoutStateChanged,
         ),
-        // Redesigned Home workout section (see HomeWorkoutOverviewCubit's
-        // class docs): refreshes whenever the app-wide active-session
-        // state settles, so starting/resuming/finishing/cancelling a
-        // workout elsewhere is reflected here without a manual pull.
         BlocListener<WorkoutSessionCubit, WorkoutSessionState>(
           listener: (context, state) {
             if (state is! WorkoutSessionLoading) {
@@ -423,206 +623,76 @@ class _HomState extends State<Hom> {
           },
         ),
       ],
-      child: Scaffold(
-        body: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Color(0xffdbe9f7), Color(0xff8fb6e6)],
-            ),
-          ),
-          child: SafeArea(
-            child: Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 430),
-                child: Column(
-                  children: [
-                    _buildTopPanel(l10n),
-                    const Expanded(child: HomeWorkoutOverviewSection()),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: _onStartWorkoutPressed,
-          backgroundColor: _blue,
-          foregroundColor: Colors.white,
-          elevation: 10,
-          icon: const Icon(Icons.add_circle_outline),
-          label: Text(
-            l10n.startWorkoutFabLabel,
-            style: const TextStyle(fontWeight: FontWeight.w800),
-          ),
-        ),
+      child: HomeDashboard(
+        name: _userName.trim(),
+        photoPath: _profilePhotoPath,
+        currentUserId: () => FirebaseAuth.instance.currentUser?.uid,
+        onProfile: _openPersonalHub,
+        onSettings: _openAppSettings,
+        onProgressAnalysis: _showProgressAnalysis,
+        onImageError: () {
+          final uid = _profilePhotoUid;
+          final failedPath = _profilePhotoPath;
+          if (failedPath != null &&
+              _ownsProfilePhoto(uid) &&
+              _profilePhotoPath == failedPath) {
+            setState(() => _profilePhotoPath = null);
+          }
+        },
+        volume: _buildVolumePanel(),
       ),
     );
   }
 
-  /// New Workout FAB (redesigned): goes straight to the active
-  /// program's Workout Days screen so the user picks Push/Pull/etc and
-  /// starts a real, structured [WorkoutSession] — never creates a loose
-  /// legacy [ExerciseSet]. With no active program yet, it opens the
-  /// Programs hub instead. The old one-off manual entry dialog has been
-  /// removed entirely — every workout is now logged through a real
-  /// session.
-  void _onStartWorkoutPressed() {
-    final overviewState = context.read<HomeWorkoutOverviewCubit>().state;
-    final activeProgram = overviewState is HomeWorkoutOverviewLoaded
-        ? overviewState.overview.activeProgram?.program
-        : null;
-
-    if (activeProgram != null) {
-      Navigator.pushNamed(
-        context,
-        AppNavigator.workoutProgramDetails,
-        arguments: WorkoutProgramDetailsArgs(program: activeProgram),
-      );
-    } else {
-      Navigator.pushNamed(context, AppNavigator.workoutPrograms);
-    }
+  @override
+  void dispose() {
+    _authSubscription?.cancel();
+    super.dispose();
   }
 
-  Widget _buildTopPanel(AppLocalizations l10n) {
-    final headerName =
-        'c.${_userName.trim().isEmpty ? 'User' : _userName.trim()}';
+  Widget _buildVolumePanel() {
+    final l10n = AppLocalizations.of(context)!;
     final dateLocale = Localizations.localeOf(context).toString();
-
     return Container(
-      margin: const EdgeInsets.fromLTRB(18, 12, 18, 0),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: _blue,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: _blue.withValues(alpha: 0.28),
-            blurRadius: 24,
-            offset: const Offset(0, 16),
-          ),
-        ],
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: context.appColors.border),
       ),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 12, 8, 6),
-            child: Row(
+      child: ValueListenableBuilder(
+        valueListenable: exerciseBox!.listenable(),
+        builder: (context, box, _) => Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              l10n.todaysVolumeLabel,
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
+            ),
+            const SizedBox(height: 8),
+            Wrap(
+              alignment: WrapAlignment.spaceBetween,
+              spacing: 16,
+              runSpacing: 8,
+              crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        headerName,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
-                      Text(
-                        l10n.workoutTrackerSubtitle,
-                        style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.78),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
+                Text(
+                  DateFormat('EEE, MMM d', dateLocale).format(DateTime.now()),
+                  style: TextStyle(color: context.appColors.textMuted),
+                ),
+                Text(
+                  _calculateTodayVolume().toStringAsFixed(1),
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontWeight: FontWeight.w800,
                   ),
-                ),
-                IconButton(
-                  onPressed: () => context.read<LocaleCubit>().toggle(),
-                  icon: const Icon(Icons.translate, size: 22),
-                  color: Colors.white,
-                  tooltip: l10n.languageToggleTooltip,
-                ),
-                IconButton(
-                  onPressed: _logout,
-                  icon: const Icon(Icons.logout, size: 22),
-                  color: Colors.white,
-                  tooltip: l10n.logoutTooltip,
-                ),
-                IconButton(
-                  onPressed: () =>
-                      Navigator.pushNamed(context, AppNavigator.measurements),
-                  icon: const Icon(Icons.straighten),
-                  color: Colors.white,
-                  tooltip: l10n.measurementsTooltip,
-                ),
-                IconButton(
-                  onPressed: () => Navigator.pushNamed(
-                    context,
-                    AppNavigator.workoutPrograms,
-                  ),
-                  icon: const Icon(Icons.assignment_outlined),
-                  color: Colors.white,
-                  tooltip: l10n.workoutProgramsTooltip,
-                ),
-                IconButton(
-                  onPressed: _showProgressAnalysis,
-                  icon: const Icon(Icons.analytics_outlined),
-                  color: Colors.white,
-                  tooltip: l10n.progressAnalyticsTooltip,
                 ),
               ],
             ),
-          ),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(18),
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: ValueListenableBuilder(
-              valueListenable: exerciseBox!.listenable(),
-              builder: (context, box, _) {
-                return Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            l10n.todaysVolumeLabel,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 23,
-                              fontWeight: FontWeight.w900,
-                            ),
-                          ),
-                          const SizedBox(height: 6),
-                          Text(
-                            DateFormat(
-                              'EEE, MMM d',
-                              dateLocale,
-                            ).format(DateTime.now()),
-                            style: TextStyle(
-                              color: Colors.white.withValues(alpha: 0.78),
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Text(
-                      _calculateTodayVolume().toStringAsFixed(1),
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 28,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -662,12 +732,13 @@ class _AnalyticsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = improved ? const Color(0xff38b66b) : const Color(0xffef5b4d);
+    final colors = context.appColors;
+    final color = improved ? colors.success : colors.error;
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: improved ? const Color(0xffd8f4df) : const Color(0xffffe7e4),
+        color: color.withValues(alpha: 0.14),
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
@@ -685,18 +756,15 @@ class _AnalyticsCard extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
-                    color: Color(0xff202936),
+                  style: TextStyle(
+                    color: colors.textPrimary,
                     fontWeight: FontWeight.w900,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   subtitle,
-                  style: const TextStyle(
-                    color: Color(0xff7d8792),
-                    fontSize: 12,
-                  ),
+                  style: TextStyle(color: colors.textMuted, fontSize: 12),
                 ),
               ],
             ),
@@ -704,7 +772,9 @@ class _AnalyticsCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.5),
+              color: Theme.of(
+                context,
+              ).colorScheme.surface.withValues(alpha: 0.8),
               borderRadius: BorderRadius.circular(6),
             ),
             child: Column(
@@ -736,19 +806,17 @@ class _AnalyticsNoticeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.appColors;
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xffdce6eb),
+        color: colors.surfaceRaised,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Text(
         text,
-        style: const TextStyle(
-          color: Color(0xff52606c),
-          fontWeight: FontWeight.w700,
-        ),
+        style: TextStyle(color: colors.textMuted, fontWeight: FontWeight.w700),
       ),
     );
   }

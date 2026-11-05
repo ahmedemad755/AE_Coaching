@@ -1,10 +1,13 @@
 import 'package:ae_coaching/features/workout/data/models/workout_program.dart';
+import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/features/workout/domain/services/program_analytics_service.dart';
 import 'package:ae_coaching/features/workout/presentation/cubit/program_analytics_cubit.dart';
 import 'package:ae_coaching/features/workout/presentation/cubit/program_consistency_cubit.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'dart:math' as math;
 
 /// Route arguments for [ProgramAnalyticsScreen].
 class ProgramAnalyticsArgs {
@@ -12,7 +15,8 @@ class ProgramAnalyticsArgs {
   const ProgramAnalyticsArgs({required this.program});
 }
 
-String _fmt(double value) => value.toStringAsFixed(value.truncateToDouble() == value ? 0 : 1);
+String _fmt(double value) =>
+    value.toStringAsFixed(value.truncateToDouble() == value ? 0 : 1);
 
 /// Phase 15's Program → Day → Exercise analytics browser. Every
 /// exercise row shown here is scoped to exactly one workout day
@@ -29,8 +33,8 @@ class ProgramAnalyticsScreen extends StatefulWidget {
 
 class _ProgramAnalyticsScreenState extends State<ProgramAnalyticsScreen> {
   static const Color _blue = Color(0xff2f80ed);
-  static const Color _dark = Color(0xff202936);
-  static const Color _muted = Color(0xff7d8792);
+  String? _selectedTemplateId;
+  String? _selectedExerciseName;
 
   @override
   void initState() {
@@ -42,20 +46,28 @@ class _ProgramAnalyticsScreenState extends State<ProgramAnalyticsScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final colors = context.appColors;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: const Color(0xfff5f9fc),
+      backgroundColor: colors.canvas,
       appBar: AppBar(
-        backgroundColor: _blue,
-        foregroundColor: Colors.white,
+        backgroundColor: isDark ? colors.canvas : _blue,
+        foregroundColor: isDark ? colors.textPrimary : Colors.white,
         title: Text(l10n.programAnalyticsTitle),
       ),
       body: BlocBuilder<ProgramAnalyticsCubit, ProgramAnalyticsState>(
         builder: (context, state) {
           if (state is ProgramAnalyticsError) {
-            return Center(child: Text(state.message, style: const TextStyle(color: Colors.redAccent)));
+            return Center(
+              child: Text(state.message, style: TextStyle(color: colors.error)),
+            );
           }
           if (state is! ProgramAnalyticsLoaded) {
-            return const Center(child: CircularProgressIndicator(color: _blue));
+            return Center(
+              child: CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            );
           }
 
           final days = state.summary.days;
@@ -66,18 +78,29 @@ class _ProgramAnalyticsScreenState extends State<ProgramAnalyticsScreen> {
               padding: const EdgeInsets.all(24),
               children: [
                 const SizedBox(height: 40),
-                const Icon(Icons.bar_chart, color: _blue, size: 40),
+                Icon(
+                  Icons.bar_chart,
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 40,
+                ),
                 const SizedBox(height: 14),
                 Text(
                   l10n.noAnalyticsYetTitle,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(color: _dark, fontWeight: FontWeight.w900, fontSize: 16),
+                  style: TextStyle(
+                    color: colors.textPrimary,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 16,
+                  ),
                 ),
                 const SizedBox(height: 6),
                 Text(
                   l10n.noAnalyticsYetSubtitle,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(color: _muted, fontWeight: FontWeight.w600),
+                  style: TextStyle(
+                    color: colors.textMuted,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ],
             );
@@ -88,19 +111,178 @@ class _ProgramAnalyticsScreenState extends State<ProgramAnalyticsScreen> {
             children: [
               const _ConsistencyCard(),
               const SizedBox(height: 8),
-              for (final day in days) _WorkoutDaySection(day: day),
+              _buildProgressionBrowser(context, days),
             ],
           );
         },
       ),
     );
   }
+
+  Widget _buildProgressionBrowser(
+    BuildContext context,
+    List<WorkoutDayAnalyticsSummary> days,
+  ) {
+    final l10n = AppLocalizations.of(context)!;
+    final colors = context.appColors;
+    final day =
+        days
+            .where((item) => item.workoutTemplateId == _selectedTemplateId)
+            .firstOrNull ??
+        days.first;
+    final selectedExercise =
+        day.exercises
+            .where(
+              (item) => item.normalizedExerciseName == _selectedExerciseName,
+            )
+            .firstOrNull ??
+        day.exercises.firstOrNull;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        DropdownButtonFormField<String>(
+          key: ValueKey('program-analytics-day-${day.workoutTemplateId}'),
+          initialValue: day.workoutTemplateId,
+          isExpanded: true,
+          decoration: InputDecoration(
+            labelText: l10n.analyticsSelectDay,
+            filled: true,
+            fillColor: Theme.of(context).colorScheme.surface,
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+          ),
+          items: [
+            for (final item in days)
+              DropdownMenuItem(
+                value: item.workoutTemplateId,
+                child: Text(
+                  item.workoutTemplateName,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+          ],
+          onChanged: (value) => setState(() {
+            _selectedTemplateId = value;
+            _selectedExerciseName = null;
+          }),
+        ),
+        if (day.completedSessionsCount > 0) ...[
+          const SizedBox(height: 6),
+          Text(
+            '${l10n.sessionsLoggedLabel(day.completedSessionsCount)} · ${l10n.averageVolumeLabel}: ${_fmt(day.averageSessionVolume)} ${l10n.kgUnit}',
+            style: TextStyle(color: colors.textMuted, fontSize: 12),
+          ),
+        ],
+        const SizedBox(height: 12),
+        if (day.exercises.isEmpty)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            child: Text(
+              l10n.noExercisesForDayYetBody,
+              style: TextStyle(color: colors.textMuted, fontSize: 13),
+            ),
+          )
+        else ...[
+          DropdownButtonFormField<String>(
+            key: ValueKey(
+              'program-analytics-exercise-${selectedExercise?.normalizedExerciseName}',
+            ),
+            initialValue: selectedExercise?.normalizedExerciseName,
+            isExpanded: true,
+            decoration: InputDecoration(
+              labelText: l10n.analyticsSelectExercise,
+              filled: true,
+              fillColor: Theme.of(context).colorScheme.surface,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            items: [
+              for (final item in day.exercises)
+                DropdownMenuItem(
+                  value: item.normalizedExerciseName,
+                  child: Text(
+                    item.exerciseName,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+            ],
+            onChanged: (value) => setState(() => _selectedExerciseName = value),
+          ),
+          const SizedBox(height: 12),
+          if (selectedExercise != null) ...[
+            Text(
+              selectedExercise.exerciseName,
+              style: TextStyle(
+                color: colors.textPrimary,
+                fontWeight: FontWeight.w900,
+                fontSize: 17,
+              ),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              l10n.exerciseBestLatestSummary(
+                _fmt(selectedExercise.bestWeight),
+                _fmt(selectedExercise.latestVolume),
+              ),
+              style: TextStyle(color: colors.textMuted, fontSize: 12),
+            ),
+            const SizedBox(height: 8),
+            _MetricProgressCard(
+              title: l10n.analyticsWeightTitle,
+              points: selectedExercise.weightProgression,
+              previous: selectedExercise.previousSession?.maxWeight,
+              latest: selectedExercise.latestSession?.maxWeight,
+              previousDate: selectedExercise.previousSession?.completedAt,
+              latestDate: selectedExercise.latestSession?.completedAt,
+              absoluteChange: selectedExercise.weightDelta,
+              percentChange: selectedExercise.weightDeltaPercent,
+              unit: l10n.kgUnit,
+              color: colors.chartSeries[0],
+            ),
+            _MetricProgressCard(
+              title: l10n.analyticsRepsTitle,
+              subtitle: selectedExercise.comparableRepsWeight == null
+                  ? null
+                  : l10n.analyticsRepsAtWeight(
+                      _fmt(selectedExercise.comparableRepsWeight!),
+                    ),
+              points: selectedExercise.repsProgression,
+              previous: selectedExercise.previousComparableReps?.toDouble(),
+              latest: selectedExercise.latestComparableReps?.toDouble(),
+              previousDate: selectedExercise.previousSession?.completedAt,
+              latestDate: selectedExercise.latestSession?.completedAt,
+              absoluteChange: selectedExercise.repsDelta,
+              percentChange: selectedExercise.repsDeltaPercent,
+              unit: l10n.analyticsRepsUnit,
+              emptyMessage: selectedExercise.previousSession == null
+                  ? l10n.analyticsNeedMoreSessions
+                  : l10n.analyticsNoComparableReps,
+              color: colors.chartSeries[3],
+            ),
+            _MetricProgressCard(
+              title: l10n.analyticsVolumeTitle,
+              points: selectedExercise.volumeProgression,
+              previous: selectedExercise.previousSession?.volume,
+              latest: selectedExercise.latestSession?.volume,
+              previousDate: selectedExercise.previousSession?.completedAt,
+              latestDate: selectedExercise.latestSession?.completedAt,
+              absoluteChange: selectedExercise.volumeDelta,
+              percentChange: selectedExercise.volumeDeltaPercent,
+              unit: l10n.analyticsVolumeUnit,
+              color: colors.chartSeries[1],
+            ),
+          ],
+        ],
+      ],
+    );
+  }
 }
 
 class _ConsistencyCard extends StatelessWidget {
   const _ConsistencyCard();
-
-  static const Color _dark = Color(0xff202936);
 
   @override
   Widget build(BuildContext context) {
@@ -109,12 +291,15 @@ class _ConsistencyCard extends StatelessWidget {
       builder: (context, state) {
         if (state is! ProgramConsistencyLoaded) return const SizedBox.shrink();
         final summary = state.summary;
+        final colors = context.appColors;
         if (summary.totalCompletedSessions == 0) return const SizedBox.shrink();
 
         return Card(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           margin: const EdgeInsets.only(bottom: 8),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
           child: Padding(
             padding: const EdgeInsets.all(14),
             child: Column(
@@ -122,7 +307,11 @@ class _ConsistencyCard extends StatelessWidget {
               children: [
                 Text(
                   l10n.consistencyTitle,
-                  style: const TextStyle(color: _dark, fontWeight: FontWeight.w900, fontSize: 15),
+                  style: TextStyle(
+                    color: colors.textPrimary,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 15,
+                  ),
                 ),
                 const SizedBox(height: 10),
                 Wrap(
@@ -162,127 +351,285 @@ class _ConsistencyStat extends StatelessWidget {
   final String value;
   const _ConsistencyStat({required this.label, required this.value});
 
-  static const Color _dark = Color(0xff202936);
-  static const Color _muted = Color(0xff7d8792);
-
   @override
   Widget build(BuildContext context) {
+    final colors = context.appColors;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(value, style: const TextStyle(color: _dark, fontWeight: FontWeight.w900, fontSize: 15)),
-        Text(label, style: const TextStyle(color: _muted, fontSize: 11)),
+        Text(
+          value,
+          style: TextStyle(
+            color: colors.textPrimary,
+            fontWeight: FontWeight.w900,
+            fontSize: 15,
+          ),
+        ),
+        Text(label, style: TextStyle(color: colors.textMuted, fontSize: 11)),
       ],
     );
   }
 }
 
-class _WorkoutDaySection extends StatelessWidget {
-  final WorkoutDayAnalyticsSummary day;
-  const _WorkoutDaySection({required this.day});
+class _MetricProgressCard extends StatelessWidget {
+  final String title;
+  final String? subtitle;
+  final List<ExerciseProgressionPoint> points;
+  final double? previous;
+  final double? latest;
+  final DateTime? previousDate;
+  final DateTime? latestDate;
+  final double? absoluteChange;
+  final double? percentChange;
+  final String unit;
+  final String? emptyMessage;
+  final Color color;
 
-  static const Color _dark = Color(0xff202936);
-  static const Color _muted = Color(0xff7d8792);
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 18),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  day.workoutTemplateName,
-                  style: const TextStyle(color: _dark, fontWeight: FontWeight.w900, fontSize: 17),
-                ),
-              ),
-              if (day.completedSessionsCount > 0)
-                Text(
-                  l10n.sessionsLoggedLabel(day.completedSessionsCount),
-                  style: const TextStyle(color: _muted, fontSize: 12, fontWeight: FontWeight.w700),
-                ),
-            ],
-          ),
-          if (day.completedSessionsCount > 0) ...[
-            const SizedBox(height: 2),
-            Text(
-              '${l10n.averageVolumeLabel}: ${_fmt(day.averageSessionVolume)} ${l10n.kgUnit}',
-              style: const TextStyle(color: _muted, fontSize: 12),
-            ),
-          ],
-          const SizedBox(height: 8),
-          if (day.exercises.isEmpty)
-            Text(l10n.noExercisesForDayYetBody, style: const TextStyle(color: _muted, fontSize: 13))
-          else
-            for (final exercise in day.exercises) _ExerciseAnalyticsTile(exercise: exercise),
-        ],
-      ),
-    );
-  }
-}
-
-class _ExerciseAnalyticsTile extends StatelessWidget {
-  final ExerciseAnalyticsSummary exercise;
-  const _ExerciseAnalyticsTile({required this.exercise});
-
-  static const Color _dark = Color(0xff202936);
-  static const Color _muted = Color(0xff7d8792);
-  static const Color _green = Color(0xff2e9e5b);
-  static const Color _red = Color(0xffd64545);
+  const _MetricProgressCard({
+    required this.title,
+    this.subtitle,
+    required this.points,
+    required this.previous,
+    required this.latest,
+    required this.previousDate,
+    required this.latestDate,
+    required this.absoluteChange,
+    required this.percentChange,
+    required this.unit,
+    this.emptyMessage,
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final delta = exercise.overallDeltaPercent;
+    final colors = context.appColors;
+    final locale = Localizations.localeOf(context).toString();
+    final canCompare = previous != null && latest != null;
+    final change = absoluteChange == null
+        ? null
+        : '${absoluteChange! > 0 ? '+' : ''}${_fmt(absoluteChange!)}';
 
     return Card(
-      color: Colors.white,
-      margin: const EdgeInsets.only(bottom: 8),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      color: Theme.of(context).colorScheme.surface,
+      margin: const EdgeInsets.only(bottom: 12),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Row(
+        padding: const EdgeInsets.all(14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    exercise.exerciseName,
-                    style: const TextStyle(color: _dark, fontWeight: FontWeight.w800),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    l10n.exerciseBestLatestSummary(_fmt(exercise.bestWeight), _fmt(exercise.latestVolume)),
-                    style: const TextStyle(color: _muted, fontSize: 12),
-                  ),
-                ],
+            Text(
+              title,
+              style: TextStyle(
+                color: colors.textPrimary,
+                fontWeight: FontWeight.w900,
+                fontSize: 15,
               ),
             ),
-            if (delta != null)
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: (delta >= 0 ? _green : _red).withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(6),
+            if (subtitle != null) ...[
+              const SizedBox(height: 3),
+              Text(
+                subtitle!,
+                style: TextStyle(color: colors.textMuted, fontSize: 12),
+              ),
+            ],
+            if (canCompare) ...[
+              const SizedBox(height: 8),
+              Text(
+                l10n.analyticsPreviousValue(
+                  DateFormat.MMMd(locale).format(previousDate!),
+                  _fmt(previous!),
+                  unit,
                 ),
-                child: Text(
-                  '${delta >= 0 ? '+' : ''}${_fmt(delta)}%',
-                  style: TextStyle(
-                    color: delta >= 0 ? _green : _red,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 12,
-                  ),
+                style: TextStyle(color: colors.textMuted, fontSize: 12),
+              ),
+              Text(
+                l10n.analyticsLatestValue(
+                  DateFormat.MMMd(locale).format(latestDate!),
+                  _fmt(latest!),
+                  unit,
+                ),
+                style: TextStyle(
+                  color: colors.textPrimary,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
+              const SizedBox(height: 2),
+              Text(
+                l10n.analyticsAbsoluteChange(change!, unit),
+                style: TextStyle(
+                  color: absoluteChange! >= 0 ? colors.success : colors.error,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              Text(
+                percentChange == null
+                    ? l10n.analyticsPercentageUnavailable
+                    : l10n.analyticsPercentChange(
+                        '${percentChange! > 0 ? '+' : ''}${_fmt(percentChange!)}',
+                      ),
+                style: TextStyle(color: colors.textMuted, fontSize: 11),
+              ),
+            ] else
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Text(
+                  points.isEmpty
+                      ? (emptyMessage ?? l10n.analyticsNeedMoreSessions)
+                      : l10n.analyticsNeedMoreSessions,
+                  style: TextStyle(color: colors.textMuted, fontSize: 12),
+                ),
+              ),
+            if (points.isNotEmpty) ...[
+              const SizedBox(height: 12),
+              _ProgressionLineChart(points: points, color: color),
+            ],
           ],
         ),
       ),
     );
   }
+}
+
+class _ProgressionLineChart extends StatelessWidget {
+  final List<ExerciseProgressionPoint> points;
+  final Color color;
+
+  const _ProgressionLineChart({required this.points, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    final locale = Localizations.localeOf(context).toString();
+    final colors = context.appColors;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final chartWidth = math
+            .max(
+              constraints.maxWidth,
+              points.length <= 1 ? 96.0 : (points.length - 1) * 64.0 + 48.0,
+            )
+            .toDouble();
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: SizedBox(
+            width: chartWidth,
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 132,
+                  child: CustomPaint(
+                    size: Size(chartWidth, 132),
+                    painter: _ProgressionPainter(
+                      points: points,
+                      color: color,
+                      gridColor: colors.chartGrid,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 24,
+                  child: Stack(
+                    children: [
+                      for (var index = 0; index < points.length; index++)
+                        Positioned(
+                          left: _pointX(chartWidth, points.length, index) - 30,
+                          width: 60,
+                          child: Text(
+                            DateFormat.MMMd(locale).format(points[index].date),
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                            overflow: TextOverflow.clip,
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: colors.textMuted,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+double _pointX(double width, int count, int index) {
+  if (count <= 1) return width / 2;
+  return 14 + (width - 28) * index / (count - 1);
+}
+
+class _ProgressionPainter extends CustomPainter {
+  final List<ExerciseProgressionPoint> points;
+  final Color color;
+  final Color gridColor;
+
+  const _ProgressionPainter({
+    required this.points,
+    required this.color,
+    required this.gridColor,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    const top = 10.0;
+    const bottom = 12.0;
+    const left = 14.0;
+    const right = 14.0;
+    final plotHeight = size.height - top - bottom;
+    final values = points.map((point) => point.value).toList();
+    final minValue = values.reduce(math.min);
+    final maxValue = values.reduce(math.max);
+    final range = maxValue == minValue ? 1.0 : maxValue - minValue;
+    final gridPaint = Paint()
+      ..color = gridColor
+      ..strokeWidth = 1;
+    for (var row = 0; row < 4; row++) {
+      final y = top + plotHeight * row / 3;
+      canvas.drawLine(
+        Offset(left, y),
+        Offset(size.width - right, y),
+        gridPaint,
+      );
+    }
+
+    final offsets = <Offset>[];
+    for (var index = 0; index < points.length; index++) {
+      final x = _pointX(size.width, points.length, index);
+      final y =
+          top +
+          plotHeight -
+          (points[index].value - minValue) / range * plotHeight;
+      offsets.add(Offset(x, y));
+    }
+    final linePaint = Paint()
+      ..color = color
+      ..strokeWidth = 2.5
+      ..strokeCap = StrokeCap.round
+      ..style = PaintingStyle.stroke;
+    if (offsets.length > 1) {
+      final path = Path()..moveTo(offsets.first.dx, offsets.first.dy);
+      for (final offset in offsets.skip(1)) {
+        path.lineTo(offset.dx, offset.dy);
+      }
+      canvas.drawPath(path, linePaint);
+    }
+    final pointPaint = Paint()..color = color;
+    for (final offset in offsets) {
+      canvas.drawCircle(offset, 4, pointPaint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _ProgressionPainter oldDelegate) =>
+      oldDelegate.points != points ||
+      oldDelegate.color != color ||
+      oldDelegate.gridColor != gridColor;
 }

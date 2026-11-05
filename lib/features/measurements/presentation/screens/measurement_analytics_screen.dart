@@ -2,6 +2,7 @@ import 'package:ae_coaching/auth/data/models/body_measurement.dart';
 import 'package:ae_coaching/features/measurements/presentation/cubit/measurement_cubit.dart';
 import 'package:ae_coaching/features/measurements/presentation/widgets/measurement_avatar.dart';
 import 'package:ae_coaching/features/measurements/presentation/widgets/measurement_field_defs.dart';
+import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,13 +20,12 @@ class MeasurementAnalyticsScreen extends StatefulWidget {
   const MeasurementAnalyticsScreen({super.key});
 
   @override
-  State<MeasurementAnalyticsScreen> createState() => _MeasurementAnalyticsScreenState();
+  State<MeasurementAnalyticsScreen> createState() =>
+      _MeasurementAnalyticsScreenState();
 }
 
-class _MeasurementAnalyticsScreenState extends State<MeasurementAnalyticsScreen> {
-  static const Color _blue = Color(0xff2f80ed);
-  static const Color _muted = Color(0xff7d8792);
-
+class _MeasurementAnalyticsScreenState
+    extends State<MeasurementAnalyticsScreen> {
   // Retains the last successfully loaded box so a transient state (the
   // background Firestore sync) never flashes a spinner/error over
   // analytics that are already on screen.
@@ -60,10 +60,9 @@ class _MeasurementAnalyticsScreenState extends State<MeasurementAnalyticsScreen>
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      backgroundColor: const Color(0xfff5f9fc),
       appBar: AppBar(
-        backgroundColor: _blue,
-        foregroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Theme.of(context).colorScheme.onPrimary,
         title: Text(l10n.measurementAnalyticsTitle),
       ),
       body: BlocConsumer<MeasurementCubit, MeasurementState>(
@@ -80,11 +79,18 @@ class _MeasurementAnalyticsScreenState extends State<MeasurementAnalyticsScreen>
               return Center(
                 child: Text(
                   l10n.unableToLoadAnalytics,
-                  style: const TextStyle(color: _muted, fontWeight: FontWeight.w700),
+                  style: TextStyle(
+                    color: context.appColors.textMuted,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               );
             }
-            return const Center(child: CircularProgressIndicator(color: _blue));
+            return Center(
+              child: CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            );
           }
 
           return ValueListenableBuilder(
@@ -100,7 +106,10 @@ class _MeasurementAnalyticsScreenState extends State<MeasurementAnalyticsScreen>
                     child: Text(
                       l10n.noMeasurementsHistoryEmpty,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(color: _muted, fontWeight: FontWeight.w700),
+                      style: TextStyle(
+                        color: context.appColors.textMuted,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                 );
@@ -112,7 +121,11 @@ class _MeasurementAnalyticsScreenState extends State<MeasurementAnalyticsScreen>
                 itemBuilder: (context, index) {
                   final def = measurementFieldDefs[index];
                   final points = _seriesFor(def, sortedAscending);
-                  return _FieldAnalyticsCard(l10n: l10n, def: def, points: points);
+                  return _FieldAnalyticsCard(
+                    l10n: l10n,
+                    def: def,
+                    points: points,
+                  );
                 },
               );
             },
@@ -128,18 +141,20 @@ class _FieldAnalyticsCard extends StatelessWidget {
   final MeasurementFieldDef def;
   final List<MapEntry<DateTime, double>> points;
 
-  const _FieldAnalyticsCard({required this.l10n, required this.def, required this.points});
-
-  static const Color _dark = Color(0xff202936);
-  static const Color _muted = Color(0xff7d8792);
+  const _FieldAnalyticsCard({
+    required this.l10n,
+    required this.def,
+    required this.points,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.appColors;
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
@@ -158,8 +173,8 @@ class _FieldAnalyticsCard extends StatelessWidget {
               const SizedBox(width: 10),
               Text(
                 def.localizedLabel(l10n),
-                style: const TextStyle(
-                  color: _dark,
+                style: TextStyle(
+                  color: colors.textPrimary,
                   fontWeight: FontWeight.w900,
                   fontSize: 16,
                 ),
@@ -170,7 +185,10 @@ class _FieldAnalyticsCard extends StatelessWidget {
           if (points.length < 2)
             Text(
               l10n.notEnoughDataYet,
-              style: const TextStyle(color: _muted, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                color: colors.textMuted,
+                fontWeight: FontWeight.w600,
+              ),
             )
           else
             ..._buildComparisons(),
@@ -237,9 +255,6 @@ class _ComparisonBlock extends StatelessWidget {
     required this.pct,
   });
 
-  static const Color _blue = Color(0xff2f80ed);
-  static const Color _muted = Color(0xff7d8792);
-
   String _signed(double v, String suffix) {
     final sign = v > 0 ? '+' : '';
     return '$sign${v.toStringAsFixed(1)}$suffix';
@@ -247,6 +262,8 @@ class _ComparisonBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.appColors;
+    final primary = Theme.of(context).colorScheme.primary;
     final IconData directionIcon = diff > 0
         ? Icons.arrow_upward
         : (diff < 0 ? Icons.arrow_downward : Icons.remove);
@@ -256,8 +273,8 @@ class _ComparisonBlock extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(
-            color: _muted,
+          style: TextStyle(
+            color: colors.textMuted,
             fontWeight: FontWeight.w800,
             fontSize: 12,
           ),
@@ -267,27 +284,38 @@ class _ComparisonBlock extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
-              child: _MiniStat(l10n: l10n, label: firstLabel, value: firstValue),
+              child: _MiniStat(
+                l10n: l10n,
+                label: firstLabel,
+                value: firstValue,
+              ),
             ),
-            Icon(Icons.trending_flat, color: _muted.withValues(alpha: 0.6)),
+            Icon(
+              Icons.trending_flat,
+              color: colors.textMuted.withValues(alpha: 0.6),
+            ),
             Expanded(
-              child: _MiniStat(l10n: l10n, label: secondLabel, value: secondValue),
+              child: _MiniStat(
+                l10n: l10n,
+                label: secondLabel,
+                value: secondValue,
+              ),
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
               decoration: BoxDecoration(
-                color: const Color(0xffeaf2fc),
+                color: Theme.of(context).colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(directionIcon, color: _blue, size: 16),
+                  Icon(directionIcon, color: primary, size: 16),
                   const SizedBox(height: 2),
                   Text(
                     _signed(diff, ' ${l10n.cmUnit}'),
-                    style: const TextStyle(
-                      color: _blue,
+                    style: TextStyle(
+                      color: primary,
                       fontWeight: FontWeight.w900,
                       fontSize: 11,
                     ),
@@ -295,7 +323,7 @@ class _ComparisonBlock extends StatelessWidget {
                   Text(
                     _signed(pct, '%'),
                     style: TextStyle(
-                      color: _blue.withValues(alpha: 0.8),
+                      color: primary.withValues(alpha: 0.8),
                       fontWeight: FontWeight.w700,
                       fontSize: 10,
                     ),
@@ -315,23 +343,32 @@ class _MiniStat extends StatelessWidget {
   final String label;
   final double value;
 
-  const _MiniStat({required this.l10n, required this.label, required this.value});
-
-  static const Color _dark = Color(0xff202936);
-  static const Color _muted = Color(0xff7d8792);
+  const _MiniStat({
+    required this.l10n,
+    required this.label,
+    required this.value,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.appColors;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
-          style: const TextStyle(color: _muted, fontSize: 11, fontWeight: FontWeight.w600),
+          style: TextStyle(
+            color: colors.textMuted,
+            fontSize: 11,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         Text(
           '${value.toStringAsFixed(1)} ${l10n.cmUnit}',
-          style: const TextStyle(color: _dark, fontWeight: FontWeight.w800),
+          style: TextStyle(
+            color: colors.textPrimary,
+            fontWeight: FontWeight.w800,
+          ),
         ),
       ],
     );

@@ -3,14 +3,12 @@ rules_version = '2';
 // ============================================================================
 // ⚠️  NOT YET DEPLOYED — LOCAL/EMULATOR USE ONLY. READ BEFORE DEPLOYING. ⚠️
 //
-// This file currently defines rules ONLY for the two new Phase 5B
-// password-reset collections. It is intentionally incomplete: it does
-// NOT include rules for any of the app's existing collections
-// (users/{uid}, workout data, measurements, photos, etc.), because
-// this repository does not have a tracked firestore.rules file today —
-// those collections' real production rules exist only in the Firebase
-// Console (or wherever they are currently managed) and are NOT visible
-// from this repo.
+// This file contains local rules for FCM tokens, workout inactivity
+// state, and the two Phase 5B password-reset collections. It is
+// intentionally incomplete: it does NOT include rules for the app's
+// other existing collections (users/{uid}, workout data, measurements,
+// photos, etc.), because their production rules are managed outside
+// this repository and are not available here.
 //
 // Firestore security rules are deny-by-default per collection: running
 // `firebase deploy` (unscoped, or with --only firestore:rules) using
@@ -18,13 +16,134 @@ rules_version = '2';
 // collection, breaking read/write access for the entire rest of the
 // app. Before this file is ever deployed, it MUST be merged with the
 // project's actual, complete existing ruleset by someone with access
-// to review what's currently configured. This stage never runs
-// `firebase deploy` of any kind — this file is used only by the local
-// Firestore Emulator for Phase 5B's own automated tests.
+// to review what's currently configured. No production deployment is
+// performed by this stage; use this draft only for local/emulator work.
 // ============================================================================
 
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    // FCM credentials are private to the owning user. Clients can write
+    // their own device token, but cannot list or read token documents.
+    match /users/{uid}/fcmTokens/{tokenId} {
+      function ownsUser() {
+        return request.auth != null && request.auth.uid == uid;
+      }
+
+      function validTokenDocument() {
+        return request.resource.data.keys().hasOnly([
+            'token', 'createdAt', 'updatedAt', 'platform'
+          ]) &&
+          request.resource.data.keys().hasAll([
+            'token', 'createdAt', 'updatedAt', 'platform'
+          ]) &&
+          request.resource.data.token is string &&
+          request.resource.data.token.size() > 0 &&
+          request.resource.data.createdAt is timestamp &&
+          request.resource.data.updatedAt is timestamp &&
+          request.resource.data.platform in ['android', 'ios', 'macos'];
+      }
+
+      allow get: if ownsUser();
+      allow create: if ownsUser() && validTokenDocument();
+      allow update: if ownsUser() && validTokenDocument() &&
+        request.resource.data.createdAt == resource.data.createdAt;
+      allow delete: if ownsUser();
+    }
+
+    // Inactivity state is writable only by the owner and only for a
+    // cycle backed by that owner's genuinely completed workout session.
+    match /users/{uid}/notificationState/{stateId} {
+      function ownsUser() {
+        return request.auth != null && request.auth.uid == uid;
+      }
+
+      function validInactivityState() {
+        return stateId == 'inactivity' &&
+          request.resource.data.keys().hasOnly([
+            'lastCompletedWorkoutAt',
+            'inactivityRemindersEnabled',
+            'inactivityCycleId',
+            'reminderSentForCycle',
+            'updatedAt',
+            'language',
+            'sendState',
+            'claimedCycleId',
+            'leaseId',
+            'leaseExpiresAt'
+          ]) &&
+          request.resource.data.keys().hasAll([
+            'lastCompletedWorkoutAt',
+            'inactivityRemindersEnabled',
+            'inactivityCycleId',
+            'reminderSentForCycle',
+            'updatedAt'
+          ]) &&
+          request.resource.data.lastCompletedWorkoutAt == request.time &&
+          request.resource.data.inactivityRemindersEnabled is bool &&
+          request.resource.data.inactivityCycleId is string &&
+          request.resource.data.reminderSentForCycle == false &&
+          request.resource.data.updatedAt == request.time &&
+          (!request.resource.data.keys().hasAny(['language']) ||
+            request.resource.data.language in ['ar', 'en']) &&
+          exists(/databases/$(database)/documents/users/$(uid)/workout_sessions/$(request.resource.data.inactivityCycleId)) &&
+          get(/databases/$(database)/documents/users/$(uid)/workout_sessions/$(request.resource.data.inactivityCycleId)).data.status == 'completed';
+      }
+
+      function validPreferenceOnlyUpdate() {
+        let changed = request.resource.data.diff(resource.data).affectedKeys();
+        return stateId == 'inactivity' &&
+          changed.hasOnly(['inactivityRemindersEnabled', 'language']) &&
+          changed.size() > 0 &&
+          (!changed.hasAny(['inactivityRemindersEnabled']) ||
+            request.resource.data.inactivityRemindersEnabled is bool) &&
+          (!changed.hasAny(['language']) ||
+            request.resource.data.language in ['ar', 'en']);
+      }
+
+      function validPreferenceOnlyCreate() {
+        return stateId == 'inactivity' &&
+          request.resource.data.keys().hasOnly([
+            'inactivityRemindersEnabled', 'language'
+          ]) &&
+          request.resource.data.keys().hasAny([
+            'inactivityRemindersEnabled', 'language'
+          ]) &&
+          (!request.resource.data.keys().hasAny(['inactivityRemindersEnabled']) ||
+            request.resource.data.inactivityRemindersEnabled is bool) &&
+          (!request.resource.data.keys().hasAny(['language']) ||
+            request.resource.data.language in ['ar', 'en']);
+      }
+
+      function backendStateUnchanged() {
+        return request.resource.data.keys().hasAny(['sendState']) ==
+            resource.data.keys().hasAny(['sendState']) &&
+          (!resource.data.keys().hasAny(['sendState']) ||
+            request.resource.data.sendState == resource.data.sendState) &&
+          request.resource.data.keys().hasAny(['claimedCycleId']) ==
+            resource.data.keys().hasAny(['claimedCycleId']) &&
+          (!resource.data.keys().hasAny(['claimedCycleId']) ||
+            request.resource.data.claimedCycleId == resource.data.claimedCycleId) &&
+          request.resource.data.keys().hasAny(['leaseId']) ==
+            resource.data.keys().hasAny(['leaseId']) &&
+          (!resource.data.keys().hasAny(['leaseId']) ||
+            request.resource.data.leaseId == resource.data.leaseId) &&
+          request.resource.data.keys().hasAny(['leaseExpiresAt']) ==
+            resource.data.keys().hasAny(['leaseExpiresAt']) &&
+          (!resource.data.keys().hasAny(['leaseExpiresAt']) ||
+            request.resource.data.leaseExpiresAt == resource.data.leaseExpiresAt);
+      }
+
+      allow get: if ownsUser();
+      allow create: if ownsUser() && (
+        (validInactivityState() && !request.resource.data.keys().hasAny([
+          'sendState', 'claimedCycleId', 'leaseId', 'leaseExpiresAt'
+        ])) || validPreferenceOnlyCreate());
+      allow update: if ownsUser() && (
+        (validInactivityState() && backendStateUnchanged()) ||
+        validPreferenceOnlyUpdate()
+      );
+    }
 
     // Server-owned password-reset challenge state. Written and read
     // exclusively by Cloud Functions via the Admin SDK, which bypasses

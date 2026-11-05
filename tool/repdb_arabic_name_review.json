@@ -1,0 +1,22 @@
+{
+  "dataset_commit": "66c4298af8d99b9dc397dad6699e508fb871d249",
+  "review_date": "2026-11-03",
+  "reviewer": "Codex contextual text review; not a clinical or coaching certification",
+  "reviewed_scope": "All 701 names compared individually in seven ordered batches against official name_en, equipment and description_en. Additional instruction checks for ambiguous support, stance, hang and triceps variations. Instructions and safety tips require separate review.",
+  "reviewed_count": 701,
+  "corrections": {
+    "repdb:double-kettlebell-dead-split-snatch": "خطف بكيتل بيل في كل يد من الأرض إلى وقفة اندفاع",
+    "repdb:double-kettlebell-split-jerk": "سبليت جيرك بكيتل بيل في كل يد إلى وقفة اندفاع",
+    "repdb:dumbbell-tricep-extension": "فرد الترايسبس بدمبل في كل يد فوق الرأس",
+    "repdb:overhead-tricep-extension": "فرد الترايسبس بدمبل واحد فوق الرأس باليدين",
+    "repdb:db-skull-crusher": "فرد الترايسبس بدمبل في كل يد من الرقود",
+    "repdb:lying-tricep-extension": "فرد الترايسبس بدمبل واحد باليدين من الرقود",
+    "repdb:hang-clean": "كلين بالبار من فوق الركبتين",
+    "repdb:hang-power-clean": "باور كلين بالبار من فوق الركبتين",
+    "repdb:hang-snatch": "خطف بالبار من فوق الركبتين",
+    "repdb:incline-plank-hold": "ثبات بلانك بإسناد الساعدين على مقعد",
+    "repdb:pilates-leg-pull-back": "بلانك عكسي مع رفع الرجل في البيلاتس",
+    "repdb:straight-bar-dips": "ديبس على بار واحد مستقيم",
+    "repdb:thoracic-bridge": "جسر مع فرد الجزء الصدري من الظهر"
+  }
+}

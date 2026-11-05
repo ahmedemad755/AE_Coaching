@@ -54,6 +54,9 @@ void main() {
       'SessionExerciseRepository': File(
         'lib/features/workout/data/repositories/session_exercise_repository.dart',
       ).readAsStringSync(),
+      'CustomExerciseRepository': File(
+        'lib/features/workout/data/repositories/custom_exercise_repository.dart',
+      ).readAsStringSync(),
       'MeasurementRepository': File(
         'lib/features/measurements/data/repositories/measurement_repository.dart',
       ).readAsStringSync(),
@@ -140,24 +143,26 @@ void main() {
       expect(registrations, 1);
     });
 
-    test('all six repository registrations and the WorkoutCubit '
+    test('all seven repository registrations and the WorkoutCubit '
         'registration pass storageManager: sl()', () {
       final passCount = RegExp(
         r'storageManager:\s*sl\(\)',
       ).allMatches(serviceLocatorSource).length;
       // WorkoutProgramRepository, WorkoutTemplateRepository,
       // WorkoutSessionRepository, SessionExerciseRepository,
-      // MeasurementRepository, ProgressPhotoRepository, WorkoutCubit.
-      expect(passCount, 7);
+      // CustomExerciseRepository, MeasurementRepository,
+      // ProgressPhotoRepository, WorkoutCubit.
+      expect(passCount, 8);
     });
 
-    test('each of the six repository constructors declares a required '
+    test('each repository constructor declares a required '
         'UserStorageManager parameter (not optional, not defaulted)', () {
       for (final name in [
         'WorkoutProgramRepository',
         'WorkoutTemplateRepository',
         'WorkoutSessionRepository',
         'SessionExerciseRepository',
+        'CustomExerciseRepository',
         'MeasurementRepository',
         'ProgressPhotoRepository',
       ]) {

@@ -1,10 +1,14 @@
 import 'package:ae_coaching/features/workout/data/models/exercise_set.dart';
+import 'package:ae_coaching/features/workout/data/models/custom_exercise.dart';
+import 'package:ae_coaching/features/workout/data/models/workout_template_exercise_assignment.dart';
 import 'package:ae_coaching/auth/data/models/body_measurement.dart';
 import 'package:ae_coaching/features/progress_photos/data/models/progress_photo.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_program.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_session.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_template.dart';
 import 'package:ae_coaching/firebase_options.dart';
+import 'package:ae_coaching/core/notifications/fcm_device_service.dart';
+import 'package:ae_coaching/core/notifications/inactivity_reminder_service.dart';
 import 'package:ae_coaching/service_locator.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -37,6 +41,8 @@ class AppBootstrap {
     await _initializeFirebase();
     _initializeDependencies();
     await _initializeStorage();
+    await sl<InactivityReminderService>().initialize();
+    await sl<FcmDeviceService>().initialize();
   }
 
   static Future<void> _initializeFirebase() async {
@@ -87,7 +93,7 @@ class AppBootstrap {
     await Hive.openBox('authBox');
   }
 
-  /// The 6 guarded `Hive.registerAdapter` calls, extracted on their own
+  /// The guarded `Hive.registerAdapter` calls, extracted on their own
   /// so they can be exercised by a real test against a disposable Hive
   /// instance (no Firebase involved) rather than only proven by reading
   /// source text. Idempotent — safe to call more than once, exactly as
@@ -112,6 +118,12 @@ class AppBootstrap {
     }
     if (!Hive.isAdapterRegistered(5)) {
       Hive.registerAdapter(WorkoutSessionAdapter());
+    }
+    if (!Hive.isAdapterRegistered(6)) {
+      Hive.registerAdapter(CustomExerciseAdapter());
+    }
+    if (!Hive.isAdapterRegistered(7)) {
+      Hive.registerAdapter(WorkoutTemplateExerciseAssignmentAdapter());
     }
   }
 }

@@ -7,6 +7,7 @@ import 'package:ae_coaching/features/measurements/presentation/widgets/measureme
 import 'package:ae_coaching/features/progress_photos/presentation/cubit/progress_photo_cubit.dart';
 import 'package:ae_coaching/features/progress_photos/presentation/widgets/add_photo_preview_dialog.dart';
 import 'package:ae_coaching/features/progress_photos/presentation/widgets/photo_source_sheet.dart';
+import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -31,9 +32,6 @@ class AddEditMeasurementScreen extends StatefulWidget {
 }
 
 class _AddEditMeasurementScreenState extends State<AddEditMeasurementScreen> {
-  static const Color _blue = Color(0xff2f80ed);
-  static const Color _muted = Color(0xff7d8792);
-
   late final TextEditingController _chestCtrl;
   late final TextEditingController _waistCtrl;
   late final TextEditingController _hipsCtrl;
@@ -70,8 +68,7 @@ class _AddEditMeasurementScreenState extends State<AddEditMeasurementScreen> {
     _neckCtrl = TextEditingController(text: _initialText(m?.neck));
     _rightArmCtrl = TextEditingController(text: _initialText(m?.rightArm));
     _leftArmCtrl = TextEditingController(text: _initialText(m?.leftArm));
-    _rightThighCtrl =
-        TextEditingController(text: _initialText(m?.rightThigh));
+    _rightThighCtrl = TextEditingController(text: _initialText(m?.rightThigh));
     _leftThighCtrl = TextEditingController(text: _initialText(m?.leftThigh));
     _rightCalfCtrl = TextEditingController(text: _initialText(m?.rightCalf));
     _leftCalfCtrl = TextEditingController(text: _initialText(m?.leftCalf));
@@ -108,9 +105,9 @@ class _AddEditMeasurementScreenState extends State<AddEditMeasurementScreen> {
       lastDate: DateTime.now().add(const Duration(days: 3650)),
       builder: (context, child) {
         return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: Theme.of(context).colorScheme.copyWith(primary: _blue),
-          ),
+          data: Theme.of(
+            context,
+          ).copyWith(colorScheme: Theme.of(context).colorScheme),
           child: child!,
         );
       },
@@ -153,7 +150,7 @@ class _AddEditMeasurementScreenState extends State<AddEditMeasurementScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(l10n.enterAtLeastOneMeasurement),
-          backgroundColor: Colors.redAccent,
+          backgroundColor: Theme.of(context).colorScheme.error,
         ),
       );
       return;
@@ -189,21 +186,29 @@ class _AddEditMeasurementScreenState extends State<AddEditMeasurementScreen> {
     final wantsPhoto = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xfff5f9fc),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         title: Text(
           l10n.addPhotoPromptTitle,
-          style: const TextStyle(fontWeight: FontWeight.w900, color: Color(0xff202936)),
+          style: TextStyle(
+            fontWeight: FontWeight.w900,
+            color: Theme.of(ctx).colorScheme.onSurface,
+          ),
         ),
-        content: Text(l10n.addPhotoPromptBody, style: const TextStyle(color: _muted)),
+        content: Text(
+          l10n.addPhotoPromptBody,
+          style: TextStyle(color: Theme.of(ctx).colorScheme.onSurfaceVariant),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: Text(l10n.skip, style: const TextStyle(color: _blue)),
+            child: Text(l10n.skip),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(ctx, true),
-            style: ElevatedButton.styleFrom(backgroundColor: _blue, foregroundColor: Colors.white),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Theme.of(ctx).colorScheme.primary,
+              foregroundColor: Theme.of(ctx).colorScheme.onPrimary,
+            ),
             child: Text(l10n.addPhotoButton),
           ),
         ],
@@ -221,16 +226,25 @@ class _AddEditMeasurementScreenState extends State<AddEditMeasurementScreen> {
     final source = await showPhotoSourceSheet(context);
     if (source == null || !mounted) return;
 
-    final XFile? picked = await ImagePicker().pickImage(source: source, imageQuality: 85);
+    final XFile? picked = await ImagePicker().pickImage(
+      source: source,
+      imageQuality: 85,
+    );
     if (picked == null || !mounted) return;
 
     final confirmedDate = await showDialog<DateTime>(
       context: context,
-      builder: (_) => AddPhotoPreviewDialog(imageFile: File(picked.path), initialDate: date),
+      builder: (_) => AddPhotoPreviewDialog(
+        imageFile: File(picked.path),
+        initialDate: date,
+      ),
     );
 
     if (confirmedDate != null && mounted) {
-      context.read<ProgressPhotoCubit>().addPhoto(sourceFile: File(picked.path), date: confirmedDate);
+      context.read<ProgressPhotoCubit>().addPhoto(
+        sourceFile: File(picked.path),
+        date: confirmedDate,
+      );
     }
   }
 
@@ -239,7 +253,7 @@ class _AddEditMeasurementScreenState extends State<AddEditMeasurementScreen> {
       labelText: def.localizedLabel(l10n),
       suffixText: l10n.cmUnit,
       filled: true,
-      fillColor: Colors.white,
+      fillColor: Theme.of(context).inputDecorationTheme.fillColor,
       prefixIcon: Padding(
         padding: const EdgeInsets.all(10),
         child: MeasurementAvatar(imagePath: def.imagePath, size: 24),
@@ -247,16 +261,20 @@ class _AddEditMeasurementScreenState extends State<AddEditMeasurementScreen> {
       prefixIconConstraints: const BoxConstraints(minWidth: 44, minHeight: 44),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(color: Color(0xffd5e3f2)),
+        borderSide: BorderSide(color: Theme.of(context).colorScheme.outline),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(color: _blue),
+        borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
       ),
     );
   }
 
-  Widget _field(AppLocalizations l10n, MeasurementFieldDef def, TextEditingController controller) {
+  Widget _field(
+    AppLocalizations l10n,
+    MeasurementFieldDef def,
+    TextEditingController controller,
+  ) {
     return TextField(
       controller: controller,
       decoration: _decoration(l10n, def),
@@ -286,7 +304,11 @@ class _AddEditMeasurementScreenState extends State<AddEditMeasurementScreen> {
     );
   }
 
-  Widget _singleField(AppLocalizations l10n, String key, TextEditingController ctrl) {
+  Widget _singleField(
+    AppLocalizations l10n,
+    String key,
+    TextEditingController ctrl,
+  ) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 14),
       child: _field(l10n, _defsByKey[key]!, ctrl),
@@ -298,11 +320,12 @@ class _AddEditMeasurementScreenState extends State<AddEditMeasurementScreen> {
     final l10n = AppLocalizations.of(context)!;
     final dateLocale = Localizations.localeOf(context).toString();
     return Scaffold(
-      backgroundColor: const Color(0xfff5f9fc),
       appBar: AppBar(
-        backgroundColor: _blue,
-        foregroundColor: Colors.white,
-        title: Text(_isEditing ? l10n.editMeasurementTitle : l10n.addMeasurementTitle),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Theme.of(context).colorScheme.onPrimary,
+        title: Text(
+          _isEditing ? l10n.editMeasurementTitle : l10n.addMeasurementTitle,
+        ),
       ),
       body: SafeArea(
         child: ListView(
@@ -312,29 +335,41 @@ class _AddEditMeasurementScreenState extends State<AddEditMeasurementScreen> {
               onTap: _pickDate,
               borderRadius: BorderRadius.circular(8),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 10,
+                ),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.surface,
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: const Color(0xffd5e3f2)),
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.outline,
+                  ),
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.event, color: _blue, size: 20),
+                    Icon(
+                      Icons.event,
+                      color: Theme.of(context).colorScheme.primary,
+                      size: 20,
+                    ),
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
-                        DateFormat('EEEE, d MMM yyyy', dateLocale).format(_selectedDate),
-                        style: const TextStyle(
-                          color: Color(0xff202936),
+                        DateFormat(
+                          'EEEE, d MMM yyyy',
+                          dateLocale,
+                        ).format(_selectedDate),
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurface,
                           fontWeight: FontWeight.w800,
                         ),
                       ),
                     ),
                     Text(
                       l10n.changeDateButton,
-                      style: const TextStyle(
-                        color: _blue,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
                         fontWeight: FontWeight.w700,
                         fontSize: 12,
                       ),
@@ -346,7 +381,10 @@ class _AddEditMeasurementScreenState extends State<AddEditMeasurementScreen> {
             const SizedBox(height: 4),
             Text(
               l10n.allFieldsOptionalHint,
-              style: const TextStyle(color: _muted, fontSize: 12),
+              style: TextStyle(
+                color: context.appColors.textMuted,
+                fontSize: 12,
+              ),
             ),
             const SizedBox(height: 18),
             _singleField(l10n, 'chest', _chestCtrl),
@@ -356,14 +394,25 @@ class _AddEditMeasurementScreenState extends State<AddEditMeasurementScreen> {
             _singleField(l10n, 'neck', _neckCtrl),
             _pairRow(l10n, 'rightArm', _rightArmCtrl, 'leftArm', _leftArmCtrl),
             _pairRow(
-                l10n, 'rightThigh', _rightThighCtrl, 'leftThigh', _leftThighCtrl),
-            _pairRow(l10n, 'rightCalf', _rightCalfCtrl, 'leftCalf', _leftCalfCtrl),
+              l10n,
+              'rightThigh',
+              _rightThighCtrl,
+              'leftThigh',
+              _leftThighCtrl,
+            ),
+            _pairRow(
+              l10n,
+              'rightCalf',
+              _rightCalfCtrl,
+              'leftCalf',
+              _leftCalfCtrl,
+            ),
             const SizedBox(height: 8),
             ElevatedButton(
               onPressed: _save,
               style: ElevatedButton.styleFrom(
-                backgroundColor: _blue,
-                foregroundColor: Colors.white,
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
                 minimumSize: const Size.fromHeight(50),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:ae_coaching/core/notifications/inactivity_reminder_service.dart';
 
 /// App-wide language switch (Arabic default, English optional).
 ///
@@ -23,7 +24,12 @@ class LocaleCubit extends Cubit<Locale> {
   static const String _boxName = 'authBox';
   static const String _prefsKey = 'appLocale';
 
-  LocaleCubit() : super(_readInitialLocale());
+  LocaleCubit({InactivityReminderService? inactivityReminderService})
+    : _inactivityReminderService =
+          inactivityReminderService ?? InactivityReminderService(),
+      super(_readInitialLocale());
+
+  final InactivityReminderService _inactivityReminderService;
 
   static Locale _readInitialLocale() {
     try {
@@ -53,5 +59,6 @@ class LocaleCubit extends Cubit<Locale> {
       // Non-fatal: the UI already switched language for this session even
       // if persisting the preference failed.
     }
+    await _inactivityReminderService.syncLanguage(locale.languageCode);
   }
 }

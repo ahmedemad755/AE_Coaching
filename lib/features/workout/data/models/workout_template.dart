@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:ae_coaching/features/workout/data/models/workout_template_exercise_assignment.dart';
 
 part 'workout_template.g.dart';
 
@@ -37,6 +38,9 @@ class WorkoutTemplate extends HiveObject {
   @HiveField(6)
   final int? orderIndex;
 
+  @HiveField(7)
+  final List<WorkoutTemplateExerciseAssignment> exerciseAssignments;
+
   WorkoutTemplate({
     required this.id,
     required this.programId,
@@ -45,7 +49,8 @@ class WorkoutTemplate extends HiveObject {
     this.updatedAt,
     this.isArchived = false,
     this.orderIndex,
-  });
+    List<WorkoutTemplateExerciseAssignment> exerciseAssignments = const [],
+  }) : exerciseAssignments = List.unmodifiable(exerciseAssignments);
 
   /// Intentionally has no way to change [programId] or [id] — every
   /// field that must never drift after creation is hard-copied from
@@ -55,6 +60,7 @@ class WorkoutTemplate extends HiveObject {
     DateTime? updatedAt,
     bool? isArchived,
     int? orderIndex,
+    List<WorkoutTemplateExerciseAssignment>? exerciseAssignments,
   }) {
     return WorkoutTemplate(
       id: id,
@@ -64,12 +70,14 @@ class WorkoutTemplate extends HiveObject {
       updatedAt: updatedAt ?? this.updatedAt,
       isArchived: isArchived ?? this.isArchived,
       orderIndex: orderIndex ?? this.orderIndex,
+      exerciseAssignments: exerciseAssignments ?? this.exerciseAssignments,
     );
   }
 
   // Cloud sync (Firestore) — same shape as the other models in this
   // app. programId is always included so Firestore documents carry
-  // their program ownership too.
+  // their program ownership too. Exercise assignments stay local in
+  // this stage and are intentionally excluded from the cloud payload.
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -88,9 +96,20 @@ class WorkoutTemplate extends HiveObject {
       programId: json['programId'] as String,
       name: json['name'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt'] as String) : null,
+      updatedAt: json['updatedAt'] != null
+          ? DateTime.parse(json['updatedAt'] as String)
+          : null,
       isArchived: json['isArchived'] as bool? ?? false,
       orderIndex: json['orderIndex'] as int?,
+      exerciseAssignments:
+          (json['exerciseAssignments'] as List<dynamic>?)
+              ?.map(
+                (item) => WorkoutTemplateExerciseAssignment.fromJson(
+                  Map<String, dynamic>.from(item as Map),
+                ),
+              )
+              .toList() ??
+          const [],
     );
   }
 }

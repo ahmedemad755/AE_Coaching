@@ -1,0 +1,1086 @@
+{
+  "version": 1,
+  "dataset_commit": "66c4298af8d99b9dc397dad6699e508fb871d249",
+  "mappings": [
+    {
+      "legacy_id": "ex_barbell_bench_press",
+      "canonical_id": "repdb:bench-press",
+      "status": "exact",
+      "evidence": "Legacy Barbell Bench Press (barbell); official Barbell Bench Press (barbell). A compound pushing movement that targets the chest, shoulders, and triceps."
+    },
+    {
+      "legacy_id": "ex_incline_barbell_bench_press",
+      "canonical_id": "repdb:incline-bench-press",
+      "status": "exact",
+      "evidence": "Legacy Incline Barbell Bench Press (barbell); official Incline Barbell Bench Press (barbell). A barbell pressing movement on an incline bench targeting the upper chest."
+    },
+    {
+      "legacy_id": "ex_decline_barbell_bench_press",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_dumbbell_bench_press",
+      "canonical_id": "repdb:db-bench-press",
+      "status": "exact",
+      "evidence": "Legacy Dumbbell Bench Press (dumbbell); official Dumbbell Bench Press (dumbbell). A compound chest exercise using dumbbells, allowing a greater range of motion than the barbell bench press."
+    },
+    {
+      "legacy_id": "ex_incline_dumbbell_press",
+      "canonical_id": "repdb:incline-db-press",
+      "status": "exact",
+      "evidence": "Legacy Incline Dumbbell Press (dumbbell); official Incline Dumbbell Press (dumbbell). An incline pressing movement emphasizing the upper chest."
+    },
+    {
+      "legacy_id": "ex_decline_dumbbell_press",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_dumbbell_fly",
+      "canonical_id": "repdb:db-fly",
+      "status": "exact",
+      "evidence": "Legacy Dumbbell Fly (dumbbell); official Dumbbell Fly (dumbbell). An isolation exercise that stretches and contracts the pectorals through a wide arc of motion."
+    },
+    {
+      "legacy_id": "ex_incline_dumbbell_fly",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_machine_chest_press",
+      "canonical_id": "repdb:chest-press-machine",
+      "status": "exact",
+      "evidence": "Legacy Machine Chest Press (machine); official Machine Chest Press (chest_press_machine). A machine-based pressing movement for the chest, ideal for beginners."
+    },
+    {
+      "legacy_id": "ex_incline_chest_press_machine",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_decline_chest_press_machine",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_pec_deck_fly",
+      "canonical_id": "repdb:pec-deck",
+      "status": "exact",
+      "evidence": "Legacy Pec Deck Fly (machine); official Pec Deck (pec_deck). A chest isolation machine with swinging handles that targets the pectorals through horizontal adduction."
+    },
+    {
+      "legacy_id": "ex_cable_chest_fly",
+      "canonical_id": "repdb:cable-fly",
+      "status": "exact",
+      "evidence": "Legacy Cable Chest Fly (cable); official Cable Fly (cable). An isolation movement for the chest using cable resistance for constant tension."
+    },
+    {
+      "legacy_id": "ex_high_to_low_cable_fly",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_low_to_high_cable_fly",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_smith_machine_bench_press",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_smith_machine_incline_press",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_push_up",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_wide_grip_push_up",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_diamond_push_up",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_chest_dip",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_single_arm_cable_chest_fly",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_pull_up",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_chin_up",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_wide_grip_pull_up",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_assisted_pull_up",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_lat_pulldown",
+      "canonical_id": "repdb:lat-pulldown",
+      "status": "exact",
+      "evidence": "Legacy Lat Pulldown (cable); official Lat Pulldown (cable). A cable machine exercise targeting the latissimus dorsi."
+    },
+    {
+      "legacy_id": "ex_close_grip_lat_pulldown",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_reverse_grip_lat_pulldown",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_neutral_grip_lat_pulldown",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "Official neutral-handle candidates specify a narrow/close grip. The legacy reference does not establish that width; no silent substitution."
+    },
+    {
+      "legacy_id": "ex_single_arm_lat_pulldown",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_seated_cable_row",
+      "canonical_id": "repdb:seated-cable-row",
+      "status": "exact",
+      "evidence": "Legacy Seated Cable Row (cable); official Seated Cable Row (cable). A back exercise performed on a cable row machine, pulling a handle toward the torso while seated."
+    },
+    {
+      "legacy_id": "ex_close_grip_seated_cable_row",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_wide_grip_seated_cable_row",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_barbell_bent_over_row",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_underhand_barbell_row",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_pendlay_row",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_one_arm_dumbbell_row",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_chest_supported_dumbbell_row",
+      "canonical_id": "repdb:chest-supported-db-row",
+      "status": "exact",
+      "evidence": "Legacy Chest-Supported Dumbbell Row (dumbbell); official Chest-Supported Dumbbell Row (dumbbell). A dumbbell row with chest support to eliminate lower back strain and isolate the back muscles."
+    },
+    {
+      "legacy_id": "ex_t_bar_row",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_chest_supported_machine_row",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_single_arm_machine_row",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_straight_arm_cable_pulldown",
+      "canonical_id": "repdb:straight-arm-pulldown",
+      "status": "exact",
+      "evidence": "Legacy Straight-Arm Cable Pulldown (cable); official Straight-Arm Pulldown (cable). An isolation exercise for the lats using a cable with arms kept straight."
+    },
+    {
+      "legacy_id": "ex_dumbbell_pullover",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_machine_pullover",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_inverted_row",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_back_extension",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_cable_pullover",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_barbell_overhead_press",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_seated_barbell_shoulder_press",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_dumbbell_shoulder_press",
+      "canonical_id": "repdb:dumbbell-shoulder-press",
+      "status": "exact",
+      "evidence": "Legacy Dumbbell Shoulder Press (dumbbell); official Dumbbell Shoulder Press (dumbbell). An overhead press with dumbbells performed seated or standing, building the front and side delts."
+    },
+    {
+      "legacy_id": "ex_arnold_press",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_machine_shoulder_press",
+      "canonical_id": "repdb:machine-shoulder-press",
+      "status": "exact",
+      "evidence": "Legacy Machine Shoulder Press (machine); official Machine Shoulder Press (shoulder_press_machine). A machine-based overhead pressing movement for the shoulders."
+    },
+    {
+      "legacy_id": "ex_smith_machine_shoulder_press",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_dumbbell_lateral_raise",
+      "canonical_id": "repdb:lateral-raise",
+      "status": "exact",
+      "evidence": "Legacy Dumbbell Lateral Raise (dumbbell); official Dumbbell Lateral Raise (dumbbell). An isolation movement targeting the lateral deltoid for shoulder width."
+    },
+    {
+      "legacy_id": "ex_seated_dumbbell_lateral_raise",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_cable_lateral_raise",
+      "canonical_id": "repdb:cable-lateral-raise",
+      "status": "exact",
+      "evidence": "Legacy Cable Lateral Raise (cable); official Cable Lateral Raise (cable). A unilateral lateral raise on the cable, providing constant tension on the side delt."
+    },
+    {
+      "legacy_id": "ex_machine_lateral_raise",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_dumbbell_front_raise",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_cable_front_raise",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_plate_front_raise",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_reverse_pec_deck",
+      "canonical_id": "repdb:machine-reverse-fly",
+      "status": "exact",
+      "evidence": "Legacy Reverse Pec Deck (machine); official Machine Reverse Fly (reverse_fly_machine). A seated machine exercise for the rear deltoids, also known as the reverse pec deck: facing the pad, you sweep the two handles out and back in a wide arc against the weight stack. The pad keeps the torso still, so the work stays on the back of the shoulders and the muscles between the shoulder blades."
+    },
+    {
+      "legacy_id": "ex_bent_over_dumbbell_reverse_fly",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_cable_rear_delt_fly",
+      "canonical_id": "repdb:cable-reverse-fly",
+      "status": "exact",
+      "evidence": "Legacy Cable Rear Delt Fly (cable); official Cable Reverse Fly (cable). A standing cable exercise for the rear deltoids: facing the space between two cable towers, you hold the opposite handles with the cables crossed in front of you and sweep your arms out and back until they are level with your shoulders. The cables keep tension on the back of the shoulders through the whole arc."
+    },
+    {
+      "legacy_id": "ex_face_pull",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_barbell_upright_row",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_dumbbell_shrug",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_barbell_shrug",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_barbell_curl",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_ez_bar_curl",
+      "canonical_id": "repdb:ez-bar-curl",
+      "status": "exact",
+      "evidence": "Legacy EZ-Bar Curl (ez_bar); official EZ-Bar Curl (ez_bar). An isolation exercise targeting the biceps using an EZ-bar, which reduces wrist strain compared to a straight barbell."
+    },
+    {
+      "legacy_id": "ex_dumbbell_curl",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_alternating_dumbbell_curl",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_hammer_curl",
+      "canonical_id": "repdb:hammer-curl",
+      "status": "exact",
+      "evidence": "Legacy Hammer Curl (dumbbell); official Dumbbell Hammer Curl (dumbbell). A bicep curl variation with a neutral grip targeting the brachioradialis."
+    },
+    {
+      "legacy_id": "ex_cross_body_hammer_curl",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_incline_dumbbell_curl",
+      "canonical_id": "repdb:incline-db-curl",
+      "status": "exact",
+      "evidence": "Legacy Incline Dumbbell Curl (dumbbell); official Incline Dumbbell Curl (dumbbell). A bicep curl on an incline bench for a deeper stretch of the long head."
+    },
+    {
+      "legacy_id": "ex_preacher_curl",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_machine_preacher_curl",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_concentration_curl",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_cable_biceps_curl",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_rope_hammer_curl",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_bayesian_cable_curl",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_spider_curl",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_cable_triceps_pushdown",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_rope_triceps_pushdown",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "The official tricep-pushdown explicitly uses a straight bar, not a rope. V-bar and single-arm entries are different variations."
+    },
+    {
+      "legacy_id": "ex_reverse_grip_triceps_pushdown",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_overhead_cable_triceps_extension",
+      "canonical_id": "repdb:cable-overhead-tricep-extension",
+      "status": "exact",
+      "evidence": "Legacy Overhead Cable Triceps Extension (cable); official Cable Overhead Tricep Extension (cable). A cable triceps exercise: facing away from the weight stack, you hold a rope behind your head and straighten your elbows to push it up and overhead. The overhead position stretches the long head of the triceps, and the cable keeps tension on the muscle through the whole movement."
+    },
+    {
+      "legacy_id": "ex_single_arm_cable_triceps_extension",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_dumbbell_overhead_triceps_extension",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_single_arm_overhead_dumbbell_extension",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_lying_ez_bar_triceps_extension",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_dumbbell_skull_crusher",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_close_grip_bench_press",
+      "canonical_id": "repdb:close-grip-bench-press",
+      "status": "exact",
+      "evidence": "Legacy Close-Grip Bench Press (barbell); official Close-Grip Bench Press (barbell). A bench press variation with a narrow grip that shifts the emphasis to the triceps."
+    },
+    {
+      "legacy_id": "ex_parallel_bar_triceps_dip",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_bench_dip",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_triceps_extension_machine",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_dumbbell_triceps_kickback",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_barbell_back_squat",
+      "canonical_id": "repdb:squat",
+      "status": "exact",
+      "evidence": "Legacy Barbell Back Squat (barbell); official Barbell Back Squat (barbell). A compound lower-body movement targeting the quadriceps, glutes, and hamstrings."
+    },
+    {
+      "legacy_id": "ex_barbell_front_squat",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_smith_machine_squat",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_goblet_squat",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_hack_squat",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_leg_press_45",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "The official generic leg-press instructions do not establish a 45-degree sled angle. Preserve the specific legacy angle."
+    },
+    {
+      "legacy_id": "ex_horizontal_leg_press",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_single_leg_press",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_leg_extension",
+      "canonical_id": "repdb:leg-extension",
+      "status": "exact",
+      "evidence": "Legacy Leg Extension (machine); official Leg Extension (leg_extension). An isolation exercise for the quadriceps using a machine."
+    },
+    {
+      "legacy_id": "ex_single_leg_extension",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_bulgarian_split_squat",
+      "canonical_id": "repdb:bulgarian-split-squat",
+      "status": "exact",
+      "evidence": "Legacy Bulgarian Split Squat (dumbbell); official Bulgarian Split Squat (dumbbell). A single-leg squat variation with the rear foot elevated."
+    },
+    {
+      "legacy_id": "ex_dumbbell_walking_lunge",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_reverse_lunge",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_forward_lunge",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_step_up",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_sissy_squat",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_belt_squat",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_cyclist_squat",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_romanian_deadlift",
+      "canonical_id": "repdb:romanian-deadlift",
+      "status": "exact",
+      "evidence": "Legacy Romanian Deadlift (barbell); official Romanian Deadlift (barbell). A hip-hinge movement emphasizing the hamstrings and glutes."
+    },
+    {
+      "legacy_id": "ex_dumbbell_romanian_deadlift",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_stiff_leg_deadlift",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_seated_leg_curl",
+      "canonical_id": "repdb:seated-leg-curl",
+      "status": "exact",
+      "evidence": "Legacy Seated Leg Curl (machine); official Seated Leg Curl (leg_curl). A machine isolation exercise for the hamstrings performed in a seated position, providing consistent tension and reduced hip flexor involvement compared to the lying variant."
+    },
+    {
+      "legacy_id": "ex_lying_leg_curl",
+      "canonical_id": "repdb:leg-curl",
+      "status": "exact",
+      "evidence": "Legacy Lying Leg Curl (machine); official Lying Leg Curl (leg_curl). An isolation exercise for the hamstrings using a leg curl machine."
+    },
+    {
+      "legacy_id": "ex_standing_single_leg_curl",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_nordic_hamstring_curl",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_glute_ham_raise",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_barbell_hip_thrust",
+      "canonical_id": "repdb:hip-thrust",
+      "status": "exact",
+      "evidence": "Legacy Barbell Hip Thrust (barbell); official Barbell Hip Thrust (barbell). A compound glute exercise using a barbell across the hips."
+    },
+    {
+      "legacy_id": "ex_smith_machine_hip_thrust",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_dumbbell_hip_thrust",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_glute_bridge",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_single_leg_glute_bridge",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_cable_glute_kickback",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_glute_kickback_machine",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_hip_abduction_machine",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_hip_adduction_machine",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_cable_hip_abduction",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_cable_pull_through",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_sumo_squat",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_frog_pump",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_reverse_hyperextension",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_standing_calf_raise_machine",
+      "canonical_id": "repdb:standing-calf-raise",
+      "status": "exact",
+      "evidence": "Legacy Standing Calf Raise Machine (machine); official Standing Calf Raise (standing_calf_raise_machine). A calf raise performed standing to develop the gastrocnemius through a full range of motion."
+    },
+    {
+      "legacy_id": "ex_seated_calf_raise_machine",
+      "canonical_id": "repdb:seated-calf-raise",
+      "status": "exact",
+      "evidence": "Legacy Seated Calf Raise Machine (machine); official Seated Calf Raise (seated_calf_raise_machine). A machine calf raise performed seated to specifically target the soleus muscle."
+    },
+    {
+      "legacy_id": "ex_leg_press_calf_raise",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_smith_machine_calf_raise",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_dumbbell_standing_calf_raise",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_single_leg_calf_raise",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_donkey_calf_raise",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_tibialis_raise",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_crunch",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_cable_crunch",
+      "canonical_id": "repdb:cable-crunch",
+      "status": "exact",
+      "evidence": "Legacy Cable Crunch (cable); official Cable Crunch (cable). A kneeling abdominal exercise flexing the spine against cable resistance, allowing progressive loading of the rectus abdominis."
+    },
+    {
+      "legacy_id": "ex_machine_ab_crunch",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_reverse_crunch",
+      "canonical_id": "repdb:reverse-crunches",
+      "status": "exact",
+      "evidence": "Legacy Reverse Crunch (bodyweight); official Reverse Crunches (not supplied). An abdominal exercise curling the hips off the floor to emphasize the lower portion of the abs."
+    },
+    {
+      "legacy_id": "ex_lying_leg_raise",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_hanging_knee_raise",
+      "canonical_id": "repdb:hanging-knee-raise",
+      "status": "exact",
+      "evidence": "Legacy Hanging Knee Raise (bodyweight); official Hanging Knee Raise (pull_up_bar). A hanging core exercise on a pull-up bar that targets the lower abs and hip flexors with bent knees."
+    },
+    {
+      "legacy_id": "ex_hanging_leg_raise",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_captain_s_chair_leg_raise",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_plank",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_side_plank",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_dead_bug",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_bird_dog",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_russian_twist",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_bicycle_crunch",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_mountain_climber",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_ab_wheel_rollout",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_pallof_press",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_cable_woodchopper",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_flutter_kicks",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_hollow_body_hold",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_conventional_deadlift",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_sumo_deadlift",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_trap_bar_deadlift",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_kettlebell_swing",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_dumbbell_thruster",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_barbell_thruster",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_burpee",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_dumbbell_clean_and_press",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_barbell_clean_and_press",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_power_clean",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_hang_clean",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_push_press",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_dumbbell_snatch",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_kettlebell_turkish_get_up",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_farmer_s_carry",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    },
+    {
+      "legacy_id": "ex_man_maker",
+      "canonical_id": null,
+      "status": "unmatched",
+      "evidence": "No individually reviewed exact equipment/grip/position/movement equivalence. Retain the legacy ID and snapshot; replacement requires an explicit user selection."
+    }
+  ]
+}

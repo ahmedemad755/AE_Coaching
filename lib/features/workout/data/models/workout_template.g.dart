@@ -24,13 +24,16 @@ class WorkoutTemplateAdapter extends TypeAdapter<WorkoutTemplate> {
       updatedAt: fields[4] as DateTime?,
       isArchived: fields[5] as bool,
       orderIndex: fields[6] as int?,
+      exerciseAssignments:
+          (fields[7] as List?)?.cast<WorkoutTemplateExerciseAssignment>() ??
+          const <WorkoutTemplateExerciseAssignment>[],
     );
   }
 
   @override
   void write(BinaryWriter writer, WorkoutTemplate obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -44,7 +47,9 @@ class WorkoutTemplateAdapter extends TypeAdapter<WorkoutTemplate> {
       ..writeByte(5)
       ..write(obj.isArchived)
       ..writeByte(6)
-      ..write(obj.orderIndex);
+      ..write(obj.orderIndex)
+      ..writeByte(7)
+      ..write(obj.exerciseAssignments);
   }
 
   @override

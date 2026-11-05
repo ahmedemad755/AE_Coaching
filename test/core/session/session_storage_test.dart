@@ -51,6 +51,7 @@ void main() {
       expect(storage.isLoggedIn, isTrue);
       expect(storage.currentUserUid, 'uid-2');
       expect(storage.currentUserName, 'Sara');
+      expect(storage.currentUserPhone, '+201099998887');
     });
 
     test('defaults match the exact values every existing call site '
@@ -132,5 +133,25 @@ void main() {
       expect(box.get('currentUserName'), 'Kept Name');
       expect(box.get('isLoggedIn'), isTrue);
     });
+  });
+
+  test('profile name update changes only the current saved name', () async {
+    await storage.persistLoggedInSession(
+      uid: 'profile-user',
+      name: 'Before',
+      phone: '+201000000000',
+    );
+    await storage.updateCurrentUserName(uid: 'profile-user', name: 'After');
+
+    expect(storage.currentUserName, 'After');
+    expect(storage.currentUserUid, 'profile-user');
+    expect(storage.currentUserPhone, '+201000000000');
+    expect(storage.isLoggedIn, isTrue);
+
+    await expectLater(
+      storage.updateCurrentUserName(uid: 'another-user', name: 'Wrong'),
+      throwsA(isA<StateError>()),
+    );
+    expect(storage.currentUserName, 'After');
   });
 }

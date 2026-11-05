@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:ae_coaching/features/progress_photos/data/models/progress_photo.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
+import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -20,18 +21,16 @@ class BeforeAfterCard extends StatelessWidget {
     required this.after,
   });
 
-  static const Color _dark = Color(0xff202936);
-  static const Color _blue = Color(0xff2f80ed);
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final colors = context.appColors;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
@@ -46,17 +45,28 @@ class BeforeAfterCard extends StatelessWidget {
         children: [
           Text(
             title,
-            style: const TextStyle(color: _dark, fontWeight: FontWeight.w900, fontSize: 16),
+            style: TextStyle(
+              color: colors.textPrimary,
+              fontWeight: FontWeight.w900,
+              fontSize: 16,
+            ),
           ),
           const SizedBox(height: 12),
           Row(
             children: [
-              Expanded(child: _PhotoTile(label: l10n.beforeLabel, photo: before)),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 6),
-                child: Icon(Icons.arrow_forward, color: _blue),
+              Expanded(
+                child: _PhotoTile(label: l10n.beforeLabel, photo: before),
               ),
-              Expanded(child: _PhotoTile(label: l10n.afterLabel, photo: after)),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 6),
+                child: Icon(
+                  Icons.arrow_forward,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+              Expanded(
+                child: _PhotoTile(label: l10n.afterLabel, photo: after),
+              ),
             ],
           ),
         ],
@@ -71,19 +81,21 @@ class _PhotoTile extends StatelessWidget {
 
   const _PhotoTile({required this.label, required this.photo});
 
-  static const Color _dark = Color(0xff202936);
-  static const Color _muted = Color(0xff7d8792);
-
   @override
   Widget build(BuildContext context) {
     final dateLocale = Localizations.localeOf(context).toString();
+    final colors = context.appColors;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
           label,
           textAlign: TextAlign.center,
-          style: const TextStyle(color: _muted, fontWeight: FontWeight.w700, fontSize: 11),
+          style: TextStyle(
+            color: colors.textMuted,
+            fontWeight: FontWeight.w700,
+            fontSize: 11,
+          ),
         ),
         const SizedBox(height: 6),
         AspectRatio(
@@ -94,9 +106,12 @@ class _PhotoTile extends StatelessWidget {
               File(photo.imagePath),
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) => Container(
-                color: const Color(0xffeaf2fc),
+                color: Theme.of(context).colorScheme.surfaceContainerHighest,
                 alignment: Alignment.center,
-                child: const Icon(Icons.broken_image_outlined, color: _muted),
+                child: Icon(
+                  Icons.broken_image_outlined,
+                  color: colors.textMuted,
+                ),
               ),
             ),
           ),
@@ -105,7 +120,11 @@ class _PhotoTile extends StatelessWidget {
         Text(
           DateFormat('d MMM yyyy', dateLocale).format(photo.date),
           textAlign: TextAlign.center,
-          style: const TextStyle(color: _dark, fontWeight: FontWeight.w700, fontSize: 11),
+          style: TextStyle(
+            color: colors.textPrimary,
+            fontWeight: FontWeight.w700,
+            fontSize: 11,
+          ),
         ),
       ],
     );

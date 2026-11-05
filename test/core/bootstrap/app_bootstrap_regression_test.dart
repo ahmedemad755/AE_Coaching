@@ -169,7 +169,7 @@ void main() {
       expect(openBoxIndex, greaterThan(registerAdaptersIndex));
     });
 
-    test('registerHiveAdapters preserves all 6 typeIds (0–5) and their '
+    test('registerHiveAdapters preserves all 8 typeIds (0–7) and their '
         'guards exactly, mapped to the same adapter classes as before', () {
       final start = bootstrapSource.indexOf(
         'static void registerHiveAdapters()',
@@ -183,6 +183,8 @@ void main() {
         3: 'ProgressPhotoAdapter',
         4: 'WorkoutTemplateAdapter',
         5: 'WorkoutSessionAdapter',
+        6: 'CustomExerciseAdapter',
+        7: 'WorkoutTemplateExerciseAssignmentAdapter',
       };
 
       expected.forEach((typeId, adapterClass) {

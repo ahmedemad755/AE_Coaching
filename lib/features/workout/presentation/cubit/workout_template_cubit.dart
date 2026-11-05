@@ -14,11 +14,13 @@ part 'workout_template_state.dart';
 class WorkoutTemplateCubit extends Cubit<WorkoutTemplateState> {
   final WorkoutTemplateRepository repository;
   final WorkoutCascadeDeletionService deletionService;
+  final Future<void> Function()? migrateCatalogReferences;
 
   // Stage 3: see HomeWorkoutOverviewCubit.
   WorkoutTemplateCubit({
     required this.repository,
     required this.deletionService,
+    this.migrateCatalogReferences,
   }) : super(const WorkoutTemplateInitial());
 
   Future<void> loadTemplates() async {
@@ -27,9 +29,11 @@ class WorkoutTemplateCubit extends Cubit<WorkoutTemplateState> {
     );
     try {
       final box = await repository.getUserBox();
+      await migrateCatalogReferences?.call();
       emit(WorkoutTemplateLoaded(box: box));
 
       await repository.fetchAndSyncFromRemote(box);
+      await migrateCatalogReferences?.call();
       emit(WorkoutTemplateLoaded(box: box));
     } catch (error) {
       emit(

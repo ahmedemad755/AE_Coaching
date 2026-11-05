@@ -4,6 +4,7 @@ import 'package:ae_coaching/auth/presentation/cubit/auth_state.dart';
 import 'package:ae_coaching/core/localization/auth_message_localizer.dart';
 import 'package:ae_coaching/core/routes/app_router.dart';
 import 'package:ae_coaching/core/session/session_storage.dart';
+import 'package:ae_coaching/core/theme/auth_screen_theme.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:ae_coaching/service_locator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -72,21 +73,11 @@ class _CompleteRegistrationViewState extends State<CompleteRegistrationView> {
     required IconData icon,
     Widget? suffixIcon,
   }) {
-    return InputDecoration(
-      hintText: hint,
-      prefixIcon: Icon(icon, color: const Color(0xff2f80ed)),
+    return AuthScreenTheme.fieldDecoration(
+      context,
+      hint: hint,
+      icon: icon,
       suffixIcon: suffixIcon,
-      filled: true,
-      fillColor: Colors.white,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(color: Color(0xff2f80ed)),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(color: Color(0xff2f80ed), width: 1.6),
-      ),
     );
   }
 
@@ -97,13 +88,7 @@ class _CompleteRegistrationViewState extends State<CompleteRegistrationView> {
 
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xffdbe9f7), Color(0xff8fb6e6)],
-          ),
-        ),
+        decoration: AuthScreenTheme.background(context),
         child: BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) async {
             if (state is AuthSuccess) {
@@ -134,7 +119,7 @@ class _CompleteRegistrationViewState extends State<CompleteRegistrationView> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(state.message),
-                  backgroundColor: Colors.red,
+                  backgroundColor: Theme.of(context).colorScheme.error,
                 ),
               );
             }
@@ -149,7 +134,7 @@ class _CompleteRegistrationViewState extends State<CompleteRegistrationView> {
                     child: Container(
                       padding: const EdgeInsets.fromLTRB(18, 22, 18, 18),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.93),
+                        color: AuthScreenTheme.panelColor(context),
                         borderRadius: BorderRadius.circular(8),
                         boxShadow: [
                           BoxShadow(
@@ -170,8 +155,8 @@ class _CompleteRegistrationViewState extends State<CompleteRegistrationView> {
                                   ? l10n.completeRegistrationSetPasswordTitle
                                   : l10n.completeRegistrationFinishProfileTitle,
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                color: Color(0xff202936),
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.onSurface,
                                 fontSize: 26,
                                 fontWeight: FontWeight.w900,
                               ),
@@ -184,7 +169,11 @@ class _CompleteRegistrationViewState extends State<CompleteRegistrationView> {
                                     )
                                   : l10n.completeRegistrationFinishProfileSubtitle,
                               textAlign: TextAlign.center,
-                              style: const TextStyle(color: Color(0xff7d8792)),
+                              style: TextStyle(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurfaceVariant,
+                              ),
                             ),
                             const SizedBox(height: 22),
                             if (isPasswordStep)
@@ -199,7 +188,9 @@ class _CompleteRegistrationViewState extends State<CompleteRegistrationView> {
                                       _isPasswordObscured
                                           ? Icons.visibility_off
                                           : Icons.visibility,
-                                      color: Colors.grey,
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSurfaceVariant,
                                     ),
                                     onPressed: () => setState(
                                       () => _isPasswordObscured =
@@ -255,23 +246,29 @@ class _CompleteRegistrationViewState extends State<CompleteRegistrationView> {
                                         }
                                       },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xff2f80ed),
-                                  foregroundColor: Colors.white,
+                                  backgroundColor: Theme.of(
+                                    context,
+                                  ).colorScheme.primary,
+                                  foregroundColor: Theme.of(
+                                    context,
+                                  ).colorScheme.onPrimary,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   elevation: 8,
-                                  shadowColor: const Color(
-                                    0xff2f80ed,
-                                  ).withValues(alpha: 0.35),
+                                  shadowColor: Theme.of(
+                                    context,
+                                  ).colorScheme.primary.withValues(alpha: 0.35),
                                 ),
                                 child: state is AuthLoading
-                                    ? const SizedBox(
+                                    ? SizedBox(
                                         height: 22,
                                         width: 22,
                                         child: CircularProgressIndicator(
                                           strokeWidth: 2.4,
-                                          color: Colors.white,
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.onPrimary,
                                         ),
                                       )
                                     : Text(
@@ -289,8 +286,10 @@ class _CompleteRegistrationViewState extends State<CompleteRegistrationView> {
                                   : _cancelAndSignOut,
                               child: Text(
                                 l10n.completeRegistrationCancelAndSignOut,
-                                style: const TextStyle(
-                                  color: Color(0xff7d8792),
+                                style: TextStyle(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurfaceVariant,
                                 ),
                               ),
                             ),

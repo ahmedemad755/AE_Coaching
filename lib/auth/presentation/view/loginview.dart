@@ -4,6 +4,7 @@ import 'package:ae_coaching/core/localization/auth_message_localizer.dart';
 import 'package:ae_coaching/core/localization/locale_cubit.dart';
 import 'package:ae_coaching/core/routes/app_router.dart';
 import 'package:ae_coaching/core/session/session_storage.dart';
+import 'package:ae_coaching/core/theme/auth_screen_theme.dart';
 import 'package:ae_coaching/auth/presentation/view/verify_phone_migration_view.dart';
 import 'package:ae_coaching/core/utils/phone_normalizer.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
@@ -38,29 +39,11 @@ class _LoginViewState extends State<LoginView> {
     required IconData icon,
     Widget? suffixIcon,
   }) {
-    return InputDecoration(
-      hintText: hint,
-      prefixIcon: Icon(icon, color: const Color(0xff2f80ed)),
+    return AuthScreenTheme.fieldDecoration(
+      context,
+      hint: hint,
+      icon: icon,
       suffixIcon: suffixIcon,
-      filled: true,
-      fillColor: Colors.white,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(color: Color(0xff2f80ed)),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(color: Color(0xff2f80ed), width: 1.6),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(color: Colors.redAccent),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(color: Colors.redAccent),
-      ),
     );
   }
 
@@ -69,13 +52,7 @@ class _LoginViewState extends State<LoginView> {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xffdbe9f7), Color(0xff8fb6e6)],
-          ),
-        ),
+        decoration: AuthScreenTheme.background(context),
         child: Stack(
           children: [
             BlocConsumer<AuthCubit, AuthState>(
@@ -138,7 +115,7 @@ class _LoginViewState extends State<LoginView> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(state.message),
-                      backgroundColor: Colors.red,
+                      backgroundColor: Theme.of(context).colorScheme.error,
                     ),
                   );
                 }
@@ -153,7 +130,7 @@ class _LoginViewState extends State<LoginView> {
                         child: Container(
                           padding: const EdgeInsets.fromLTRB(18, 22, 18, 18),
                           decoration: BoxDecoration(
-                            color: Colors.white.withValues(alpha: 0.92),
+                            color: AuthScreenTheme.panelColor(context),
                             borderRadius: BorderRadius.circular(8),
                             boxShadow: [
                               BoxShadow(
@@ -172,8 +149,10 @@ class _LoginViewState extends State<LoginView> {
                                 Text(
                                   l10n.appBrandShort,
                                   textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                    color: Color(0xff2f80ed),
+                                  style: TextStyle(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.primary,
                                     fontSize: 34,
                                     fontWeight: FontWeight.w900,
                                     fontStyle: FontStyle.italic,
@@ -183,8 +162,10 @@ class _LoginViewState extends State<LoginView> {
                                 Text(
                                   l10n.appBrandFull,
                                   textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                    color: Color(0xff202936),
+                                  style: TextStyle(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurface,
                                     fontSize: 25,
                                     fontWeight: FontWeight.w900,
                                     fontStyle: FontStyle.italic,
@@ -194,8 +175,10 @@ class _LoginViewState extends State<LoginView> {
                                 Text(
                                   l10n.loginSubtitle,
                                   textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                    color: Color(0xff7d8792),
+                                  style: TextStyle(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurfaceVariant,
                                   ),
                                 ),
                                 const SizedBox(height: 20),
@@ -224,7 +207,9 @@ class _LoginViewState extends State<LoginView> {
                                         _isPasswordObscured
                                             ? Icons.visibility_off
                                             : Icons.visibility,
-                                        color: Colors.grey,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onSurfaceVariant,
                                       ),
                                       onPressed: () {
                                         setState(() {
@@ -267,30 +252,39 @@ class _LoginViewState extends State<LoginView> {
                                                 ).showSnackBar(
                                                   SnackBar(
                                                     content: Text(e.message),
-                                                    backgroundColor: Colors.red,
+                                                    backgroundColor: Theme.of(
+                                                      context,
+                                                    ).colorScheme.error,
                                                   ),
                                                 );
                                               }
                                             }
                                           },
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color(0xff2f80ed),
-                                      foregroundColor: Colors.white,
+                                      backgroundColor: Theme.of(
+                                        context,
+                                      ).colorScheme.primary,
+                                      foregroundColor: Theme.of(
+                                        context,
+                                      ).colorScheme.onPrimary,
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                       elevation: 8,
-                                      shadowColor: const Color(
-                                        0xff2f80ed,
-                                      ).withValues(alpha: 0.35),
+                                      shadowColor: Theme.of(context)
+                                          .colorScheme
+                                          .primary
+                                          .withValues(alpha: 0.35),
                                     ),
                                     child: state is AuthLoading
-                                        ? const SizedBox(
+                                        ? SizedBox(
                                             height: 22,
                                             width: 22,
                                             child: CircularProgressIndicator(
                                               strokeWidth: 2.4,
-                                              color: Colors.white,
+                                              color: Theme.of(
+                                                context,
+                                              ).colorScheme.onPrimary,
                                             ),
                                           )
                                         : Text(
@@ -313,11 +307,13 @@ class _LoginViewState extends State<LoginView> {
                                           );
                                         },
                                         style: OutlinedButton.styleFrom(
-                                          foregroundColor: const Color(
-                                            0xff2f80ed,
-                                          ),
-                                          side: const BorderSide(
-                                            color: Color(0xff2f80ed),
+                                          foregroundColor: Theme.of(
+                                            context,
+                                          ).colorScheme.primary,
+                                          side: BorderSide(
+                                            color: Theme.of(
+                                              context,
+                                            ).colorScheme.primary,
                                           ),
                                           shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.circular(
@@ -338,12 +334,12 @@ class _LoginViewState extends State<LoginView> {
                                           );
                                         },
                                         style: TextButton.styleFrom(
-                                          backgroundColor: const Color(
-                                            0xffeef2f5,
-                                          ),
-                                          foregroundColor: const Color(
-                                            0xff2f80ed,
-                                          ),
+                                          backgroundColor: Theme.of(
+                                            context,
+                                          ).colorScheme.surfaceContainerHighest,
+                                          foregroundColor: Theme.of(
+                                            context,
+                                          ).colorScheme.primary,
                                           shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.circular(
                                               6,
@@ -373,7 +369,7 @@ class _LoginViewState extends State<LoginView> {
                   child: IconButton(
                     onPressed: () => context.read<LocaleCubit>().toggle(),
                     icon: const Icon(Icons.translate),
-                    color: const Color(0xff2f80ed),
+                    color: Theme.of(context).colorScheme.primary,
                     tooltip: l10n.languageToggleTooltip,
                   ),
                 ),

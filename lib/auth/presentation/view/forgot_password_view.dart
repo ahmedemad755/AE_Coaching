@@ -2,6 +2,7 @@ import 'package:ae_coaching/auth/presentation/cubit/auth_cubit.dart';
 import 'package:ae_coaching/auth/presentation/cubit/auth_state.dart';
 import 'package:ae_coaching/auth/presentation/view/reset_password_view.dart';
 import 'package:ae_coaching/core/routes/app_router.dart';
+import 'package:ae_coaching/core/theme/auth_screen_theme.dart';
 import 'package:ae_coaching/core/utils/phone_normalizer.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -34,29 +35,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
     required String hint,
     required IconData icon,
   }) {
-    return InputDecoration(
-      hintText: hint,
-      prefixIcon: Icon(icon, color: const Color(0xff2f80ed)),
-      filled: true,
-      fillColor: Colors.white,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(color: Color(0xff2f80ed)),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(color: Color(0xff2f80ed), width: 1.6),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(color: Colors.redAccent),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(color: Colors.redAccent),
-      ),
-    );
+    return AuthScreenTheme.fieldDecoration(context, hint: hint, icon: icon);
   }
 
   @override
@@ -64,13 +43,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xffdbe9f7), Color(0xff8fb6e6)],
-          ),
-        ),
+        decoration: AuthScreenTheme.background(context),
         child: BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) {
             if (state is AuthPasswordResetOtpSent) {
@@ -90,7 +63,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(state.message),
-                  backgroundColor: Colors.red,
+                  backgroundColor: Theme.of(context).colorScheme.error,
                 ),
               );
             }
@@ -105,7 +78,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                     child: Container(
                       padding: const EdgeInsets.fromLTRB(18, 22, 18, 18),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.93),
+                        color: AuthScreenTheme.panelColor(context),
                         borderRadius: BorderRadius.circular(8),
                         boxShadow: [
                           BoxShadow(
@@ -128,14 +101,14 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                                     ? null
                                     : () => Navigator.pop(context),
                                 icon: const Icon(Icons.arrow_back_ios_new),
-                                color: const Color(0xff2f80ed),
+                                color: Theme.of(context).colorScheme.primary,
                               ),
                             ),
                             Text(
                               l10n.forgotPasswordTitle,
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                color: Color(0xff202936),
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.onSurface,
                                 fontSize: 26,
                                 fontWeight: FontWeight.w900,
                               ),
@@ -144,7 +117,11 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                             Text(
                               l10n.forgotPasswordSubtitle,
                               textAlign: TextAlign.center,
-                              style: const TextStyle(color: Color(0xff7d8792)),
+                              style: TextStyle(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurfaceVariant,
+                              ),
                             ),
                             const SizedBox(height: 22),
                             TextFormField(
@@ -188,14 +165,20 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                                           ).showSnackBar(
                                             SnackBar(
                                               content: Text(e.message),
-                                              backgroundColor: Colors.red,
+                                              backgroundColor: Theme.of(
+                                                context,
+                                              ).colorScheme.error,
                                             ),
                                           );
                                         }
                                       },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xff2f80ed),
-                                  foregroundColor: Colors.white,
+                                  backgroundColor: Theme.of(
+                                    context,
+                                  ).colorScheme.primary,
+                                  foregroundColor: Theme.of(
+                                    context,
+                                  ).colorScheme.onPrimary,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8),
                                   ),
@@ -205,12 +188,14 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                                   ).withValues(alpha: 0.35),
                                 ),
                                 child: state is AuthLoading
-                                    ? const SizedBox(
+                                    ? SizedBox(
                                         height: 22,
                                         width: 22,
                                         child: CircularProgressIndicator(
                                           strokeWidth: 2.4,
-                                          color: Colors.white,
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.onPrimary,
                                         ),
                                       )
                                     : Text(

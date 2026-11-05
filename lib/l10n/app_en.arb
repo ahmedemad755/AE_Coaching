@@ -1,4 +1,24 @@
 {
+  "activeSessionOnly": "This Session Only",
+  "activeSessionAndProgram": "This Session + Program",
+  "activeExerciseScopeBody": "Update this workout now. Also update the program day only if you choose Session + Program.",
+  "activeApplyEdit": "Apply",
+  "activeSessionEditSaved": "Session updated. Program unchanged.",
+  "activeProgramEditSaved": "Session and program day updated.",
+  "activeLoggedExerciseProtected": "This exercise has logged sets. Keep it to preserve your records; add another exercise instead. Targets and order can still be edited.",
+  "activeProgramConflict": "The program day differs from this session. Use Session Only, or apply the program exercises before editing both.",
+  "activeProgramPending": "Session changes are saved, but the program update is unfinished. Retry to complete it. Stopping retries keeps your session and any program change already written.",
+  "activeDuplicateExercise": "This exercise is already included. No duplicate was added.",
+  "activeWorkoutNoLongerActive": "This workout is no longer active. Reopen your current workout.",
+  "activeApplyProgram": "Apply program exercises",
+  "activeApplyProgramBody": "Program edits elsewhere affect future workouts only. Apply the current program day to this session now? This replaces session exercise edits and targets. Logged sets stay intact; changes that would remove a logged exercise are blocked.",
+  "activeRetryProgramEdit": "Retry program update",
+  "activeKeepSessionEdit": "Keep changes and stop retrying",
+  "appearanceTitle": "Appearance",
+  "themeSystemDefault": "System default",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "themePreferenceSaveError": "Could not save your appearance preference.",
   "@@locale": "en",
 
   "appBrandShort": "AE",
@@ -10,6 +30,38 @@
   "retry": "Retry",
   "edit": "Edit",
   "languageToggleTooltip": "Switch language",
+  "inactivityRemindersTitle": "Inactivity Reminders",
+  "inactivityReminderSaveFailed": "Could not save notification preference. Try again.",
+  "repdbInstructions": "Instructions",
+  "repdbPrimaryMuscles": "Primary muscles",
+  "repdbSecondaryMuscles": "Secondary muscles",
+  "repdbStartPosition": "Starting position",
+  "repdbPeakPosition": "Peak / end position",
+  "repdbDataSources": "Credits and exercise data sources",
+  "repdbSourceLicense": "RepDB Free Tier License",
+  "repdbTranslationPending": "Arabic instructions are awaiting review. The original English instructions are shown below.",
+  "repdbUnknownMetadata": "Not supplied by the source",
+  "repdbFormCues": "Form cues",
+  "repdbDatasetVersion": "Dataset version",
+  "repdbAddToWorkout": "Add to workout",
+  "repdbLegacyReference": "Legacy exercise. Choose a replacement from the new library if you want to update it.",
+  "repdbResolveBeforeSave": "Replace the remaining legacy exercises before saving a new copy. Existing saved workouts are preserved.",
+  "homeGreetingMorning": "Good morning",
+  "homeGreetingAfternoon": "Good afternoon",
+  "homeGreetingEvening": "Good evening",
+  "homeGreetingSubtitle": "Ready for today's workout?",
+  "homeDashboardSubtitle": "Plan, train and track your progress",
+  "homeManagePrograms": "Manage your programs",
+  "homeExploreTemplates": "Explore & save programs",
+  "homeBeginSession": "Begin a training session",
+  "homeProgress": "Progress",
+  "homeTrackResults": "Track your results",
+  "homeQuickActions": "Quick Actions",
+  "homeLogWorkout": "Log Workout",
+  "homeBodyMetrics": "Body Metrics",
+  "homeNavigationHome": "Home",
+  "homeNavigationPrograms": "Programs",
+  "homeNavigationMore": "More",
 
   "loginSubtitle": "Login to Your Account",
   "phoneNumberHint": "Phone number",
@@ -82,12 +134,15 @@
   "measurementsTooltip": "Measurements",
   "progressAnalyticsTooltip": "Progress Analytics",
   "startFirstExercise": "Start by adding your first exercise.",
-  "newExerciseButton": "New Exercise",
   "todaysVolumeLabel": "Today's Volume: [kg]",
   "historyLabel": "History",
   "analyticsLabel": "Analytics",
   "progressAnalyticsTitle": "Progress Analytics",
   "exerciseTrendsLabel": "Exercise Trends",
+  "progressSelectProgram": "Program",
+  "progressSelectWorkoutDay": "Workout day",
+  "progressSelectExercise": "Exercise",
+  "progressNoCompletedHistory": "No linked completed workout history yet.",
   "needMoreDataForProgress": "Add at least two workout days to unlock progress analysis.",
   "exerciseNeedsMoreData": "{name} needs more data (2+ workouts)",
   "@exerciseNeedsMoreData": {
@@ -251,6 +306,29 @@
 
   "workoutDaysTitle": "Workout Days",
   "addWorkoutDayButton": "Add Workout Day",
+  "manageTemplateExercisesButton": "Manage exercises",
+  "manageTemplateExercisesTitle": "Exercises for {name}",
+  "@manageTemplateExercisesTitle": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "searchExerciseLibraryHint": "Search exercises",
+  "assignedTemplateExercisesTitle": "Workout plan",
+  "assignedTemplateExercisesCount": "Exercises · {count}",
+  "@assignedTemplateExercisesCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "noAssignedTemplateExercises": "No exercises assigned yet. Add exercises here so they are ready whenever you start this workout day.",
+  "exerciseLibraryTitle": "Exercise library",
+  "noExerciseSearchResults": "No exercises match your search.",
+  "removeAssignedExerciseTooltip": "Remove exercise from workout day",
+  "addAssignedExerciseTooltip": "Add exercise to workout day",
+  "templateExerciseDuplicateError": "This exercise is already assigned.",
+  "templateExerciseSaveError": "Could not save workout-day exercises.",
+  "exerciseLibraryLoadError": "Could not load the exercise library.",
   "createWorkoutDayTitle": "Add Workout Day",
   "renameWorkoutDayTitle": "Rename Workout Day",
   "workoutDayNameHint": "Workout Day Name",
@@ -303,6 +381,21 @@
   "@finishWorkoutConfirmBody": {
     "placeholders": { "volume": { "type": "String" } }
   },
+  "discardEmptyWorkoutTitle": "Discard this empty workout?",
+  "discardEmptyWorkoutBody": "No completed sets have been recorded. Keep training or discard this workout?",
+  "keepTrainingButton": "Keep Training",
+  "discardWorkoutButton": "Discard Workout",
+  "workoutCelebrationHeading": "Great work! 💪🔥",
+  "workoutCelebrationSubtitle": "Workout complete. Every session brings you closer to your goal!",
+  "completionExercisesLabel": "Exercises",
+  "completionSetsLabel": "Sets",
+  "completionVolumeLabel": "Volume",
+  "workoutDurationLabel": "Duration",
+  "completionDurationMinutes": "{minutes} min",
+  "@completionDurationMinutes": {
+    "placeholders": { "minutes": { "type": "int" } }
+  },
+  "backToHomeButton": "Back to Home",
   "workoutFinishedBody": "Workout completed! Total volume: {volume} kg.",
   "@workoutFinishedBody": {
     "placeholders": { "volume": { "type": "String" } }
@@ -351,6 +444,47 @@
   "sessionDurationLabel": "Duration",
   "viewWorkoutTrackerButton": "View Workout Tracker",
   "programAnalyticsTitle": "Program Analytics",
+  "analyticsSelectDay": "Workout day",
+  "analyticsSelectExercise": "Exercise",
+  "analyticsWeightTitle": "Weight progression",
+  "analyticsRepsTitle": "Reps progression",
+  "analyticsVolumeTitle": "Training volume progression",
+  "analyticsRepsUnit": "reps",
+  "analyticsVolumeUnit": "kg × reps",
+  "analyticsRepsAtWeight": "Best reps at {weight} kg",
+  "@analyticsRepsAtWeight": {
+    "placeholders": { "weight": { "type": "String" } }
+  },
+  "analyticsPreviousValue": "Previous ({date}): {value} {unit}",
+  "@analyticsPreviousValue": {
+    "placeholders": {
+      "date": { "type": "String" },
+      "value": { "type": "String" },
+      "unit": { "type": "String" }
+    }
+  },
+  "analyticsLatestValue": "Latest ({date}): {value} {unit}",
+  "@analyticsLatestValue": {
+    "placeholders": {
+      "date": { "type": "String" },
+      "value": { "type": "String" },
+      "unit": { "type": "String" }
+    }
+  },
+  "analyticsAbsoluteChange": "Change: {change} {unit}",
+  "@analyticsAbsoluteChange": {
+    "placeholders": {
+      "change": { "type": "String" },
+      "unit": { "type": "String" }
+    }
+  },
+  "analyticsPercentChange": "Change: {change}%",
+  "@analyticsPercentChange": {
+    "placeholders": { "change": { "type": "String" } }
+  },
+  "analyticsPercentageUnavailable": "Percentage change unavailable from a zero baseline.",
+  "analyticsNeedMoreSessions": "Complete at least two sessions with this exercise to compare progression.",
+  "analyticsNoComparableReps": "No shared weight appears in the latest two sessions, so reps cannot be compared.",
   "analyticsTooltip": "Analytics",
   "noAnalyticsYetTitle": "No data yet",
   "noAnalyticsYetSubtitle": "Finish a few workouts to start seeing trends here.",
@@ -371,6 +505,12 @@
     "placeholders": { "count": { "type": "int" } }
   },
   "restTimerLabel": "Rest Timer",
+  "restDurationLabel": "Rest duration",
+  "restMinutesLabel": "min",
+  "restSecondsLabel": "sec",
+  "setDoneLabel": "Done",
+  "waitForRestTimerLabel": "Wait until the rest timer finishes.",
+  "markPreviousSetDoneLabel": "Mark the previous set done to start rest.",
   "startRestTimerButton": "Start",
   "stopRestTimerButton": "Stop",
   "resetRestTimerTooltip": "Reset",
@@ -429,6 +569,10 @@
     }
   },
   "homeCurrentProgramLabel": "Current Program",
+  "homeWorkoutPlansTitle": "My Workout Plans",
+  "homeViewAllPlansButton": "View all",
+  "homeNoWorkoutPlansBody": "Create your first workout plan to organize your training days.",
+  "homeCreateWorkoutPlanButton": "Create a workout plan",
   "homeWorkoutsCompletedThisWeekLabel": "{count} {count, plural, =0{workouts completed} =1{workout completed} other{workouts completed}}",
   "@homeWorkoutsCompletedThisWeekLabel": {
     "placeholders": { "count": { "type": "int" } }
@@ -472,5 +616,153 @@
   "archivedWorkoutDaysTooltip": "Archived",
   "archivedWorkoutDaysTitle": "Archived Workout Days",
   "noArchivedWorkoutDaysBody": "No archived workout days.",
-  "restoreButton": "Restore"
+  "restoreButton": "Restore",
+  "exercisePickerTitle": "Select exercises",
+  "exerciseFiltersTitle": "Filters",
+  "muscleGroupLabel": "Muscle group",
+  "equipmentLabel": "Equipment",
+  "createCustomExerciseButton": "Create custom exercise",
+  "addSelectedExercisesButton": "Add selected ({count})",
+  "@addSelectedExercisesButton": { "placeholders": { "count": { "type": "int" } } },
+  "customExerciseDuplicateError": "An exercise with this name already exists.",
+  "customExerciseSaveError": "Could not save the custom exercise.",
+  "createCustomExerciseTitle": "Create custom exercise",
+  "exerciseNameLabel": "Exercise name",
+  "muscleGroupOptionalLabel": "Muscle group (optional)",
+  "equipmentOptionalLabel": "Equipment (optional)",
+  "addExerciseButton": "Add exercise",
+  "addExerciseToTitle": "Add exercises to",
+  "addExerciseToBody": "Choose whether these exercises belong only to this workout or should be saved to the workout day for next time.",
+  "currentSessionOnlyAction": "This workout only",
+  "saveToWorkoutDayAction": "Save to workout day",
+  "exerciseLibrarySaveError": "Could not add the selected exercises.",
+  "newExerciseButton": "Add exercise",
+  "sessionOnlyExerciseLabel": "Added to this workout only",
+  "replaceExerciseAction": "Replace exercise",
+  "removeExerciseAction": "Remove exercise",
+  "exerciseChangeDestinationTitle": "Where should this change apply?",
+  "exerciseChangeDestinationBody": "Choose this workout only, or save the change to the workout day for future sessions. Saving to the workout day will not change this active workout.",
+  "exerciseChangeFutureOnlyNote": "Saving to the workout day affects future sessions only. This current workout stays unchanged.",
+  "removeExerciseLoggedSetsBody": "{name} has {count} recorded sets. Removing it only hides the exercise from this session; the sets remain in workout history and totals.",
+  "@removeExerciseLoggedSetsBody": {
+    "placeholders": {
+      "name": {},
+      "count": {"type": "int"}
+    }
+  },
+  "personalHubTitle": "Personal Hub",
+  "profileHeaderSubtitle": "Your training and account in one place",
+  "profileEditName": "Edit name",
+  "profilePhoneLabel": "Phone number",
+  "profileAddPhoto": "Add photo",
+  "profileChangePhoto": "Change photo",
+  "profileRemovePhoto": "Remove photo",
+  "profilePhotoPreviewTitle": "Preview profile photo",
+  "profilePhotoSaved": "Profile photo saved.",
+  "profilePhotoRemoved": "Profile photo removed.",
+  "profilePhotoSaveFailed": "Could not save the profile photo. Try another image.",
+  "profilePhotoRemoveFailed": "Could not remove the profile photo. Try again.",
+  "profilePhotoRemoveConfirm": "Remove only this profile photo? Your account and workout data will stay unchanged.",
+  "profileNameSaved": "Your name was updated.",
+  "profileNameSaveFailed": "Could not update your name. Check your connection and try again.",
+  "profilePhoneVerificationNote": "Changing a phone number requires SMS verification.",
+  "profileProgressAction": "My progress",
+  "appSettingsTitle": "App settings",
+  "myProgressTitle": "My progress",
+  "progressCompletedWorkoutsLabel": "Completed workouts",
+  "progressThisWeekLabel": "This week",
+  "progressThisMonthLabel": "This month",
+  "progressWeeklyActivity": "Weekly activity",
+  "progressPersonalRecords": "Personal records",
+  "progressHeaviestWeightRecord": "Heaviest weight",
+  "progressHighestSetVolumeRecord": "Highest set volume",
+  "progressProgramAnalytics": "Program analytics",
+  "progressRecentWorkouts": "Workout history",
+  "progressNoCompletedWorkouts": "Completed workouts will appear here after you finish a workout.",
+  "progressDataUnavailable": "Your workout progress could not be loaded right now.",
+  "profileNameUnavailable": "Name not available",
+  "profileNameInvalid": "Enter a name up to 80 characters.",
+  "settingsLanguage": "Language",
+  "settingsNotifications": "Notifications and reminders",
+  "settingsNotificationAuthorized": "Device notifications are allowed",
+  "settingsNotificationDenied": "Device notifications are turned off",
+  "settingsNotificationNotRequested": "Device notification permission has not been requested",
+  "settingsNotificationPermissionNote": "The workout reminder switch is separate from your phone's notification permission.",
+  "settingsPermissionHelpAction": "How to enable notifications",
+  "settingsPermissionHelpBody": "Open your phone settings, choose Apps, select AE Coaching, then allow Notifications.",
+  "settingsLogoutDescription": "Sign out of this device. Your saved workouts and account data will remain.",
+  "profileNameEditTitle": "Edit your name",
+  "exercisePickerAlternateTitle": "اختر التمارين",
+  "exerciseIllustrationUnavailable": "No illustration yet",
+  "exercisePreviewAction": "Preview exercise",
+  "exerciseCustomBadge": "Custom",
+  "exerciseAllFilter": "All",
+  "exerciseWatchVideo": "Watch on MuscleWiki (external browser)",
+  "exerciseBrowserLaunchFailed": "Could not open the browser. Please try again.",
+  "exerciseArtworkCredits": "Illustration credits",
+  "exerciseArtworkSource": "View illustration source",
+  "exerciseArtworkLicense": "Read illustration license (offline)",
+  "exerciseMuscleName": "{muscle, select, chest {Chest} back {Back} shoulders {Shoulders} biceps {Biceps} triceps {Triceps} quadriceps {Quadriceps} hamstrings_glutes {Hamstrings / glutes} calves {Calves} abs_core {Abs / core} full_body {Full body} other {{muscle}}}",
+  "@exerciseMuscleName": {"placeholders": {"muscle": {"type": "String"}}},
+  "exerciseEquipmentName": "{equipment, select, barbell {Barbell} dumbbell {Dumbbell} cable {Cable} machine {Machine} bodyweight {Bodyweight} smith_machine {Smith machine} ez_bar {EZ bar} kettlebell {Kettlebell} plate {Plate} trap_bar {Trap bar} ab_wheel {Ab wheel} other {{equipment}}}",
+  "@exerciseEquipmentName": {"placeholders": {"equipment": {"type": "String"}}},
+  "workoutTemplatesTitle": "Workout Templates",
+  "standardTemplatesIntro": "Choose a split, preview its days, then customize your own copy.",
+  "useWorkoutTemplate": "Use Template",
+  "customizeTemplateTitle": "Customize Program",
+  "saveToMyPrograms": "Save to My Programs",
+  "standardTemplateSaved": "Program saved to My Programs.",
+  "standardTemplateSavedLocally": "Program saved on this device. Cloud backup is incomplete; reopen My Programs and the program's days when connected.",
+  "standardTemplateLoadError": "Unable to load workout templates.",
+  "standardTemplatesEmpty": "No workout templates are available.",
+  "standardTemplateProgrammingNote": "Working sets exclude warm-ups. Start with loads that leave about 1–3 reps in reserve. Use the lower end of the volume if needed, add load gradually within the rep range, and allow recovery. Rest longer when needed. These are adjustable starting plans, not individualized prescriptions.",
+  "standardTemplateAdvancedNote": "Six training days suit experienced lifters with enough recovery. A/B sessions share the weekly workload; they are not two copies of the three-day plan. Add rest days if recovery suffers.",
+  "standardTemplateAnteriorPosteriorNote": "A practical emphasis split: anterior days focus on chest, quads, delts, biceps and abs; posterior days focus on back, hamstrings, glutes, rear delts, triceps and calves. Movements naturally overlap.",
+  "suggestedTrainingWeek": "Suggested seven-day sequence",
+  "standardRestDay": "Rest",
+  "workingSetsLabel": "Working sets",
+  "minimumRepsLabel": "Minimum reps",
+  "maximumRepsLabel": "Maximum reps",
+  "exerciseRestSecondsLabel": "Rest (seconds)",
+  "editExerciseTargets": "Edit sets, reps & rest",
+  "exerciseTargetsValidation": "Use 1–10 sets, 1–100 reps (minimum ≤ maximum) and 15–600 seconds rest.",
+  "standardDraftInvalid": "Enter a program name, name every day, and keep at least one exercise in each day. Check exercise targets.",
+  "standardDraftSaveError": "Unable to save the program. Your draft is still available; try again.",
+  "standardDraftAccountChanged": "The account changed. Reopen Workout Templates for the current account.",
+  "discardProgramDraftTitle": "Discard this draft?",
+  "discardProgramDraftBody": "This program has not been saved. Leaving will discard your customizations.",
+  "discardProgramDraft": "Discard draft",
+  "templateDaysPerWeek": "{count} days / week",
+  "@templateDaysPerWeek": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "suggestedSequenceDay": "Day {day}",
+  "@suggestedSequenceDay": {
+    "placeholders": {
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "exerciseTargetSummary": "Plan: {sets} sets × {min}–{max} reps · rest {seconds}s",
+  "@exerciseTargetSummary": {
+    "placeholders": {
+      "sets": {
+        "type": "int"
+      },
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      },
+      "seconds": {
+        "type": "int"
+      }
+    }
+  }
 }

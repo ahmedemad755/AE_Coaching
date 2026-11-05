@@ -1,0 +1,1951 @@
+{
+  "schema_version": 1,
+  "splits": [
+    {
+      "id": "push_pull_legs",
+      "name_en": "Push Pull Legs",
+      "name_ar": "دفع / سحب / أرجل",
+      "variants": [
+        {
+          "id": "ppl_3",
+          "days": [
+            {
+              "id": "push",
+              "name_en": "Push",
+              "name_ar": "دفع",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:bench-press",
+                  "working_sets": 3,
+                  "reps_min": 6,
+                  "reps_max": 10,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:incline-db-press",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:dumbbell-shoulder-press",
+                  "working_sets": 2,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:lateral-raise",
+                  "working_sets": 3,
+                  "reps_min": 12,
+                  "reps_max": 20,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:tricep-pushdown",
+                  "working_sets": 3,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                }
+              ]
+            },
+            {
+              "id": "pull",
+              "name_en": "Pull",
+              "name_ar": "سحب",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:lat-pulldown",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:seated-cable-row",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:machine-reverse-fly",
+                  "working_sets": 3,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:ez-bar-curl",
+                  "working_sets": 3,
+                  "reps_min": 10,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:hammer-curl",
+                  "working_sets": 2,
+                  "reps_min": 10,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                }
+              ]
+            },
+            {
+              "id": "legs",
+              "name_en": "Legs",
+              "name_ar": "أرجل",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:squat",
+                  "working_sets": 3,
+                  "reps_min": 6,
+                  "reps_max": 10,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:romanian-deadlift",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 10,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:leg-press",
+                  "working_sets": 2,
+                  "reps_min": 10,
+                  "reps_max": 15,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:leg-curl",
+                  "working_sets": 3,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:standing-calf-raise",
+                  "working_sets": 3,
+                  "reps_min": 10,
+                  "reps_max": 20,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:cable-crunch",
+                  "working_sets": 2,
+                  "reps_min": 10,
+                  "reps_max": 20,
+                  "rest_seconds": 60
+                }
+              ]
+            }
+          ],
+          "suggested_week": [
+            0,
+            null,
+            1,
+            null,
+            2,
+            null,
+            null
+          ]
+        },
+        {
+          "id": "ppl_6",
+          "days": [
+            {
+              "id": "push_a",
+              "name_en": "Push A",
+              "name_ar": "دفع أ",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:bench-press",
+                  "working_sets": 3,
+                  "reps_min": 6,
+                  "reps_max": 10,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:incline-db-press",
+                  "working_sets": 2,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:dumbbell-shoulder-press",
+                  "working_sets": 2,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:lateral-raise",
+                  "working_sets": 3,
+                  "reps_min": 12,
+                  "reps_max": 20,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:tricep-pushdown",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                }
+              ]
+            },
+            {
+              "id": "pull_a",
+              "name_en": "Pull A",
+              "name_ar": "سحب أ",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:lat-pulldown",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:seated-cable-row",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:machine-reverse-fly",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:ez-bar-curl",
+                  "working_sets": 2,
+                  "reps_min": 10,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:hammer-curl",
+                  "working_sets": 2,
+                  "reps_min": 10,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                }
+              ]
+            },
+            {
+              "id": "legs_a",
+              "name_en": "Legs A",
+              "name_ar": "أرجل أ",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:squat",
+                  "working_sets": 3,
+                  "reps_min": 6,
+                  "reps_max": 10,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:romanian-deadlift",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 10,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:leg-extension",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:leg-curl",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:standing-calf-raise",
+                  "working_sets": 3,
+                  "reps_min": 10,
+                  "reps_max": 20,
+                  "rest_seconds": 90
+                }
+              ]
+            },
+            {
+              "id": "push_b",
+              "name_en": "Push B",
+              "name_ar": "دفع ب",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:incline-bench-press",
+                  "working_sets": 3,
+                  "reps_min": 6,
+                  "reps_max": 10,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:chest-press-machine",
+                  "working_sets": 2,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:machine-shoulder-press",
+                  "working_sets": 2,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:cable-lateral-raise",
+                  "working_sets": 3,
+                  "reps_min": 12,
+                  "reps_max": 20,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:cable-overhead-tricep-extension",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                }
+              ]
+            },
+            {
+              "id": "pull_b",
+              "name_en": "Pull B",
+              "name_ar": "سحب ب",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:close-grip-lat-pulldown",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:chest-supported-db-row",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:cable-reverse-fly",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:incline-db-curl",
+                  "working_sets": 2,
+                  "reps_min": 10,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                }
+              ]
+            },
+            {
+              "id": "legs_b",
+              "name_en": "Legs B",
+              "name_ar": "أرجل ب",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:leg-press",
+                  "working_sets": 3,
+                  "reps_min": 10,
+                  "reps_max": 15,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:hip-thrust",
+                  "working_sets": 2,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:bulgarian-split-squat",
+                  "working_sets": 2,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:seated-leg-curl",
+                  "working_sets": 3,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:seated-calf-raise",
+                  "working_sets": 3,
+                  "reps_min": 12,
+                  "reps_max": 20,
+                  "rest_seconds": 90
+                }
+              ]
+            }
+          ],
+          "suggested_week": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "id": "upper_lower",
+      "name_en": "Upper / Lower",
+      "name_ar": "علوي / سفلي",
+      "variants": [
+        {
+          "id": "upper_lower_4",
+          "days": [
+            {
+              "id": "upper_a",
+              "name_en": "Upper A",
+              "name_ar": "علوي أ",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:bench-press",
+                  "working_sets": 3,
+                  "reps_min": 6,
+                  "reps_max": 10,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:seated-cable-row",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:incline-db-press",
+                  "working_sets": 2,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:lat-pulldown",
+                  "working_sets": 2,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:lateral-raise",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 20,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:ez-bar-curl",
+                  "working_sets": 2,
+                  "reps_min": 10,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:tricep-pushdown",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                }
+              ]
+            },
+            {
+              "id": "lower_a",
+              "name_en": "Lower A",
+              "name_ar": "سفلي أ",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:squat",
+                  "working_sets": 3,
+                  "reps_min": 6,
+                  "reps_max": 10,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:romanian-deadlift",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 10,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:leg-extension",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:leg-curl",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:standing-calf-raise",
+                  "working_sets": 3,
+                  "reps_min": 10,
+                  "reps_max": 20,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:cable-crunch",
+                  "working_sets": 2,
+                  "reps_min": 10,
+                  "reps_max": 20,
+                  "rest_seconds": 60
+                }
+              ]
+            },
+            {
+              "id": "upper_b",
+              "name_en": "Upper B",
+              "name_ar": "علوي ب",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:incline-bench-press",
+                  "working_sets": 3,
+                  "reps_min": 6,
+                  "reps_max": 10,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:chest-supported-db-row",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:dumbbell-shoulder-press",
+                  "working_sets": 2,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:close-grip-lat-pulldown",
+                  "working_sets": 2,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:machine-reverse-fly",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:hammer-curl",
+                  "working_sets": 2,
+                  "reps_min": 10,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:cable-overhead-tricep-extension",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                }
+              ]
+            },
+            {
+              "id": "lower_b",
+              "name_en": "Lower B",
+              "name_ar": "سفلي ب",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:leg-press",
+                  "working_sets": 3,
+                  "reps_min": 10,
+                  "reps_max": 15,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:hip-thrust",
+                  "working_sets": 2,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:bulgarian-split-squat",
+                  "working_sets": 2,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:seated-leg-curl",
+                  "working_sets": 3,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:seated-calf-raise",
+                  "working_sets": 3,
+                  "reps_min": 12,
+                  "reps_max": 20,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:hanging-knee-raise",
+                  "working_sets": 2,
+                  "reps_min": 10,
+                  "reps_max": 20,
+                  "rest_seconds": 60
+                }
+              ]
+            }
+          ],
+          "suggested_week": [
+            0,
+            1,
+            null,
+            2,
+            3,
+            null,
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "id": "full_body",
+      "name_en": "Full Body",
+      "name_ar": "الجسم كامل",
+      "variants": [
+        {
+          "id": "full_body_3",
+          "days": [
+            {
+              "id": "full_a",
+              "name_en": "Full Body A",
+              "name_ar": "الجسم كامل أ",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:squat",
+                  "working_sets": 3,
+                  "reps_min": 6,
+                  "reps_max": 10,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:bench-press",
+                  "working_sets": 3,
+                  "reps_min": 6,
+                  "reps_max": 10,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:seated-cable-row",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:leg-curl",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:lateral-raise",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 20,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:standing-calf-raise",
+                  "working_sets": 2,
+                  "reps_min": 10,
+                  "reps_max": 20,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:cable-crunch",
+                  "working_sets": 2,
+                  "reps_min": 10,
+                  "reps_max": 20,
+                  "rest_seconds": 60
+                }
+              ]
+            },
+            {
+              "id": "full_b",
+              "name_en": "Full Body B",
+              "name_ar": "الجسم كامل ب",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:romanian-deadlift",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 10,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:incline-db-press",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:lat-pulldown",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:leg-extension",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:ez-bar-curl",
+                  "working_sets": 2,
+                  "reps_min": 10,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:tricep-pushdown",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                }
+              ]
+            },
+            {
+              "id": "full_c",
+              "name_en": "Full Body C",
+              "name_ar": "الجسم كامل ج",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:leg-press",
+                  "working_sets": 3,
+                  "reps_min": 10,
+                  "reps_max": 15,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:db-bench-press",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:chest-supported-db-row",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:seated-leg-curl",
+                  "working_sets": 3,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:dumbbell-shoulder-press",
+                  "working_sets": 2,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:seated-calf-raise",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 20,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:reverse-crunches",
+                  "working_sets": 2,
+                  "reps_min": 10,
+                  "reps_max": 20,
+                  "rest_seconds": 60
+                }
+              ]
+            }
+          ],
+          "suggested_week": [
+            0,
+            null,
+            1,
+            null,
+            2,
+            null,
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bro_split",
+      "name_en": "Bro Split",
+      "name_ar": "تقسيمة عضلة في اليوم",
+      "variants": [
+        {
+          "id": "bro_5",
+          "days": [
+            {
+              "id": "chest",
+              "name_en": "Chest",
+              "name_ar": "صدر",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:bench-press",
+                  "working_sets": 3,
+                  "reps_min": 6,
+                  "reps_max": 10,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:incline-db-press",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:db-fly",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:pec-deck",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                }
+              ]
+            },
+            {
+              "id": "back",
+              "name_en": "Back",
+              "name_ar": "ظهر",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:lat-pulldown",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:seated-cable-row",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:chest-supported-db-row",
+                  "working_sets": 2,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:straight-arm-pulldown",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:machine-reverse-fly",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                }
+              ]
+            },
+            {
+              "id": "shoulders",
+              "name_en": "Shoulders",
+              "name_ar": "أكتاف",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:dumbbell-shoulder-press",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:lateral-raise",
+                  "working_sets": 3,
+                  "reps_min": 12,
+                  "reps_max": 20,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:cable-reverse-fly",
+                  "working_sets": 3,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:cable-crunch",
+                  "working_sets": 2,
+                  "reps_min": 10,
+                  "reps_max": 20,
+                  "rest_seconds": 60
+                }
+              ]
+            },
+            {
+              "id": "legs",
+              "name_en": "Legs",
+              "name_ar": "أرجل",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:squat",
+                  "working_sets": 3,
+                  "reps_min": 6,
+                  "reps_max": 10,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:romanian-deadlift",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 10,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:leg-press",
+                  "working_sets": 2,
+                  "reps_min": 10,
+                  "reps_max": 15,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:leg-curl",
+                  "working_sets": 3,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:standing-calf-raise",
+                  "working_sets": 3,
+                  "reps_min": 10,
+                  "reps_max": 20,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:cable-crunch",
+                  "working_sets": 2,
+                  "reps_min": 10,
+                  "reps_max": 20,
+                  "rest_seconds": 60
+                }
+              ]
+            },
+            {
+              "id": "arms",
+              "name_en": "Arms",
+              "name_ar": "ذراعان",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:ez-bar-curl",
+                  "working_sets": 3,
+                  "reps_min": 10,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:incline-db-curl",
+                  "working_sets": 2,
+                  "reps_min": 10,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:hammer-curl",
+                  "working_sets": 2,
+                  "reps_min": 10,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:close-grip-bench-press",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:tricep-pushdown",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:cable-overhead-tricep-extension",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                }
+              ]
+            }
+          ],
+          "suggested_week": [
+            0,
+            1,
+            2,
+            null,
+            3,
+            4,
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "id": "arnold",
+      "name_en": "Arnold Split",
+      "name_ar": "تقسيمة أرنولد",
+      "variants": [
+        {
+          "id": "arnold_3",
+          "days": [
+            {
+              "id": "chest_back",
+              "name_en": "Chest & Back",
+              "name_ar": "صدر وظهر",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:bench-press",
+                  "working_sets": 3,
+                  "reps_min": 6,
+                  "reps_max": 10,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:lat-pulldown",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:incline-db-press",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:seated-cable-row",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:straight-arm-pulldown",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                }
+              ]
+            },
+            {
+              "id": "shoulders_arms",
+              "name_en": "Shoulders & Arms",
+              "name_ar": "أكتاف وذراعان",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:dumbbell-shoulder-press",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:lateral-raise",
+                  "working_sets": 3,
+                  "reps_min": 12,
+                  "reps_max": 20,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:machine-reverse-fly",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:ez-bar-curl",
+                  "working_sets": 3,
+                  "reps_min": 10,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:incline-db-curl",
+                  "working_sets": 2,
+                  "reps_min": 10,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:tricep-pushdown",
+                  "working_sets": 3,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:cable-overhead-tricep-extension",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                }
+              ]
+            },
+            {
+              "id": "legs",
+              "name_en": "Legs",
+              "name_ar": "أرجل",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:squat",
+                  "working_sets": 3,
+                  "reps_min": 6,
+                  "reps_max": 10,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:romanian-deadlift",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 10,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:leg-press",
+                  "working_sets": 2,
+                  "reps_min": 10,
+                  "reps_max": 15,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:leg-curl",
+                  "working_sets": 3,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:standing-calf-raise",
+                  "working_sets": 3,
+                  "reps_min": 10,
+                  "reps_max": 20,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:cable-crunch",
+                  "working_sets": 2,
+                  "reps_min": 10,
+                  "reps_max": 20,
+                  "rest_seconds": 60
+                }
+              ]
+            }
+          ],
+          "suggested_week": [
+            0,
+            null,
+            1,
+            null,
+            2,
+            null,
+            null
+          ]
+        },
+        {
+          "id": "arnold_6",
+          "days": [
+            {
+              "id": "chest_back_a",
+              "name_en": "Chest & Back A",
+              "name_ar": "صدر وظهر أ",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:bench-press",
+                  "working_sets": 3,
+                  "reps_min": 6,
+                  "reps_max": 10,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:lat-pulldown",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:incline-db-press",
+                  "working_sets": 2,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:seated-cable-row",
+                  "working_sets": 2,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                }
+              ]
+            },
+            {
+              "id": "shoulders_arms_a",
+              "name_en": "Shoulders & Arms A",
+              "name_ar": "أكتاف وذراعان أ",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:dumbbell-shoulder-press",
+                  "working_sets": 2,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:lateral-raise",
+                  "working_sets": 3,
+                  "reps_min": 12,
+                  "reps_max": 20,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:ez-bar-curl",
+                  "working_sets": 2,
+                  "reps_min": 10,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:tricep-pushdown",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:machine-reverse-fly",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                }
+              ]
+            },
+            {
+              "id": "legs_a",
+              "name_en": "Legs A",
+              "name_ar": "أرجل أ",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:squat",
+                  "working_sets": 3,
+                  "reps_min": 6,
+                  "reps_max": 10,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:romanian-deadlift",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 10,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:leg-extension",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:leg-curl",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:standing-calf-raise",
+                  "working_sets": 3,
+                  "reps_min": 10,
+                  "reps_max": 20,
+                  "rest_seconds": 90
+                }
+              ]
+            },
+            {
+              "id": "chest_back_b",
+              "name_en": "Chest & Back B",
+              "name_ar": "صدر وظهر ب",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:db-bench-press",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:chest-supported-db-row",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:cable-fly",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:close-grip-lat-pulldown",
+                  "working_sets": 2,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                }
+              ]
+            },
+            {
+              "id": "shoulders_arms_b",
+              "name_en": "Shoulders & Arms B",
+              "name_ar": "أكتاف وذراعان ب",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:machine-shoulder-press",
+                  "working_sets": 2,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:cable-lateral-raise",
+                  "working_sets": 3,
+                  "reps_min": 12,
+                  "reps_max": 20,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:incline-db-curl",
+                  "working_sets": 2,
+                  "reps_min": 10,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:cable-overhead-tricep-extension",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:cable-reverse-fly",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                }
+              ]
+            },
+            {
+              "id": "legs_b",
+              "name_en": "Legs B",
+              "name_ar": "أرجل ب",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:leg-press",
+                  "working_sets": 3,
+                  "reps_min": 10,
+                  "reps_max": 15,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:hip-thrust",
+                  "working_sets": 2,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:bulgarian-split-squat",
+                  "working_sets": 2,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:seated-leg-curl",
+                  "working_sets": 3,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:seated-calf-raise",
+                  "working_sets": 3,
+                  "reps_min": 12,
+                  "reps_max": 20,
+                  "rest_seconds": 90
+                }
+              ]
+            }
+          ],
+          "suggested_week": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hybrid",
+      "name_en": "Hybrid",
+      "name_ar": "تقسيمة هجينة",
+      "variants": [
+        {
+          "id": "hybrid_5",
+          "days": [
+            {
+              "id": "upper",
+              "name_en": "Upper",
+              "name_ar": "علوي",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:bench-press",
+                  "working_sets": 3,
+                  "reps_min": 6,
+                  "reps_max": 10,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:seated-cable-row",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:incline-db-press",
+                  "working_sets": 2,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:lat-pulldown",
+                  "working_sets": 2,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:lateral-raise",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 20,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:ez-bar-curl",
+                  "working_sets": 2,
+                  "reps_min": 10,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:tricep-pushdown",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                }
+              ]
+            },
+            {
+              "id": "lower",
+              "name_en": "Lower",
+              "name_ar": "سفلي",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:squat",
+                  "working_sets": 3,
+                  "reps_min": 6,
+                  "reps_max": 10,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:romanian-deadlift",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 10,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:leg-extension",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:leg-curl",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:standing-calf-raise",
+                  "working_sets": 3,
+                  "reps_min": 10,
+                  "reps_max": 20,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:cable-crunch",
+                  "working_sets": 2,
+                  "reps_min": 10,
+                  "reps_max": 20,
+                  "rest_seconds": 60
+                }
+              ]
+            },
+            {
+              "id": "push",
+              "name_en": "Push",
+              "name_ar": "دفع",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:incline-bench-press",
+                  "working_sets": 3,
+                  "reps_min": 6,
+                  "reps_max": 10,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:chest-press-machine",
+                  "working_sets": 2,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:machine-shoulder-press",
+                  "working_sets": 2,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:cable-lateral-raise",
+                  "working_sets": 3,
+                  "reps_min": 12,
+                  "reps_max": 20,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:cable-overhead-tricep-extension",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                }
+              ]
+            },
+            {
+              "id": "pull",
+              "name_en": "Pull",
+              "name_ar": "سحب",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:close-grip-lat-pulldown",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:chest-supported-db-row",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:cable-reverse-fly",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:incline-db-curl",
+                  "working_sets": 2,
+                  "reps_min": 10,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                }
+              ]
+            },
+            {
+              "id": "legs",
+              "name_en": "Legs",
+              "name_ar": "أرجل",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:leg-press",
+                  "working_sets": 3,
+                  "reps_min": 10,
+                  "reps_max": 15,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:hip-thrust",
+                  "working_sets": 2,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:bulgarian-split-squat",
+                  "working_sets": 2,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:seated-leg-curl",
+                  "working_sets": 3,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:seated-calf-raise",
+                  "working_sets": 3,
+                  "reps_min": 12,
+                  "reps_max": 20,
+                  "rest_seconds": 90
+                }
+              ]
+            }
+          ],
+          "suggested_week": [
+            0,
+            1,
+            null,
+            2,
+            3,
+            4,
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "id": "anterior_posterior",
+      "name_en": "Anterior / Posterior",
+      "name_ar": "أمامي / خلفي",
+      "variants": [
+        {
+          "id": "anterior_posterior_4",
+          "days": [
+            {
+              "id": "anterior_a",
+              "name_en": "Anterior A",
+              "name_ar": "أمامي أ",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:bench-press",
+                  "working_sets": 3,
+                  "reps_min": 6,
+                  "reps_max": 10,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:squat",
+                  "working_sets": 3,
+                  "reps_min": 6,
+                  "reps_max": 10,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:lateral-raise",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 20,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:ez-bar-curl",
+                  "working_sets": 2,
+                  "reps_min": 10,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:leg-extension",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:cable-crunch",
+                  "working_sets": 2,
+                  "reps_min": 10,
+                  "reps_max": 20,
+                  "rest_seconds": 60
+                }
+              ]
+            },
+            {
+              "id": "posterior_a",
+              "name_en": "Posterior A",
+              "name_ar": "خلفي أ",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:romanian-deadlift",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 10,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:lat-pulldown",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:chest-supported-db-row",
+                  "working_sets": 2,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:cable-reverse-fly",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:tricep-pushdown",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:standing-calf-raise",
+                  "working_sets": 3,
+                  "reps_min": 10,
+                  "reps_max": 20,
+                  "rest_seconds": 90
+                }
+              ]
+            },
+            {
+              "id": "anterior_b",
+              "name_en": "Anterior B",
+              "name_ar": "أمامي ب",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:incline-db-press",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:leg-press",
+                  "working_sets": 3,
+                  "reps_min": 10,
+                  "reps_max": 15,
+                  "rest_seconds": 180
+                },
+                {
+                  "exercise_id": "repdb:dumbbell-shoulder-press",
+                  "working_sets": 2,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:incline-db-curl",
+                  "working_sets": 2,
+                  "reps_min": 10,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:cable-fly",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:reverse-crunches",
+                  "working_sets": 2,
+                  "reps_min": 10,
+                  "reps_max": 20,
+                  "rest_seconds": 60
+                }
+              ]
+            },
+            {
+              "id": "posterior_b",
+              "name_en": "Posterior B",
+              "name_ar": "خلفي ب",
+              "exercises": [
+                {
+                  "exercise_id": "repdb:hip-thrust",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:seated-leg-curl",
+                  "working_sets": 3,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:close-grip-lat-pulldown",
+                  "working_sets": 3,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:seated-cable-row",
+                  "working_sets": 2,
+                  "reps_min": 8,
+                  "reps_max": 12,
+                  "rest_seconds": 150
+                },
+                {
+                  "exercise_id": "repdb:machine-reverse-fly",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:cable-overhead-tricep-extension",
+                  "working_sets": 2,
+                  "reps_min": 12,
+                  "reps_max": 15,
+                  "rest_seconds": 90
+                },
+                {
+                  "exercise_id": "repdb:seated-calf-raise",
+                  "working_sets": 3,
+                  "reps_min": 12,
+                  "reps_max": 20,
+                  "rest_seconds": 90
+                }
+              ]
+            }
+          ],
+          "suggested_week": [
+            0,
+            1,
+            null,
+            2,
+            3,
+            null,
+            null
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,4 +1,24 @@
 {
+  "activeSessionOnly": "هذه الجلسة فقط",
+  "activeSessionAndProgram": "هذه الجلسة + البرنامج",
+  "activeExerciseScopeBody": "حدّث التمرين الحالي فورًا. يتغير يوم البرنامج أيضًا فقط عند اختيار الجلسة + البرنامج.",
+  "activeApplyEdit": "تطبيق",
+  "activeSessionEditSaved": "تم تحديث الجلسة دون تغيير البرنامج.",
+  "activeProgramEditSaved": "تم تحديث الجلسة ويوم البرنامج.",
+  "activeLoggedExerciseProtected": "لهذا التمرين مجموعات مسجلة. احتفظ به لحماية سجلك وأضف تمرينًا آخر بدلًا منه. يمكنك تعديل الأهداف والترتيب.",
+  "activeProgramConflict": "يختلف يوم البرنامج عن هذه الجلسة. اختر هذه الجلسة فقط، أو طبّق تمارين البرنامج قبل تعديل الاثنين.",
+  "activeProgramPending": "تم حفظ تغييرات الجلسة، لكن تحديث البرنامج لم يكتمل. أعد المحاولة لإكماله. إيقاف المحاولات يحتفظ بالجلسة وأي تغيير تم حفظه بالفعل في البرنامج.",
+  "activeDuplicateExercise": "هذا التمرين موجود بالفعل. لم تتم إضافة نسخة مكررة.",
+  "activeWorkoutNoLongerActive": "لم تعد هذه الجلسة نشطة. أعد فتح تمرينك الحالي.",
+  "activeApplyProgram": "تطبيق تمارين البرنامج",
+  "activeApplyProgramBody": "تعديلات البرنامج من خارج الجلسة تخص التمارين القادمة فقط. هل تريد تطبيق يوم البرنامج الحالي على هذه الجلسة الآن؟ سيستبدل ذلك تعديلات تمارين الجلسة وأهدافها. تبقى المجموعات المسجلة محفوظة، ويُمنع أي تغيير يحذف تمرينًا له مجموعات مسجلة.",
+  "activeRetryProgramEdit": "إعادة محاولة تحديث البرنامج",
+  "activeKeepSessionEdit": "الاحتفاظ بالتغييرات وإيقاف المحاولات",
+  "appearanceTitle": "\u0627\u0644\u0645\u0638\u0647\u0631",
+  "themeSystemDefault": "\u062d\u0633\u0628 \u0625\u0639\u062f\u0627\u062f \u0627\u0644\u062c\u0647\u0627\u0632",
+  "themeLight": "\u0641\u0627\u062a\u062d",
+  "themeDark": "\u062f\u0627\u0643\u0646",
+  "themePreferenceSaveError": "\u062a\u0639\u0630\u0631 \u062d\u0641\u0638 \u062a\u0641\u0636\u064a\u0644 \u0627\u0644\u0645\u0638\u0647\u0631.",
   "@@locale": "ar",
 
   "appBrandShort": "AE",
@@ -10,6 +30,38 @@
   "retry": "إعادة المحاولة",
   "edit": "تعديل",
   "languageToggleTooltip": "تغيير اللغة",
+  "inactivityRemindersTitle": "تذكيرات الانقطاع عن التمرين",
+  "inactivityReminderSaveFailed": "تعذر حفظ إعداد التنبيهات. حاول مجددًا.",
+  "repdbInstructions": "طريقة الأداء",
+  "repdbPrimaryMuscles": "العضلات الأساسية",
+  "repdbSecondaryMuscles": "العضلات المساعدة",
+  "repdbStartPosition": "وضع البداية",
+  "repdbPeakPosition": "وضع الانقباض أو النهاية",
+  "repdbDataSources": "حقوق ومصادر بيانات التمارين",
+  "repdbSourceLicense": "ترخيص RepDB المجاني",
+  "repdbTranslationPending": "الترجمة العربية لطريقة الأداء قيد المراجعة. تُعرض تعليمات المصدر الإنجليزية أدناه.",
+  "repdbUnknownMetadata": "غير مذكور في المصدر",
+  "repdbFormCues": "إرشادات الأداء",
+  "repdbDatasetVersion": "إصدار البيانات",
+  "repdbAddToWorkout": "إضافة إلى التمرين",
+  "repdbLegacyReference": "تمرين من المكتبة القديمة. يمكنك استبداله بتمرين من المكتبة الجديدة إذا أردت تحديثه.",
+  "repdbResolveBeforeSave": "استبدل التمارين القديمة المتبقية قبل حفظ نسخة جديدة. تظل التمارين المحفوظة سابقًا كما هي.",
+  "homeGreetingMorning": "صباح الخير",
+  "homeGreetingAfternoon": "نهارك سعيد",
+  "homeGreetingEvening": "مساء الخير",
+  "homeGreetingSubtitle": "مستعد لتمرين اليوم؟",
+  "homeDashboardSubtitle": "خطط وتمرّن وتابع تقدمك",
+  "homeManagePrograms": "إدارة برامجك التدريبية",
+  "homeExploreTemplates": "استكشف البرامج واحفظها",
+  "homeBeginSession": "ابدأ جلسة تدريبية",
+  "homeProgress": "التقدم",
+  "homeTrackResults": "تابع نتائجك",
+  "homeQuickActions": "إجراءات سريعة",
+  "homeLogWorkout": "تسجيل تمرين",
+  "homeBodyMetrics": "قياسات الجسم",
+  "homeNavigationHome": "الرئيسية",
+  "homeNavigationPrograms": "البرامج",
+  "homeNavigationMore": "المزيد",
 
   "loginSubtitle": "تسجيل الدخول لحسابك",
   "phoneNumberHint": "رقم الهاتف",
@@ -70,12 +122,15 @@
   "measurementsTooltip": "القياسات",
   "progressAnalyticsTooltip": "تحليل التقدم",
   "startFirstExercise": "ابدأ بإضافة أول تمرين ليك.",
-  "newExerciseButton": "تمرين جديد",
   "todaysVolumeLabel": "حجم تمرين النهاردة: [كجم]",
   "historyLabel": "السجل",
   "analyticsLabel": "التحليلات",
   "progressAnalyticsTitle": "تحليل التقدم",
   "exerciseTrendsLabel": "اتجاهات التمرين",
+  "progressSelectProgram": "البرنامج",
+  "progressSelectWorkoutDay": "يوم التمرين",
+  "progressSelectExercise": "التمرين",
+  "progressNoCompletedHistory": "لا يوجد سجل مرتبط لتمارين مكتملة حتى الآن.",
   "needMoreDataForProgress": "ضيف يومين تمرين على الأقل عشان تفتح تحليل التقدم.",
   "exerciseNeedsMoreData": "{name} محتاج بيانات أكتر (تمرينين أو أكتر)",
   "lastPreviousVolume": "آخر: {current} كجم | السابق: {previous} كجم",
@@ -167,7 +222,6 @@
   "unableToLoadPhotos": "تعذّر تحميل صور المتابعة.",
 
   "myProgramsTitle": "برامجي",
-  "activeProgramLabel": "البرنامج النشط",
   "previousProgramsLabel": "البرامج السابقة",
   "createProgramButton": "إنشاء برنامج",
   "createProgramTitle": "إنشاء برنامج",
@@ -196,6 +250,29 @@
 
   "workoutDaysTitle": "أيام التمرين",
   "addWorkoutDayButton": "إضافة يوم تمرين",
+  "manageTemplateExercisesButton": "إدارة التمارين",
+  "manageTemplateExercisesTitle": "تمارين {name}",
+  "@manageTemplateExercisesTitle": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "searchExerciseLibraryHint": "ابحث عن تمرين",
+  "assignedTemplateExercisesTitle": "خطة التمرين",
+  "assignedTemplateExercisesCount": "التمارين · {count}",
+  "@assignedTemplateExercisesCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "noAssignedTemplateExercises": "لم تتم إضافة تمارين بعد. أضف التمارين هنا لتكون جاهزة كلما بدأت يوم التمرين ده.",
+  "exerciseLibraryTitle": "مكتبة التمارين",
+  "noExerciseSearchResults": "لا توجد تمارين مطابقة للبحث.",
+  "removeAssignedExerciseTooltip": "إزالة التمرين من يوم التدريب",
+  "addAssignedExerciseTooltip": "إضافة التمرين إلى يوم التدريب",
+  "templateExerciseDuplicateError": "هذا التمرين مضاف بالفعل.",
+  "templateExerciseSaveError": "تعذر حفظ تمارين يوم التدريب.",
+  "exerciseLibraryLoadError": "تعذر تحميل مكتبة التمارين.",
   "createWorkoutDayTitle": "إضافة يوم تمرين",
   "renameWorkoutDayTitle": "إعادة تسمية يوم التمرين",
   "workoutDayNameHint": "اسم يوم التمرين",
@@ -236,6 +313,21 @@
   "@finishWorkoutConfirmBody": {
     "placeholders": { "volume": { "type": "String" } }
   },
+  "discardEmptyWorkoutTitle": "تحب تلغي التمرين الفاضي؟",
+  "discardEmptyWorkoutBody": "مفيش أي مجموعة مكتملة اتسجلت. كمل تمرينك أو الغي التمرين؟",
+  "keepTrainingButton": "كمل التمرين",
+  "discardWorkoutButton": "إلغاء التمرين",
+  "workoutCelebrationHeading": "عاش يا بطل! 💪🔥",
+  "workoutCelebrationSubtitle": "خلصت تمرينك بنجاح. كل تمرينة بتقربك من هدفك!",
+  "completionExercisesLabel": "التمارين",
+  "completionSetsLabel": "المجموعات",
+  "completionVolumeLabel": "الحجم التدريبي",
+  "workoutDurationLabel": "المدة",
+  "completionDurationMinutes": "{minutes} دقيقة",
+  "@completionDurationMinutes": {
+    "placeholders": { "minutes": { "type": "int" } }
+  },
+  "backToHomeButton": "العودة للرئيسية",
   "workoutFinishedBody": "التمرين خلص! إجمالي الحجم: {volume} كجم.",
   "@workoutFinishedBody": {
     "placeholders": { "volume": { "type": "String" } }
@@ -284,6 +376,47 @@
   "sessionDurationLabel": "المدة",
   "viewWorkoutTrackerButton": "افتح متتبع التمرين",
   "programAnalyticsTitle": "تحليلات البرنامج",
+  "analyticsSelectDay": "يوم التمرين",
+  "analyticsSelectExercise": "التمرين",
+  "analyticsWeightTitle": "تطور الوزن",
+  "analyticsRepsTitle": "تطور التكرارات",
+  "analyticsVolumeTitle": "تطور حجم التدريب",
+  "analyticsRepsUnit": "تكرار",
+  "analyticsVolumeUnit": "كجم × تكرار",
+  "analyticsRepsAtWeight": "أفضل تكرارات عند {weight} كجم",
+  "@analyticsRepsAtWeight": {
+    "placeholders": { "weight": { "type": "String" } }
+  },
+  "analyticsPreviousValue": "السابق ({date}): {value} {unit}",
+  "@analyticsPreviousValue": {
+    "placeholders": {
+      "date": { "type": "String" },
+      "value": { "type": "String" },
+      "unit": { "type": "String" }
+    }
+  },
+  "analyticsLatestValue": "الأحدث ({date}): {value} {unit}",
+  "@analyticsLatestValue": {
+    "placeholders": {
+      "date": { "type": "String" },
+      "value": { "type": "String" },
+      "unit": { "type": "String" }
+    }
+  },
+  "analyticsAbsoluteChange": "التغير: {change} {unit}",
+  "@analyticsAbsoluteChange": {
+    "placeholders": {
+      "change": { "type": "String" },
+      "unit": { "type": "String" }
+    }
+  },
+  "analyticsPercentChange": "التغير: {change}%",
+  "@analyticsPercentChange": {
+    "placeholders": { "change": { "type": "String" } }
+  },
+  "analyticsPercentageUnavailable": "لا يمكن حساب النسبة لأن القيمة السابقة تساوي صفرًا.",
+  "analyticsNeedMoreSessions": "أكمل جلستين على الأقل لهذا التمرين لمقارنة التطور.",
+  "analyticsNoComparableReps": "لا يوجد وزن مشترك في آخر جلستين، لذلك لا يمكن مقارنة التكرارات.",
   "analyticsTooltip": "التحليلات",
   "noAnalyticsYetTitle": "لسه مفيش بيانات",
   "noAnalyticsYetSubtitle": "خلّص كام تمرين عشان تبدأ تشوف اتجاه أدائك هنا.",
@@ -304,6 +437,12 @@
     "placeholders": { "count": { "type": "int" } }
   },
   "restTimerLabel": "تايمر الراحة",
+  "restDurationLabel": "مدة الراحة",
+  "restMinutesLabel": "دقيقة",
+  "restSecondsLabel": "ثانية",
+  "setDoneLabel": "تم",
+  "waitForRestTimerLabel": "انتظر حتى ينتهي وقت الراحة.",
+  "markPreviousSetDoneLabel": "علّم المجموعة السابقة بأنها تمت لبدء الراحة.",
   "startRestTimerButton": "ابدأ",
   "stopRestTimerButton": "وقف",
   "resetRestTimerTooltip": "تصفير",
@@ -362,6 +501,10 @@
     }
   },
   "homeCurrentProgramLabel": "البرنامج الحالي",
+  "homeWorkoutPlansTitle": "خطط التمرين",
+  "homeViewAllPlansButton": "عرض الكل",
+  "homeNoWorkoutPlansBody": "أنشئ أول خطة تمرين لتنظيم أيام تمرينك.",
+  "homeCreateWorkoutPlanButton": "إنشاء خطة تمرين",
   "homeWorkoutsCompletedThisWeekLabel": "{count} {count, plural, =0{تمرين مكتمل} =1{تمرين مكتمل} two{تمرينين مكتملين} other{تمارين مكتملة}}",
   "@homeWorkoutsCompletedThisWeekLabel": {
     "placeholders": { "count": { "type": "int" } }
@@ -405,5 +548,152 @@
   "archivedWorkoutDaysTooltip": "الأرشيف",
   "archivedWorkoutDaysTitle": "أيام التمرين المؤرشفة",
   "noArchivedWorkoutDaysBody": "مفيش أيام تمرين مؤرشفة.",
-  "restoreButton": "استرجاع"
+  "restoreButton": "استرجاع",
+  "exercisePickerTitle": "اختر التمارين",
+  "exerciseFiltersTitle": "تصفية التمارين",
+  "muscleGroupLabel": "المجموعة العضلية",
+  "equipmentLabel": "المعدات",
+  "createCustomExerciseButton": "إنشاء تمرين مخصص",
+  "addSelectedExercisesButton": "إضافة المحدد ({count})",
+  "@addSelectedExercisesButton": { "placeholders": { "count": { "type": "int" } } },
+  "customExerciseDuplicateError": "يوجد تمرين بهذا الاسم بالفعل.",
+  "customExerciseSaveError": "تعذر حفظ التمرين المخصص.",
+  "createCustomExerciseTitle": "إنشاء تمرين مخصص",
+  "exerciseNameLabel": "اسم التمرين",
+  "muscleGroupOptionalLabel": "المجموعة العضلية (اختياري)",
+  "equipmentOptionalLabel": "المعدات (اختياري)",
+  "addExerciseButton": "إضافة تمرين",
+  "addExerciseToTitle": "إضافة التمارين إلى",
+  "addExerciseToBody": "اختر إضافة التمارين لهذا التمرين الحالي فقط، أو حفظها في يوم التمرين لاستخدامها لاحقًا.",
+  "currentSessionOnlyAction": "التمرين الحالي فقط",
+  "saveToWorkoutDayAction": "حفظ في يوم التمرين",
+  "exerciseLibrarySaveError": "تعذرت إضافة التمارين المحددة.",
+  "replaceExerciseAction": "استبدال التمرين",
+  "removeExerciseAction": "إزالة التمرين",
+  "exerciseChangeDestinationTitle": "أين تريد تطبيق التغيير؟",
+  "exerciseChangeDestinationBody": "اختر تطبيقه على التمرين الحالي فقط أو حفظه في يوم التمرين للجلسات القادمة. الحفظ في يوم التمرين لا يغير الجلسة الحالية.",
+  "exerciseChangeFutureOnlyNote": "حفظ التغيير في يوم التمرين يؤثر على الجلسات القادمة فقط، ولا يغير التمرين الحالي.",
+  "removeExerciseLoggedSetsBody": "يحتوي {name} على {count} مجموعة مسجلة. إزالته تخفيه من قائمة هذه الجلسة فقط؛ وتظل المجموعات محفوظة في سجل التمرين والإجماليات.",
+  "@removeExerciseLoggedSetsBody": {
+    "placeholders": {
+      "name": {},
+      "count": {"type": "int"}
+    }
+  },
+  "newExerciseButton": "إضافة تمرين",
+  "sessionOnlyExerciseLabel": "مضاف لهذا التمرين الحالي فقط",
+  "personalHubTitle": "الملف الشخصي",
+  "profileHeaderSubtitle": "تدريبك وبيانات حسابك في مكان واحد",
+  "profileEditName": "تعديل الاسم",
+  "profilePhoneLabel": "رقم الهاتف",
+  "profileAddPhoto": "إضافة صورة",
+  "profileChangePhoto": "تغيير الصورة",
+  "profileRemovePhoto": "إزالة الصورة",
+  "profilePhotoPreviewTitle": "معاينة صورة الملف الشخصي",
+  "profilePhotoSaved": "تم حفظ الصورة الشخصية.",
+  "profilePhotoRemoved": "تمت إزالة الصورة الشخصية.",
+  "profilePhotoSaveFailed": "تعذر حفظ صورة الملف الشخصي. جرّب صورة أخرى.",
+  "profilePhotoRemoveFailed": "تعذرت إزالة صورة الملف الشخصي. حاول مجددًا.",
+  "profilePhotoRemoveConfirm": "إزالة صورة الملف الشخصي فقط؟ سيظل حسابك وبيانات التمرين كما هي.",
+  "profileNameSaved": "تم تحديث اسمك.",
+  "profileNameSaveFailed": "تعذر تحديث الاسم. تحقق من الاتصال وحاول مجددًا.",
+  "profilePhoneVerificationNote": "تغيير رقم الهاتف يتطلب التحقق برسالة SMS.",
+  "profileProgressAction": "تقدمي",
+  "appSettingsTitle": "إعدادات التطبيق",
+  "myProgressTitle": "تقدمي",
+  "progressCompletedWorkoutsLabel": "التمارين المكتملة",
+  "progressThisWeekLabel": "هذا الأسبوع",
+  "progressThisMonthLabel": "هذا الشهر",
+  "progressWeeklyActivity": "النشاط الأسبوعي",
+  "progressPersonalRecords": "أرقامك القياسية",
+  "progressHeaviestWeightRecord": "أثقل وزن",
+  "progressHighestSetVolumeRecord": "أعلى حجم لمجموعة",
+  "progressProgramAnalytics": "تحليلات البرامج",
+  "progressRecentWorkouts": "سجل التمارين",
+  "progressNoCompletedWorkouts": "ستظهر تمارينك هنا بعد إكمال أول تمرين.",
+  "progressDataUnavailable": "تعذر تحميل تقدمك التدريبي الآن.",
+  "activeProgramLabel": "البرنامج النشط",
+  "profileNameUnavailable": "الاسم غير متاح",
+  "profileNameInvalid": "أدخل اسمًا لا يتجاوز 80 حرفًا.",
+  "settingsLanguage": "اللغة",
+  "settingsNotifications": "الإشعارات والتذكيرات",
+  "settingsNotificationAuthorized": "إشعارات الجهاز مسموح بها",
+  "settingsNotificationDenied": "إشعارات الجهاز متوقفة",
+  "settingsNotificationNotRequested": "لم يُطلب إذن إشعارات الجهاز بعد",
+  "settingsNotificationPermissionNote": "مفتاح تذكير التمرين منفصل عن إذن الإشعارات في الهاتف.",
+  "settingsPermissionHelpAction": "طريقة تفعيل الإشعارات",
+  "settingsPermissionHelpBody": "افتح إعدادات الهاتف، ثم التطبيقات، واختر AE Coaching، وبعدها اسمح بالإشعارات.",
+  "settingsLogoutDescription": "تسجيل الخروج من هذا الجهاز. ستظل تمارينك وبيانات حسابك محفوظة.",
+  "profileNameEditTitle": "تعديل اسمك",
+  "exercisePickerAlternateTitle": "Select Exercises",
+  "exerciseIllustrationUnavailable": "الصورة غير متاحة بعد",
+  "exercisePreviewAction": "معاينة التمرين",
+  "exerciseCustomBadge": "مخصص",
+  "exerciseAllFilter": "الكل",
+  "exerciseWatchVideo": "شاهد على MuscleWiki (في المتصفح الخارجي)",
+  "exerciseBrowserLaunchFailed": "تعذر فتح المتصفح. حاول مرة أخرى.",
+  "exerciseArtworkCredits": "حقوق الرسم التوضيحي",
+  "exerciseArtworkSource": "عرض مصدر الرسم التوضيحي",
+  "exerciseArtworkLicense": "قراءة ترخيص الرسم دون إنترنت",
+  "exerciseMuscleName": "{muscle, select, chest {الصدر} back {الظهر} shoulders {الأكتاف} biceps {بايسبس} triceps {ترايسبس} quadriceps {الفخذ الأمامي} hamstrings_glutes {الفخذ الخلفي / الأرداف} calves {السمانة} abs_core {البطن / الجذع} full_body {الجسم بالكامل} other {{muscle}}}",
+  "exerciseEquipmentName": "{equipment, select, barbell {بار} dumbbell {دمبل} cable {كابل} machine {جهاز} bodyweight {وزن الجسم} smith_machine {جهاز سميث} ez_bar {بار متعرج} kettlebell {كيتل بيل} plate {قرص وزن} trap_bar {بار سداسي} ab_wheel {عجلة البطن} other {{equipment}}}",
+  "workoutTemplatesTitle": "قوالب التمارين",
+  "standardTemplatesIntro": "اختر تقسيمة، واستعرض أيامها، ثم خصّص نسختك المستقلة.",
+  "useWorkoutTemplate": "استخدم القالب",
+  "customizeTemplateTitle": "تخصيص البرنامج",
+  "saveToMyPrograms": "حفظ في برامجي",
+  "standardTemplateSaved": "تم حفظ البرنامج في برامجي.",
+  "standardTemplateSavedLocally": "تم حفظ البرنامج على هذا الجهاز. النسخ السحابي غير مكتمل؛ أعد فتح برامجي وأيام البرنامج عند الاتصال.",
+  "standardTemplateLoadError": "تعذر تحميل قوالب التمارين.",
+  "standardTemplatesEmpty": "لا توجد قوالب تمارين متاحة.",
+  "standardTemplateProgrammingNote": "المجموعات الفعلية لا تشمل الإحماء. ابدأ بأوزان تتيح نحو ١–٣ تكرارات إضافية قبل العجز. قلّل الحجم عند الحاجة، وزد الوزن تدريجيًا ضمن نطاق التكرارات، وراعِ التعافي. يمكنك زيادة الراحة عند الحاجة. هذه خطط بداية قابلة للتعديل وليست وصفة فردية.",
+  "standardTemplateAdvancedNote": "ستة أيام تدريب تناسب المتمرنين ذوي الخبرة والتعافي الكافي. جلسات أ/ب توزّع الحمل الأسبوعي وليست تكرارًا مضاعفًا لخطة الثلاثة أيام. أضف أيام راحة إذا تراجع التعافي.",
+  "standardTemplateAnteriorPosteriorNote": "تقسيمة تركيز عملية: الأيام الأمامية للصدر والعضلات الأمامية للفخذ والأكتاف والبايسبس والبطن؛ والخلفية للظهر والخلفية للفخذ والجلوتس والأكتاف الخلفية والترايسبس والسمانة. يوجد تداخل طبيعي بين الحركات.",
+  "suggestedTrainingWeek": "تسلسل مقترح لسبعة أيام",
+  "standardRestDay": "راحة",
+  "workingSetsLabel": "المجموعات الفعلية",
+  "minimumRepsLabel": "أقل تكرارات",
+  "maximumRepsLabel": "أعلى تكرارات",
+  "exerciseRestSecondsLabel": "الراحة (ثوانٍ)",
+  "editExerciseTargets": "تعديل المجموعات والتكرارات والراحة",
+  "exerciseTargetsValidation": "استخدم ١–١٠ مجموعات، و١–١٠٠ تكرار (الأقل لا يتجاوز الأعلى)، و١٥–٦٠٠ ثانية راحة.",
+  "standardDraftInvalid": "أدخل اسم البرنامج واسم كل يوم، واترك تمرينًا واحدًا على الأقل في كل يوم، وتحقق من أهداف التمارين.",
+  "standardDraftSaveError": "تعذر حفظ البرنامج. مسودتك ما زالت متاحة؛ حاول مجددًا.",
+  "standardDraftAccountChanged": "تم تغيير الحساب. أعد فتح قوالب التمارين للحساب الحالي.",
+  "discardProgramDraftTitle": "تجاهل هذه المسودة؟",
+  "discardProgramDraftBody": "لم يُحفظ هذا البرنامج. المغادرة ستتجاهل تخصيصاتك.",
+  "discardProgramDraft": "تجاهل المسودة",
+  "templateDaysPerWeek": "{count} أيام / أسبوع",
+  "@templateDaysPerWeek": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "suggestedSequenceDay": "اليوم {day}",
+  "@suggestedSequenceDay": {
+    "placeholders": {
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "exerciseTargetSummary": "الخطة: {sets} مجموعات × {min}–{max} تكرار · راحة {seconds} ث",
+  "@exerciseTargetSummary": {
+    "placeholders": {
+      "sets": {
+        "type": "int"
+      },
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      },
+      "seconds": {
+        "type": "int"
+      }
+    }
+  }
 }

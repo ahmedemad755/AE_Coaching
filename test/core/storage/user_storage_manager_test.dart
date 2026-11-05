@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:ae_coaching/features/workout/data/models/exercise_set.dart';
+import 'package:ae_coaching/features/workout/data/models/custom_exercise.dart';
 import 'package:ae_coaching/auth/data/models/body_measurement.dart';
 import 'package:ae_coaching/core/storage/user_storage_manager.dart';
 import 'package:ae_coaching/features/progress_photos/data/models/progress_photo.dart';
@@ -40,6 +41,9 @@ void main() {
     }
     if (!Hive.isAdapterRegistered(5)) {
       Hive.registerAdapter(WorkoutSessionAdapter());
+    }
+    if (!Hive.isAdapterRegistered(6)) {
+      Hive.registerAdapter(CustomExerciseAdapter());
     }
     manager = UserStorageManager();
   });
@@ -81,7 +85,7 @@ void main() {
       expect(Hive.isBoxOpen('workout_programs_'), isFalse);
     });
 
-    test('all six production prefix/type mappings are accepted', () async {
+    test('all production prefix/type mappings are accepted', () async {
       final sets = await manager.getUserBox<ExerciseSet>('sets', 'uid-a');
       final programs = await manager.getUserBox<WorkoutProgram>(
         'workout_programs',
@@ -103,6 +107,10 @@ void main() {
         'progress_photos',
         'uid-a',
       );
+      final customExercises = await manager.getUserBox<CustomExercise>(
+        'custom_exercises',
+        'uid-a',
+      );
 
       expect(sets.isOpen, isTrue);
       expect(programs.isOpen, isTrue);
@@ -110,6 +118,7 @@ void main() {
       expect(sessions.isOpen, isTrue);
       expect(measurements.isOpen, isTrue);
       expect(photos.isOpen, isTrue);
+      expect(customExercises.isOpen, isTrue);
     });
   });
 
@@ -135,6 +144,10 @@ void main() {
       expect(
         UserStorageManager.boxNameFor('progress_photos', 'u1'),
         'progress_photos_u1',
+      );
+      expect(
+        UserStorageManager.boxNameFor('custom_exercises', 'u1'),
+        'custom_exercises_u1',
       );
     });
   });
@@ -192,7 +205,7 @@ void main() {
   group('closeForUser', () {
     test('closes all and only the boxes belonging to uid A — uid B\'s '
         'boxes are untouched', () async {
-      // Open all 6 prefixes for A and B.
+      // Open all per-user prefixes for A and B.
       Future<void> openAllFor(String uid) async {
         await manager.getUserBox<ExerciseSet>('sets', uid);
         await manager.getUserBox<WorkoutProgram>('workout_programs', uid);
@@ -200,6 +213,7 @@ void main() {
         await manager.getUserBox<WorkoutSession>('workout_sessions', uid);
         await manager.getUserBox<BodyMeasurement>('measurements', uid);
         await manager.getUserBox<ProgressPhoto>('progress_photos', uid);
+        await manager.getUserBox<CustomExercise>('custom_exercises', uid);
       }
 
       await openAllFor('uid-close-A');

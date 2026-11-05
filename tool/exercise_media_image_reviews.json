@@ -1,0 +1,3118 @@
+[
+  {
+    "exerciseId": "ex_barbell_bench_press",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "ever:bench-press",
+    "sources": [
+      {
+        "repo": "everkinetic/data",
+        "revision": "446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6",
+        "path": "src/images-web/bench-press-2.png",
+        "author": "Everkinetic / Greg Priday",
+        "key": "ever:bench-press",
+        "sha256": "8da053ba25e7b838fbb257bb2d09051956a80373aa80dc10cb1e4dfbdab04be3",
+        "sourceUrl": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/bench-press-2.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: horizontal press; flat bench; bilateral barbell; overhand."
+  },
+  {
+    "exerciseId": "ex_incline_barbell_bench_press",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "ever:incline-bench-press",
+    "sources": [
+      {
+        "repo": "everkinetic/data",
+        "revision": "446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6",
+        "path": "src/images-web/incline-bench-press-2.png",
+        "author": "Everkinetic / Greg Priday",
+        "key": "ever:incline-bench-press",
+        "sha256": "03877e76f1ff7fe0ba53c6911be803e905e16e72d064a92eb084140542811e9b",
+        "sourceUrl": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/incline-bench-press-2.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: incline press; incline bench; bilateral barbell."
+  },
+  {
+    "exerciseId": "ex_decline_barbell_bench_press",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:decline-bench-press",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/decline-bench-press.png",
+        "sha256": "285defde61326e26c3fcd4d5fddd076040740f46017f338828dae4aef2bcb811",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:decline-bench-press",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/decline-bench-press.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: decline press; decline bench; bilateral barbell."
+  },
+  {
+    "exerciseId": "ex_dumbbell_bench_press",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "ever:bench-press-dumbbell",
+    "sources": [
+      {
+        "repo": "everkinetic/data",
+        "revision": "446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6",
+        "path": "src/images-web/bench-press-dumbbell-2.png",
+        "author": "Everkinetic / Greg Priday",
+        "key": "ever:bench-press-dumbbell",
+        "sha256": "327ac9b126b4b6e6e0fd27e3221d61cb53064a45a76413f1ef8e035ade3620b8",
+        "sourceUrl": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/bench-press-dumbbell-2.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: horizontal press; flat bench; two dumbbells; palms forward."
+  },
+  {
+    "exerciseId": "ex_incline_dumbbell_press",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:incline-dumbbell-press",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/incline-dumbbell-press.png",
+        "sha256": "80b1b3b384cb8f439b2f6087d9793c88f3a6b11336ed0df8cfbe404803001ba3",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:incline-dumbbell-press",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/incline-dumbbell-press.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "New Open Exercise Art image has an inclined bench, bilateral dumbbells and conventional pressing grip. The previously rejected neutral-grip Everkinetic candidate remains excluded."
+  },
+  {
+    "exerciseId": "ex_decline_dumbbell_press",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:decline-dumbbell-press",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/decline-dumbbell-press.png",
+        "sha256": "6a1bfabe35b6b301c196a3b4d4813a70438818541a7a329e254a53f05de5e1d9",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:decline-dumbbell-press",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/decline-dumbbell-press.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: decline press; decline bench; two dumbbells."
+  },
+  {
+    "exerciseId": "ex_dumbbell_fly",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:dumbbell-fly",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/dumbbell-fly.png",
+        "sha256": "925a06943f861bae75d9b6c2c537358ef4b9a8df0eba01e299272351bab36ac9",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:dumbbell-fly",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/dumbbell-fly.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: horizontal adduction; flat bench; two dumbbells; fixed soft elbows."
+  },
+  {
+    "exerciseId": "ex_incline_dumbbell_fly",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:incline-dumbbell-fly",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/incline-dumbbell-fly.png",
+        "sha256": "85260ee2aac2a67d7d756445fbf72ab3ce1c445fc7acd03195b9380115b9630d",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:incline-dumbbell-fly",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/incline-dumbbell-fly.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: incline horizontal adduction; incline bench; two dumbbells."
+  },
+  {
+    "exerciseId": "ex_machine_chest_press",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:machine-chest-press",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/machine-chest-press.png",
+        "sha256": "d9770e91e0553be5c83786580bd32171e7e643b4c22cae323676cbf897fb6fd5",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:machine-chest-press",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/machine-chest-press.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: horizontal press; seated chest-press machine; bilateral."
+  },
+  {
+    "exerciseId": "ex_incline_chest_press_machine",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "ever:incline-chest-press",
+    "sources": [
+      {
+        "repo": "everkinetic/data",
+        "revision": "446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6",
+        "path": "src/images-web/incline-chest-press-2.png",
+        "author": "Everkinetic / Greg Priday",
+        "key": "ever:incline-chest-press",
+        "sha256": "a292c69cb91db8542424037447fb065a8361bbf2068cd1b3099b4310ad61b66b",
+        "sourceUrl": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/incline-chest-press-2.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: incline press; machine incline pressing path."
+  },
+  {
+    "exerciseId": "ex_decline_chest_press_machine",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:decline-chest-press",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/decline-chest-press.png",
+        "sha256": "2ae352ff89d4f69132ded11f62b1998c14d54e8a1af3394e7ed9163482dc7385",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:decline-chest-press",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/decline-chest-press.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: decline press; machine decline pressing path."
+  },
+  {
+    "exerciseId": "ex_pec_deck_fly",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:pec-deck",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/pec-deck.png",
+        "sha256": "f8fc9efc218510e79f3abca8c43cc4803ef32b1ba51a676f6f06df1b126ef4a2",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:pec-deck",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/pec-deck.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: horizontal adduction; seated pec-deck machine; bilateral."
+  },
+  {
+    "exerciseId": "ex_cable_chest_fly",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:cable-fly",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/cable-fly.png",
+        "sha256": "0255f6d5f257b5473e5b57884f4c13ac3ccef069a8c8da8e2ec51aee895791bb",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:cable-fly",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/cable-fly.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: horizontal adduction; standing bilateral cables; chest-height path."
+  },
+  {
+    "exerciseId": "ex_high_to_low_cable_fly",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "",
+    "sources": [],
+    "review": "Generic starting pose does not establish high pulleys. Guide finish has descending cables but no pulley assembly/sequence establishing the specified high-to-low path; retain gap."
+  },
+  {
+    "exerciseId": "ex_low_to_high_cable_fly",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "",
+    "sources": [],
+    "review": "Generic cable-fly art does not show low pulleys or an upward inward path; Guide finish shows descending cables."
+  },
+  {
+    "exerciseId": "ex_smith_machine_bench_press",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:smith-machine-bench-press",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/smith-machine-bench-press.png",
+        "sha256": "16563a9878cdc11d29beae7a83ecb6aed8b31bedb855b59b3f67943cd97598ae",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:smith-machine-bench-press",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/smith-machine-bench-press.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: horizontal press; flat bench; guided Smith bar."
+  },
+  {
+    "exerciseId": "ex_smith_machine_incline_press",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:smith-machine-incline-bench-press",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/smith-machine-incline-bench-press.png",
+        "sha256": "8d1fac1d3eabd6f2e8a251536f33ec33a50731af0ac26fe2ed72380fa7e00725",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:smith-machine-incline-bench-press",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/smith-machine-incline-bench-press.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: incline press; incline bench; guided Smith bar."
+  },
+  {
+    "exerciseId": "ex_push_up",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:push-up",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/push-up.png",
+        "sha256": "805003a6fa44d41aa88ef3763e5b2a941cb76273f90cd5ebb1e4f143cd017824",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:push-up",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/push-up.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: horizontal bodyweight press; standard hands; toes supported."
+  },
+  {
+    "exerciseId": "ex_wide_grip_push_up",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:wide-push-up",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/wide-push-up.png",
+        "sha256": "04d9f8f26401e23ed4fa927e61b62be714610b0c0fefd5768b51934483ac24ae",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:wide-push-up",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/wide-push-up.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: horizontal bodyweight press; hands wider than shoulders."
+  },
+  {
+    "exerciseId": "ex_diamond_push_up",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:diamond-push-up",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/diamond-push-up.png",
+        "sha256": "93703c999185f597c7cf07067fc2841153e89e81cb60fec6799f73ecad210836",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:diamond-push-up",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/diamond-push-up.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: horizontal bodyweight press; thumbs/index fingers together; narrow hands."
+  },
+  {
+    "exerciseId": "ex_chest_dip",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:chest-dip",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/chest-dip.png",
+        "sha256": "080d7d780cfa4ec594fc72b81874f6c3967b954fa2db5c18f25e18dc82122825",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:chest-dip",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/chest-dip.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: bodyweight dip; parallel bars; forward torso lean; chest emphasis."
+  },
+  {
+    "exerciseId": "ex_single_arm_cable_chest_fly",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "",
+    "sources": [],
+    "review": "Both one-arm fly candidates depict a dumbbell on a flat bench, not cable resistance."
+  },
+  {
+    "exerciseId": "ex_pull_up",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:pull-up",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/pull-up.png",
+        "sha256": "cb9b1bb4bc22cff6f2959b80b71fd8613c9fbbb1b018b66504452fbce4dfa87d",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:pull-up",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/pull-up.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: vertical bodyweight pull; overhand grip; standard width."
+  },
+  {
+    "exerciseId": "ex_chin_up",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:chin-up",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/chin-up.png",
+        "sha256": "63893cf58ef14cb00db95582e51d2bbc297ef46fe2bc74ca66a75c189f0cc515",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:chin-up",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/chin-up.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: vertical bodyweight pull; supinated grip."
+  },
+  {
+    "exerciseId": "ex_wide_grip_pull_up",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "ever:pull-ups",
+    "sources": [
+      {
+        "repo": "everkinetic/data",
+        "revision": "446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6",
+        "path": "src/images-web/pull-ups-2.png",
+        "author": "Everkinetic / Greg Priday",
+        "key": "ever:pull-ups",
+        "sha256": "66b15aedec83478f65e40d3f394990b460cb8ae28d23dab29ca1af5623e0c468",
+        "sourceUrl": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/pull-ups-2.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Original front-to-bar pull-up drawing shows wide overhand hand placement. The side-to-side wide-grip-chin-up candidate was rejected."
+  },
+  {
+    "exerciseId": "ex_assisted_pull_up",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:assisted-pull-up",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/assisted-pull-up.png",
+        "sha256": "da95e8e7b66882c0293c00d8867c2c9ae60ad95a4f2507803dca08aaedad8592",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:assisted-pull-up",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/assisted-pull-up.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: vertical assisted pull; counterweighted machine; knee/foot support."
+  },
+  {
+    "exerciseId": "ex_lat_pulldown",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "ever:wide-grip-lat-pull-down",
+    "sources": [
+      {
+        "repo": "everkinetic/data",
+        "revision": "446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6",
+        "path": "src/images-web/wide-grip-lat-pull-down-2.png",
+        "author": "Everkinetic / Greg Priday",
+        "key": "ever:wide-grip-lat-pull-down",
+        "sha256": "b3c1a2a0f64eeee0d045ded7779c8beb2ad54bb0a6b7eafc28c3e4038d9fb0b2",
+        "sourceUrl": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/wide-grip-lat-pull-down-2.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: vertical cable pull; wide front overhand pulldown per Arabic name."
+  },
+  {
+    "exerciseId": "ex_close_grip_lat_pulldown",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:close-grip-lat-pulldown",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/close-grip-lat-pulldown.png",
+        "sha256": "56b6a62773c60b82eda8196996f7916e9a9e872049c7b9fe3e5c21e1757adc04",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:close-grip-lat-pulldown",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/close-grip-lat-pulldown.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: vertical cable pull; close hand spacing; no wide bar substitute."
+  },
+  {
+    "exerciseId": "ex_reverse_grip_lat_pulldown",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "ever:underhand-pull-down",
+    "sources": [
+      {
+        "repo": "everkinetic/data",
+        "revision": "446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6",
+        "path": "src/images-web/underhand-pull-down-2.png",
+        "author": "Everkinetic / Greg Priday",
+        "key": "ever:underhand-pull-down",
+        "sha256": "bed8e6a1914eeba7e03db7fb103e655ed0766de08e5513040109f42879c1e78a",
+        "sourceUrl": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/underhand-pull-down-2.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: vertical cable pull; supinated underhand bar."
+  },
+  {
+    "exerciseId": "ex_neutral_grip_lat_pulldown",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "ever:v-bar-pull-down",
+    "sources": [
+      {
+        "repo": "everkinetic/data",
+        "revision": "446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6",
+        "path": "src/images-web/v-bar-pull-down-2.png",
+        "author": "Everkinetic / Greg Priday",
+        "key": "ever:v-bar-pull-down",
+        "sha256": "a2f3f92f2485a2e26579daa1e5288e36419863dab363c7c088603389b5ebe1fc",
+        "sourceUrl": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/v-bar-pull-down-2.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: vertical cable pull; palms facing each other; parallel handle."
+  },
+  {
+    "exerciseId": "ex_single_arm_lat_pulldown",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "",
+    "sources": [],
+    "review": "Both candidates depict two hands on a wide bar, not a single-arm handle."
+  },
+  {
+    "exerciseId": "ex_seated_cable_row",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:seated-cable-row",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/seated-cable-row.png",
+        "sha256": "10fcff58ffcf3c0e0aeb8e369e1d9deb2b6a77b547a61cd4f675c672cc82cb45",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:seated-cable-row",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/seated-cable-row.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Seated bilateral cable row with close neutral handle, an ordinary variation of this grip-unspecified catalog item."
+  },
+  {
+    "exerciseId": "ex_close_grip_seated_cable_row",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:seated-cable-row",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/seated-cable-row.png",
+        "sha256": "10fcff58ffcf3c0e0aeb8e369e1d9deb2b6a77b547a61cd4f675c672cc82cb45",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:seated-cable-row",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/seated-cable-row.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "The narrow neutral handle is visible. This exact asset also represents the generic seated-cable-row item, which has no conflicting grip restriction; the IDs remain separate."
+  },
+  {
+    "exerciseId": "ex_wide_grip_seated_cable_row",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "",
+    "sources": [],
+    "review": "Both candidate images show a close neutral handle, not a wide grip."
+  },
+  {
+    "exerciseId": "ex_barbell_bent_over_row",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:barbell-row",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/barbell-row.png",
+        "sha256": "940878b9799491a47daa4dc580d1636344400950940bfd73442ff806a4093c70",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:barbell-row",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/barbell-row.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: horizontal free-weight pull; hinged standing torso; bilateral overhand bar."
+  },
+  {
+    "exerciseId": "ex_underhand_barbell_row",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "ever:reverse-grips-bent-over-barbell-rows",
+    "sources": [
+      {
+        "repo": "everkinetic/data",
+        "revision": "446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6",
+        "path": "src/images-web/reverse-grips-bent-over-barbell-rows-2.png",
+        "author": "Everkinetic / Greg Priday",
+        "key": "ever:reverse-grips-bent-over-barbell-rows",
+        "sha256": "7329f5689dc13d3965bd9edf0af7631aa9e44c0b5f52647ea7610187b03e6f21",
+        "sourceUrl": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/reverse-grips-bent-over-barbell-rows-2.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Approved Everkinetic reverse-grip row: supinated hands, bilateral barbell pulled to abdomen, hinged torso and soft knees. Original metadata explicitly specifies palms up; individually enlarged to inspect grip."
+  },
+  {
+    "exerciseId": "ex_pendlay_row",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "art:pendlay-row",
+    "sources": [],
+    "review": "Neither named Pendlay drawing establishes a parallel torso or floor reset; both show angled bent-over rows.",
+    "rejectedSourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/pendlay-row.png"
+  },
+  {
+    "exerciseId": "ex_one_arm_dumbbell_row",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:dumbbell-row",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/dumbbell-row.png",
+        "sha256": "250cc2fc5fbd65272b85a67a8d68af487d9fedc451097680b7d381b2d51178d9",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:dumbbell-row",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/dumbbell-row.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: horizontal free-weight pull; unilateral dumbbell; support on bench."
+  },
+  {
+    "exerciseId": "ex_chest_supported_dumbbell_row",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:chest-supported-row",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/chest-supported-row.png",
+        "sha256": "3799de4bd93c63ec3a0b5e031c7cd7e18cef520742493b7349458b7053eb690a",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:chest-supported-row",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/chest-supported-row.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: horizontal free-weight pull; prone on incline bench; two dumbbells."
+  },
+  {
+    "exerciseId": "ex_t_bar_row",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:t-bar-row",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/t-bar-row.png",
+        "sha256": "b8d6018ea1bb6cbd0f19ee3a3e2c19eb1c3af770ee31f83cd1843cb09b690f9f",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:t-bar-row",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/t-bar-row.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: horizontal machine pull; T-bar lever/landmine; bilateral."
+  },
+  {
+    "exerciseId": "ex_chest_supported_machine_row",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "guide:chest-supported-row",
+    "sources": [
+      {
+        "repo": "bryllim/workout-guide",
+        "revision": "aac599224bb9780305239607ef98540b7e0ce389",
+        "path": "packages/workout-guide/assets/chest-supported-row/frame-2.png",
+        "author": "Bryl Lim / Workout Guide",
+        "key": "guide:chest-supported-row",
+        "sha256": "18b921d14cda4d78f1cb572dc87fac062e5621da0480220dfb995e62217b235d",
+        "sourceUrl": "https://github.com/bryllim/workout-guide/blob/aac599224bb9780305239607ef98540b7e0ce389/packages/workout-guide/assets/chest-supported-row/frame-2.png",
+        "license": "CC BY-SA 4.0",
+        "upstreamAttribution": {
+          "creator": "Bryl Lim",
+          "creatorUrl": "https://bryllim.com",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+        }
+      }
+    ],
+    "review": "Approved Guide frame 2: chest rests on an inclined pad, bilateral handles drive a plate-loaded row lever. This is a chest-supported machine row, not the dumbbell prone-bench drawing. Individually enlarged to confirm machine and pad. Catalog specifies machine/chest support, not a selectorized-only mechanism."
+  },
+  {
+    "exerciseId": "ex_single_arm_machine_row",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "",
+    "sources": [],
+    "review": "Both generic machine-row images show bilateral cable rowing without a single-arm independent lever."
+  },
+  {
+    "exerciseId": "ex_straight_arm_cable_pulldown",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:straight-arm-pulldown",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/straight-arm-pulldown.png",
+        "sha256": "59ac9baffaab314f7aa80fd965751e4959003cd500e852675ed792db1ced8b4f",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:straight-arm-pulldown",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/straight-arm-pulldown.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: shoulder extension; standing high cable; arms nearly straight."
+  },
+  {
+    "exerciseId": "ex_dumbbell_pullover",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:dumbbell-pullover",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/dumbbell-pullover.png",
+        "sha256": "a38c011b07096dd636530ade28346d3031844e2f49684be7a694e96a3b38196c",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:dumbbell-pullover",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/dumbbell-pullover.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: shoulder extension; supine bench; single dumbbell held both hands."
+  },
+  {
+    "exerciseId": "ex_machine_pullover",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "",
+    "sources": [],
+    "review": "Candidates show free weights on bench/stability ball; neither shows a pullover machine."
+  },
+  {
+    "exerciseId": "ex_inverted_row",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:inverted-row",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/inverted-row.png",
+        "sha256": "4bfab29db7c73c8a947ce0e689dafb0a11b5d24547c2767f859933aa5fc48d86",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:inverted-row",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/inverted-row.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: horizontal bodyweight pull; body suspended below fixed bar."
+  },
+  {
+    "exerciseId": "ex_back_extension",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:back-extension",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/back-extension.png",
+        "sha256": "bd4051ff31f362419b015fa305407c5c63888ff9a0bec82bd5e0137933d41c7c",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:back-extension",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/back-extension.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: hip/back extension; bodyweight hyperextension bench."
+  },
+  {
+    "exerciseId": "ex_cable_pullover",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "",
+    "sources": [],
+    "review": "Candidates show free weights, not cable resistance."
+  },
+  {
+    "exerciseId": "ex_barbell_overhead_press",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:overhead-press",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/overhead-press.png",
+        "sha256": "40e8386beeebc40c7eddcc341c20f26a03afdfe099995b8ae502c6a7e5fd0ee3",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:overhead-press",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/overhead-press.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: vertical press; standing; barbell; strict without leg drive."
+  },
+  {
+    "exerciseId": "ex_seated_barbell_shoulder_press",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:seated-military-press",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/seated-military-press.png",
+        "sha256": "cacf020f7195e7b9ce43c8ead75692bcf6b1069300dbd445074dcd1450090d14",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:seated-military-press",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/seated-military-press.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: vertical press; seated; barbell; strict."
+  },
+  {
+    "exerciseId": "ex_dumbbell_shoulder_press",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:dumbbell-shoulder-press",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/dumbbell-shoulder-press.png",
+        "sha256": "b24b7321903abd67983c30f1e578791bba73ac233d43ff09a9103bbad5e47cfa",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:dumbbell-shoulder-press",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/dumbbell-shoulder-press.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: vertical press; bilateral dumbbells; conventional grip."
+  },
+  {
+    "exerciseId": "ex_arnold_press",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "ever:arnold-press",
+    "sources": [
+      {
+        "repo": "everkinetic/data",
+        "revision": "446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6",
+        "path": "src/images-web/arnold-press-1.png",
+        "author": "Everkinetic / Greg Priday",
+        "key": "ever:arnold-press@1",
+        "sha256": "ca6050c1ce94b41aa5b3b555103515634d50fcca38530de6495e3d4d10ec559b",
+        "sourceUrl": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/arnold-press-1.png",
+        "license": "CC BY-SA 4.0"
+      },
+      {
+        "repo": "everkinetic/data",
+        "revision": "446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6",
+        "path": "src/images-web/arnold-press-2.png",
+        "author": "Everkinetic / Greg Priday",
+        "key": "ever:arnold-press",
+        "sha256": "0e4da2c3c919dc86d5ecc9da9307b022754f93d613018c1017b099575d831fc6",
+        "sourceUrl": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/arnold-press-2.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Two original Everkinetic frames and its movement description establish the rotating dumbbell press, rather than using an indistinguishable generic overhead-lockout still."
+  },
+  {
+    "exerciseId": "ex_machine_shoulder_press",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:machine-shoulder-press",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/machine-shoulder-press.png",
+        "sha256": "be1a138beec49ab8acb5e898ed9b45f542014c7f341812b053c42a0ff6137d3e",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:machine-shoulder-press",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/machine-shoulder-press.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: vertical press; seated shoulder-press machine."
+  },
+  {
+    "exerciseId": "ex_smith_machine_shoulder_press",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:smith-machine-overhead-press",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/smith-machine-overhead-press.png",
+        "sha256": "40130df583bc0097989fbff82e6de8136c98ff2833749f08418278f09baa6173",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:smith-machine-overhead-press",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/smith-machine-overhead-press.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: vertical press; guided Smith bar; shoulder press."
+  },
+  {
+    "exerciseId": "ex_dumbbell_lateral_raise",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:lateral-raise",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/lateral-raise.png",
+        "sha256": "d881fef0ff2393bcc3c58de61167ec040b94eb9585513878fdcf00f5806098de",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:lateral-raise",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/lateral-raise.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: shoulder abduction; standing; two dumbbells."
+  },
+  {
+    "exerciseId": "ex_seated_dumbbell_lateral_raise",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "",
+    "sources": [],
+    "review": "Both candidate poses are standing, not seated."
+  },
+  {
+    "exerciseId": "ex_cable_lateral_raise",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:cable-lateral-raise",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/cable-lateral-raise.png",
+        "sha256": "8556920764615d9a85f9c45cc8cda240b9422268a9746610dc9128ff555f10dc",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:cable-lateral-raise",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/cable-lateral-raise.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: shoulder abduction; low cable; lateral arm path."
+  },
+  {
+    "exerciseId": "ex_machine_lateral_raise",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:machine-lateral-raise",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/machine-lateral-raise.png",
+        "sha256": "46805b4f6ae492ca19617b8257e4db23819c16ba0cbfa9917225aac5d403a490",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:machine-lateral-raise",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/machine-lateral-raise.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: shoulder abduction; seated lateral-raise machine."
+  },
+  {
+    "exerciseId": "ex_dumbbell_front_raise",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:front-raise",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/front-raise.png",
+        "sha256": "98dda3d3e292d0772bce44a831e91351a7a0fdff883cce21e68260fcf5d9bbdb",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:front-raise",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/front-raise.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: shoulder flexion; dumbbells lifted forward."
+  },
+  {
+    "exerciseId": "ex_cable_front_raise",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:cable-front-raise",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/cable-front-raise.png",
+        "sha256": "3982c3df6735c4a43c1ab62a770ae3d4d1df822e527135a714b22e88aaac2cce",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:cable-front-raise",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/cable-front-raise.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: shoulder flexion; low cable lifted forward."
+  },
+  {
+    "exerciseId": "ex_plate_front_raise",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:plate-front-raise",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/plate-front-raise.png",
+        "sha256": "d2509bc3b62632dbb94519bed22daa0bf39a37386b27cf02d20012b19631b59b",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:plate-front-raise",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/plate-front-raise.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: shoulder flexion; single plate held with both hands."
+  },
+  {
+    "exerciseId": "ex_reverse_pec_deck",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:reverse-pec-deck",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/reverse-pec-deck.png",
+        "sha256": "e0ed1626870671e5dced95e35734eeef00180e0bafa66eb4d01e42dc5212e88c",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:reverse-pec-deck",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/reverse-pec-deck.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: horizontal abduction; facing pec-deck back pad; rear deltoids."
+  },
+  {
+    "exerciseId": "ex_bent_over_dumbbell_reverse_fly",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:bent-over-rear-delt-raise",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/bent-over-rear-delt-raise.png",
+        "sha256": "fa49124f8cb0ad11ead3f3312ead0d5ced4694d46b400a44707925720c05f928",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:bent-over-rear-delt-raise",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/bent-over-rear-delt-raise.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: horizontal abduction; hinged standing; two dumbbells; not prone bench."
+  },
+  {
+    "exerciseId": "ex_cable_rear_delt_fly",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:cable-rear-delt-fly",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/cable-rear-delt-fly.png",
+        "sha256": "cb7fcb0484d1afc38cb7cfb8d8c21953bd90f4c425f5c7d010a9429b48d73d29",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:cable-rear-delt-fly",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/cable-rear-delt-fly.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: horizontal abduction; cables; arms move outward/back."
+  },
+  {
+    "exerciseId": "ex_face_pull",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:face-pull",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/face-pull.png",
+        "sha256": "174f5315167e5fb9662d4b90cf7e57e16b685f3f56a940c8ffc91fd8169cc6e9",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:face-pull",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/face-pull.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: horizontal high cable pull; rope toward face; external rotation."
+  },
+  {
+    "exerciseId": "ex_barbell_upright_row",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:barbell-upright-row",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/barbell-upright-row.png",
+        "sha256": "27fc54af9638ecfc858b74f2e44479ecd96e55f71673fb32a5e322f1f602e336",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:barbell-upright-row",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/barbell-upright-row.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: shoulder elevation/abduction; standing; barbell; high elbows."
+  },
+  {
+    "exerciseId": "ex_dumbbell_shrug",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:dumbbell-shrug",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/dumbbell-shrug.png",
+        "sha256": "4e658f026f75a3b038e0174284a7b718309754793915a5e3f43b6d1cdfd7a63c",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:dumbbell-shrug",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/dumbbell-shrug.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: scapular elevation; two dumbbells; arms down."
+  },
+  {
+    "exerciseId": "ex_barbell_shrug",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:barbell-shrug",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/barbell-shrug.png",
+        "sha256": "bd8c18420905e188662acf354a24404cfac4b9f8b381441acc373a4d2e538fbd",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:barbell-shrug",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/barbell-shrug.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: scapular elevation; barbell in front; arms down."
+  },
+  {
+    "exerciseId": "ex_barbell_curl",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:barbell-curl",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/barbell-curl.png",
+        "sha256": "96f2ffc36fcab12babf310902782e5bfddfe3f09206d2ceae05e4bc74bf1286d",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:barbell-curl",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/barbell-curl.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: elbow flexion; straight barbell; supinated."
+  },
+  {
+    "exerciseId": "ex_ez_bar_curl",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:ez-bar-curl",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/ez-bar-curl.png",
+        "sha256": "fae2f5d5b2f48cac552660ecdf7d32ce239c6305815af07a7fe6710e761c3a31",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:ez-bar-curl",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/ez-bar-curl.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: elbow flexion; EZ bar; angled semi-supinated grip."
+  },
+  {
+    "exerciseId": "ex_dumbbell_curl",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:bicep-curl",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/bicep-curl.png",
+        "sha256": "b36c8dcaec56e53e56b40add2f9c23436d748b37ffe4a974338f53706f2f8b83",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:bicep-curl",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/bicep-curl.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: elbow flexion; two dumbbells; supinated; bilateral."
+  },
+  {
+    "exerciseId": "ex_alternating_dumbbell_curl",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:alternating-dumbbell-curl",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/alternating-dumbbell-curl.png",
+        "sha256": "316d886dc07426d7883c142457f158b0abe7c8814656fe80e14e763a4db7cab6",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:alternating-dumbbell-curl",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/alternating-dumbbell-curl.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: elbow flexion; dumbbells; alternating arms."
+  },
+  {
+    "exerciseId": "ex_hammer_curl",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:hammer-curl",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/hammer-curl.png",
+        "sha256": "d7a97ca75702f55f5fd6de7bb3fd7ab073ce329d8335c075be4a9aeae901d79f",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:hammer-curl",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/hammer-curl.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: elbow flexion; dumbbells; neutral grip."
+  },
+  {
+    "exerciseId": "ex_cross_body_hammer_curl",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:hammer-curl-across-body",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/hammer-curl-across-body.png",
+        "sha256": "2f1d0e2d110567af5c7a15a36ffaf16d834ea4a0f5cf92e9cce1feebec38f1b2",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:hammer-curl-across-body",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/hammer-curl-across-body.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: elbow flexion; dumbbell; neutral grip across torso."
+  },
+  {
+    "exerciseId": "ex_incline_dumbbell_curl",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:incline-dumbbell-curl",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/incline-dumbbell-curl.png",
+        "sha256": "b82f3f420a922df447039fa6b87547928b88e9900ce476f28f64a6caf0b9d965",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:incline-dumbbell-curl",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/incline-dumbbell-curl.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: elbow flexion; supine incline bench; dumbbells; arms behind torso."
+  },
+  {
+    "exerciseId": "ex_preacher_curl",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:preacher-curl",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/preacher-curl.png",
+        "sha256": "61a13099bcbe64ac763aad1dc8758cbdb345446f4104fd74c4738198440cf4fc",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:preacher-curl",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/preacher-curl.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "The angled EZ bar and preacher arm pad are visibly present; not a machine or dumbbell curl."
+  },
+  {
+    "exerciseId": "ex_machine_preacher_curl",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "ever:preacher-curl-with-machine",
+    "sources": [
+      {
+        "repo": "everkinetic/data",
+        "revision": "446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6",
+        "path": "src/images-web/preacher-curl-with-machine-2.png",
+        "author": "Everkinetic / Greg Priday",
+        "key": "ever:preacher-curl-with-machine",
+        "sha256": "3980eba0b740291fd14001894ed84e4dbbd9541dc2295cca40eb1a3974faa285",
+        "sourceUrl": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/preacher-curl-with-machine-2.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: elbow flexion; preacher machine lever; not free bar."
+  },
+  {
+    "exerciseId": "ex_concentration_curl",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:concentration-curl",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/concentration-curl.png",
+        "sha256": "66391cbe023e97ba543d3cbca07309415c740f1fb5f547af4aab34e245615daf",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:concentration-curl",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/concentration-curl.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: elbow flexion; seated; dumbbell; upper arm supported on inner thigh."
+  },
+  {
+    "exerciseId": "ex_cable_biceps_curl",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:cable-curl",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/cable-curl.png",
+        "sha256": "d012ea8bbab9c928aa249598707d190d16f70ea80622aed7d9d5aca9ce6658d6",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:cable-curl",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/cable-curl.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: elbow flexion; standing; low cable; supinated."
+  },
+  {
+    "exerciseId": "ex_rope_hammer_curl",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:rope-hammer-curl",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/rope-hammer-curl.png",
+        "sha256": "5ca0c6a182c672a1f7c5ed16a45cc15f72bb71668c83026b4f3395415e8efc2e",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:rope-hammer-curl",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/rope-hammer-curl.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: elbow flexion; low cable rope; neutral grip."
+  },
+  {
+    "exerciseId": "ex_bayesian_cable_curl",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "",
+    "sources": [],
+    "review": "Both candidate images position the arm in front of the torso; neither establishes behind-body shoulder extension."
+  },
+  {
+    "exerciseId": "ex_spider_curl",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "art:spider-curl",
+    "sources": [],
+    "review": "Both drawings show a bar and preacher-style support rather than dumbbells hanging from a prone incline bench.",
+    "rejectedSourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/spider-curl.png"
+  },
+  {
+    "exerciseId": "ex_cable_triceps_pushdown",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:triceps-pushdown",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/triceps-pushdown.png",
+        "sha256": "63d2d78e86d39349fb681a5bfeb47f0d9fabc730a15758cf2f3d788b8501663a",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:triceps-pushdown",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/triceps-pushdown.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: elbow extension; standing high cable bar; overhand."
+  },
+  {
+    "exerciseId": "ex_rope_triceps_pushdown",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:rope-triceps-pushdown",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/rope-triceps-pushdown.png",
+        "sha256": "232e6b5c5dca051cb4b3c265290af16357fa3507502a599c69f677d00f1ade83",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:rope-triceps-pushdown",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/rope-triceps-pushdown.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: elbow extension; standing high cable rope."
+  },
+  {
+    "exerciseId": "ex_reverse_grip_triceps_pushdown",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:reverse-grip-triceps-pushdown",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/reverse-grip-triceps-pushdown.png",
+        "sha256": "8962d1c6223e8c035ed2d200d69c58b9adcff189e0118c26bafd155290e4225b",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:reverse-grip-triceps-pushdown",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/reverse-grip-triceps-pushdown.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: elbow extension; standing high cable bar; supinated."
+  },
+  {
+    "exerciseId": "ex_overhead_cable_triceps_extension",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:overhead-cable-extension",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/overhead-cable-extension.png",
+        "sha256": "9ce78a5896d360d91a8c73820166eaa6dc5f39c1f4fcf3b0ce599b90623be4db",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:overhead-cable-extension",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/overhead-cable-extension.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: elbow extension; cable overhead; bilateral."
+  },
+  {
+    "exerciseId": "ex_single_arm_cable_triceps_extension",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:one-arm-cable-triceps-extension",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/one-arm-cable-triceps-extension.png",
+        "sha256": "63658d34ea52fbac056baafd838da890e32cea6a4af4c1e29ced87d0d1f3da14",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:one-arm-cable-triceps-extension",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/one-arm-cable-triceps-extension.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: elbow extension; unilateral cable; no bilateral substitute."
+  },
+  {
+    "exerciseId": "ex_dumbbell_overhead_triceps_extension",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:dumbbell-overhead-triceps-extension",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/dumbbell-overhead-triceps-extension.png",
+        "sha256": "a68331905a6728d06c5689f3b0b507c503d6a422caa6503f87e0a5bff33c6b4f",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:dumbbell-overhead-triceps-extension",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/dumbbell-overhead-triceps-extension.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: elbow extension; single dumbbell held by both hands overhead."
+  },
+  {
+    "exerciseId": "ex_single_arm_overhead_dumbbell_extension",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:one-arm-dumbbell-triceps-extension",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/one-arm-dumbbell-triceps-extension.png",
+        "sha256": "96a98659d4e83a178d933edcb94e3eb6ed1d602208d98144826cdbc9eeb1bbd9",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:one-arm-dumbbell-triceps-extension",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/one-arm-dumbbell-triceps-extension.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: elbow extension; one dumbbell; one arm overhead."
+  },
+  {
+    "exerciseId": "ex_lying_ez_bar_triceps_extension",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:skull-crusher",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/skull-crusher.png",
+        "sha256": "3514afbfe7f83503c71eec74f627f44c78e7286d96ca9d0290444828686cc10d",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:skull-crusher",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/skull-crusher.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: elbow extension; flat bench; EZ bar; skull crusher."
+  },
+  {
+    "exerciseId": "ex_dumbbell_skull_crusher",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:two-dumbbell-skullcrusher",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/two-dumbbell-skullcrusher.png",
+        "sha256": "fdbf3a662ba201a75ec40b1fe2549b24ced815a35e0c06e606bfe323165cc7d5",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:two-dumbbell-skullcrusher",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/two-dumbbell-skullcrusher.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: elbow extension; flat bench; two dumbbells; not single-arm."
+  },
+  {
+    "exerciseId": "ex_close_grip_bench_press",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:close-grip-bench-press",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/close-grip-bench-press.png",
+        "sha256": "d2c14f134795bd3c639c0e5d158d42c796dbd589b731d486849e4aede33d95f6",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:close-grip-bench-press",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/close-grip-bench-press.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: horizontal press; flat bench; narrow barbell grip."
+  },
+  {
+    "exerciseId": "ex_parallel_bar_triceps_dip",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "ever:tricep-dips-using-body-weight",
+    "sources": [
+      {
+        "repo": "everkinetic/data",
+        "revision": "446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6",
+        "path": "src/images-web/tricep-dips-using-body-weight-2.png",
+        "author": "Everkinetic / Greg Priday",
+        "key": "ever:tricep-dips-using-body-weight",
+        "sha256": "4d4f4ddbde549dcacf89d15baf6d2d818f4c65734e925fd623d7669bdf7cdf60",
+        "sourceUrl": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/tricep-dips-using-body-weight-2.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Original Everkinetic triceps-dip drawing and description specify upright torso with elbows close. The forward-leaning generic dip replacement was rejected."
+  },
+  {
+    "exerciseId": "ex_bench_dip",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:bench-dip",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/bench-dip.png",
+        "sha256": "bef171175aaecbd7c4233461443f63f4a2b39626c6fc2dd70d75825b729fae19",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:bench-dip",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/bench-dip.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: bodyweight elbow extension; hands supported behind on bench."
+  },
+  {
+    "exerciseId": "ex_triceps_extension_machine",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:machine-triceps-extension",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/machine-triceps-extension.png",
+        "sha256": "244913eee941c6e8ccb3acd3824d5b2e6223a61b4f80aa3c06d67f806b884684",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:machine-triceps-extension",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/machine-triceps-extension.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: elbow extension; seated dedicated triceps machine."
+  },
+  {
+    "exerciseId": "ex_dumbbell_triceps_kickback",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:triceps-kickback",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/triceps-kickback.png",
+        "sha256": "e2b187a8eb3b8b3990847854379c18329f7f0cf28e9508d3588f176b16ad12e2",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:triceps-kickback",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/triceps-kickback.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: elbow extension; hinged torso; dumbbell; upper arm held back."
+  },
+  {
+    "exerciseId": "ex_barbell_back_squat",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "ever:barbell-squat",
+    "sources": [
+      {
+        "repo": "everkinetic/data",
+        "revision": "446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6",
+        "path": "src/images-web/barbell-squat-2.png",
+        "author": "Everkinetic / Greg Priday",
+        "key": "ever:barbell-squat",
+        "sha256": "0bb9de91a1955530d1b565fba246a1d05efc760d138cbe738ef47db24df3716f",
+        "sourceUrl": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/barbell-squat-2.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: squat; bar on upper back; bilateral stance."
+  },
+  {
+    "exerciseId": "ex_barbell_front_squat",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:front-squat",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/front-squat.png",
+        "sha256": "d5a7129f7e0f0338196fda2109e4da800d8b0218fbea7342a28d6c52c75d6169",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:front-squat",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/front-squat.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: squat; barbell in front rack."
+  },
+  {
+    "exerciseId": "ex_smith_machine_squat",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:smith-machine-squat",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/smith-machine-squat.png",
+        "sha256": "45d88c935a575846f8083a9ec278514870943f3b5b2ab64700bd4f15bc872b85",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:smith-machine-squat",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/smith-machine-squat.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: squat; guided Smith bar."
+  },
+  {
+    "exerciseId": "ex_goblet_squat",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:goblet-squat",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/goblet-squat.png",
+        "sha256": "3f361c66ef0b2f19988cf0a97fd20f433f266e7e56f860472b2cdce6f7a1c25a",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:goblet-squat",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/goblet-squat.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: squat; single dumbbell held vertically at chest."
+  },
+  {
+    "exerciseId": "ex_hack_squat",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:hack-squat",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/hack-squat.png",
+        "sha256": "489ce7f341a666e60692b4cdc01e5d37c4d2c313699554b9511749b548a838dc",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:hack-squat",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/hack-squat.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: squat; inclined hack-squat sled machine."
+  },
+  {
+    "exerciseId": "ex_leg_press_45",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:leg-press",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/leg-press.png",
+        "sha256": "6ca757566d463af7c42763e78a532846f8d56e16923ca3d89943eb5cc235b564",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:leg-press",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/leg-press.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: leg press; 45-degree inclined sled."
+  },
+  {
+    "exerciseId": "ex_horizontal_leg_press",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "",
+    "sources": [],
+    "review": "Both show an inclined sled, not a horizontal press mechanism."
+  },
+  {
+    "exerciseId": "ex_single_leg_press",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "",
+    "sources": [],
+    "review": "Both show bilateral feet on the sled."
+  },
+  {
+    "exerciseId": "ex_leg_extension",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:leg-extension",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/leg-extension.png",
+        "sha256": "c610fbc1ae73ecd9ac5c5baddbb8f7352ffb1b64ac0634958c730e2919ea27ee",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:leg-extension",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/leg-extension.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: knee extension; seated machine; bilateral."
+  },
+  {
+    "exerciseId": "ex_single_leg_extension",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "",
+    "sources": [],
+    "review": "Both show both legs extended against the roller."
+  },
+  {
+    "exerciseId": "ex_bulgarian_split_squat",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "guide:bulgarian-split-squat@1",
+    "sources": [
+      {
+        "repo": "bryllim/workout-guide",
+        "revision": "aac599224bb9780305239607ef98540b7e0ce389",
+        "path": "packages/workout-guide/assets/bulgarian-split-squat/frame-1.png",
+        "author": "Bryl Lim / Workout Guide",
+        "upstreamAttribution": {
+          "creator": "Bryl Lim",
+          "creatorUrl": "https://bryllim.com",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+        },
+        "key": "guide:bulgarian-split-squat@1",
+        "sha256": "fa6199e4930a5241c7ed068665856597c7a51564d43067f3dea23098a5d61201",
+        "sourceUrl": "https://github.com/bryllim/workout-guide/blob/aac599224bb9780305239607ef98540b7e0ce389/packages/workout-guide/assets/bulgarian-split-squat/frame-1.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Workout Guide frame 1 visibly includes two dumbbells and a rear foot supported on a bench. The bodyweight Open Exercise Art version was rejected."
+  },
+  {
+    "exerciseId": "ex_dumbbell_walking_lunge",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:walking-lunge",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/walking-lunge.png",
+        "sha256": "b38ef24ff63affb072262755729dea2bce1935e4178f437c651805ab18c8b00f",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:walking-lunge",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/walking-lunge.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: walking lunge; advancing steps; dumbbells; not static split squat."
+  },
+  {
+    "exerciseId": "ex_reverse_lunge",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "art:reverse-lunge",
+    "sources": [],
+    "review": "Both drawings use dumbbells, conflicting with the bodyweight catalog entry.",
+    "rejectedSourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/reverse-lunge.png"
+  },
+  {
+    "exerciseId": "ex_forward_lunge",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:forward-lunge",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/forward-lunge.png",
+        "sha256": "023519a7760699064023896f33235ce2580c7490ed868c2d42f36a89597718c5",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:forward-lunge",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/forward-lunge.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: lunge; bodyweight; step forward."
+  },
+  {
+    "exerciseId": "ex_step_up",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "",
+    "sources": [],
+    "review": "Candidate adds dumbbells and a biceps curl; not a bodyweight step-up."
+  },
+  {
+    "exerciseId": "ex_sissy_squat",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:sissy-squat",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/sissy-squat.png",
+        "sha256": "928cc1722f30c8d4f280356587712ab1ee2c722c0514066582304396a72fddd0",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:sissy-squat",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/sissy-squat.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: knee-dominant squat; bodyweight; torso/thigh line leaning back."
+  },
+  {
+    "exerciseId": "ex_belt_squat",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:belt-squat",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/belt-squat.png",
+        "sha256": "5b4b6163e70f7c2108d0be83fbe0cc2d2d5e73319883e56a863678f22db51ccb",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:belt-squat",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/belt-squat.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: squat; load attached at waist; dedicated machine."
+  },
+  {
+    "exerciseId": "ex_cyclist_squat",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "",
+    "sources": [],
+    "review": "Candidates use a belt-squat machine and a lying machine; neither is the bodyweight heels-elevated narrow squat."
+  },
+  {
+    "exerciseId": "ex_romanian_deadlift",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:romanian-deadlift",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/romanian-deadlift.png",
+        "sha256": "39fc98fd61e670b1d86ca0ec175f60773f93c2c54eef7fe34b0439ab70911bc5",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:romanian-deadlift",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/romanian-deadlift.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: hip hinge; barbell; soft knees; top-down RDL; not floor deadlift."
+  },
+  {
+    "exerciseId": "ex_dumbbell_romanian_deadlift",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:dumbbell-romanian-deadlift",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/dumbbell-romanian-deadlift.png",
+        "sha256": "a24bcd88e1497d7d5383ea009d22a9515168eaa6b6dbeb2afd932bb522fe39c0",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:dumbbell-romanian-deadlift",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/dumbbell-romanian-deadlift.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: hip hinge; two dumbbells; soft knees; top-down RDL."
+  },
+  {
+    "exerciseId": "ex_stiff_leg_deadlift",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "",
+    "sources": [],
+    "review": "No plausible licensed candidate after movement/equipment/variation gating; Romanian and unilateral variants are not substituted."
+  },
+  {
+    "exerciseId": "ex_seated_leg_curl",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:seated-leg-curl",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/seated-leg-curl.png",
+        "sha256": "03ce98e1a81e12b9023a65b2ea7c5f76ae704fafd8ff8e3036a056821250cdcb",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:seated-leg-curl",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/seated-leg-curl.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: knee flexion; seated machine; bilateral."
+  },
+  {
+    "exerciseId": "ex_lying_leg_curl",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:lying-leg-curl",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/lying-leg-curl.png",
+        "sha256": "2deb590131110f646959e23318e94c0a08c91acdefffa03bc75d5caad9dce409",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:lying-leg-curl",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/lying-leg-curl.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: knee flexion; prone machine; bilateral."
+  },
+  {
+    "exerciseId": "ex_standing_single_leg_curl",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "ever:standing-leg-curls",
+    "sources": [
+      {
+        "repo": "everkinetic/data",
+        "revision": "446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6",
+        "path": "src/images-web/standing-leg-curls-2.png",
+        "author": "Everkinetic / Greg Priday",
+        "key": "ever:standing-leg-curls",
+        "sha256": "8147aca7f210f2ebbe59511192564c08778a1152a23f2d865d95c84ed68a6171",
+        "sourceUrl": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/standing-leg-curls-2.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Original Everkinetic image shows a standing leg-curl machine with a foot roller, unlike the ambiguous cable-style replacement candidate."
+  },
+  {
+    "exerciseId": "ex_nordic_hamstring_curl",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:nordic-curl",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/nordic-curl.png",
+        "sha256": "a8f417fef3bbd43e3db1582186b06fe97bb639a0fbed7a57e2a88a66c390d769",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:nordic-curl",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/nordic-curl.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: knee flexion control; kneeling bodyweight; ankles anchored; straight hip line."
+  },
+  {
+    "exerciseId": "ex_glute_ham_raise",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "",
+    "sources": [],
+    "review": "No plausible licensed drawing of the specified glute-ham developer movement."
+  },
+  {
+    "exerciseId": "ex_barbell_hip_thrust",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:hip-thrust",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/hip-thrust.png",
+        "sha256": "308876858e1fc0442f504dbe57e81bcd40dbc5e33f020e425c3b55c18436279d",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:hip-thrust",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/hip-thrust.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: hip extension; upper back on bench; barbell on hips."
+  },
+  {
+    "exerciseId": "ex_smith_machine_hip_thrust",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:smith-machine-hip-thrust",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/smith-machine-hip-thrust.png",
+        "sha256": "5fca5af22cdb27677715cc75c529f630f86e1788ca79e9b417759122e9f2302a",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:smith-machine-hip-thrust",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/smith-machine-hip-thrust.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: hip extension; upper back on bench; guided Smith bar."
+  },
+  {
+    "exerciseId": "ex_dumbbell_hip_thrust",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:dumbbell-hip-thrust",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/dumbbell-hip-thrust.png",
+        "sha256": "6e229ddccf7eeab4a47dce4398bdfa7cdec724d6fbd834171c38085e2a4d6eb8",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:dumbbell-hip-thrust",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/dumbbell-hip-thrust.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: hip extension; upper back on bench; dumbbell on hips."
+  },
+  {
+    "exerciseId": "ex_glute_bridge",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:glute-bridge",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/glute-bridge.png",
+        "sha256": "109cd5b2d3eee2ff420905f6c296b6c2ae4afc46cddcfa57a67f596f994fcae5",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:glute-bridge",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/glute-bridge.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: hip extension; floor shoulders; bilateral; bodyweight."
+  },
+  {
+    "exerciseId": "ex_single_leg_glute_bridge",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:single-leg-glute-bridge",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/single-leg-glute-bridge.png",
+        "sha256": "b0cf44ae5fce3dea4f1a4740b8b5699becdb66dc565b20c5b66aded8b3f29109",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:single-leg-glute-bridge",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/single-leg-glute-bridge.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: hip extension; floor shoulders; one working leg; bodyweight."
+  },
+  {
+    "exerciseId": "ex_cable_glute_kickback",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:cable-kickback",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/cable-kickback.png",
+        "sha256": "ee17ede75604d3d5649852e72d3b1051c7bb4a5a7ff266a8344d1115162acdbd",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:cable-kickback",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/cable-kickback.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: hip extension; standing; cable ankle cuff."
+  },
+  {
+    "exerciseId": "ex_glute_kickback_machine",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "art:machine-glute-kickback",
+    "sources": [],
+    "review": "Both images show ankle-cuff cable resistance, not a dedicated footplate glute-kickback machine.",
+    "rejectedSourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/machine-glute-kickback.png"
+  },
+  {
+    "exerciseId": "ex_hip_abduction_machine",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:hip-abduction",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/hip-abduction.png",
+        "sha256": "90b82311ac840a367b69232f1b5812e299a38ba21a3c41310259e4c407217b64",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:hip-abduction",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/hip-abduction.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: hip abduction; seated machine; knees press outward."
+  },
+  {
+    "exerciseId": "ex_hip_adduction_machine",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:hip-adduction",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/hip-adduction.png",
+        "sha256": "4e31f5cdb7e5112ea0c3efc611e96b2619e80d6dfb6e18fb2e126d337a87e93a",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:hip-adduction",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/hip-adduction.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: hip adduction; seated machine; knees move inward."
+  },
+  {
+    "exerciseId": "ex_cable_hip_abduction",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:cable-standing-hip-abduction",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/cable-standing-hip-abduction.png",
+        "sha256": "a197a3aae3d56f83883164fe9f1c65aae209b4d6c350370d2fe36d432a13c8e8",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:cable-standing-hip-abduction",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/cable-standing-hip-abduction.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: hip abduction; standing cable ankle cuff; lateral leg path."
+  },
+  {
+    "exerciseId": "ex_cable_pull_through",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:cable-pull-through",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/cable-pull-through.png",
+        "sha256": "28244c83aaa40654e18b7f4c06c8a9e5fcaea8aefd7e2aab11ea06ab22b4f29e",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:cable-pull-through",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/cable-pull-through.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: hip hinge; low cable rope passes between legs."
+  },
+  {
+    "exerciseId": "ex_sumo_squat",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:dumbbell-sumo-squat",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/dumbbell-sumo-squat.png",
+        "sha256": "f896d365ee59a1d5b00a04f4d00c801189c68128b023211e829d915187455d6b",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:dumbbell-sumo-squat",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/dumbbell-sumo-squat.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: squat; wide toes-out stance; dumbbell held low."
+  },
+  {
+    "exerciseId": "ex_frog_pump",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:frog-pump",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/frog-pump.png",
+        "sha256": "0a82b13a12b42deec3e8d5d8e06ca203b7d1c88af4f2de921630b00b5a0845f1",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:frog-pump",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/frog-pump.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: hip extension; floor; soles together; knees apart; no band."
+  },
+  {
+    "exerciseId": "ex_reverse_hyperextension",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "art:reverse-hyperextension",
+    "sources": [],
+    "review": "Art shows unsupported legs without a loaded pendulum, while Guide shows a back extension bench; neither establishes the specified machine reverse hyper.",
+    "rejectedSourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/reverse-hyperextension.png"
+  },
+  {
+    "exerciseId": "ex_standing_calf_raise_machine",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "guide:standing-calf-raise@1",
+    "sources": [
+      {
+        "repo": "bryllim/workout-guide",
+        "revision": "aac599224bb9780305239607ef98540b7e0ce389",
+        "path": "packages/workout-guide/assets/standing-calf-raise/frame-1.png",
+        "author": "Bryl Lim / Workout Guide; Everkinetic / Greg Priday",
+        "upstreamAttribution": {
+          "creator": "Bryl Lim",
+          "creatorUrl": "https://bryllim.com",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "source": {
+            "name": "Everkinetic",
+            "url": "https://github.com/everkinetic/data/blob/main/dist/svg/0282-tension.svg",
+            "license": "CC BY-SA 4.0",
+            "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+            "changes": "Rasterized on a transparent 512 × 512 canvas, recolored for monochrome display, and vector-traced."
+          }
+        },
+        "key": "guide:standing-calf-raise@1",
+        "sha256": "ab5fd8a91237451d8ee2c64af6002c92fabdd4b89039e6ac0f0c0f331e33a5e3",
+        "sourceUrl": "https://github.com/bryllim/workout-guide/blob/aac599224bb9780305239607ef98540b7e0ce389/packages/workout-guide/assets/standing-calf-raise/frame-1.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Workout Guide frame 1 retains the original machine shoulder pads, calf block and feet. The bodyweight-only Open Exercise Art version was rejected."
+  },
+  {
+    "exerciseId": "ex_seated_calf_raise_machine",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:seated-calf-raise",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/seated-calf-raise.png",
+        "sha256": "bc4fd4d5754e4a4d606273dae0b059780ae2352fd1398c54bf60ddc375368a8d",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:seated-calf-raise",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/seated-calf-raise.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: ankle plantarflexion; seated machine knee pads; bent knees."
+  },
+  {
+    "exerciseId": "ex_leg_press_calf_raise",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:leg-press-calf-raise",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/leg-press-calf-raise.png",
+        "sha256": "52b743a0560a496526bc1efb1c03a79e6e7a09d7a7f8d3d59d01624edff81c82",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:leg-press-calf-raise",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/leg-press-calf-raise.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: ankle plantarflexion; leg-press sled; forefoot on footplate."
+  },
+  {
+    "exerciseId": "ex_smith_machine_calf_raise",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "",
+    "sources": [],
+    "review": "One candidate is a dedicated shoulder-pad machine; the other is a leg-press sled calf raise. Neither uses a Smith bar."
+  },
+  {
+    "exerciseId": "ex_dumbbell_standing_calf_raise",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "",
+    "sources": [],
+    "review": "Both candidates are bodyweight; neither has dumbbells."
+  },
+  {
+    "exerciseId": "ex_single_leg_calf_raise",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:single-leg-calf-raise",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/single-leg-calf-raise.png",
+        "sha256": "f27e728d95c701536484b875852cb2d3839115c7e7715f6346d9ead484be2392",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:single-leg-calf-raise",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/single-leg-calf-raise.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: ankle plantarflexion; bodyweight; one working leg."
+  },
+  {
+    "exerciseId": "ex_donkey_calf_raise",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "art:donkey-calf-raise",
+    "sources": [],
+    "review": "Candidates are bodyweight or partner-loaded, not the specified dedicated machine.",
+    "rejectedSourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/donkey-calf-raise.png"
+  },
+  {
+    "exerciseId": "ex_tibialis_raise",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:tib-raise",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/tib-raise.png",
+        "sha256": "bd00d4c726080af043661949482120e5ea28484d94aa3902d2c76271d6239798",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:tib-raise",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/tib-raise.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: ankle dorsiflexion; bodyweight; heels grounded; toes raised."
+  },
+  {
+    "exerciseId": "ex_crunch",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:crunch",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/crunch.png",
+        "sha256": "d1da7b3c96446f41c0b857231f7998c3814094b2c0834e07d69cb88c00265771",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:crunch",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/crunch.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Bodyweight crunch with knees bent and lower legs supported on a bench; the catalog does not prescribe foot placement or resistance equipment."
+  },
+  {
+    "exerciseId": "ex_cable_crunch",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:cable-crunch",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/cable-crunch.png",
+        "sha256": "91153c49849f378c54c4ba691a45823f743ef324c8ae6d35318dd650fe2ed2f8",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:cable-crunch",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/cable-crunch.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: trunk flexion; kneeling high cable; rope."
+  },
+  {
+    "exerciseId": "ex_machine_ab_crunch",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "",
+    "sources": [],
+    "review": "No plausible licensed candidate for the machine abdominal crunch."
+  },
+  {
+    "exerciseId": "ex_reverse_crunch",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:reverse-crunch",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/reverse-crunch.png",
+        "sha256": "aa4b0da09159c1d2b4b4891968ef80b813b260b395d5b550dbc9c2b59697feb9",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:reverse-crunch",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/reverse-crunch.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: posterior pelvic curl; floor; bent knees toward torso."
+  },
+  {
+    "exerciseId": "ex_lying_leg_raise",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:lying-leg-raise",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/lying-leg-raise.png",
+        "sha256": "f42cbcdbf80c06a44b28988c4eca41c0697d442c2512cbd10c94fe3f536c0a26",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:lying-leg-raise",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/lying-leg-raise.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: hip flexion; lying; straight legs; bodyweight."
+  },
+  {
+    "exerciseId": "ex_hanging_knee_raise",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:hanging-knee-raise",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/hanging-knee-raise.png",
+        "sha256": "5538ccb4ba75493f1607774d6fb28257ab302bee9d732b74fcecab66372a05d6",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:hanging-knee-raise",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/hanging-knee-raise.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: hip flexion; hanging from bar; bent knees."
+  },
+  {
+    "exerciseId": "ex_hanging_leg_raise",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:hanging-leg-raise",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/hanging-leg-raise.png",
+        "sha256": "600c85741a41fd27dc1296f844cc39addaddb21bd2907e8c4fb32041c62002f8",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:hanging-leg-raise",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/hanging-leg-raise.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: hip flexion; hanging from bar; straight legs."
+  },
+  {
+    "exerciseId": "ex_captain_s_chair_leg_raise",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "art:captain-s-chair-knee-raise",
+    "sources": [],
+    "review": "Both candidates lie on a flat bench rather than use a captain chair.",
+    "rejectedSourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/captain-s-chair-knee-raise.png"
+  },
+  {
+    "exerciseId": "ex_plank",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:plank",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/plank.png",
+        "sha256": "b847c48b4366198d2e0336a7ea01b3fb0d1de8fd1855dbe71b80f398cb6591df",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:plank",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/plank.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: anti-extension; forearm plank; bodyweight."
+  },
+  {
+    "exerciseId": "ex_side_plank",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:side-plank",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/side-plank.png",
+        "sha256": "2cf5274d538c36888272970bd9d4cb070e184f4ee05d9ec4fc8b3798a23e5f98",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:side-plank",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/side-plank.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: anti-lateral flexion; side forearm support; bodyweight."
+  },
+  {
+    "exerciseId": "ex_dead_bug",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:dead-bug",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/dead-bug.png",
+        "sha256": "7dfaf516b92855e4aa77bdfd20f952f2b2d080e0a3ab681c5a94708ebe3a66f0",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:dead-bug",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/dead-bug.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: anti-extension; supine; contralateral limb lowering; bodyweight."
+  },
+  {
+    "exerciseId": "ex_bird_dog",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:bird-dog",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/bird-dog.png",
+        "sha256": "09b7ffb5f48157ee72878ad3a33b44924f5f9d189f559368c69b9863fad3aec2",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:bird-dog",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/bird-dog.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: contralateral stabilization; quadruped; opposite arm and leg extended."
+  },
+  {
+    "exerciseId": "ex_russian_twist",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:russian-twist",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/russian-twist.png",
+        "sha256": "230031a503fc8e2c60ed5f6f337313e8da41f9b1c237eaeac331e3ae1319d906",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:russian-twist",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/russian-twist.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: trunk rotation; seated; bodyweight; no plate/dumbbell."
+  },
+  {
+    "exerciseId": "ex_bicycle_crunch",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:bicycle-crunch",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/bicycle-crunch.png",
+        "sha256": "9d6f1fff362bb83b8476cb9ec27293b70d90d062ac797cff24fdaa66dc60bd8d",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:bicycle-crunch",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/bicycle-crunch.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: trunk flexion/rotation; bodyweight; alternating opposite elbow/knee."
+  },
+  {
+    "exerciseId": "ex_mountain_climber",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:mountain-climber",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/mountain-climber.png",
+        "sha256": "527c927adf6f4213c5c3955848305635005b39443060008cb59e89c91e0f7886",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:mountain-climber",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/mountain-climber.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: alternating hip flexion; high plank; alternating knees forward."
+  },
+  {
+    "exerciseId": "ex_ab_wheel_rollout",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:ab-wheel-rollout",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/ab-wheel-rollout.png",
+        "sha256": "f0288d79791d8d21ea9838c80941024df34064db5ffd6208404c8a000fb713aa",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:ab-wheel-rollout",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/ab-wheel-rollout.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: anti-extension rollout; ab wheel; not barbell substitute."
+  },
+  {
+    "exerciseId": "ex_pallof_press",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:pallof-press",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/pallof-press.png",
+        "sha256": "3138445cc83f22b043015ca59443f1381034996a85e722e33d10d59d534cea06",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:pallof-press",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/pallof-press.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: anti-rotation press; standing cable; hands press away from sternum."
+  },
+  {
+    "exerciseId": "ex_cable_woodchopper",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:woodchop",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/woodchop.png",
+        "sha256": "6f9b1889c93ffb729e454c654978a33fa0e75c233ab85655bf4c1aebb260e102",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:woodchop",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/woodchop.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: diagonal trunk rotation; cable; diagonal chop; not band."
+  },
+  {
+    "exerciseId": "ex_flutter_kicks",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:flutter-kick",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/flutter-kick.png",
+        "sha256": "550293421c5124e3448f69fa9c7ad5c19dfdf5622b24ec0f2c28c7d437b3ad71",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:flutter-kick",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/flutter-kick.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: alternating hip flexion; supine bodyweight; small straight-leg alternating kicks."
+  },
+  {
+    "exerciseId": "ex_hollow_body_hold",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:hollow-hold",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/hollow-hold.png",
+        "sha256": "25c0430b735139a0d20789d8e43f5975c679ff1df4bd59064ca0a25a094052e0",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:hollow-hold",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/hollow-hold.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: anti-extension hold; supine; shoulders and straight legs lifted."
+  },
+  {
+    "exerciseId": "ex_conventional_deadlift",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:deadlift",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/deadlift.png",
+        "sha256": "f09b0f57f036d2947b55f360edc5cec8fc6e3e53a06d1e366d850a749917098b",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:deadlift",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/deadlift.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: floor hip hinge; barbell; conventional stance; hands outside legs."
+  },
+  {
+    "exerciseId": "ex_sumo_deadlift",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:sumo-deadlift",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/sumo-deadlift.png",
+        "sha256": "da941174d0850db88026a90ac04d142a4de7395dc2809ebe4c3d4b99762a9430",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:sumo-deadlift",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/sumo-deadlift.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: floor hip hinge; barbell; wide stance; hands inside legs."
+  },
+  {
+    "exerciseId": "ex_trap_bar_deadlift",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:trap-bar-deadlift",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/trap-bar-deadlift.png",
+        "sha256": "f190e9772e50ae9df139baeb2ca426da2d453d295389cb4f3fe7a930c897704f",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:trap-bar-deadlift",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/trap-bar-deadlift.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: floor hip hinge; trap/hex bar; neutral grip inside frame."
+  },
+  {
+    "exerciseId": "ex_kettlebell_swing",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "art:kettlebell-swing",
+    "sources": [
+      {
+        "repo": "AlexMollard/Open-Exercise-Art",
+        "revision": "0f11ea4680746970e58b83448cdcdb64e4fc2793",
+        "path": "png/kettlebell-swing.png",
+        "sha256": "12e1ac53e357001df3ddb49694149e65bd909d582481eb8858f696a777d42c7b",
+        "author": "Open Exercise Art / Alex Mollard",
+        "key": "art:kettlebell-swing",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/kettlebell-swing.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: ballistic hip hinge; kettlebell; two-handed swing."
+  },
+  {
+    "exerciseId": "ex_dumbbell_thruster",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "",
+    "sources": [],
+    "review": "No plausible licensed drawing establishing dumbbell front-squat-to-press sequence."
+  },
+  {
+    "exerciseId": "ex_barbell_thruster",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "",
+    "sources": [],
+    "review": "No plausible licensed drawing establishing barbell front-squat-to-press sequence."
+  },
+  {
+    "exerciseId": "ex_burpee",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "guide:burpee@1",
+    "sources": [
+      {
+        "repo": "bryllim/workout-guide",
+        "revision": "aac599224bb9780305239607ef98540b7e0ce389",
+        "path": "packages/workout-guide/assets/burpee/frame-1.png",
+        "author": "Bryl Lim / Workout Guide",
+        "upstreamAttribution": {
+          "creator": "Bryl Lim",
+          "creatorUrl": "https://bryllim.com",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+        },
+        "key": "guide:burpee@1",
+        "sha256": "50ece2fa841ed3ed36cd700d47e26ba57e1b43067ab843e9ee5c486711daa434",
+        "sourceUrl": "https://github.com/bryllim/workout-guide/blob/aac599224bb9780305239607ef98540b7e0ce389/packages/workout-guide/assets/burpee/frame-1.png",
+        "license": "CC BY-SA 4.0"
+      },
+      {
+        "repo": "bryllim/workout-guide",
+        "revision": "aac599224bb9780305239607ef98540b7e0ce389",
+        "path": "packages/workout-guide/assets/burpee/frame-3.png",
+        "author": "Bryl Lim / Workout Guide",
+        "upstreamAttribution": {
+          "creator": "Bryl Lim",
+          "creatorUrl": "https://bryllim.com",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+        },
+        "key": "guide:burpee@3",
+        "sha256": "bc848591487b77f9b1561ab64e1320b7e28a9c9069635b5a2b19c89920f744d4",
+        "sourceUrl": "https://github.com/bryllim/workout-guide/blob/aac599224bb9780305239607ef98540b7e0ce389/packages/workout-guide/assets/burpee/frame-3.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Reviewed plank and jump frames are shown together to identify the floor-to-standing sequence, rather than displaying only a generic push-up pose."
+  },
+  {
+    "exerciseId": "ex_dumbbell_clean_and_press",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "",
+    "sources": [],
+    "review": "No licensed candidate passing movement/equipment gate; wger barbell-named record has contradictory dumbbell equipment metadata and unresolved upstream rights."
+  },
+  {
+    "exerciseId": "ex_barbell_clean_and_press",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "",
+    "sources": [],
+    "review": "No licensed candidate; matching wger contributor images remain held for unresolved upstream rights."
+  },
+  {
+    "exerciseId": "ex_power_clean",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "",
+    "sources": [],
+    "review": "No plausible licensed drawing establishing a floor start and above-parallel power catch."
+  },
+  {
+    "exerciseId": "ex_hang_clean",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "",
+    "sources": [],
+    "review": "No plausible licensed drawing establishing a hang start; clean-and-press is not substituted."
+  },
+  {
+    "exerciseId": "ex_push_press",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "guide:push-press@3",
+    "sources": [
+      {
+        "repo": "bryllim/workout-guide",
+        "revision": "aac599224bb9780305239607ef98540b7e0ce389",
+        "path": "packages/workout-guide/assets/push-press/frame-3.png",
+        "author": "Bryl Lim / Workout Guide",
+        "upstreamAttribution": {
+          "creator": "Bryl Lim",
+          "creatorUrl": "https://bryllim.com",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+        },
+        "key": "guide:push-press@3",
+        "sha256": "65e25e7ba4186fba2dc5c5ee6b5ddc935f983d618d8fc5b4d1a3f8eb49bafb6f",
+        "sourceUrl": "https://github.com/bryllim/workout-guide/blob/aac599224bb9780305239607ef98540b7e0ce389/packages/workout-guide/assets/push-press/frame-3.png",
+        "license": "CC BY-SA 4.0"
+      },
+      {
+        "repo": "bryllim/workout-guide",
+        "revision": "aac599224bb9780305239607ef98540b7e0ce389",
+        "path": "packages/workout-guide/assets/push-press/frame-1.png",
+        "author": "Bryl Lim / Workout Guide",
+        "upstreamAttribution": {
+          "creator": "Bryl Lim",
+          "creatorUrl": "https://bryllim.com",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+        },
+        "key": "guide:push-press@1",
+        "sha256": "9e91ab531d7ceb66ebfa5b2a7e131f3d1cae58c1830883ddc9a12ed6fc72a6a1",
+        "sourceUrl": "https://github.com/bryllim/workout-guide/blob/aac599224bb9780305239607ef98540b7e0ce389/packages/workout-guide/assets/push-press/frame-1.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Reviewed dipped front-rack and overhead-lockout frames are shown together to distinguish leg drive from a strict press."
+  },
+  {
+    "exerciseId": "ex_dumbbell_snatch",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "",
+    "sources": [],
+    "review": "No plausible licensed drawing; wger image links an external creator page without a confirmed reuse grant."
+  },
+  {
+    "exerciseId": "ex_kettlebell_turkish_get_up",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "",
+    "sources": [],
+    "review": "No plausible licensed drawing establishing the kettlebell get-up sequence."
+  },
+  {
+    "exerciseId": "ex_farmer_s_carry",
+    "reviewedOn": "2026-11-01",
+    "status": "verified",
+    "candidate": "guide:farmer-carry",
+    "sources": [
+      {
+        "repo": "bryllim/workout-guide",
+        "revision": "aac599224bb9780305239607ef98540b7e0ce389",
+        "path": "packages/workout-guide/assets/farmer-carry/frame-2.png",
+        "author": "Bryl Lim / Workout Guide",
+        "upstreamAttribution": {
+          "creator": "Bryl Lim",
+          "creatorUrl": "https://bryllim.com",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+        },
+        "key": "guide:farmer-carry",
+        "sha256": "ba253cb7baeed71487996d5d1ad9b88c0428a022dfb24c5822d9227809bd1072",
+        "sourceUrl": "https://github.com/bryllim/workout-guide/blob/aac599224bb9780305239607ef98540b7e0ce389/packages/workout-guide/assets/farmer-carry/frame-2.png",
+        "license": "CC BY-SA 4.0"
+      }
+    ],
+    "review": "Visually reviewed: loaded carry; two dumbbells at sides; walking."
+  },
+  {
+    "exerciseId": "ex_man_maker",
+    "reviewedOn": "2026-11-01",
+    "status": "missing",
+    "candidate": "",
+    "sources": [],
+    "review": "No plausible licensed drawing establishing the complete dumbbell man-maker sequence."
+  }
+]

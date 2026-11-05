@@ -1,3 +1,4 @@
+import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/features/workout/data/models/exercise_set.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -29,16 +30,17 @@ class LogSetDialog extends StatefulWidget {
   /// automatically.
   final List<ExerciseSet> previousSets;
 
-  const LogSetDialog({super.key, required this.exerciseName, this.previousSets = const []});
+  const LogSetDialog({
+    super.key,
+    required this.exerciseName,
+    this.previousSets = const [],
+  });
 
   @override
   State<LogSetDialog> createState() => _LogSetDialogState();
 }
 
 class _LogSetDialogState extends State<LogSetDialog> {
-  static const Color _blue = Color(0xff2f80ed);
-  static const Color _muted = Color(0xff7d8792);
-
   final _weightController = TextEditingController();
   final _repsController = TextEditingController();
   final _notesController = TextEditingController();
@@ -58,51 +60,113 @@ class _LogSetDialogState extends State<LogSetDialog> {
 
     if (weight == null || weight < 0 || reps == null || reps <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.unableToLogSetError), backgroundColor: Colors.redAccent),
+        SnackBar(
+          content: Text(l10n.unableToLogSetError),
+          backgroundColor: context.appColors.error,
+        ),
       );
       return;
     }
     final notes = _notesController.text.trim();
-    Navigator.pop(context, LogSetResult(weight: weight, reps: reps, notes: notes.isEmpty ? null : notes));
+    Navigator.pop(
+      context,
+      LogSetResult(
+        weight: weight,
+        reps: reps,
+        notes: notes.isEmpty ? null : notes,
+      ),
+    );
   }
 
   InputDecoration _decoration(String hint) {
+    return InputDecoration(hintText: hint);
+  }
+
+  InputDecoration _notesDecoration(String hint) {
     return InputDecoration(
       hintText: hint,
-      filled: true,
-      fillColor: Colors.white,
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(color: Color(0xffd5e3f2)),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(color: _blue),
-      ),
+      alignLabelWithHint: true,
+      prefixIcon: const Icon(Icons.sticky_note_2_outlined),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final colors = context.appColors;
+    final primary = Theme.of(context).colorScheme.primary;
     return AlertDialog(
-      backgroundColor: const Color(0xfff5f9fc),
+      scrollable: true,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       title: Text(
         l10n.addSetToTitle(widget.exerciseName),
-        style: const TextStyle(color: Color(0xff202936), fontWeight: FontWeight.w900),
+        style: TextStyle(
+          color: colors.textPrimary,
+          fontWeight: FontWeight.w900,
+        ),
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           if (widget.previousSets.isNotEmpty) ...[
-            Align(
-              alignment: AlignmentDirectional.centerStart,
-              child: Text(
-                '${l10n.lastTimeLabel}: '
-                '${widget.previousSets.map((s) => '${s.weight}${l10n.kgUnit} × ${s.reps}').join(', ')}',
-                style: const TextStyle(color: _muted, fontSize: 12, fontStyle: FontStyle.italic),
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${l10n.lastTimeLabel}:',
+                  style: TextStyle(
+                    color: colors.textMuted,
+                    fontSize: 12,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+                for (final previousSet in widget.previousSets)
+                  Padding(
+                    padding: const EdgeInsetsDirectional.only(
+                      start: 8,
+                      top: 2,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${previousSet.weight}${l10n.kgUnit} × ${previousSet.reps}',
+                          style: TextStyle(
+                            color: colors.textMuted,
+                            fontSize: 12,
+                          ),
+                        ),
+                        if (previousSet.notes?.trim().isNotEmpty == true)
+                          Padding(
+                            padding: const EdgeInsetsDirectional.only(
+                              start: 8,
+                              bottom: 4,
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Icon(
+                                  Icons.sticky_note_2_outlined,
+                                  size: 14,
+                                  color: colors.textMuted,
+                                ),
+                                const SizedBox(width: 4),
+                                Expanded(
+                                  child: Text(
+                                    previousSet.notes!.trim(),
+                                    style: TextStyle(
+                                      color: colors.textMuted,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+              ],
             ),
             const SizedBox(height: 12),
           ],
@@ -121,19 +185,24 @@ class _LogSetDialogState extends State<LogSetDialog> {
           const SizedBox(height: 12),
           TextField(
             controller: _notesController,
-            maxLines: 2,
-            decoration: _decoration(l10n.setNotesHint),
+            minLines: 2,
+            maxLines: 4,
+            textCapitalization: TextCapitalization.sentences,
+            decoration: _notesDecoration(l10n.setNotesHint),
           ),
         ],
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text(l10n.cancel, style: const TextStyle(color: _muted)),
+          child: Text(l10n.cancel, style: TextStyle(color: colors.textMuted)),
         ),
         ElevatedButton(
           onPressed: _submit,
-          style: ElevatedButton.styleFrom(backgroundColor: _blue, foregroundColor: Colors.white),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: primary,
+            foregroundColor: Theme.of(context).colorScheme.onPrimary,
+          ),
           child: Text(l10n.logFirstSetButton),
         ),
       ],

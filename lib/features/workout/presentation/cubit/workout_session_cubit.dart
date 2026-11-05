@@ -1,5 +1,6 @@
 import 'package:ae_coaching/core/errors/exception_message_mapper.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_session.dart';
+import 'package:ae_coaching/features/workout/data/models/workout_template_exercise_assignment.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_session_exceptions.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_session_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -52,6 +53,8 @@ class WorkoutSessionCubit extends Cubit<WorkoutSessionState> {
     required String programId,
     required String workoutTemplateId,
     required String workoutNameSnapshot,
+    List<WorkoutTemplateExerciseAssignment> templateExerciseAssignments =
+        const [],
   }) async {
     emit(const WorkoutSessionLoading(operation: WorkoutSessionOperation.start));
     try {
@@ -59,6 +62,7 @@ class WorkoutSessionCubit extends Cubit<WorkoutSessionState> {
         programId: programId,
         workoutTemplateId: workoutTemplateId,
         workoutNameSnapshot: workoutNameSnapshot,
+        templateExerciseAssignments: templateExerciseAssignments,
       );
       emit(WorkoutSessionActive(session: session));
     } on ActiveWorkoutSessionExistsException catch (e) {
@@ -113,18 +117,23 @@ class WorkoutSessionCubit extends Cubit<WorkoutSessionState> {
   /// [WorkoutSessionError] on failure so the caller can keep the
   /// screen open and show the error instead of navigating away.
   ///
-  /// Returns the completed [WorkoutSession] (with its final
-  /// `completedAt`/`totalVolume`/`previousSessionId`) on success, or
-  /// `null` on failure — Phase 13's completion summary needs the
-  /// finished record itself, not just a "did it work" signal.
+  /// Returns the terminal session on success. Empty sessions take the
+  /// existing cancellation path and return a cancelled record, which
+  /// must not be shown in the completion summary.
   Future<WorkoutSession?> finishWorkout({
     required String sessionId,
     required double totalVolume,
+    required bool hasValidCompletedSet,
   }) async {
     emit(
       const WorkoutSessionLoading(operation: WorkoutSessionOperation.finish),
     );
     try {
+      if (!hasValidCompletedSet) {
+        final cancelled = await repository.cancelWorkoutSession(sessionId);
+        emit(const WorkoutSessionNone());
+        return cancelled;
+      }
       final completed = await repository.completeWorkoutSession(
         sessionId: sessionId,
         totalVolume: totalVolume,

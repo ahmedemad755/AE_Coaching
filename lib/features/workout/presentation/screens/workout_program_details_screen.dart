@@ -1,4 +1,5 @@
 import 'package:ae_coaching/core/routes/app_router.dart';
+import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_program.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_session.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_template.dart';
@@ -10,7 +11,13 @@ import 'package:ae_coaching/features/workout/presentation/screens/archived_worko
 import 'package:ae_coaching/features/workout/presentation/screens/program_analytics_screen.dart';
 import 'package:ae_coaching/features/workout/presentation/screens/workout_template_history_screen.dart';
 import 'package:ae_coaching/features/workout/presentation/widgets/name_only_dialog.dart';
+import 'package:ae_coaching/features/workout/presentation/widgets/template_exercise_manager.dart';
+import 'package:ae_coaching/features/workout/data/repositories/combined_exercise_library_catalog.dart';
+import 'package:ae_coaching/features/workout/data/repositories/custom_exercise_repository.dart';
+import 'package:ae_coaching/features/workout/data/repositories/exercise_library_catalog.dart';
+import 'package:ae_coaching/features/workout/data/repositories/workout_template_repository.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
+import 'package:ae_coaching/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -34,13 +41,13 @@ class WorkoutProgramDetailsScreen extends StatefulWidget {
   const WorkoutProgramDetailsScreen({super.key, required this.program});
 
   @override
-  State<WorkoutProgramDetailsScreen> createState() => _WorkoutProgramDetailsScreenState();
+  State<WorkoutProgramDetailsScreen> createState() =>
+      _WorkoutProgramDetailsScreenState();
 }
 
-class _WorkoutProgramDetailsScreenState extends State<WorkoutProgramDetailsScreen> {
+class _WorkoutProgramDetailsScreenState
+    extends State<WorkoutProgramDetailsScreen> {
   static const Color _blue = Color(0xff2f80ed);
-  static const Color _dark = Color(0xff202936);
-  static const Color _muted = Color(0xff7d8792);
 
   Box<WorkoutTemplate>? _box;
 
@@ -64,7 +71,10 @@ class _WorkoutProgramDetailsScreenState extends State<WorkoutProgramDetailsScree
       ),
     );
     if (name != null && mounted) {
-      context.read<WorkoutTemplateCubit>().createTemplate(programId: widget.program.id, name: name);
+      context.read<WorkoutTemplateCubit>().createTemplate(
+        programId: widget.program.id,
+        name: name,
+      );
     }
   }
 
@@ -82,7 +92,10 @@ class _WorkoutProgramDetailsScreenState extends State<WorkoutProgramDetailsScree
       ),
     );
     if (newName != null && mounted) {
-      context.read<WorkoutTemplateCubit>().renameTemplate(templateId: template.id, newName: newName);
+      context.read<WorkoutTemplateCubit>().renameTemplate(
+        templateId: template.id,
+        newName: newName,
+      );
     }
   }
 
@@ -91,15 +104,26 @@ class _WorkoutProgramDetailsScreenState extends State<WorkoutProgramDetailsScree
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xfff5f9fc),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        title: Text(l10n.archiveWorkoutDayConfirmTitle, style: const TextStyle(fontWeight: FontWeight.w900)),
-        content: Text(l10n.archiveWorkoutDayConfirmBody(template.name), style: const TextStyle(color: _muted)),
+        title: Text(
+          l10n.archiveWorkoutDayConfirmTitle,
+          style: const TextStyle(fontWeight: FontWeight.w900),
+        ),
+        content: Text(
+          l10n.archiveWorkoutDayConfirmBody(template.name),
+          style: TextStyle(color: ctx.appColors.textMuted),
+        ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(l10n.cancel)),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(l10n.cancel),
+          ),
           ElevatedButton(
             onPressed: () => Navigator.pop(ctx, true),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent, foregroundColor: Colors.white),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: ctx.appColors.error,
+              foregroundColor: Theme.of(ctx).colorScheme.onError,
+            ),
             child: Text(l10n.archiveButton),
           ),
         ],
@@ -119,15 +143,26 @@ class _WorkoutProgramDetailsScreenState extends State<WorkoutProgramDetailsScree
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xfff5f9fc),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        title: Text(l10n.deleteWorkoutDayConfirmTitle, style: const TextStyle(fontWeight: FontWeight.w900)),
-        content: Text(l10n.deleteWorkoutDayConfirmBody(template.name), style: const TextStyle(color: _muted)),
+        title: Text(
+          l10n.deleteWorkoutDayConfirmTitle,
+          style: const TextStyle(fontWeight: FontWeight.w900),
+        ),
+        content: Text(
+          l10n.deleteWorkoutDayConfirmBody(template.name),
+          style: TextStyle(color: ctx.appColors.textMuted),
+        ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(l10n.cancel)),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(l10n.cancel),
+          ),
           ElevatedButton(
             onPressed: () => Navigator.pop(ctx, true),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent, foregroundColor: Colors.white),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: ctx.appColors.error,
+              foregroundColor: Theme.of(ctx).colorScheme.onError,
+            ),
             child: Text(l10n.delete),
           ),
         ],
@@ -155,7 +190,9 @@ class _WorkoutProgramDetailsScreenState extends State<WorkoutProgramDetailsScree
     final moved = reordered.removeAt(index);
     reordered.insert(newIndex, moved);
 
-    context.read<WorkoutTemplateCubit>().reorderTemplates(reordered.map((t) => t.id).toList());
+    context.read<WorkoutTemplateCubit>().reorderTemplates(
+      reordered.map((t) => t.id).toList(),
+    );
   }
 
   void _openProgramAnalytics() {
@@ -176,10 +213,11 @@ class _WorkoutProgramDetailsScreenState extends State<WorkoutProgramDetailsScree
 
   void _startWorkout(WorkoutTemplate template) {
     context.read<WorkoutSessionCubit>().startWorkout(
-          programId: widget.program.id,
-          workoutTemplateId: template.id,
-          workoutNameSnapshot: template.name,
-        );
+      programId: widget.program.id,
+      workoutTemplateId: template.id,
+      workoutNameSnapshot: template.name,
+      templateExerciseAssignments: template.exerciseAssignments,
+    );
   }
 
   void _openActiveSession(WorkoutSession session) {
@@ -194,7 +232,10 @@ class _WorkoutProgramDetailsScreenState extends State<WorkoutProgramDetailsScree
     );
   }
 
-  Future<void> _onSessionStateChanged(BuildContext context, WorkoutSessionState state) async {
+  Future<void> _onSessionStateChanged(
+    BuildContext context,
+    WorkoutSessionState state,
+  ) async {
     if (state is WorkoutSessionActive) {
       _openActiveSession(state.session);
       return;
@@ -207,18 +248,30 @@ class _WorkoutProgramDetailsScreenState extends State<WorkoutProgramDetailsScree
       final shouldResume = await showDialog<bool>(
         context: context,
         builder: (ctx) => AlertDialog(
-          backgroundColor: const Color(0xfff5f9fc),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          title: Text(l10n.workoutInProgressConflictTitle, style: const TextStyle(fontWeight: FontWeight.w900)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          title: Text(
+            l10n.workoutInProgressConflictTitle,
+            style: const TextStyle(fontWeight: FontWeight.w900),
+          ),
           content: Text(
-            l10n.workoutInProgressConflictBody(state.existingSession.workoutNameSnapshot),
-            style: const TextStyle(color: _muted),
+            l10n.workoutInProgressConflictBody(
+              state.existingSession.workoutNameSnapshot,
+            ),
+            style: TextStyle(color: ctx.appColors.textMuted),
           ),
           actions: [
-            TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(l10n.cancel)),
+            TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: Text(l10n.cancel),
+            ),
             ElevatedButton(
               onPressed: () => Navigator.pop(ctx, true),
-              style: ElevatedButton.styleFrom(backgroundColor: _blue, foregroundColor: Colors.white),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(ctx).colorScheme.primary,
+                foregroundColor: Theme.of(ctx).colorScheme.onPrimary,
+              ),
               child: Text(l10n.resumeWorkoutButton),
             ),
           ],
@@ -232,7 +285,10 @@ class _WorkoutProgramDetailsScreenState extends State<WorkoutProgramDetailsScree
 
     if (state is WorkoutSessionError) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(state.message), backgroundColor: Colors.redAccent),
+        SnackBar(
+          content: Text(state.message),
+          backgroundColor: context.appColors.error,
+        ),
       );
     }
   }
@@ -240,123 +296,169 @@ class _WorkoutProgramDetailsScreenState extends State<WorkoutProgramDetailsScree
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final colors = context.appColors;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return BlocListener<WorkoutSessionCubit, WorkoutSessionState>(
       listener: _onSessionStateChanged,
       child: Scaffold(
-      backgroundColor: const Color(0xfff5f9fc),
-      appBar: AppBar(
-        backgroundColor: _blue,
-        foregroundColor: Colors.white,
-        title: Text(widget.program.name),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.archive_outlined),
-            onPressed: _openArchivedWorkoutDays,
-            tooltip: l10n.archivedWorkoutDaysTooltip,
+        backgroundColor: colors.canvas,
+        appBar: AppBar(
+          backgroundColor: isDark ? colors.canvas : _blue,
+          foregroundColor: isDark ? colors.textPrimary : Colors.white,
+          title: Text(widget.program.name),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.archive_outlined),
+              onPressed: _openArchivedWorkoutDays,
+              tooltip: l10n.archivedWorkoutDaysTooltip,
+            ),
+            IconButton(
+              icon: const Icon(Icons.bar_chart),
+              onPressed: _openProgramAnalytics,
+              tooltip: l10n.analyticsTooltip,
+            ),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: _openCreateDialog,
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          foregroundColor: Theme.of(context).colorScheme.onPrimary,
+          elevation: 10,
+          icon: const Icon(Icons.add_circle_outline),
+          label: Text(
+            l10n.addWorkoutDayButton,
+            style: const TextStyle(fontWeight: FontWeight.w800),
           ),
-          IconButton(
-            icon: const Icon(Icons.bar_chart),
-            onPressed: _openProgramAnalytics,
-            tooltip: l10n.analyticsTooltip,
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _openCreateDialog,
-        backgroundColor: _blue,
-        foregroundColor: Colors.white,
-        elevation: 10,
-        icon: const Icon(Icons.add_circle_outline),
-        label: Text(l10n.addWorkoutDayButton, style: const TextStyle(fontWeight: FontWeight.w800)),
-      ),
-      body: Column(
-        children: [
-          const _ThisWeekCard(),
-          Expanded(
-            child: BlocConsumer<WorkoutTemplateCubit, WorkoutTemplateState>(
-        listener: (context, state) {
-          if (state is WorkoutTemplateLoaded && _box != state.box) {
-            setState(() => _box = state.box);
-          }
-          if (state is WorkoutTemplateError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message), backgroundColor: Colors.redAccent),
-            );
-          }
-        },
-        builder: (context, state) {
-          final box = _box;
+        ),
+        body: Column(
+          children: [
+            const _ThisWeekCard(),
+            Expanded(
+              child: BlocConsumer<WorkoutTemplateCubit, WorkoutTemplateState>(
+                listener: (context, state) {
+                  if (state is WorkoutTemplateLoaded && _box != state.box) {
+                    setState(() => _box = state.box);
+                  }
+                  if (state is WorkoutTemplateError) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(state.message),
+                        backgroundColor: colors.error,
+                      ),
+                    );
+                  }
+                },
+                builder: (context, state) {
+                  final box = _box;
 
-          if (box == null) {
-            if (state is WorkoutTemplateError) {
-              return Center(
-                child: Text(l10n.unableToLoadWorkoutDaysError, style: const TextStyle(color: _muted, fontWeight: FontWeight.w700)),
-              );
-            }
-            return const Center(child: CircularProgressIndicator(color: _blue));
-          }
-
-          return ValueListenableBuilder(
-            valueListenable: box.listenable(),
-            builder: (context, Box<WorkoutTemplate> liveBox, _) {
-              final repository = context.read<WorkoutTemplateCubit>().repository;
-              final templates = repository.getTemplatesForProgram(liveBox, widget.program.id);
-
-              if (templates.isEmpty) {
-                return Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(24),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(Icons.list_alt, color: _blue, size: 40),
-                        const SizedBox(height: 14),
-                        Text(
-                          l10n.noWorkoutDaysYetTitle,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(color: _dark, fontWeight: FontWeight.w900, fontSize: 16),
+                  if (box == null) {
+                    if (state is WorkoutTemplateError) {
+                      return Center(
+                        child: Text(
+                          l10n.unableToLoadWorkoutDaysError,
+                          style: TextStyle(
+                            color: colors.textMuted,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
-                        const SizedBox(height: 6),
-                        Text(
-                          l10n.noWorkoutDaysYetSubtitle,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(color: _muted, fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              }
+                      );
+                    }
+                    return Center(
+                      child: CircularProgressIndicator(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    );
+                  }
 
-              return ListView.builder(
-                padding: const EdgeInsets.fromLTRB(18, 18, 18, 100),
-                itemCount: templates.length,
-                itemBuilder: (context, index) {
-                  final template = templates[index];
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: _WorkoutDayCard(
-                      template: template,
-                      canMoveUp: index > 0,
-                      canMoveDown: index < templates.length - 1,
-                      onMoveUp: () => _moveTemplate(templates, index, -1),
-                      onMoveDown: () => _moveTemplate(templates, index, 1),
-                      onRename: () => _openRenameDialog(template),
-                      onArchive: () => _confirmArchive(template),
-                      onDelete: () => _confirmDeleteTemplate(template),
-                      onStartWorkout: () => _startWorkout(template),
-                      onHistory: () => _openHistory(template),
-                    ),
+                  return ValueListenableBuilder(
+                    valueListenable: box.listenable(),
+                    builder: (context, Box<WorkoutTemplate> liveBox, _) {
+                      final repository = context
+                          .read<WorkoutTemplateCubit>()
+                          .repository;
+                      final templates = repository.getTemplatesForProgram(
+                        liveBox,
+                        widget.program.id,
+                      );
+
+                      if (templates.isEmpty) {
+                        return Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(24),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.list_alt,
+                                  color: Theme.of(context).colorScheme.primary,
+                                  size: 40,
+                                ),
+                                const SizedBox(height: 14),
+                                Text(
+                                  l10n.noWorkoutDaysYetTitle,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: colors.textPrimary,
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                const SizedBox(height: 6),
+                                Text(
+                                  l10n.noWorkoutDaysYetSubtitle,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: colors.textMuted,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }
+
+                      return ListView.builder(
+                        padding: const EdgeInsets.fromLTRB(18, 18, 18, 100),
+                        itemCount: templates.length,
+                        itemBuilder: (context, index) {
+                          final template = templates[index];
+                          return Padding(
+                            key: ValueKey(template.id),
+                            padding: const EdgeInsets.only(bottom: 10),
+                            child: _WorkoutDayCard(
+                              template: template,
+                              canMoveUp: index > 0,
+                              canMoveDown: index < templates.length - 1,
+                              onMoveUp: () =>
+                                  _moveTemplate(templates, index, -1),
+                              onMoveDown: () =>
+                                  _moveTemplate(templates, index, 1),
+                              onRename: () => _openRenameDialog(template),
+                              onArchive: () => _confirmArchive(template),
+                              onDelete: () => _confirmDeleteTemplate(template),
+                              onStartWorkout: () => _startWorkout(template),
+                              onHistory: () => _openHistory(template),
+                              templateRepository: context
+                                  .read<WorkoutTemplateCubit>()
+                                  .repository,
+                              exerciseCatalog:
+                                  sl<CombinedExerciseLibraryCatalog>(),
+                              customExercises: sl<CustomExerciseRepository>(),
+                              languageCode: Localizations.localeOf(
+                                context,
+                              ).languageCode,
+                            ),
+                          );
+                        },
+                      );
+                    },
                   );
                 },
-              );
-            },
-          );
-        },
-      ),
-          ),
-        ],
-      ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -365,13 +467,10 @@ class _WorkoutProgramDetailsScreenState extends State<WorkoutProgramDetailsScree
 class _ThisWeekCard extends StatelessWidget {
   const _ThisWeekCard();
 
-  static const Color _dark = Color(0xff202936);
-  static const Color _muted = Color(0xff7d8792);
-  static const Color _blue = Color(0xff2f80ed);
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final colors = context.appColors;
     return BlocBuilder<ProgramOverviewCubit, ProgramOverviewState>(
       builder: (context, state) {
         if (state is! ProgramOverviewLoaded) return const SizedBox.shrink();
@@ -382,10 +481,14 @@ class _ThisWeekCard extends StatelessWidget {
           margin: const EdgeInsets.fromLTRB(18, 14, 18, 0),
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(10),
             boxShadow: [
-              BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, 4)),
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.05),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
             ],
           ),
           child: Column(
@@ -395,12 +498,22 @@ class _ThisWeekCard extends StatelessWidget {
                 children: [
                   Text(
                     l10n.thisWeekTitle,
-                    style: const TextStyle(color: _dark, fontWeight: FontWeight.w900, fontSize: 14),
+                    style: TextStyle(
+                      color: colors.textPrimary,
+                      fontWeight: FontWeight.w900,
+                      fontSize: 14,
+                    ),
                   ),
                   const Spacer(),
                   Text(
-                    l10n.totalSessionsThisWeekLabel(overview.totalSessionsThisWeek),
-                    style: const TextStyle(color: _muted, fontSize: 12, fontWeight: FontWeight.w700),
+                    l10n.totalSessionsThisWeekLabel(
+                      overview.totalSessionsThisWeek,
+                    ),
+                    style: TextStyle(
+                      color: colors.textMuted,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ],
               ),
@@ -411,16 +524,25 @@ class _ThisWeekCard extends StatelessWidget {
                 children: [
                   for (final template in overview.templates)
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 6,
+                      ),
                       decoration: BoxDecoration(
-                        color: template.sessionsThisWeek > 0 ? _blue.withValues(alpha: 0.1) : const Color(0xfff0f4f9),
+                        color: template.sessionsThisWeek > 0
+                            ? Theme.of(
+                                context,
+                              ).colorScheme.primary.withValues(alpha: 0.14)
+                            : colors.surfaceRaised,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
                         '${template.workoutTemplateName} '
                         '${l10n.templateSessionsThisWeekLabel(template.sessionsThisWeek)}',
                         style: TextStyle(
-                          color: template.sessionsThisWeek > 0 ? _blue : _muted,
+                          color: template.sessionsThisWeek > 0
+                              ? Theme.of(context).colorScheme.primary
+                              : colors.textMuted,
                           fontWeight: FontWeight.w700,
                           fontSize: 12,
                         ),
@@ -447,6 +569,10 @@ class _WorkoutDayCard extends StatelessWidget {
   final VoidCallback onDelete;
   final VoidCallback onStartWorkout;
   final VoidCallback onHistory;
+  final WorkoutTemplateRepository templateRepository;
+  final ExerciseLibraryCatalog exerciseCatalog;
+  final CustomExerciseRepository customExercises;
+  final String languageCode;
 
   const _WorkoutDayCard({
     required this.template,
@@ -459,22 +585,27 @@ class _WorkoutDayCard extends StatelessWidget {
     required this.onDelete,
     required this.onStartWorkout,
     required this.onHistory,
+    required this.templateRepository,
+    required this.exerciseCatalog,
+    required this.customExercises,
+    required this.languageCode,
   });
-
-  static const Color _blue = Color(0xff2f80ed);
-  static const Color _dark = Color(0xff202936);
-  static const Color _muted = Color(0xff7d8792);
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final colors = context.appColors;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
-          BoxShadow(color: Colors.black.withValues(alpha: 0.06), blurRadius: 14, offset: const Offset(0, 7)),
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.06),
+            blurRadius: 14,
+            offset: const Offset(0, 7),
+          ),
         ],
       ),
       child: Column(
@@ -487,11 +618,23 @@ class _WorkoutDayCard extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: canMoveUp ? onMoveUp : null,
-                    child: Icon(Icons.keyboard_arrow_up, size: 20, color: canMoveUp ? _blue : _muted.withValues(alpha: 0.3)),
+                    child: Icon(
+                      Icons.keyboard_arrow_up,
+                      size: 20,
+                      color: canMoveUp
+                          ? Theme.of(context).colorScheme.primary
+                          : colors.textMuted.withValues(alpha: 0.4),
+                    ),
                   ),
                   InkWell(
                     onTap: canMoveDown ? onMoveDown : null,
-                    child: Icon(Icons.keyboard_arrow_down, size: 20, color: canMoveDown ? _blue : _muted.withValues(alpha: 0.3)),
+                    child: Icon(
+                      Icons.keyboard_arrow_down,
+                      size: 20,
+                      color: canMoveDown
+                          ? Theme.of(context).colorScheme.primary
+                          : colors.textMuted.withValues(alpha: 0.4),
+                    ),
                   ),
                 ],
               ),
@@ -499,30 +642,59 @@ class _WorkoutDayCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   template.name,
-                  style: const TextStyle(color: _dark, fontWeight: FontWeight.w900, fontSize: 16),
+                  style: TextStyle(
+                    color: colors.textPrimary,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 16,
+                  ),
                 ),
               ),
               IconButton(
-                icon: const Icon(Icons.history, size: 18, color: _blue),
+                icon: Icon(
+                  Icons.history,
+                  size: 18,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
                 onPressed: onHistory,
                 tooltip: l10n.historyTooltip,
               ),
               IconButton(
-                icon: const Icon(Icons.edit_outlined, size: 18, color: _blue),
+                icon: Icon(
+                  Icons.edit_outlined,
+                  size: 18,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
                 onPressed: onRename,
                 tooltip: l10n.renameButton,
               ),
               IconButton(
-                icon: const Icon(Icons.archive_outlined, size: 18, color: Colors.redAccent),
+                icon: Icon(
+                  Icons.archive_outlined,
+                  size: 18,
+                  color: colors.error,
+                ),
                 onPressed: onArchive,
                 tooltip: l10n.archiveButton,
               ),
               IconButton(
-                icon: const Icon(Icons.delete_forever_outlined, size: 18, color: Colors.redAccent),
+                icon: Icon(
+                  Icons.delete_forever_outlined,
+                  size: 18,
+                  color: colors.error,
+                ),
                 onPressed: onDelete,
                 tooltip: l10n.delete,
               ),
             ],
+          ),
+          const SizedBox(height: 10),
+          TemplateExerciseManager(
+            key: ValueKey('exercise-manager-${template.id}'),
+            template: template,
+            repository: templateRepository,
+            catalog: exerciseCatalog,
+            customExercises: customExercises,
+            languageCode: languageCode,
           ),
           const SizedBox(height: 10),
           SizedBox(
@@ -530,11 +702,16 @@ class _WorkoutDayCard extends StatelessWidget {
             child: ElevatedButton.icon(
               onPressed: onStartWorkout,
               icon: const Icon(Icons.play_arrow),
-              label: Text(l10n.startWorkoutButton, style: const TextStyle(fontWeight: FontWeight.w800)),
+              label: Text(
+                l10n.startWorkoutButton,
+                style: const TextStyle(fontWeight: FontWeight.w800),
+              ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: _blue,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
             ),
           ),

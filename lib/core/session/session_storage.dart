@@ -11,16 +11,15 @@ import 'package:hive_flutter/hive_flutter.dart';
 /// -open [Box] (the same global `authBox` `main.dart` opens at startup)
 /// and exposes exactly the operations those call sites already
 /// performed, under names that describe intent instead of repeating the
-/// same 4 raw key strings everywhere. Every method here is a direct,
-/// behavior-preserving translation of an existing call site — nothing
-/// new was invented.
+/// same raw key strings everywhere. Profile editing adds a UID-guarded
+/// name update without changing the existing session key contract.
 ///
 /// The 4 canonical keys and their exact semantics, unchanged:
 /// - `isLoggedIn` (bool, default false)
 /// - `currentUserUid` (String, default '')
 /// - `currentUserName` (String, default '')
-/// - `currentUserPhone` (String — write/delete only; nothing in this
-///   codebase reads it back, so no getter is exposed for it)
+/// - `currentUserPhone` (String, default ''), stored alongside the
+///   authenticated user's profile name.
 ///
 /// Ownership note (Stage 8 audit): [LocaleCubit] also owns a key
 /// (`appLocale`) in this same `authBox`, independently of this class.
@@ -39,6 +38,9 @@ class SessionStorage {
 
   String get currentUserName =>
       _box.get('currentUserName', defaultValue: '') as String;
+
+  String get currentUserPhone =>
+      _box.get('currentUserPhone', defaultValue: '') as String;
 
   /// Writes the full "fully logged in" session — the 4-key write
   /// previously duplicated verbatim across 6 view files. Callers must
@@ -83,5 +85,15 @@ class SessionStorage {
   /// [persistLoggedInSession]'s full 4-key write.
   Future<void> updateCurrentUserUid(String uid) async {
     await _box.put('currentUserUid', uid);
+  }
+
+  Future<void> updateCurrentUserName({
+    required String uid,
+    required String name,
+  }) async {
+    if (uid.isEmpty || currentUserUid != uid) {
+      throw StateError('Refusing to update a different session user.');
+    }
+    await _box.put('currentUserName', name);
   }
 }

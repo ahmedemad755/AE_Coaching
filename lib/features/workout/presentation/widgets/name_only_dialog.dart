@@ -1,3 +1,4 @@
+import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 /// Generic single-text-field dialog: a title, one text field
@@ -31,10 +32,9 @@ class NameOnlyDialog extends StatefulWidget {
 }
 
 class _NameOnlyDialogState extends State<NameOnlyDialog> {
-  static const Color _blue = Color(0xff2f80ed);
-  static const Color _muted = Color(0xff7d8792);
-
-  late final TextEditingController _controller = TextEditingController(text: widget.initialValue ?? '');
+  late final TextEditingController _controller = TextEditingController(
+    text: widget.initialValue ?? '',
+  );
 
   @override
   void dispose() {
@@ -46,7 +46,10 @@ class _NameOnlyDialogState extends State<NameOnlyDialog> {
     final value = _controller.text.trim();
     if (value.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(widget.emptyValueMessage), backgroundColor: Colors.redAccent),
+        SnackBar(
+          content: Text(widget.emptyValueMessage),
+          backgroundColor: context.appColors.error,
+        ),
       );
       return;
     }
@@ -55,35 +58,36 @@ class _NameOnlyDialogState extends State<NameOnlyDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.appColors;
+    final primary = Theme.of(context).colorScheme.primary;
     return AlertDialog(
-      backgroundColor: const Color(0xfff5f9fc),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      title: Text(widget.title, style: const TextStyle(color: Color(0xff202936), fontWeight: FontWeight.w900)),
+      title: Text(
+        widget.title,
+        style: TextStyle(
+          color: colors.textPrimary,
+          fontWeight: FontWeight.w900,
+        ),
+      ),
       content: TextField(
         controller: _controller,
         autofocus: true,
-        decoration: InputDecoration(
-          hintText: widget.hint,
-          filled: true,
-          fillColor: Colors.white,
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: Color(0xffd5e3f2)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: _blue),
-          ),
-        ),
+        decoration: InputDecoration(hintText: widget.hint),
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text(widget.cancelLabel, style: const TextStyle(color: _muted)),
+          child: Text(
+            widget.cancelLabel,
+            style: TextStyle(color: colors.textMuted),
+          ),
         ),
         ElevatedButton(
           onPressed: _submit,
-          style: ElevatedButton.styleFrom(backgroundColor: _blue, foregroundColor: Colors.white),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: primary,
+            foregroundColor: Theme.of(context).colorScheme.onPrimary,
+          ),
           child: Text(widget.saveLabel),
         ),
       ],

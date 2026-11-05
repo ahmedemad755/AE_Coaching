@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:ae_coaching/features/workout/data/models/workout_template_exercise_assignment.dart';
 
 part 'workout_session.g.dart';
 
@@ -52,6 +53,31 @@ class WorkoutSession extends HiveObject {
   @HiveField(10)
   final String? workoutNote;
 
+  /// Local snapshot for this active session. Kept out of Firestore JSON
+  /// so user-created exercise names are not synced in this stage.
+  @HiveField(11)
+  final List<WorkoutTemplateExerciseAssignment>
+  templateExerciseAssignmentsSnapshot;
+
+  /// Exercises added only to this session; kept local and distinct from
+  /// reusable template assignments and from recorded ExerciseSets.
+  @HiveField(12)
+  final List<String> sessionExerciseNames;
+
+  /// Names hidden from this active session's exercise list. Logged sets are
+  /// retained and remain part of the completed session's analytics.
+  @HiveField(13)
+  final List<String> hiddenExerciseNames;
+
+  /// Optional explicit display order for this session's exercise rows.
+  @HiveField(14)
+  final List<String> exerciseOrder;
+
+  /// Local write-ahead record for a coordinated session + day edit. Older
+  /// records read null. Never included in the Firestore payload.
+  @HiveField(15)
+  final String? pendingProgramExerciseEdit;
+
   WorkoutSession({
     required this.id,
     required this.programId,
@@ -64,9 +90,22 @@ class WorkoutSession extends HiveObject {
     this.totalVolume = 0,
     this.previousSessionId,
     this.workoutNote,
-  });
+    List<WorkoutTemplateExerciseAssignment>
+        templateExerciseAssignmentsSnapshot =
+        const [],
+    List<String> sessionExerciseNames = const [],
+    List<String> hiddenExerciseNames = const [],
+    List<String> exerciseOrder = const [],
+    this.pendingProgramExerciseEdit,
+  }) : templateExerciseAssignmentsSnapshot = List.unmodifiable(
+         templateExerciseAssignmentsSnapshot,
+       ),
+       sessionExerciseNames = List.unmodifiable(sessionExerciseNames),
+       hiddenExerciseNames = List.unmodifiable(hiddenExerciseNames),
+       exerciseOrder = List.unmodifiable(exerciseOrder);
 
-  WorkoutSessionStatus get statusValue => WorkoutSessionStatusX.fromValue(status);
+  WorkoutSessionStatus get statusValue =>
+      WorkoutSessionStatusX.fromValue(status);
   bool get isInProgress => statusValue == WorkoutSessionStatus.inProgress;
   bool get isCompleted => statusValue == WorkoutSessionStatus.completed;
   bool get isCancelled => statusValue == WorkoutSessionStatus.cancelled;
@@ -80,6 +119,13 @@ class WorkoutSession extends HiveObject {
     double? totalVolume,
     String? previousSessionId,
     String? workoutNote,
+    List<WorkoutTemplateExerciseAssignment>?
+    templateExerciseAssignmentsSnapshot,
+    List<String>? sessionExerciseNames,
+    List<String>? hiddenExerciseNames,
+    List<String>? exerciseOrder,
+    String? pendingProgramExerciseEdit,
+    bool clearPendingProgramExerciseEdit = false,
   }) {
     return WorkoutSession(
       id: id,
@@ -93,6 +139,15 @@ class WorkoutSession extends HiveObject {
       totalVolume: totalVolume ?? this.totalVolume,
       previousSessionId: previousSessionId ?? this.previousSessionId,
       workoutNote: workoutNote ?? this.workoutNote,
+      templateExerciseAssignmentsSnapshot:
+          templateExerciseAssignmentsSnapshot ??
+          this.templateExerciseAssignmentsSnapshot,
+      sessionExerciseNames: sessionExerciseNames ?? this.sessionExerciseNames,
+      hiddenExerciseNames: hiddenExerciseNames ?? this.hiddenExerciseNames,
+      exerciseOrder: exerciseOrder ?? this.exerciseOrder,
+      pendingProgramExerciseEdit: clearPendingProgramExerciseEdit
+          ? null
+          : pendingProgramExerciseEdit ?? this.pendingProgramExerciseEdit,
     );
   }
 
@@ -122,11 +177,15 @@ class WorkoutSession extends HiveObject {
       workoutNameSnapshot: json['workoutNameSnapshot'] as String,
       date: DateTime.parse(json['date'] as String),
       startedAt: DateTime.parse(json['startedAt'] as String),
-      completedAt: json['completedAt'] != null ? DateTime.parse(json['completedAt'] as String) : null,
+      completedAt: json['completedAt'] != null
+          ? DateTime.parse(json['completedAt'] as String)
+          : null,
       status: json['status'] as String,
       totalVolume: (json['totalVolume'] as num?)?.toDouble() ?? 0,
       previousSessionId: json['previousSessionId'] as String?,
       workoutNote: json['workoutNote'] as String?,
+      templateExerciseAssignmentsSnapshot: const [],
+      sessionExerciseNames: const [],
     );
   }
 }

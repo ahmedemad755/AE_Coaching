@@ -4,6 +4,7 @@ import 'package:ae_coaching/auth/presentation/view/complete_registration_view.da
 import 'package:ae_coaching/auth/presentation/view/verify_phone_migration_view.dart';
 import 'package:ae_coaching/core/routes/app_router.dart';
 import 'package:ae_coaching/core/session/session_storage.dart';
+import 'package:ae_coaching/core/theme/auth_screen_theme.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:ae_coaching/service_locator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -38,13 +39,7 @@ class _SessionReconciliationViewState extends State<SessionReconciliationView> {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xffdbe9f7), Color(0xff8fb6e6)],
-          ),
-        ),
+        decoration: AuthScreenTheme.background(context),
         child: BlocListener<AuthCubit, AuthState>(
           listener: (context, state) async {
             if (state is AuthSuccess) {
@@ -119,11 +114,15 @@ class _SessionReconciliationViewState extends State<SessionReconciliationView> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const CircularProgressIndicator(color: Color(0xff2f80ed)),
+                CircularProgressIndicator(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
                 const SizedBox(height: 16),
                 Text(
                   l10n.sessionCheckingMessage,
-                  style: const TextStyle(color: Color(0xff7d8792)),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
                 ),
               ],
             ),

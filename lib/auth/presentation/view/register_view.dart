@@ -2,6 +2,7 @@ import 'package:ae_coaching/auth/presentation/cubit/auth_cubit.dart';
 import 'package:ae_coaching/auth/presentation/cubit/auth_state.dart';
 import 'package:ae_coaching/core/localization/auth_message_localizer.dart';
 import 'package:ae_coaching/core/routes/app_router.dart';
+import 'package:ae_coaching/core/theme/auth_screen_theme.dart';
 import 'package:ae_coaching/core/session/session_storage.dart';
 import 'package:ae_coaching/core/utils/phone_normalizer.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
@@ -37,29 +38,11 @@ class _RegisterViewState extends State<RegisterView> {
     IconData icon, {
     Widget? suffixIcon,
   }) {
-    return InputDecoration(
-      hintText: hint,
-      prefixIcon: Icon(icon, color: const Color(0xff2f80ed)),
+    return AuthScreenTheme.fieldDecoration(
+      context,
+      hint: hint,
+      icon: icon,
       suffixIcon: suffixIcon,
-      filled: true,
-      fillColor: Colors.white,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(color: Color(0xff2f80ed)),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(color: Color(0xff2f80ed), width: 1.6),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(color: Colors.redAccent),
-      ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(color: Colors.redAccent),
-      ),
     );
   }
 
@@ -68,13 +51,7 @@ class _RegisterViewState extends State<RegisterView> {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xffdbe9f7), Color(0xff8fb6e6)],
-          ),
-        ),
+        decoration: AuthScreenTheme.background(context),
         child: BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) async {
             if (state is AuthSuccess) {
@@ -97,22 +74,23 @@ class _RegisterViewState extends State<RegisterView> {
                 AppNavigator.home,
                 (route) => false,
               );
-            } else if (state is AuthOtpSent) {
-              Navigator.pushNamed(
-                context,
-                AppNavigator.otp,
-                arguments: {
-                  'phone': state.phone,
-                  'password': _passwordController.text.trim(),
-                  'name': _nameController.text.trim(),
-                  'verificationId': state.verificationId,
-                },
-              );
+              // Temporarily disabled while testing without SMS OTP.
+              // } else if (state is AuthOtpSent) {
+              //   Navigator.pushNamed(
+              //     context,
+              //     AppNavigator.otp,
+              //     arguments: {
+              //       'phone': state.phone,
+              //       'password': _passwordController.text.trim(),
+              //       'name': _nameController.text.trim(),
+              //       'verificationId': state.verificationId,
+              //     },
+              //   );
             } else if (state is AuthError) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(state.message),
-                  backgroundColor: Colors.red,
+                  backgroundColor: Theme.of(context).colorScheme.error,
                 ),
               );
             }
@@ -127,7 +105,7 @@ class _RegisterViewState extends State<RegisterView> {
                     child: Container(
                       padding: const EdgeInsets.fromLTRB(18, 18, 18, 18),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.93),
+                        color: AuthScreenTheme.panelColor(context),
                         borderRadius: BorderRadius.circular(8),
                         boxShadow: [
                           BoxShadow(
@@ -148,14 +126,14 @@ class _RegisterViewState extends State<RegisterView> {
                               child: IconButton(
                                 onPressed: () => Navigator.pop(context),
                                 icon: const Icon(Icons.arrow_back_ios_new),
-                                color: const Color(0xff2f80ed),
+                                color: Theme.of(context).colorScheme.primary,
                               ),
                             ),
                             Text(
                               l10n.createAccountTitle,
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                color: Color(0xff202936),
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.onSurface,
                                 fontSize: 26,
                                 fontWeight: FontWeight.w900,
                               ),
@@ -164,7 +142,11 @@ class _RegisterViewState extends State<RegisterView> {
                             Text(
                               l10n.startJourneySubtitle,
                               textAlign: TextAlign.center,
-                              style: const TextStyle(color: Color(0xff7d8792)),
+                              style: TextStyle(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurfaceVariant,
+                              ),
                             ),
                             const SizedBox(height: 22),
                             TextFormField(
@@ -203,7 +185,9 @@ class _RegisterViewState extends State<RegisterView> {
                                     _isPasswordObscured
                                         ? Icons.visibility_off
                                         : Icons.visibility,
-                                    color: Colors.grey,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurfaceVariant,
                                   ),
                                   onPressed: () {
                                     setState(() {
@@ -232,16 +216,27 @@ class _RegisterViewState extends State<RegisterView> {
                                                   _phoneController.text,
                                                 );
 
-                                            // New registrations always go
-                                            // through OTP phone
-                                            // verification first (Phase 3)
+                                            // OTP registration is temporarily
+                                            // bypassed while SMS billing is
+                                            // being configured.
                                             // — password/name are held
-                                            // in memory and carried to
-                                            // OtpView once AuthOtpSent
-                                            // arrives.
+                                            // Previously, these values were
+                                            // passed to OtpView after the
+                                            // OTP request succeeded.
                                             context
                                                 .read<AuthCubit>()
-                                                .requestOtp(normalizedPhone);
+                                                .registerWithPhonePassword(
+                                                  name: _nameController.text
+                                                      .trim(),
+                                                  phone: normalizedPhone,
+                                                  password: _passwordController
+                                                      .text
+                                                      .trim(),
+                                                );
+                                            // Previous OTP flow:
+                                            // context
+                                            //     .read<AuthCubit>()
+                                            //     .requestOtp(normalizedPhone);
                                           } on PhoneNormalizationException catch (
                                             e
                                           ) {
@@ -250,15 +245,21 @@ class _RegisterViewState extends State<RegisterView> {
                                             ).showSnackBar(
                                               SnackBar(
                                                 content: Text(e.message),
-                                                backgroundColor: Colors.red,
+                                                backgroundColor: Theme.of(
+                                                  context,
+                                                ).colorScheme.error,
                                               ),
                                             );
                                           }
                                         }
                                       },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xff2f80ed),
-                                  foregroundColor: Colors.white,
+                                  backgroundColor: Theme.of(
+                                    context,
+                                  ).colorScheme.primary,
+                                  foregroundColor: Theme.of(
+                                    context,
+                                  ).colorScheme.onPrimary,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8),
                                   ),
@@ -268,11 +269,13 @@ class _RegisterViewState extends State<RegisterView> {
                                   ).withValues(alpha: 0.35),
                                 ),
                                 child: state is AuthLoading
-                                    ? const SizedBox(
+                                    ? SizedBox(
                                         height: 22,
                                         width: 22,
                                         child: CircularProgressIndicator(
-                                          color: Colors.white,
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.onPrimary,
                                           strokeWidth: 2.4,
                                         ),
                                       )

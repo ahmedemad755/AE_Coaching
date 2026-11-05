@@ -28,13 +28,22 @@ class WorkoutSessionAdapter extends TypeAdapter<WorkoutSession> {
       totalVolume: fields[8] as double,
       previousSessionId: fields[9] as String?,
       workoutNote: fields[10] as String?,
+      templateExerciseAssignmentsSnapshot:
+          (fields[11] as List?)?.cast<WorkoutTemplateExerciseAssignment>() ??
+          const <WorkoutTemplateExerciseAssignment>[],
+      sessionExerciseNames:
+          (fields[12] as List?)?.cast<String>() ?? const <String>[],
+      hiddenExerciseNames:
+          (fields[13] as List?)?.cast<String>() ?? const <String>[],
+      exerciseOrder: (fields[14] as List?)?.cast<String>() ?? const <String>[],
+      pendingProgramExerciseEdit: fields[15] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, WorkoutSession obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(16)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -56,7 +65,17 @@ class WorkoutSessionAdapter extends TypeAdapter<WorkoutSession> {
       ..writeByte(9)
       ..write(obj.previousSessionId)
       ..writeByte(10)
-      ..write(obj.workoutNote);
+      ..write(obj.workoutNote)
+      ..writeByte(11)
+      ..write(obj.templateExerciseAssignmentsSnapshot)
+      ..writeByte(12)
+      ..write(obj.sessionExerciseNames)
+      ..writeByte(13)
+      ..write(obj.hiddenExerciseNames)
+      ..writeByte(14)
+      ..write(obj.exerciseOrder)
+      ..writeByte(15)
+      ..write(obj.pendingProgramExerciseEdit);
   }
 
   @override

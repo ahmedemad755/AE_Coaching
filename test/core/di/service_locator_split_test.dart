@@ -15,12 +15,15 @@ import 'package:ae_coaching/auth/domain/usecases/request_password_reset_otp_usec
 import 'package:ae_coaching/auth/domain/usecases/reset_password_with_otp_usecase.dart';
 import 'package:ae_coaching/auth/presentation/cubit/auth_cubit.dart';
 import 'package:ae_coaching/core/session/session_storage.dart';
+import 'package:ae_coaching/core/notifications/inactivity_reminder_service.dart';
 import 'package:ae_coaching/core/storage/user_storage_manager.dart';
 import 'package:ae_coaching/features/measurements/data/datasources/measurement_remote_data_source.dart';
 import 'package:ae_coaching/features/measurements/data/repositories/measurement_repository.dart';
 import 'package:ae_coaching/features/measurements/presentation/cubit/measurement_cubit.dart';
 import 'package:ae_coaching/features/progress_photos/data/repositories/progress_photo_repository.dart';
 import 'package:ae_coaching/features/progress_photos/presentation/cubit/progress_photo_cubit.dart';
+import 'package:ae_coaching/features/profile/data/local_profile_photo_store.dart';
+import 'package:ae_coaching/features/profile/data/user_profile_repository.dart';
 import 'package:ae_coaching/features/workout/data/datasources/workout_remote_data_source.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_cascade_deletion_service.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_program_repository.dart';
@@ -105,10 +108,13 @@ void main() {
   });
 
   group('complete registration inventory survives the split', () {
-    test('all 26 lazy-singleton types remain registered', () {
+    test('all lazy-singleton types remain registered', () {
       // Core
       expect(sl.isRegistered<SessionStorage>(), isTrue);
       expect(sl.isRegistered<UserStorageManager>(), isTrue);
+      expect(sl.isRegistered<InactivityReminderService>(), isTrue);
+      expect(sl.isRegistered<LocalProfilePhotoStore>(), isTrue);
+      expect(sl.isRegistered<UserProfileRepository>(), isTrue);
       // Auth
       expect(sl.isRegistered<RequestOtpUseCase>(), isTrue);
       expect(sl.isRegistered<RegisterWithOtpUseCase>(), isTrue);

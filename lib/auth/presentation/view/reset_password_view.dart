@@ -2,6 +2,7 @@ import 'package:ae_coaching/auth/presentation/cubit/auth_cubit.dart';
 import 'package:ae_coaching/auth/presentation/cubit/auth_state.dart';
 import 'package:ae_coaching/core/localization/auth_message_localizer.dart';
 import 'package:ae_coaching/core/routes/app_router.dart';
+import 'package:ae_coaching/core/theme/auth_screen_theme.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -62,21 +63,11 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
     required IconData icon,
     Widget? suffixIcon,
   }) {
-    return InputDecoration(
-      hintText: hint,
-      prefixIcon: Icon(icon, color: const Color(0xff2f80ed)),
+    return AuthScreenTheme.fieldDecoration(
+      context,
+      hint: hint,
+      icon: icon,
       suffixIcon: suffixIcon,
-      filled: true,
-      fillColor: Colors.white,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(color: Color(0xff2f80ed)),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(color: Color(0xff2f80ed), width: 1.6),
-      ),
     );
   }
 
@@ -85,13 +76,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xffdbe9f7), Color(0xff8fb6e6)],
-          ),
-        ),
+        decoration: AuthScreenTheme.background(context),
         child: BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) {
             if (state is AuthPasswordResetOtpSent) {
@@ -117,7 +102,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(state.message),
-                  backgroundColor: Colors.red,
+                  backgroundColor: Theme.of(context).colorScheme.error,
                 ),
               );
             }
@@ -132,7 +117,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                     child: Container(
                       padding: const EdgeInsets.fromLTRB(18, 22, 18, 18),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.93),
+                        color: AuthScreenTheme.panelColor(context),
                         borderRadius: BorderRadius.circular(8),
                         boxShadow: [
                           BoxShadow(
@@ -151,8 +136,8 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                             Text(
                               l10n.resetPasswordTitle,
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                color: Color(0xff202936),
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.onSurface,
                                 fontSize: 26,
                                 fontWeight: FontWeight.w900,
                               ),
@@ -161,7 +146,11 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                             Text(
                               l10n.resetPasswordSubtitle(widget.phone),
                               textAlign: TextAlign.center,
-                              style: const TextStyle(color: Color(0xff7d8792)),
+                              style: TextStyle(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurfaceVariant,
+                              ),
                             ),
                             const SizedBox(height: 22),
                             TextFormField(
@@ -169,8 +158,8 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.center,
                               maxLength: 6,
-                              style: const TextStyle(
-                                color: Color(0xff202936),
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.onSurface,
                                 fontSize: 24,
                                 fontWeight: FontWeight.w800,
                               ),
@@ -178,20 +167,26 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                                 hintText: '000000',
                                 counterText: '',
                                 filled: true,
-                                fillColor: Colors.white,
+                                fillColor: Theme.of(
+                                  context,
+                                ).inputDecorationTheme.fillColor,
                                 contentPadding: const EdgeInsets.symmetric(
                                   vertical: 17,
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide: const BorderSide(
-                                    color: Color(0xff2f80ed),
+                                  borderSide: BorderSide(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.primary,
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide: const BorderSide(
-                                    color: Color(0xff2f80ed),
+                                  borderSide: BorderSide(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.primary,
                                     width: 1.6,
                                   ),
                                 ),
@@ -213,7 +208,9 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                                     _isPasswordObscured
                                         ? Icons.visibility_off
                                         : Icons.visibility,
-                                    color: Colors.grey,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurfaceVariant,
                                   ),
                                   onPressed: () => setState(
                                     () => _isPasswordObscured =
@@ -238,7 +235,9 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                                     _isConfirmObscured
                                         ? Icons.visibility_off
                                         : Icons.visibility,
-                                    color: Colors.grey,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurfaceVariant,
                                   ),
                                   onPressed: () => setState(
                                     () => _isConfirmObscured =
@@ -269,8 +268,12 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                                                 widget.phone,
                                               ),
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color(0xff2f80ed),
-                                      foregroundColor: Colors.white,
+                                      backgroundColor: Theme.of(
+                                        context,
+                                      ).colorScheme.primary,
+                                      foregroundColor: Theme.of(
+                                        context,
+                                      ).colorScheme.onPrimary,
                                       minimumSize: const Size.fromHeight(50),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(8),
@@ -307,8 +310,12 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                                                 );
                                           },
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.white,
-                                      foregroundColor: const Color(0xff2f80ed),
+                                      backgroundColor: Theme.of(
+                                        context,
+                                      ).colorScheme.surfaceContainerHighest,
+                                      foregroundColor: Theme.of(
+                                        context,
+                                      ).colorScheme.primary,
                                       minimumSize: const Size.fromHeight(50),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(8),

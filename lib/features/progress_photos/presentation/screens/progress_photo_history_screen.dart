@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:ae_coaching/features/progress_photos/data/models/progress_photo.dart';
 import 'package:ae_coaching/features/progress_photos/presentation/cubit/progress_photo_cubit.dart';
+import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,14 +15,12 @@ class ProgressPhotoHistoryScreen extends StatefulWidget {
   const ProgressPhotoHistoryScreen({super.key});
 
   @override
-  State<ProgressPhotoHistoryScreen> createState() => _ProgressPhotoHistoryScreenState();
+  State<ProgressPhotoHistoryScreen> createState() =>
+      _ProgressPhotoHistoryScreenState();
 }
 
-class _ProgressPhotoHistoryScreenState extends State<ProgressPhotoHistoryScreen> {
-  static const Color _blue = Color(0xff2f80ed);
-  static const Color _dark = Color(0xff202936);
-  static const Color _muted = Color(0xff7d8792);
-
+class _ProgressPhotoHistoryScreenState
+    extends State<ProgressPhotoHistoryScreen> {
   Box<ProgressPhoto>? _box;
 
   @override
@@ -39,26 +38,38 @@ class _ProgressPhotoHistoryScreenState extends State<ProgressPhotoHistoryScreen>
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xfff5f9fc),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        title: Text(l10n.deletePhotoTitle, style: const TextStyle(fontWeight: FontWeight.w900, color: _dark)),
+        title: Text(
+          l10n.deletePhotoTitle,
+          style: TextStyle(
+            fontWeight: FontWeight.w900,
+            color: Theme.of(ctx).colorScheme.onSurface,
+          ),
+        ),
         content: Text(
-          l10n.deletePhotoBody(DateFormat('d MMM yyyy', dateLocale).format(photo.date)),
-          style: const TextStyle(color: _muted),
+          l10n.deletePhotoBody(
+            DateFormat('d MMM yyyy', dateLocale).format(photo.date),
+          ),
+          style: TextStyle(color: Theme.of(ctx).colorScheme.onSurfaceVariant),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: Text(l10n.cancel, style: const TextStyle(color: _blue)),
+            child: Text(l10n.cancel),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(ctx, true),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.redAccent,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              backgroundColor: Theme.of(ctx).colorScheme.error,
+              foregroundColor: Theme.of(ctx).colorScheme.onError,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
-            child: Text(l10n.delete, style: const TextStyle(fontWeight: FontWeight.w800)),
+            child: Text(
+              l10n.delete,
+              style: const TextStyle(fontWeight: FontWeight.w800),
+            ),
           ),
         ],
       ),
@@ -75,11 +86,12 @@ class _ProgressPhotoHistoryScreenState extends State<ProgressPhotoHistoryScreen>
       MaterialPageRoute(
         builder: (_) => Scaffold(
           backgroundColor: Colors.black,
-          appBar: AppBar(backgroundColor: Colors.black, foregroundColor: Colors.white),
+          appBar: AppBar(
+            backgroundColor: Colors.black,
+            foregroundColor: Colors.white,
+          ),
           body: Center(
-            child: InteractiveViewer(
-              child: Image.file(File(photo.imagePath)),
-            ),
+            child: InteractiveViewer(child: Image.file(File(photo.imagePath))),
           ),
         ),
       ),
@@ -91,10 +103,9 @@ class _ProgressPhotoHistoryScreenState extends State<ProgressPhotoHistoryScreen>
     final l10n = AppLocalizations.of(context)!;
     final dateLocale = Localizations.localeOf(context).toString();
     return Scaffold(
-      backgroundColor: const Color(0xfff5f9fc),
       appBar: AppBar(
-        backgroundColor: _blue,
-        foregroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Theme.of(context).colorScheme.onPrimary,
         title: Text(l10n.photoHistoryTitle),
       ),
       body: BlocConsumer<ProgressPhotoCubit, ProgressPhotoState>(
@@ -104,7 +115,10 @@ class _ProgressPhotoHistoryScreenState extends State<ProgressPhotoHistoryScreen>
           }
           if (state is ProgressPhotoError) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message), backgroundColor: Colors.redAccent),
+              SnackBar(
+                content: Text(state.message),
+                backgroundColor: Theme.of(context).colorScheme.error,
+              ),
             );
           }
         },
@@ -114,16 +128,27 @@ class _ProgressPhotoHistoryScreenState extends State<ProgressPhotoHistoryScreen>
           if (box == null) {
             if (state is ProgressPhotoError) {
               return Center(
-                child: Text(l10n.unableToLoadPhotos, style: const TextStyle(color: _muted, fontWeight: FontWeight.w700)),
+                child: Text(
+                  l10n.unableToLoadPhotos,
+                  style: TextStyle(
+                    color: context.appColors.textMuted,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
               );
             }
-            return const Center(child: CircularProgressIndicator(color: _blue));
+            return Center(
+              child: CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            );
           }
 
           return ValueListenableBuilder(
             valueListenable: box.listenable(),
             builder: (context, Box<ProgressPhoto> liveBox, _) {
-              final all = liveBox.values.toList()..sort((a, b) => b.date.compareTo(a.date));
+              final all = liveBox.values.toList()
+                ..sort((a, b) => b.date.compareTo(a.date));
 
               if (all.isEmpty) {
                 return Center(
@@ -132,7 +157,10 @@ class _ProgressPhotoHistoryScreenState extends State<ProgressPhotoHistoryScreen>
                     child: Text(
                       '${l10n.noPhotosYetTitle}\n\n${l10n.addFirstPhotoSubtitle}',
                       textAlign: TextAlign.center,
-                      style: const TextStyle(color: _muted, fontWeight: FontWeight.w700),
+                      style: TextStyle(
+                        color: context.appColors.textMuted,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                 );
@@ -153,10 +181,14 @@ class _ProgressPhotoHistoryScreenState extends State<ProgressPhotoHistoryScreen>
                     onTap: () => _viewFullScreen(photo),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.surface,
                         borderRadius: BorderRadius.circular(10),
                         boxShadow: [
-                          BoxShadow(color: Colors.black.withValues(alpha: 0.06), blurRadius: 12, offset: const Offset(0, 6)),
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.06),
+                            blurRadius: 12,
+                            offset: const Offset(0, 6),
+                          ),
                         ],
                       ),
                       child: Column(
@@ -164,27 +196,45 @@ class _ProgressPhotoHistoryScreenState extends State<ProgressPhotoHistoryScreen>
                         children: [
                           Expanded(
                             child: ClipRRect(
-                              borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+                              borderRadius: const BorderRadius.vertical(
+                                top: Radius.circular(10),
+                              ),
                               child: Image.file(
                                 File(photo.imagePath),
                                 fit: BoxFit.cover,
                                 width: double.infinity,
-                                errorBuilder: (context, error, stackTrace) => Container(
-                                  color: const Color(0xffeaf2fc),
-                                  alignment: Alignment.center,
-                                  child: const Icon(Icons.broken_image_outlined, color: _muted),
-                                ),
+                                errorBuilder: (context, error, stackTrace) =>
+                                    Container(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.surfaceContainerHighest,
+                                      alignment: Alignment.center,
+                                      child: Icon(
+                                        Icons.broken_image_outlined,
+                                        color: context.appColors.textMuted,
+                                      ),
+                                    ),
                               ),
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 6,
+                            ),
                             child: Row(
                               children: [
                                 Expanded(
                                   child: Text(
-                                    DateFormat('d MMM yyyy', dateLocale).format(photo.date),
-                                    style: const TextStyle(color: _dark, fontWeight: FontWeight.w700, fontSize: 11),
+                                    DateFormat(
+                                      'd MMM yyyy',
+                                      dateLocale,
+                                    ).format(photo.date),
+                                    style: TextStyle(
+                                      color: context.appColors.textPrimary,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 11,
+                                    ),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -192,9 +242,15 @@ class _ProgressPhotoHistoryScreenState extends State<ProgressPhotoHistoryScreen>
                                 InkWell(
                                   onTap: () => _confirmDelete(photo),
                                   borderRadius: BorderRadius.circular(20),
-                                  child: const Padding(
+                                  child: Padding(
                                     padding: EdgeInsets.all(2),
-                                    child: Icon(Icons.delete_outline, color: Colors.redAccent, size: 18),
+                                    child: Icon(
+                                      Icons.delete_outline,
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.error,
+                                      size: 18,
+                                    ),
                                   ),
                                 ),
                               ],

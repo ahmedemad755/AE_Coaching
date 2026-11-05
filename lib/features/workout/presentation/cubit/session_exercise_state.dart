@@ -10,8 +10,11 @@ part of 'session_exercise_cubit.dart';
 /// point it moves into [sets] like any other exercise.
 class SessionExerciseRow {
   final String exerciseName;
+  final String? assignmentId;
+  final WorkoutTemplateExerciseAssignment? assignment;
   final List<ExerciseSet> sets;
   final bool isReferenceOnly;
+  final bool isSessionOnly;
 
   /// Sets logged for this exact exercise name in the previous
   /// COMPLETED session sharing the same programId + workoutTemplateId
@@ -23,8 +26,11 @@ class SessionExerciseRow {
 
   const SessionExerciseRow({
     required this.exerciseName,
+    this.assignmentId,
+    this.assignment,
     required this.sets,
     required this.isReferenceOnly,
+    this.isSessionOnly = false,
     this.previousSets = const [],
   });
 }
@@ -48,8 +54,13 @@ class SessionExerciseLoading extends SessionExerciseState {
 class SessionExerciseLoaded extends SessionExerciseState {
   final List<SessionExerciseRow> rows;
   final bool hasReferenceSession;
+  final WorkoutSession? session;
 
-  const SessionExerciseLoaded({required this.rows, required this.hasReferenceSession});
+  const SessionExerciseLoaded({
+    required this.rows,
+    required this.hasReferenceSession,
+    this.session,
+  });
 
   /// Sum of weight × reps across every REAL set logged in the current
   /// session (reference-only rows never contribute — they have no
@@ -57,13 +68,16 @@ class SessionExerciseLoaded extends SessionExerciseState {
   /// [WorkoutSession.totalVolume]; nothing from a previous session is
   /// ever included.
   double get totalVolume {
-    return rows.expand((r) => r.sets).fold(0.0, (sum, s) => sum + s.weight * s.reps);
+    return rows
+        .expand((r) => r.sets)
+        .fold(0.0, (sum, s) => sum + s.weight * s.reps);
   }
 
   SessionExerciseLoaded copyWith({List<SessionExerciseRow>? rows}) {
     return SessionExerciseLoaded(
       rows: rows ?? this.rows,
       hasReferenceSession: hasReferenceSession,
+      session: session,
     );
   }
 }

@@ -25,8 +25,6 @@ class AddPhotoPreviewDialog extends StatefulWidget {
 }
 
 class _AddPhotoPreviewDialogState extends State<AddPhotoPreviewDialog> {
-  static const Color _blue = Color(0xff2f80ed);
-
   late DateTime _date = widget.initialDate;
 
   Future<void> _pickDate() async {
@@ -37,9 +35,9 @@ class _AddPhotoPreviewDialogState extends State<AddPhotoPreviewDialog> {
       lastDate: DateTime.now().add(const Duration(days: 3650)),
       builder: (context, child) {
         return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: Theme.of(context).colorScheme.copyWith(primary: _blue),
-          ),
+          data: Theme.of(
+            context,
+          ).copyWith(colorScheme: Theme.of(context).colorScheme),
           child: child!,
         );
       },
@@ -55,7 +53,6 @@ class _AddPhotoPreviewDialogState extends State<AddPhotoPreviewDialog> {
     final dateLocale = Localizations.localeOf(context).toString();
 
     return AlertDialog(
-      backgroundColor: const Color(0xfff5f9fc),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       title: Text(l10n.choosePhotoSourceTitle),
       content: SingleChildScrollView(
@@ -76,29 +73,41 @@ class _AddPhotoPreviewDialogState extends State<AddPhotoPreviewDialog> {
               onTap: _pickDate,
               borderRadius: BorderRadius.circular(8),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 10,
+                ),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: const Color(0xffd5e3f2)),
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.outline,
+                  ),
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.event, color: _blue, size: 20),
+                    Icon(
+                      Icons.event,
+                      color: Theme.of(context).colorScheme.primary,
+                      size: 20,
+                    ),
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
-                        DateFormat('EEEE, d MMM yyyy', dateLocale).format(_date),
-                        style: const TextStyle(
-                          color: Color(0xff202936),
+                        DateFormat(
+                          'EEEE, d MMM yyyy',
+                          dateLocale,
+                        ).format(_date),
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurface,
                           fontWeight: FontWeight.w800,
                         ),
                       ),
                     ),
                     Text(
                       l10n.changeDateButton,
-                      style: const TextStyle(
-                        color: _blue,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
                         fontWeight: FontWeight.w700,
                         fontSize: 12,
                       ),
@@ -118,9 +127,11 @@ class _AddPhotoPreviewDialogState extends State<AddPhotoPreviewDialog> {
         ElevatedButton(
           onPressed: () => Navigator.pop(context, _date),
           style: ElevatedButton.styleFrom(
-            backgroundColor: _blue,
-            foregroundColor: Colors.white,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            foregroundColor: Theme.of(context).colorScheme.onPrimary,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
           ),
           child: Text(l10n.save),
         ),

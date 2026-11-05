@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:ae_coaching/core/notifications/inactivity_reminder_service.dart';
 import 'package:ae_coaching/core/storage/user_storage_manager.dart';
 import 'package:ae_coaching/features/workout/data/datasources/workout_session_remote_data_source.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_session.dart';
+import 'package:ae_coaching/features/workout/data/models/workout_template_exercise_assignment.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_session_repository.dart';
 import 'package:ae_coaching/features/workout/presentation/cubit/workout_session_cubit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -24,9 +26,24 @@ class _FakeWorkoutSessionRemoteDataSource
   }
 }
 
+class _FakeInactivityReminderRecorder implements InactivityReminderRecorder {
+  final List<String> completedSessionIds = [];
+
+  @override
+  Future<void> onWorkoutCompleted({
+    required String uid,
+    required String sessionId,
+    required DateTime completedAt,
+  }) async {
+    completedSessionIds.add(sessionId);
+  }
+}
+
 void main() {
   late Directory tempDir;
   late WorkoutSessionCubit cubit;
+  late _FakeWorkoutSessionRemoteDataSource remoteDataSource;
+  late _FakeInactivityReminderRecorder inactivityReminderRecorder;
 
   const programA = 'program_A';
   const push1 = 'template_push1';
@@ -40,11 +57,17 @@ void main() {
     if (!Hive.isAdapterRegistered(5)) {
       Hive.registerAdapter(WorkoutSessionAdapter());
     }
+    if (!Hive.isAdapterRegistered(7)) {
+      Hive.registerAdapter(WorkoutTemplateExerciseAssignmentAdapter());
+    }
 
+    remoteDataSource = _FakeWorkoutSessionRemoteDataSource();
+    inactivityReminderRecorder = _FakeInactivityReminderRecorder();
     cubit = WorkoutSessionCubit(
       repository: WorkoutSessionRepository(
-        remoteDataSource: _FakeWorkoutSessionRemoteDataSource(),
+        remoteDataSource: remoteDataSource,
         storageManager: UserStorageManager(),
+        inactivityReminderRecorder: inactivityReminderRecorder,
         uidOverride: () => 'test-uid',
       ),
     );
@@ -78,6 +101,38 @@ void main() {
     expect(session.workoutNameSnapshot, equals('Push 1'));
     expect(session.isInProgress, isTrue);
   });
+
+  test(
+    'empty assigned session cancels while preserving its assignment snapshot',
+    () async {
+      final assignment = WorkoutTemplateExerciseAssignment(
+        assignmentId: 'assignment_1',
+        exerciseId: 'custom_exercise_1',
+        exerciseNameSnapshot: 'Custom Press',
+        referenceType: WorkoutExerciseReferenceType.custom.name,
+      );
+      await cubit.startWorkout(
+        programId: programA,
+        workoutTemplateId: push1,
+        workoutNameSnapshot: 'Push 1',
+        templateExerciseAssignments: [assignment],
+      );
+      final active = (cubit.state as WorkoutSessionActive).session;
+
+      final terminal = await cubit.finishWorkout(
+        sessionId: active.id,
+        totalVolume: 0,
+        hasValidCompletedSet: false,
+      );
+
+      expect(terminal?.isCancelled, isTrue);
+      expect(
+        terminal?.templateExerciseAssignmentsSnapshot.single.exerciseId,
+        'custom_exercise_1',
+      );
+      expect(inactivityReminderRecorder.completedSessionIds, isEmpty);
+    },
+  );
 
   test(
     'checkActiveSession reflects the session started via startWorkout',
@@ -162,7 +217,11 @@ void main() {
       );
       final sessionId = (cubit.state as WorkoutSessionActive).session.id;
 
-      await cubit.finishWorkout(sessionId: sessionId, totalVolume: 480);
+      await cubit.finishWorkout(
+        sessionId: sessionId,
+        totalVolume: 480,
+        hasValidCompletedSet: true,
+      );
 
       expect(cubit.state, isA<WorkoutSessionNone>());
 
@@ -172,6 +231,46 @@ void main() {
       expect(finished!.isCompleted, isTrue);
       expect(finished.totalVolume, equals(480));
       expect(finished.completedAt, isNotNull);
+      expect(inactivityReminderRecorder.completedSessionIds, [sessionId]);
+    },
+  );
+
+  test(
+    'finishing an empty session cancels it without completing or scheduling a reminder',
+    () async {
+      await cubit.startWorkout(
+        programId: programA,
+        workoutTemplateId: push1,
+        workoutNameSnapshot: 'Push 1',
+      );
+      final sessionId = (cubit.state as WorkoutSessionActive).session.id;
+
+      final terminal = await cubit.finishWorkout(
+        sessionId: sessionId,
+        totalVolume: 0,
+        hasValidCompletedSet: false,
+      );
+
+      expect(cubit.state, isA<WorkoutSessionNone>());
+      expect(terminal!.isCancelled, isTrue);
+      expect(terminal.isCompleted, isFalse);
+      expect(terminal.totalVolume, 0);
+      expect(terminal.completedAt, isNull);
+      expect(inactivityReminderRecorder.completedSessionIds, isEmpty);
+
+      final box = await cubit.repository.getUserBox();
+      expect(box.values, hasLength(1));
+      expect(box.values.where((session) => session.isCompleted), isEmpty);
+
+      final repeated = await cubit.finishWorkout(
+        sessionId: sessionId,
+        totalVolume: 0,
+        hasValidCompletedSet: false,
+      );
+      expect(repeated, isNull);
+      expect(box.values, hasLength(1));
+      expect(box.get(sessionId)!.isCancelled, isTrue);
+      expect(inactivityReminderRecorder.completedSessionIds, isEmpty);
     },
   );
 
@@ -184,9 +283,17 @@ void main() {
         workoutNameSnapshot: 'Push 1',
       );
       final sessionId = (cubit.state as WorkoutSessionActive).session.id;
-      await cubit.finishWorkout(sessionId: sessionId, totalVolume: 480);
+      await cubit.finishWorkout(
+        sessionId: sessionId,
+        totalVolume: 480,
+        hasValidCompletedSet: true,
+      );
 
-      await cubit.finishWorkout(sessionId: sessionId, totalVolume: 999);
+      await cubit.finishWorkout(
+        sessionId: sessionId,
+        totalVolume: 999,
+        hasValidCompletedSet: true,
+      );
 
       expect(cubit.state, isA<WorkoutSessionError>());
       expect(
@@ -220,7 +327,11 @@ void main() {
         workoutNameSnapshot: 'Push 1',
       );
       final sessionId = (cubit.state as WorkoutSessionActive).session.id;
-      await cubit.finishWorkout(sessionId: sessionId, totalVolume: 480);
+      await cubit.finishWorkout(
+        sessionId: sessionId,
+        totalVolume: 480,
+        hasValidCompletedSet: true,
+      );
 
       await cubit.cancelWorkout(sessionId);
 

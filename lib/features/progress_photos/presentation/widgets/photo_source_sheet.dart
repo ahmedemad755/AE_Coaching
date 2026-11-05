@@ -8,7 +8,6 @@ Future<ImageSource?> showPhotoSourceSheet(BuildContext context) {
   final l10n = AppLocalizations.of(context)!;
   return showModalBottomSheet<ImageSource>(
     context: context,
-    backgroundColor: const Color(0xfff5f9fc),
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
     ),
@@ -19,12 +18,18 @@ Future<ImageSource?> showPhotoSourceSheet(BuildContext context) {
           children: [
             const SizedBox(height: 8),
             ListTile(
-              leading: const Icon(Icons.camera_alt, color: Color(0xff2f80ed)),
+              leading: Icon(
+                Icons.camera_alt,
+                color: Theme.of(ctx).colorScheme.primary,
+              ),
               title: Text(l10n.cameraOption),
               onTap: () => Navigator.pop(ctx, ImageSource.camera),
             ),
             ListTile(
-              leading: const Icon(Icons.photo_library, color: Color(0xff2f80ed)),
+              leading: Icon(
+                Icons.photo_library,
+                color: Theme.of(ctx).colorScheme.primary,
+              ),
               title: Text(l10n.galleryOption),
               onTap: () => Navigator.pop(ctx, ImageSource.gallery),
             ),

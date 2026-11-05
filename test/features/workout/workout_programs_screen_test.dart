@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:ae_coaching/core/routes/app_router.dart';
+import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/core/storage/user_storage_manager.dart';
 import 'package:ae_coaching/features/workout/data/datasources/workout_program_remote_data_source.dart';
 import 'package:ae_coaching/features/workout/data/datasources/workout_remote_data_source.dart';
@@ -17,6 +19,9 @@ import 'package:ae_coaching/features/workout/data/repositories/workout_template_
 import 'package:ae_coaching/features/workout/presentation/cubit/workout_program_cubit.dart';
 import 'package:ae_coaching/features/workout/presentation/cubit/workout_session_cubit.dart';
 import 'package:ae_coaching/features/workout/presentation/screens/workout_programs_screen.dart';
+import 'package:ae_coaching/features/workout/presentation/screens/workout_program_details_screen.dart';
+import 'package:ae_coaching/features/workout/presentation/widgets/home_workout_plans_section.dart';
+import 'package:ae_coaching/features/workout/presentation/widgets/workout_template_layout.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -95,9 +100,17 @@ class _FakeWorkoutRemoteDataSource implements WorkoutRemoteDataSource {
   }
 }
 
-Widget _wrap(WorkoutProgramCubit cubit, WorkoutSessionCubit sessionCubit) {
+Widget _wrap(
+  WorkoutProgramCubit cubit,
+  WorkoutSessionCubit sessionCubit, {
+  ThemeMode themeMode = ThemeMode.light,
+  Locale locale = const Locale('en'),
+}) {
   return MaterialApp(
-    locale: const Locale('en'),
+    theme: AppTheme.light,
+    darkTheme: AppTheme.dark,
+    themeMode: themeMode,
+    locale: locale,
     localizationsDelegates: AppLocalizations.localizationsDelegates,
     supportedLocales: AppLocalizations.supportedLocales,
     home: MultiBlocProvider(
@@ -107,6 +120,48 @@ Widget _wrap(WorkoutProgramCubit cubit, WorkoutSessionCubit sessionCubit) {
       ],
       child: const WorkoutProgramsScreen(),
     ),
+  );
+}
+
+Widget _wrapHomePlans(
+  WorkoutProgramCubit cubit, {
+  Locale locale = const Locale('en'),
+  ThemeMode themeMode = ThemeMode.light,
+}) {
+  return MaterialApp(
+    theme: AppTheme.light,
+    darkTheme: AppTheme.dark,
+    themeMode: themeMode,
+    locale: locale,
+    localizationsDelegates: AppLocalizations.localizationsDelegates,
+    supportedLocales: AppLocalizations.supportedLocales,
+    routes: {
+      AppNavigator.initial: (_) => BlocProvider.value(
+        value: cubit,
+        child: const Scaffold(
+          body: SingleChildScrollView(
+            padding: EdgeInsets.all(16),
+            child: HomeWorkoutPlansSection(),
+          ),
+        ),
+      ),
+    },
+    onGenerateRoute: (settings) {
+      if (settings.name == AppNavigator.workoutPrograms) {
+        return MaterialPageRoute<void>(
+          settings: settings,
+          builder: (_) => const Scaffold(body: Text('programs-route')),
+        );
+      }
+      if (settings.name == AppNavigator.workoutProgramDetails) {
+        final args = settings.arguments! as WorkoutProgramDetailsArgs;
+        return MaterialPageRoute<void>(
+          settings: settings,
+          builder: (_) => Scaffold(body: Text('details:${args.program.name}')),
+        );
+      }
+      return null;
+    },
   );
 }
 
@@ -271,5 +326,279 @@ void main() {
     expect(find.text('Previous Programs'), findsOneWidget);
     expect(find.text('Program A'), findsOneWidget);
     expect(find.text('Program B'), findsOneWidget);
+  });
+
+  testWidgets('program screen uses the dark semantic canvas and surfaces', (
+    tester,
+  ) async {
+    await tester.runAsync(
+      () => cubit.createProgram(name: 'Dark mode program', makeActive: true),
+    );
+    await tester.pumpWidget(
+      _wrap(cubit, sessionCubit, themeMode: ThemeMode.dark),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+
+    final scaffold = tester.widget<Scaffold>(find.byType(Scaffold).first);
+    expect(scaffold.backgroundColor, AppSemanticColors.dark.canvas);
+    final appBar = tester.widget<AppBar>(find.byType(AppBar));
+    expect(appBar.backgroundColor, AppSemanticColors.dark.canvas);
+    expect(find.text('Dark mode program'), findsOneWidget);
+  });
+
+  for (final language in ['en', 'ar']) {
+    testWidgets('$language narrow program cards wrap names and actions', (
+      tester,
+    ) async {
+      tester.view.physicalSize = const Size(320, 780);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      final longName = language == 'ar'
+          ? 'برنامج القوة وبناء العضلات لأيام التدريب الأسبوعية'
+          : 'Weekly strength and muscle building training program';
+      late List<WorkoutProgram> programs;
+      await tester.runAsync(() async {
+        await cubit.createProgram(name: longName);
+        await cubit.createProgram(name: 'Second plan');
+        programs = cubit.repository.getPrograms(
+          await cubit.repository.getUserBox(),
+        );
+      });
+      await tester.pumpWidget(
+        _wrap(
+          cubit,
+          sessionCubit,
+          locale: Locale(language),
+          themeMode: language == 'ar' ? ThemeMode.dark : ThemeMode.light,
+        ),
+      );
+      await tester.pumpAndSettle();
+      final cards =
+          [
+            for (final program in programs)
+              find.byKey(ValueKey('program-card-${program.id}')),
+          ]..sort(
+            (a, b) =>
+                tester.getTopLeft(a).dy.compareTo(tester.getTopLeft(b).dy),
+          );
+      expect(tester.getTopLeft(cards.first).dx, WorkoutTemplateSpacing.screen);
+      expect(
+        tester.getTopLeft(cards.last).dy - tester.getBottomLeft(cards.first).dy,
+        closeTo(WorkoutTemplateSpacing.programCard, 0.01),
+      );
+      final title = find.text(longName);
+      expect(
+        Directionality.of(tester.element(title)),
+        language == 'ar' ? TextDirection.rtl : TextDirection.ltr,
+      );
+      for (final card in cards) {
+        final actions = find.descendant(
+          of: card,
+          matching: find.byWidgetPredicate(
+            (widget) => widget is OutlinedButton,
+          ),
+        );
+        expect(actions, findsNWidgets(5));
+        for (final action in actions.evaluate()) {
+          expect(
+            tester.getSize(find.byWidget(action.widget)).height,
+            greaterThanOrEqualTo(WorkoutTemplateSpacing.tapTarget),
+          );
+        }
+        await tester.ensureVisible(card);
+        await tester.pumpAndSettle();
+      }
+      expect(tester.takeException(), isNull);
+      await tester.pumpWidget(const SizedBox.shrink());
+    });
+  }
+
+  testWidgets('Home plans empty state opens the programs hub', (tester) async {
+    await tester.runAsync(() => cubit.loadPrograms());
+    await tester.pumpWidget(_wrapHomePlans(cubit));
+    await tester.pump();
+
+    expect(find.text('My Workout Plans'), findsOneWidget);
+    expect(
+      find.text(
+        'Create your first workout plan to organize your training days.',
+      ),
+      findsOneWidget,
+    );
+    expect(find.text('View all'), findsOneWidget);
+    await tester.tap(find.text('Create a workout plan'));
+    await tester.pumpAndSettle();
+    expect(find.text('programs-route'), findsOneWidget);
+  });
+
+  testWidgets(
+    'Home shows active and inactive plans distinctly and opens details',
+    (tester) async {
+      late String activeId;
+      late String inactiveId;
+      await tester.runAsync(() async {
+        await cubit.createProgram(name: 'Push A', makeActive: true);
+        await cubit.createProgram(name: 'Push B');
+        final programs = cubit.repository.getPrograms(
+          await cubit.repository.getUserBox(),
+        );
+        activeId = programs.singleWhere((p) => p.name == 'Push A').id;
+        inactiveId = programs.singleWhere((p) => p.name == 'Push B').id;
+        await cubit.loadPrograms();
+      });
+      await tester.pumpWidget(_wrapHomePlans(cubit));
+      await tester.pump();
+
+      expect(find.text('Active Program'), findsOneWidget);
+      expect(find.text('No Active Program'), findsNothing);
+      final planTitle = find.text('My Workout Plans');
+      expect(Directionality.of(tester.element(planTitle)), TextDirection.ltr);
+      expect(Theme.of(tester.element(planTitle)).brightness, Brightness.light);
+      final activeCard = tester.widget<Material>(
+        find.byKey(ValueKey('home-workout-plan-surface-$activeId')),
+      );
+      final inactiveCard = tester.widget<Material>(
+        find.byKey(ValueKey('home-workout-plan-surface-$inactiveId')),
+      );
+      final activeShape = activeCard.shape! as RoundedRectangleBorder;
+      final inactiveShape = inactiveCard.shape! as RoundedRectangleBorder;
+      expect(activeShape.side.color, AppTheme.light.colorScheme.primary);
+      expect(inactiveShape.side.color, AppSemanticColors.light.border);
+
+      await tester.tap(find.text('Push A'));
+      await tester.pumpAndSettle();
+      expect(find.text('details:Push A'), findsOneWidget);
+      expect(
+        cubit.repository
+            .getActiveProgram(await cubit.repository.getUserBox())
+            ?.id,
+        activeId,
+      );
+    },
+  );
+
+  testWidgets(
+    'Home shows no-active state when plans exist without a selection',
+    (tester) async {
+      await tester.runAsync(() async {
+        await cubit.createProgram(name: 'Unselected plan');
+        await cubit.loadPrograms();
+      });
+      await tester.pumpWidget(_wrapHomePlans(cubit));
+      await tester.pump();
+
+      expect(find.text('No Active Program'), findsOneWidget);
+      expect(find.text('Make Active'), findsOneWidget);
+      expect(find.text('Active Program'), findsNothing);
+    },
+  );
+
+  testWidgets('Home can explicitly activate a plan and persist that choice', (
+    tester,
+  ) async {
+    late String targetId;
+    await tester.runAsync(() async {
+      await cubit.createProgram(name: 'Current plan', makeActive: true);
+      await cubit.createProgram(name: 'Next plan');
+      targetId = cubit.repository
+          .getPrograms(await cubit.repository.getUserBox())
+          .singleWhere((p) => p.name == 'Next plan')
+          .id;
+      await cubit.loadPrograms();
+    });
+    await tester.pumpWidget(_wrapHomePlans(cubit));
+    await tester.pump();
+
+    await tester.runAsync(() async {
+      await tester.tap(
+        find.descendant(
+          of: find.byKey(ValueKey('home-workout-plan-$targetId')),
+          matching: find.text('Make Active'),
+        ),
+      );
+    });
+    await tester.pump();
+    expect(find.text('Make Active?'), findsOneWidget);
+    await tester.runAsync(() async {
+      final activated = cubit.stream.firstWhere(
+        (state) => state is WorkoutProgramLoaded,
+      );
+      await tester.tap(find.widgetWithText(FilledButton, 'Make Active'));
+      await activated.timeout(const Duration(seconds: 5));
+    });
+    await tester.pump();
+
+    final active = await tester.runAsync(
+      () async => cubit.repository.getActiveProgram(
+        await cubit.repository.getUserBox(),
+      ),
+    );
+    expect(active?.id, targetId);
+    expect(
+      find.descendant(
+        of: find.byKey(ValueKey('home-workout-plan-$targetId')),
+        matching: find.text('Active Program'),
+      ),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('Home plans support Arabic RTL and dark theme', (tester) async {
+    tester.view.physicalSize = const Size(320, 720);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    await tester.runAsync(() async {
+      await cubit.createProgram(
+        name: 'خطة تدريب طويلة للاختبار على شاشة هاتف صغيرة',
+        makeActive: true,
+      );
+      await cubit.loadPrograms();
+    });
+    await tester.pumpWidget(
+      _wrapHomePlans(
+        cubit,
+        locale: const Locale('ar'),
+        themeMode: ThemeMode.dark,
+      ),
+    );
+    await tester.pump();
+
+    expect(find.text('خطط التمرين'), findsOneWidget);
+    expect(
+      Directionality.of(tester.element(find.text('خطط التمرين'))),
+      TextDirection.rtl,
+    );
+    expect(
+      Theme.of(tester.element(find.text('خطط التمرين'))).brightness,
+      Brightness.dark,
+    );
+    expect(find.text('البرنامج النشط'), findsOneWidget);
+  });
+
+  testWidgets('Home keeps the plan list compact and View all opens the hub', (
+    tester,
+  ) async {
+    await tester.runAsync(() async {
+      for (var i = 1; i <= 4; i++) {
+        await cubit.createProgram(name: 'Plan $i');
+      }
+      await cubit.loadPrograms();
+    });
+    await tester.pumpWidget(_wrapHomePlans(cubit));
+    await tester.pump();
+
+    final planCards = find.byWidgetPredicate((widget) {
+      final key = widget.key;
+      return key is ValueKey<String> &&
+          key.value.startsWith('home-workout-plan-') &&
+          !key.value.startsWith('home-workout-plan-surface-');
+    });
+    expect(planCards, findsNWidgets(3));
+    await tester.tap(find.text('View all'));
+    await tester.pumpAndSettle();
+    expect(find.text('programs-route'), findsOneWidget);
   });
 }

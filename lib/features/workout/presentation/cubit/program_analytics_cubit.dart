@@ -46,10 +46,15 @@ class ProgramAnalyticsCubit extends Cubit<ProgramAnalyticsState> {
       final setsBySessionId = <String, List<ExerciseSet>>{};
 
       for (final template in templates) {
-        final completed = sessionRepository.getCompletedSessionsForTemplate(
-          sessionBox,
-          template.id,
-        );
+        final completed = sessionRepository
+            .getCompletedSessionsForTemplate(sessionBox, template.id)
+            .where(
+              (session) =>
+                  session.programId == programId &&
+                  session.workoutTemplateId == template.id &&
+                  session.isCompleted,
+            )
+            .toList();
         completedSessionsByTemplate[template.id] = completed;
         for (final session in completed) {
           setsBySessionId[session.id] = setRepository.getSetsForSession(

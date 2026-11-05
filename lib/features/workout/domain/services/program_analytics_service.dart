@@ -8,6 +8,7 @@ import 'package:ae_coaching/features/workout/data/models/workout_template.dart';
 /// compares the current session to the single previous one.
 class ExerciseAnalyticsSummary {
   final String exerciseName;
+  final String normalizedExerciseName;
 
   /// How many completed sessions (of this one template) included this
   /// exercise at least once.
@@ -26,16 +27,126 @@ class ExerciseAnalyticsSummary {
   final double firstVolume;
 
   final double? overallDeltaPercent;
+  final List<ExerciseSessionAnalytics> sessionMetrics;
 
   const ExerciseAnalyticsSummary({
     required this.exerciseName,
+    required this.normalizedExerciseName,
     required this.sessionsLogged,
     required this.bestSetVolume,
     required this.bestWeight,
     required this.latestVolume,
     required this.firstVolume,
     required this.overallDeltaPercent,
+    required this.sessionMetrics,
   });
+
+  ExerciseSessionAnalytics? get latestSession =>
+      sessionMetrics.isEmpty ? null : sessionMetrics.last;
+
+  ExerciseSessionAnalytics? get previousSession => sessionMetrics.length < 2
+      ? null
+      : sessionMetrics[sessionMetrics.length - 2];
+
+  double? get weightDelta => latestSession == null || previousSession == null
+      ? null
+      : latestSession!.maxWeight - previousSession!.maxWeight;
+
+  double? get weightDeltaPercent =>
+      _percentChange(previousSession?.maxWeight, latestSession?.maxWeight);
+
+  double? get volumeDelta => latestSession == null || previousSession == null
+      ? null
+      : latestSession!.volume - previousSession!.volume;
+
+  double? get volumeDeltaPercent =>
+      _percentChange(previousSession?.volume, latestSession?.volume);
+
+  /// Reps are compared only at a load present in both the previous and
+  /// latest sessions. The heaviest exact shared load is selected.
+  double? get comparableRepsWeight {
+    final previous = previousSession;
+    final latest = latestSession;
+    if (previous == null || latest == null) return null;
+    final sharedLoads =
+        previous.maxRepsByWeight.keys
+            .where(latest.maxRepsByWeight.containsKey)
+            .toList()
+          ..sort((a, b) => b.compareTo(a));
+    return sharedLoads.firstOrNull;
+  }
+
+  int? get previousComparableReps => comparableRepsWeight == null
+      ? null
+      : previousSession!.maxRepsByWeight[comparableRepsWeight];
+
+  int? get latestComparableReps => comparableRepsWeight == null
+      ? null
+      : latestSession!.maxRepsByWeight[comparableRepsWeight];
+
+  double? get repsDelta {
+    final previous = previousComparableReps;
+    final latest = latestComparableReps;
+    return previous == null || latest == null
+        ? null
+        : (latest - previous).toDouble();
+  }
+
+  double? get repsDeltaPercent => _percentChange(
+    previousComparableReps?.toDouble(),
+    latestComparableReps?.toDouble(),
+  );
+
+  List<ExerciseProgressionPoint> get weightProgression => [
+    for (final session in sessionMetrics)
+      ExerciseProgressionPoint(session.completedAt, session.maxWeight),
+  ];
+
+  List<ExerciseProgressionPoint> get volumeProgression => [
+    for (final session in sessionMetrics)
+      ExerciseProgressionPoint(session.completedAt, session.volume),
+  ];
+
+  List<ExerciseProgressionPoint> get repsProgression {
+    final weight = comparableRepsWeight;
+    if (weight == null) return const [];
+    return [
+      for (final session in sessionMetrics)
+        if (session.maxRepsByWeight.containsKey(weight))
+          ExerciseProgressionPoint(
+            session.completedAt,
+            session.maxRepsByWeight[weight]!.toDouble(),
+          ),
+    ];
+  }
+}
+
+class ExerciseSessionAnalytics {
+  final String sessionId;
+  final DateTime completedAt;
+  final double maxWeight;
+  final double volume;
+  final Map<double, int> maxRepsByWeight;
+
+  const ExerciseSessionAnalytics({
+    required this.sessionId,
+    required this.completedAt,
+    required this.maxWeight,
+    required this.volume,
+    required this.maxRepsByWeight,
+  });
+}
+
+class ExerciseProgressionPoint {
+  final DateTime date;
+  final double value;
+
+  const ExerciseProgressionPoint(this.date, this.value);
+}
+
+double? _percentChange(double? previous, double? latest) {
+  if (previous == null || latest == null || previous == 0) return null;
+  return (latest - previous) / previous * 100;
 }
 
 /// Aggregate stats for one workout day (template) — every completed
@@ -98,81 +209,149 @@ class ProgramAnalyticsService {
   }) {
     final days = <WorkoutDayAnalyticsSummary>[];
 
-    for (final template in templates) {
-      final sessions = List<WorkoutSession>.from(completedSessionsByTemplate[template.id] ?? const [])
-        ..sort((a, b) => (a.completedAt ?? a.date).compareTo(b.completedAt ?? b.date)); // oldest first
+    for (final template in templates.where(
+      (item) => item.programId == programId,
+    )) {
+      final sessions =
+          List<WorkoutSession>.from(
+            (completedSessionsByTemplate[template.id] ?? const []).where(
+              (session) =>
+                  session.isCompleted &&
+                  session.programId == programId &&
+                  session.workoutTemplateId == template.id,
+            ),
+          )..sort(
+            (a, b) =>
+                (a.completedAt ?? a.date).compareTo(b.completedAt ?? b.date),
+          );
 
-      final averageVolume =
-          sessions.isEmpty ? 0.0 : sessions.map((s) => s.totalVolume).reduce((a, b) => a + b) / sessions.length;
+      final averageVolume = sessions.isEmpty
+          ? 0.0
+          : sessions.map((s) => s.totalVolume).reduce((a, b) => a + b) /
+                sessions.length;
 
-      days.add(WorkoutDayAnalyticsSummary(
-        workoutTemplateId: template.id,
-        workoutTemplateName: template.name,
-        completedSessionsCount: sessions.length,
-        averageSessionVolume: averageVolume,
-        exercises: _buildExerciseSummaries(sessions, setsBySessionId),
-      ));
+      days.add(
+        WorkoutDayAnalyticsSummary(
+          workoutTemplateId: template.id,
+          workoutTemplateName: template.name,
+          completedSessionsCount: sessions.length,
+          averageSessionVolume: averageVolume,
+          exercises: _buildExerciseSummaries(
+            programId,
+            template,
+            sessions,
+            setsBySessionId,
+          ),
+        ),
+      );
     }
 
     return ProgramAnalyticsSummary(programId: programId, days: days);
   }
 
   List<ExerciseAnalyticsSummary> _buildExerciseSummaries(
+    String programId,
+    WorkoutTemplate template,
     List<WorkoutSession> sessionsOldestFirst,
     Map<String, List<ExerciseSet>> setsBySessionId,
   ) {
-    // exerciseName -> ordered list of (session, sets-for-that-exercise)
-    final bySessionForExercise = <String, List<MapEntry<WorkoutSession, List<ExerciseSet>>>>{};
-    final firstSeenOrder = <String>[];
+    final byExercise = <String, _ExerciseHistory>{};
 
     for (final session in sessionsOldestFirst) {
       final sets = setsBySessionId[session.id] ?? const <ExerciseSet>[];
       final byExerciseInSession = <String, List<ExerciseSet>>{};
       for (final set in sets) {
-        byExerciseInSession.putIfAbsent(set.exerciseName, () => []).add(set);
+        if (set.workoutSessionId != session.id ||
+            set.programId != programId ||
+            set.workoutTemplateId != template.id) {
+          continue;
+        }
+        final normalizedName = set.exerciseName.trim().toLowerCase();
+        if (normalizedName.isEmpty) continue;
+        byExerciseInSession.putIfAbsent(normalizedName, () => []).add(set);
       }
       for (final entry in byExerciseInSession.entries) {
-        if (!bySessionForExercise.containsKey(entry.key)) {
-          firstSeenOrder.add(entry.key);
-        }
-        bySessionForExercise.putIfAbsent(entry.key, () => []).add(MapEntry(session, entry.value));
+        final history = byExercise.putIfAbsent(
+          entry.key,
+          () => _ExerciseHistory(entry.value.first.exerciseName.trim()),
+        );
+        history.sessions.add(
+          _SessionHistory(_sessionMetrics(session, entry.value), entry.value),
+        );
       }
     }
 
-    return [
-      for (final exerciseName in firstSeenOrder)
-        _summarizeExercise(exerciseName, bySessionForExercise[exerciseName]!),
-    ];
+    return byExercise.entries
+        .map((entry) => _summarizeExercise(entry.key, entry.value))
+        .toList();
+  }
+
+  ExerciseSessionAnalytics _sessionMetrics(
+    WorkoutSession session,
+    List<ExerciseSet> sets,
+  ) {
+    final maxRepsByWeight = <double, int>{};
+    for (final set in sets) {
+      final current = maxRepsByWeight[set.weight] ?? 0;
+      if (set.reps > current) maxRepsByWeight[set.weight] = set.reps;
+    }
+    return ExerciseSessionAnalytics(
+      sessionId: session.id,
+      completedAt: session.completedAt ?? session.date,
+      maxWeight: sets.map((set) => set.weight).reduce(_max),
+      volume: _volumeOf(sets),
+      maxRepsByWeight: Map.unmodifiable(maxRepsByWeight),
+    );
   }
 
   ExerciseAnalyticsSummary _summarizeExercise(
-    String exerciseName,
-    List<MapEntry<WorkoutSession, List<ExerciseSet>>> occurrencesOldestFirst,
+    String normalizedName,
+    _ExerciseHistory history,
   ) {
-    final allSets = occurrencesOldestFirst.expand((e) => e.value).toList();
+    final allSets = history.sessions.expand((session) => session.sets).toList();
 
     final bestSetVolume = allSets.map(_setVolume).reduce(_max);
     final bestWeight = allSets.map((s) => s.weight).reduce(_max);
 
-    final firstVolume = _volumeOf(occurrencesOldestFirst.first.value);
-    final latestVolume = _volumeOf(occurrencesOldestFirst.last.value);
+    final firstVolume = history.sessions.first.analytics.volume;
+    final latestVolume = history.sessions.last.analytics.volume;
 
-    final isSingleOccurrence = occurrencesOldestFirst.length == 1;
-    final overallDeltaPercent =
-        isSingleOccurrence || firstVolume == 0 ? null : (latestVolume - firstVolume) / firstVolume * 100;
+    final isSingleOccurrence = history.sessions.length == 1;
+    final overallDeltaPercent = isSingleOccurrence || firstVolume == 0
+        ? null
+        : (latestVolume - firstVolume) / firstVolume * 100;
 
     return ExerciseAnalyticsSummary(
-      exerciseName: exerciseName,
-      sessionsLogged: occurrencesOldestFirst.length,
+      exerciseName: history.displayName,
+      normalizedExerciseName: normalizedName,
+      sessionsLogged: history.sessions.length,
       bestSetVolume: bestSetVolume,
       bestWeight: bestWeight,
       latestVolume: latestVolume,
       firstVolume: firstVolume,
       overallDeltaPercent: overallDeltaPercent,
+      sessionMetrics: [
+        for (final session in history.sessions) session.analytics,
+      ],
     );
   }
 
   double _setVolume(ExerciseSet set) => set.weight * set.reps;
-  double _volumeOf(List<ExerciseSet> sets) => sets.fold(0.0, (sum, s) => sum + s.weight * s.reps);
+  double _volumeOf(List<ExerciseSet> sets) =>
+      sets.fold(0.0, (sum, s) => sum + s.weight * s.reps);
   double _max(double a, double b) => a > b ? a : b;
+}
+
+class _ExerciseHistory {
+  final String displayName;
+  final List<_SessionHistory> sessions = [];
+
+  _ExerciseHistory(this.displayName);
+}
+
+class _SessionHistory {
+  final ExerciseSessionAnalytics analytics;
+  final List<ExerciseSet> sets;
+
+  const _SessionHistory(this.analytics, this.sets);
 }

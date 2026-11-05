@@ -1,20 +1,19 @@
 import 'package:ae_coaching/core/routes/app_router.dart';
+import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_session.dart';
 import 'package:ae_coaching/features/workout/domain/services/home_workout_overview_service.dart';
 import 'package:ae_coaching/features/workout/presentation/cubit/home_workout_overview_cubit.dart';
+import 'package:ae_coaching/features/workout/presentation/cubit/workout_program_cubit.dart';
 import 'package:ae_coaching/features/workout/presentation/screens/active_workout_session_screen.dart';
-import 'package:ae_coaching/features/workout/presentation/screens/workout_program_details_screen.dart';
 import 'package:ae_coaching/features/workout/presentation/screens/workout_template_history_screen.dart';
+import 'package:ae_coaching/features/workout/presentation/widgets/home_workout_plans_section.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-const Color _blue = Color(0xff2f80ed);
-const Color _dark = Color(0xff202936);
-const Color _muted = Color(0xff7d8792);
-
-String _fmtVolume(double value) => value.toStringAsFixed(value.truncateToDouble() == value ? 0 : 1);
+String _fmtVolume(double value) =>
+    value.toStringAsFixed(value.truncateToDouble() == value ? 0 : 1);
 
 String _fmtAgo(Duration d, AppLocalizations l10n) {
   if (d.inMinutes < 1) return l10n.durationSecondsOnlyLabel(d.inSeconds);
@@ -33,50 +32,95 @@ String _fmtAgo(Duration d, AppLocalizations l10n) {
 /// simple string formatting. `hom.dart` only has to drop this widget
 /// in and provide the Cubit.
 class HomeWorkoutOverviewSection extends StatelessWidget {
-  const HomeWorkoutOverviewSection({super.key});
+  const HomeWorkoutOverviewSection({
+    super.key,
+    this.header,
+    this.afterPlans,
+    this.volume,
+    this.onExploreTemplates,
+    this.controller,
+  });
+
+  final Widget? header;
+  final Widget? afterPlans;
+  final Widget? volume;
+  final VoidCallback? onExploreTemplates;
+  final ScrollController? controller;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final colors = context.appColors;
     return BlocBuilder<HomeWorkoutOverviewCubit, HomeWorkoutOverviewState>(
       builder: (context, state) {
-        if (state is HomeWorkoutOverviewError) {
-          return Center(
-            child: Text(state.message, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
-          );
-        }
-        if (state is! HomeWorkoutOverviewLoaded) {
-          return const Center(child: CircularProgressIndicator(color: Colors.white));
-        }
-
-        final overview = state.overview;
+        final overview = state is HomeWorkoutOverviewLoaded
+            ? state.overview
+            : null;
         return RefreshIndicator(
-          onRefresh: () => context.read<HomeWorkoutOverviewCubit>().loadOverview(),
+          onRefresh: () async {
+            await Future.wait<void>([
+              context.read<HomeWorkoutOverviewCubit>().loadOverview(),
+              context.read<WorkoutProgramCubit>().loadPrograms(),
+            ]);
+          },
           child: ListView(
-            padding: const EdgeInsets.fromLTRB(18, 16, 18, 96),
+            controller: controller,
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.all(16),
             children: [
-              if (overview.activeSession != null) _ActiveSessionCard(session: overview.activeSession!),
-              if (overview.activeSession != null) const SizedBox(height: 14),
-              if (overview.activeProgram != null)
-                _ActiveProgramCard(summary: overview.activeProgram!)
-              else
-                _NoActiveProgramCard(),
-              const SizedBox(height: 18),
+              if (header != null) ...[header!, const SizedBox(height: 24)],
+              if (overview?.activeSession != null)
+                _ActiveSessionCard(session: overview!.activeSession!),
+              if (overview?.activeSession != null) const SizedBox(height: 14),
+              HomeWorkoutPlansSection(
+                activeProgramSummary: overview?.activeProgram,
+                onExploreTemplates: onExploreTemplates,
+                onProgramsChanged: () =>
+                    context.read<HomeWorkoutOverviewCubit>().loadOverview(),
+              ),
+              if (afterPlans != null) ...[
+                const SizedBox(height: 24),
+                afterPlans!,
+              ],
+              if (volume != null) ...[const SizedBox(height: 24), volume!],
+              const SizedBox(height: 24),
               Text(
                 l10n.homeRecentWorkoutsTitle,
-                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16),
+                style: TextStyle(
+                  color: colors.textPrimary,
+                  fontWeight: FontWeight.w900,
+                  fontSize: 16,
+                ),
               ),
               const SizedBox(height: 10),
-              if (overview.recentSessions.isEmpty)
+              if (state is HomeWorkoutOverviewError) ...[
+                Text(state.message, style: TextStyle(color: colors.textMuted)),
+                TextButton.icon(
+                  onPressed: context
+                      .read<HomeWorkoutOverviewCubit>()
+                      .loadOverview,
+                  icon: const Icon(Icons.refresh),
+                  label: Text(l10n.retry),
+                ),
+              ] else if (overview == null)
+                const Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Center(child: CircularProgressIndicator()),
+                )
+              else if (overview.recentSessions.isEmpty)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   child: Text(
                     l10n.homeNoRecentWorkoutsBody,
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                      color: colors.textMuted,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 )
               else
-                for (final session in overview.recentSessions) _RecentSessionCard(summary: session),
+                for (final session in overview.recentSessions)
+                  _RecentSessionCard(summary: session),
             ],
           ),
         );
@@ -92,111 +136,80 @@ class _ActiveSessionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final scheme = Theme.of(context).colorScheme;
     final elapsed = DateTime.now().difference(session.startedAt);
     return Container(
+      key: ValueKey('home-active-session-${session.id}'),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: _blue,
+        color: scheme.primary,
         borderRadius: BorderRadius.circular(10),
-        boxShadow: [BoxShadow(color: _blue.withValues(alpha: 0.28), blurRadius: 18, offset: const Offset(0, 9))],
-      ),
-      child: Row(
-        children: [
-          const Icon(Icons.timer_outlined, color: Colors.white, size: 28),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  l10n.homeWorkoutInProgressLabel,
-                  style: const TextStyle(color: Colors.white70, fontWeight: FontWeight.w700, fontSize: 11),
-                ),
-                Text(
-                  session.workoutNameSnapshot,
-                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 18),
-                ),
-                Text(
-                  l10n.homeStartedAgoLabel(_fmtAgo(elapsed, l10n)),
-                  style: const TextStyle(color: Colors.white70, fontSize: 12),
-                ),
-              ],
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.pushNamed(
-              context,
-              AppNavigator.activeWorkoutSession,
-              arguments: ActiveWorkoutSessionArgs(session: session),
-            ),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: _blue),
-            child: Text(l10n.resumeWorkoutButton, style: const TextStyle(fontWeight: FontWeight.w800)),
+        boxShadow: [
+          BoxShadow(
+            color: scheme.primary.withValues(alpha: 0.28),
+            blurRadius: 18,
+            offset: const Offset(0, 9),
           ),
         ],
       ),
-    );
-  }
-}
-
-class _ActiveProgramCard extends StatelessWidget {
-  final HomeActiveProgramSummary summary;
-  const _ActiveProgramCard({required this.summary});
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(l10n.homeCurrentProgramLabel, style: const TextStyle(color: _muted, fontSize: 11, fontWeight: FontWeight.w700)),
-          const SizedBox(height: 2),
-          Text(summary.program.name, style: const TextStyle(color: _dark, fontWeight: FontWeight.w900, fontSize: 18)),
-          const SizedBox(height: 10),
-          Text(l10n.thisWeekTitle, style: const TextStyle(color: _muted, fontSize: 11, fontWeight: FontWeight.w700)),
-          Text(
-            l10n.homeWorkoutsCompletedThisWeekLabel(summary.sessionsCompletedThisWeek),
-            style: const TextStyle(color: _dark, fontWeight: FontWeight.w700, fontSize: 14),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(Icons.timer_outlined, color: scheme.onPrimary, size: 28),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.homeWorkoutInProgressLabel,
+                      style: TextStyle(
+                        color: scheme.onPrimary.withValues(alpha: 0.7),
+                        fontWeight: FontWeight.w700,
+                        fontSize: 11,
+                      ),
+                    ),
+                    Text(
+                      session.workoutNameSnapshot,
+                      style: TextStyle(
+                        color: scheme.onPrimary,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 18,
+                      ),
+                    ),
+                    Text(
+                      l10n.homeStartedAgoLabel(_fmtAgo(elapsed, l10n)),
+                      style: TextStyle(
+                        color: scheme.onPrimary.withValues(alpha: 0.7),
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 10),
-          SizedBox(
-            width: double.infinity,
-            child: OutlinedButton(
+          const SizedBox(height: 12),
+          Align(
+            alignment: AlignmentDirectional.centerEnd,
+            child: ElevatedButton(
               onPressed: () => Navigator.pushNamed(
                 context,
-                AppNavigator.workoutProgramDetails,
-                arguments: WorkoutProgramDetailsArgs(program: summary.program),
+                AppNavigator.activeWorkoutSession,
+                arguments: ActiveWorkoutSessionArgs(session: session),
               ),
-              child: Text(l10n.homeOpenProgramButton),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _NoActiveProgramCard extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(l10n.homeNoActiveProgramTitle, style: const TextStyle(color: _dark, fontWeight: FontWeight.w900, fontSize: 15)),
-          const SizedBox(height: 4),
-          Text(l10n.homeNoActiveProgramBody, style: const TextStyle(color: _muted, fontSize: 12)),
-          const SizedBox(height: 10),
-          SizedBox(
-            width: double.infinity,
-            child: OutlinedButton(
-              onPressed: () => Navigator.pushNamed(context, AppNavigator.workoutPrograms),
-              child: Text(l10n.homeOpenProgramButton),
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size(48, 48),
+                backgroundColor: scheme.surface,
+                foregroundColor: scheme.primary,
+              ),
+              child: Text(
+                l10n.resumeWorkoutButton,
+                style: const TextStyle(fontWeight: FontWeight.w800),
+              ),
             ),
           ),
         ],
@@ -221,27 +234,37 @@ class _RecentSessionCardState extends State<_RecentSessionCard> {
     final l10n = AppLocalizations.of(context)!;
     final summary = widget.summary;
     final session = summary.session;
+    final colors = context.appColors;
 
     return Card(
+      key: ValueKey('home-recent-session-${session.id}'),
       margin: const EdgeInsets.only(bottom: 10),
-      color: Colors.white,
+      color: Theme.of(context).colorScheme.surface,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Padding(
         padding: const EdgeInsets.all(14),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: Text(
-                    session.workoutNameSnapshot,
-                    style: const TextStyle(color: _dark, fontWeight: FontWeight.w900, fontSize: 16),
+                Text(
+                  session.workoutNameSnapshot,
+                  style: TextStyle(
+                    color: colors.textPrimary,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 16,
                   ),
                 ),
+                const SizedBox(height: 6),
                 Text(
                   DateFormat.yMMMd().format(session.date),
-                  style: const TextStyle(color: _muted, fontSize: 12, fontWeight: FontWeight.w700),
+                  style: TextStyle(
+                    color: colors.textMuted,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ],
             ),
@@ -250,37 +273,61 @@ class _RecentSessionCardState extends State<_RecentSessionCard> {
               spacing: 14,
               runSpacing: 4,
               children: [
-                Text(l10n.homeExerciseCountLabel(summary.exerciseCount), style: const TextStyle(color: _muted, fontSize: 12)),
-                Text(l10n.homeSetCountLabel(summary.setCount), style: const TextStyle(color: _muted, fontSize: 12)),
+                Text(
+                  l10n.homeExerciseCountLabel(summary.exerciseCount),
+                  style: TextStyle(color: colors.textMuted, fontSize: 12),
+                ),
+                Text(
+                  l10n.homeSetCountLabel(summary.setCount),
+                  style: TextStyle(color: colors.textMuted, fontSize: 12),
+                ),
               ],
             ),
             const SizedBox(height: 4),
             Text(
               l10n.homeTotalVolumeLabel(_fmtVolume(session.totalVolume)),
-              style: const TextStyle(color: _dark, fontWeight: FontWeight.w700, fontSize: 13),
+              style: TextStyle(
+                color: colors.textPrimary,
+                fontWeight: FontWeight.w700,
+                fontSize: 13,
+              ),
             ),
             if (_expanded && summary.exerciseNames.isNotEmpty) ...[
               const SizedBox(height: 8),
-              Text(summary.exerciseNames.join(' • '), style: const TextStyle(color: _muted, fontSize: 12)),
+              Text(
+                summary.exerciseNames.join(' • '),
+                style: TextStyle(color: colors.textMuted, fontSize: 12),
+              ),
             ],
             const SizedBox(height: 10),
-            Row(
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              alignment: WrapAlignment.spaceBetween,
               children: [
                 if (summary.exerciseNames.isNotEmpty)
                   TextButton(
                     onPressed: () => setState(() => _expanded = !_expanded),
-                    child: Text(_expanded ? l10n.homeHideExercisesButton : l10n.homeShowExercisesButton),
+                    child: Text(
+                      _expanded
+                          ? l10n.homeHideExercisesButton
+                          : l10n.homeShowExercisesButton,
+                    ),
                   ),
-                const Spacer(),
                 ElevatedButton(
                   onPressed: summary.template == null
                       ? null
                       : () => Navigator.pushNamed(
-                            context,
-                            AppNavigator.workoutTemplateHistory,
-                            arguments: WorkoutTemplateHistoryArgs(template: summary.template!),
+                          context,
+                          AppNavigator.workoutTemplateHistory,
+                          arguments: WorkoutTemplateHistoryArgs(
+                            template: summary.template!,
                           ),
-                  style: ElevatedButton.styleFrom(backgroundColor: _blue, foregroundColor: Colors.white),
+                        ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                  ),
                   child: Text(l10n.homeViewSessionButton),
                 ),
               ],

@@ -9,12 +9,19 @@ import 'package:ae_coaching/auth/presentation/view/reset_password_view.dart';
 import 'package:ae_coaching/auth/presentation/view/session_reconciliation_view.dart';
 import 'package:ae_coaching/auth/presentation/view/verify_phone_migration_view.dart';
 import 'package:ae_coaching/core/session/session_storage.dart';
+import 'package:ae_coaching/features/workout/data/repositories/combined_exercise_library_catalog.dart';
+import 'package:ae_coaching/features/workout/data/repositories/workout_template_import_service.dart';
+import 'package:ae_coaching/features/workout/presentation/screens/standard_workout_templates_screen.dart';
 import 'package:ae_coaching/features/measurements/presentation/cubit/measurement_cubit.dart';
 import 'package:ae_coaching/features/measurements/presentation/screens/measurement_analytics_screen.dart';
 import 'package:ae_coaching/features/measurements/presentation/screens/measurements_screen.dart';
 import 'package:ae_coaching/features/progress_photos/presentation/cubit/progress_photo_cubit.dart';
 import 'package:ae_coaching/features/progress_photos/presentation/screens/progress_photos_screen.dart';
 import 'package:ae_coaching/features/views/hom.dart';
+import 'package:ae_coaching/features/profile/presentation/app_settings_screen.dart';
+import 'package:ae_coaching/features/profile/presentation/my_progress_screen.dart';
+import 'package:ae_coaching/features/profile/presentation/personal_hub_screen.dart';
+import 'package:ae_coaching/features/profile/presentation/profile_navigation.dart';
 import 'package:ae_coaching/features/workout/presentation/bloc/workout_cubit.dart';
 import 'package:ae_coaching/features/workout/presentation/cubit/workout_program_cubit.dart';
 import 'package:ae_coaching/features/workout/presentation/cubit/workout_session_cubit.dart';
@@ -52,6 +59,9 @@ class AppNavigator {
   static const String forgotPassword = 'forgot-password';
   static const String resetPassword = 'reset-password';
   static const String home = 'home';
+  static const String personalHub = 'personal-hub';
+  static const String appSettings = 'app-settings';
+  static const String myProgress = 'my-progress';
   static const String workoutAnalytics = 'workout-analytics';
   // Body Measurements feature — separate from Workout Analytics.
   static const String measurements = 'measurements';
@@ -62,6 +72,7 @@ class AppNavigator {
   // structure kept extensible for Programs → Program Details →
   // Workout Days (Phase 6).
   static const String workoutPrograms = 'workout-programs';
+  static const String workoutTemplates = 'standard-workout-templates';
   static const String workoutProgramDetails = 'workout-program-details';
   // Active Workout Session (Phase 7).
   static const String activeWorkoutSession = 'active-workout-session';
@@ -76,6 +87,27 @@ class AppNavigator {
 }
 
 class AppRouter {
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
+  static bool _pendingNotificationHomeNavigation = false;
+
+  static void openHomeFromNotification() {
+    final navigator = navigatorKey.currentState;
+    if (navigator == null) {
+      _pendingNotificationHomeNavigation = true;
+      return;
+    }
+    _pendingNotificationHomeNavigation = false;
+    navigator.pushNamedAndRemoveUntil(AppNavigator.home, (route) => false);
+  }
+
+  static void flushPendingNotificationNavigation() {
+    if (_pendingNotificationHomeNavigation &&
+        navigatorKey.currentState != null) {
+      openHomeFromNotification();
+    }
+  }
+
   static Route? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case AppNavigator.initial:
@@ -209,6 +241,31 @@ class AppRouter {
       case AppNavigator.home:
         return MaterialPageRoute(builder: (_) => _homeWithProviders());
 
+      case AppNavigator.personalHub:
+        final args = settings.arguments;
+        if (args is! PersonalHubArgs) {
+          return MaterialPageRoute(
+            builder: (_) => const _InvalidProfileRoute(),
+          );
+        }
+        return MaterialPageRoute(
+          builder: (_) => PersonalHubScreen(onLogout: args.onLogout),
+        );
+
+      case AppNavigator.appSettings:
+        final args = settings.arguments;
+        if (args is! AppSettingsArgs) {
+          return MaterialPageRoute(
+            builder: (_) => const _InvalidProfileRoute(),
+          );
+        }
+        return MaterialPageRoute(
+          builder: (_) => AppSettingsScreen(onLogout: args.onLogout),
+        );
+
+      case AppNavigator.myProgress:
+        return MaterialPageRoute(builder: (_) => const MyProgressScreen());
+
       case AppNavigator.workoutAnalytics:
         final args = settings.arguments;
         if (args is! WorkoutAnalyticsArgs) {
@@ -247,6 +304,18 @@ class AppRouter {
       // Programs UI — independent from Workout/Measurement/Photos routes.
       // Also provides the app-wide WorkoutSessionCubit singleton so the
       // Resume Workout banner reflects whether a session is active.
+      case AppNavigator.workoutTemplates:
+        // pushNamed<WorkoutTemplateImportResult> expects this concrete route type.
+        // Navigator's Future is nullable already: cancelling returns null.
+        return MaterialPageRoute<WorkoutTemplateImportResult>(
+          settings: settings,
+          builder: (_) => StandardWorkoutTemplatesScreen(
+            templates: sl(),
+            importer: sl(),
+            exercises: sl<CombinedExerciseLibraryCatalog>(),
+            customExercises: sl(),
+          ),
+        );
       case AppNavigator.workoutPrograms:
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
@@ -362,258 +431,92 @@ class AppRouter {
         BlocProvider(create: (context) => sl<WorkoutCubit>()),
         BlocProvider.value(value: sl<WorkoutSessionCubit>()),
         BlocProvider(create: (context) => sl<HomeWorkoutOverviewCubit>()),
+        BlocProvider(create: (context) => sl<WorkoutProgramCubit>()),
       ],
       child: const Hom(),
     );
   }
 }
 
-class _InvalidWorkoutAnalyticsRoute extends StatelessWidget {
-  const _InvalidWorkoutAnalyticsRoute();
+abstract class _InvalidRouteScreen extends StatelessWidget {
+  final String message;
+
+  const _InvalidRouteScreen(this.message);
 
   @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Color(0xFF0F172A),
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(24),
-          child: Text(
-            'Workout analytics route requires WorkoutAnalyticsArgs.',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-            ),
+  Widget build(BuildContext context) => Scaffold(
+    body: Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Text(
+          message,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurface,
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
 }
 
-class _InvalidWorkoutProgramDetailsRoute extends StatelessWidget {
-  const _InvalidWorkoutProgramDetailsRoute();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Color(0xFF0F172A),
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(24),
-          child: Text(
-            'Workout program details route requires WorkoutProgramDetailsArgs.',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+class _InvalidWorkoutAnalyticsRoute extends _InvalidRouteScreen {
+  const _InvalidWorkoutAnalyticsRoute()
+    : super('Workout analytics route requires WorkoutAnalyticsArgs.');
 }
 
-class _InvalidVerifyPhoneMigrationRoute extends StatelessWidget {
-  const _InvalidVerifyPhoneMigrationRoute();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Color(0xFF0F172A),
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(24),
-          child: Text(
-            'Verify phone migration route requires VerifyPhoneMigrationArgs.',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+class _InvalidProfileRoute extends _InvalidRouteScreen {
+  const _InvalidProfileRoute()
+    : super('Profile route requires valid arguments.');
 }
 
-class _InvalidResetPasswordRoute extends StatelessWidget {
-  const _InvalidResetPasswordRoute();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Color(0xFF0F172A),
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(24),
-          child: Text(
-            'Reset password route requires ResetPasswordArgs.',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+class _InvalidWorkoutProgramDetailsRoute extends _InvalidRouteScreen {
+  const _InvalidWorkoutProgramDetailsRoute()
+    : super(
+        'Workout program details route requires WorkoutProgramDetailsArgs.',
+      );
 }
 
-class _InvalidCompleteRegistrationRoute extends StatelessWidget {
-  const _InvalidCompleteRegistrationRoute();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Color(0xFF0F172A),
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(24),
-          child: Text(
-            'Complete registration route requires CompleteRegistrationArgs.',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+class _InvalidVerifyPhoneMigrationRoute extends _InvalidRouteScreen {
+  const _InvalidVerifyPhoneMigrationRoute()
+    : super('Verify phone migration route requires VerifyPhoneMigrationArgs.');
 }
 
-class _InvalidArchivedWorkoutDaysRoute extends StatelessWidget {
-  const _InvalidArchivedWorkoutDaysRoute();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Color(0xFF0F172A),
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(24),
-          child: Text(
-            'Archived workout days route requires ArchivedWorkoutDaysArgs.',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+class _InvalidResetPasswordRoute extends _InvalidRouteScreen {
+  const _InvalidResetPasswordRoute()
+    : super('Reset password route requires ResetPasswordArgs.');
 }
 
-class _InvalidProgramAnalyticsRoute extends StatelessWidget {
-  const _InvalidProgramAnalyticsRoute();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Color(0xFF0F172A),
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(24),
-          child: Text(
-            'Program analytics route requires ProgramAnalyticsArgs.',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+class _InvalidCompleteRegistrationRoute extends _InvalidRouteScreen {
+  const _InvalidCompleteRegistrationRoute()
+    : super('Complete registration route requires CompleteRegistrationArgs.');
 }
 
-class _InvalidWorkoutTemplateHistoryRoute extends StatelessWidget {
-  const _InvalidWorkoutTemplateHistoryRoute();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Color(0xFF0F172A),
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(24),
-          child: Text(
-            'Workout history route requires WorkoutTemplateHistoryArgs.',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+class _InvalidArchivedWorkoutDaysRoute extends _InvalidRouteScreen {
+  const _InvalidArchivedWorkoutDaysRoute()
+    : super('Archived workout days route requires ArchivedWorkoutDaysArgs.');
 }
 
-class _InvalidWorkoutCompletionSummaryRoute extends StatelessWidget {
-  const _InvalidWorkoutCompletionSummaryRoute();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Color(0xFF0F172A),
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(24),
-          child: Text(
-            'Workout completion summary route requires WorkoutCompletionSummaryArgs.',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+class _InvalidProgramAnalyticsRoute extends _InvalidRouteScreen {
+  const _InvalidProgramAnalyticsRoute()
+    : super('Program analytics route requires ProgramAnalyticsArgs.');
 }
 
-class _InvalidActiveWorkoutSessionRoute extends StatelessWidget {
-  const _InvalidActiveWorkoutSessionRoute();
+class _InvalidWorkoutTemplateHistoryRoute extends _InvalidRouteScreen {
+  const _InvalidWorkoutTemplateHistoryRoute()
+    : super('Workout history route requires WorkoutTemplateHistoryArgs.');
+}
 
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Color(0xFF0F172A),
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(24),
-          child: Text(
-            'Active workout session route requires ActiveWorkoutSessionArgs.',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+class _InvalidWorkoutCompletionSummaryRoute extends _InvalidRouteScreen {
+  const _InvalidWorkoutCompletionSummaryRoute()
+    : super(
+        'Workout completion summary route requires WorkoutCompletionSummaryArgs.',
+      );
+}
+
+class _InvalidActiveWorkoutSessionRoute extends _InvalidRouteScreen {
+  const _InvalidActiveWorkoutSessionRoute()
+    : super('Active workout session route requires ActiveWorkoutSessionArgs.');
 }

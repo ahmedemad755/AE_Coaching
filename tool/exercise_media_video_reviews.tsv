@@ -1,0 +1,107 @@
+id	url	match_review
+ex_barbell_bench_press	https://musclewiki.com/exercise/barbell-bench-press	Flat bench; barbell; conventional bilateral press. Existing verified destination retained.
+ex_incline_barbell_bench_press	https://musclewiki.com/exercise/barbell-incline-bench-press	Page explicitly specifies an inclined bench and bilateral barbell pressing.
+ex_dumbbell_bench_press	https://musclewiki.com/exercise/dumbbell-bench-press	Flat bench; dumbbells; palms forward. Public demonstration page reviewed; playback not tested.
+ex_incline_dumbbell_press	https://musclewiki.com/exercise/dumbbell-incline-bench-press	Inclined bench; two dumbbells; ordinary pressing rather than neutral-grip variant.
+ex_decline_dumbbell_press	https://musclewiki.com/exercise/dumbbell-decline-bench-press	Decline bench; bilateral dumbbell press; not alternating or single-arm.
+ex_dumbbell_fly	https://musclewiki.com/exercise/dumbbell-chest-fly	Flat bench; two dumbbells; fixed soft elbows through horizontal adduction.
+ex_machine_chest_press	https://musclewiki.com/exercise/machine-chest-press	Seated chest-press machine; overhand handles; elbow and shoulder pressing.
+ex_incline_chest_press_machine	https://musclewiki.com/exercise/machine-plate-loaded-incline-chest-press	Plate-loaded incline chest-press machine; catalog does not restrict machine loading type.
+ex_decline_chest_press_machine	https://musclewiki.com/exercise/machine-plate-loaded-decline-chest-press	Plate-loaded decline machine press; title, machine equipment and pressing instructions checked on the actual public page.
+ex_pec_deck_fly	https://musclewiki.com/exercise/machine-pec-fly	Seated machine pec fly; bilateral handles come together; no chest-press substitution.
+ex_cable_chest_fly	https://musclewiki.com/exercise/cable-pec-fly	Standing bilateral cable fly; pulleys near shoulder level; fixed elbows.
+ex_smith_machine_bench_press	https://musclewiki.com/exercise/smith-machine-bench-press	Flat bench and guided Smith bar; ordinary bench-press path.
+ex_smith_machine_incline_press	https://musclewiki.com/exercise/smith-machine-incline-bench-press	Page explicitly specifies 30-45 degree bench and Smith-machine bar.
+ex_push_up	https://musclewiki.com/exercise/push-up	Standard bodyweight push-up; existing verified destination retained.
+ex_diamond_push_up	https://musclewiki.com/exercise/diamond-push-ups	Index fingers and thumbs form a diamond; toes-supported standard push-up position.
+ex_pull_up	https://musclewiki.com/exercise/pull-ups	Overhand bodyweight pull-up; existing verified destination retained.
+ex_chin_up	https://musclewiki.com/exercise/chin-ups	Supinated bodyweight chin-up; existing verified destination retained.
+ex_assisted_pull_up	https://musclewiki.com/exercise/machine-assisted-pull-up	Counterweighted machine; assistance pad/platform; overhead pulling.
+ex_lat_pulldown	https://musclewiki.com/exercise/machine-pulldown	Wide overhand front cable pulldown to upper chest. Machine refers to the cable station; existing match retained.
+ex_close_grip_lat_pulldown	https://musclewiki.com/exercise/narrow-pulldown	Narrow straight-bar pulldown; not claimed to be the separate neutral-grip variant.
+ex_underhand_barbell_row	https://musclewiki.com/fr-fr/exercise/barbell-bent-over-row	Detailed guide and exercise-specific demonstration explicitly describe supinated barbell rowing. General opening steps mention both grips, so this is not assigned to the pronated catalog row.
+ex_pendlay_row	https://musclewiki.com/exercise/barbell-pronated-pendlay-row	Pronated barbell row from a dead stop on the floor on each rep; torso hinged and flat.
+ex_one_arm_dumbbell_row	https://musclewiki.com/exercise/dumbbell-row-unilateral	Unilateral dumbbell row with off-arm support; existing verified destination retained.
+ex_t_bar_row	https://musclewiki.com/exercise/machine-chest-supported-t-bar-row	Explicit T-bar machine lever and chest pad; catalog T-bar item does not prohibit chest support.
+ex_dumbbell_pullover	https://musclewiki.com/exercise/dumbbell-pullover	Single dumbbell held in both hands over a bench; shoulder extension with mostly fixed elbows.
+ex_inverted_row	https://musclewiki.com/exercise/inverted-row	Bodyweight horizontal pull from underneath a fixed bar.
+ex_back_extension	https://musclewiki.com/exercise/machine-45-degree-back-extension	Bodyweight hip/back extension on a 45-degree support bench; no added resistance required.
+ex_cable_pullover	https://musclewiki.com/exercise/cable-rope-pullover	Standing cable-rope shoulder extension; page emphasizes shoulder motion with fixed elbows.
+ex_machine_shoulder_press	https://musclewiki.com/exercise/machine-overhand-overhead-press	Seated machine overhead press; back against pad; conventional overhand grip.
+ex_dumbbell_shoulder_press	https://musclewiki.com/de-de/exercise/dumbbell-seated-overhead-press	Seated dumbbell overhead press; two dumbbells; palms forward. Catalog shoulder-press item does not specify standing; matches the seated illustration.
+ex_dumbbell_lateral_raise	https://musclewiki.com/exercise/dumbbell-lateral-raise	Standing bilateral dumbbell shoulder abduction with soft elbows.
+ex_seated_dumbbell_lateral_raise	https://musclewiki.com/exercise/seated-lateral-raise	Seated upright on a bench; dumbbells raised laterally to shoulder level.
+ex_cable_lateral_raise	https://musclewiki.com/exercise/cable-low-single-arm-lateral-raise	Low cable handle; lateral shoulder abduction; not a front raise.
+ex_dumbbell_front_raise	https://musclewiki.com/exercise/dumbbell-front-raise	Standing two-dumbbell forward raise to eye level.
+ex_plate_front_raise	https://musclewiki.com/exercise/plate-front-raise	One plate held with both hands and lifted forward; not cable or dumbbell.
+ex_dumbbell_shrug	https://musclewiki.com/exercise/dumbbell-shrug	Standing with two dumbbells; scapular elevation with straight arms.
+ex_barbell_shrug	https://musclewiki.com/exercise/barbell-shrug	Barbell held in front; shoulder elevation after standing up.
+ex_barbell_curl	https://musclewiki.com/exercise/barbell-curl	Shoulder-width supinated straight-bar curl; upper arms held stationary.
+ex_hammer_curl	https://musclewiki.com/exercise/dumbbell-single-arm-hammer-curl	Neutral-grip dumbbell elbow flexion at the side; one-arm demonstration of the catalog's unspecified arm-count hammer curl. Not across the body.
+ex_rope_hammer_curl	https://musclewiki.com/exercise/cable-rope-hammer-curl	Low cable rope; thumb-up neutral grip; elbow flexion.
+ex_bayesian_cable_curl	https://musclewiki.com/exercise/cable-single-arm-bayesian-curl	Low cable behind the body; facing away; palm forward; shoulder extended during elbow flexion.
+ex_rope_triceps_pushdown	https://musclewiki.com/exercise/cable-rope-pushdown	High cable rope and upper arms held at sides; elbow extension.
+ex_cable_triceps_pushdown	https://musclewiki.com/fr-fr/exercise/cable-bar-pushdown	High cable bar; overhand grip; elbows held at sides, distinct from rope and reverse-grip entries.
+ex_overhead_cable_triceps_extension	https://musclewiki.com/exercise/cable-rope-overhead-tricep-extension	Bilateral overhead cable extension facing away from the machine; elbows point upward.
+ex_single_arm_overhead_dumbbell_extension	https://musclewiki.com/exercise/dumbbell-single-arm-overhead-tricep-extension	One dumbbell held by one arm overhead; extension behind the head.
+ex_dumbbell_skull_crusher	https://musclewiki.com/exercise/dumbbell-skullcrusher	Two neutral-grip dumbbells while supine on a bench; elbows flex toward temples.
+ex_close_grip_bench_press	https://musclewiki.com/exercise/barbell-close-grip-bench-press	Flat barbell bench press with narrow grip; not Smith or ordinary wider-grip press.
+ex_bench_dip	https://musclewiki.com/exercise/bench-dips	Hands behind on bench; body lowers vertically; bodyweight elbow extension.
+ex_dumbbell_triceps_kickback	https://musclewiki.com/exercise/dumbbell-tricep-kickback	Hinged torso with dumbbell and supported opposite arm; elbow extends behind torso.
+ex_barbell_back_squat	https://musclewiki.com/exercise/barbell-squat	Barbell on upper back; conventional bilateral squat; existing verified destination retained.
+ex_barbell_front_squat	https://musclewiki.com/exercise/barbell-front-squat-bodybuilding	Front-rack barbell at shoulders; elevated elbows; bilateral squat, not a back squat.
+ex_smith_machine_squat	https://musclewiki.com/exercise/smith-machine-squat	Upper-back bar with guided Smith rails; conventional squat.
+ex_goblet_squat	https://musclewiki.com/exercise/dumbbell-goblet-squat	Single dumbbell at upper chest; existing verified destination retained.
+ex_hack_squat	https://musclewiki.com/exercise/machine-hack-squat	Back and shoulders against hack-sled pads; not a barbell hack squat.
+ex_horizontal_leg_press	https://musclewiki.com/exercise/machine-horizontal-leg-press	Explicit horizontal leg-press machine; not assigned to the separate 45-degree sled or single-leg items.
+ex_leg_extension	https://musclewiki.com/exercise/machine-leg-extension	Seated bilateral machine knee extension; existing verified destination retained.
+ex_dumbbell_romanian_deadlift	https://musclewiki.com/exercise/dumbbell-romanian-deadlift	Dumbbell hip hinge starting upright; mostly extended soft knees; not floor-start conventional deadlift.
+ex_seated_leg_curl	https://musclewiki.com/exercise/machine-seated-leg-curl	Seated machine knee flexion with thigh and lower-leg pads; not prone/standing curl.
+ex_nordic_hamstring_curl	https://musclewiki.com/de-de/exercise/nordic-hamstring-curl	Kneeling bodyweight eccentric knee flexion with partner-anchored ankles; not GHD hip extension.
+ex_glute_ham_raise	https://musclewiki.com/exercise/glute-ham-raise	Glute-ham raise machine and anchored feet; lowering/raising torso with hamstrings and glutes.
+ex_barbell_hip_thrust	https://musclewiki.com/exercise/barbell-hip-thrust	Upper back on bench; barbell across hips; hip extension, not floor glute bridge.
+ex_dumbbell_hip_thrust	https://musclewiki.com/exercise/dumbbell-hip-thrust	Upper back on bench/box; dumbbell hip thrust; no Smith-machine substitution.
+ex_cable_glute_kickback	https://musclewiki.com/exercise/cable-standing-glute-kickback	Low cable ankle attachment; standing hip extension behind body.
+ex_glute_kickback_machine	https://musclewiki.com/exercise/machine-glute-kickback	Dedicated knee-support/footplate glute-kickback machine; working leg drives footplate backward.
+ex_hip_abduction_machine	https://musclewiki.com/exercise/machine-hip-abduction	Seated machine with back pad; knees press outward against resistance.
+ex_cable_pull_through	https://musclewiki.com/pt-br/exercise/cable-pull-through	Low cable rope between legs; face away; hip hinge with mostly extended knees.
+ex_reverse_hyperextension	https://musclewiki.com/exercise/machine-reverse-hyperextension	Prone pad with legs in belt loop; legs move to horizontal; not ordinary back extension.
+ex_standing_calf_raise_machine	https://musclewiki.com/exercise/machine-standing-calf-raises	Standing machine shoulder pads; forefeet on block; straight-knee plantarflexion.
+ex_seated_calf_raise_machine	https://musclewiki.com/exercise/machine-seated-calf-raises	Seated machine thigh lever; bent-knee calf raise.
+ex_smith_machine_calf_raise	https://musclewiki.com/exercise/smith-machine-calf-raise	Smith bar on upper back; heels rise; not reverse calf/tibialis raise.
+ex_dumbbell_standing_calf_raise	https://musclewiki.com/exercise/dumbbell-calf-raise	Standing dumbbell-resisted calf raise; not bodyweight-only or seated.
+ex_single_leg_calf_raise	https://musclewiki.com/exercise/bodyweight-single-leg-calf-raise	One foot off ground; bodyweight plantarflexion with balance support.
+ex_donkey_calf_raise	https://musclewiki.com/exercise/machine-donkey-calf-raise	Hinged torso; elbows on pad; machine pad on lower back; not partner-assisted.
+ex_machine_ab_crunch	https://musclewiki.com/exercise/machine-crunch	Dedicated abdominal machine with foot pads and handles; trunk flexion.
+ex_lying_leg_raise	https://musclewiki.com/exercise/laying-leg-raises	Supine; arms alongside; legs together and straight; controlled hip flexion.
+ex_hanging_knee_raise	https://musclewiki.com/exercise/hanging-knee-raises	Hanging from bar; knees bend toward chest; not straight-leg or captain-chair raise.
+ex_side_plank	https://musclewiki.com/exercise/elbow-side-plank	Side forearm support; hips elevated; static bodyweight hold.
+ex_dead_bug	https://musclewiki.com/fr-fr/exercise/dead-bug	Supine; opposite arm and leg lower while low back stays on floor; alternating sides.
+ex_bird_dog	https://musclewiki.com/exercise/bird-dog	Quadruped; opposite arm and leg extended; alternating sides.
+ex_russian_twist	https://musclewiki.com/exercise/bodyweight-russian-twist	Seated bodyweight torso rotation; no plate/dumbbell resistance.
+ex_mountain_climber	https://musclewiki.com/exercise/mountain-climber	High plank with alternating knees toward chest; bodyweight.
+ex_pallof_press	https://musclewiki.com/exercise/cable-pallof-press	Standing sideways to chest-height cable; anti-rotation press away from chest.
+ex_hollow_body_hold	https://musclewiki.com/exercise/hollow-hold	Supine; arms overhead; shoulders and straight legs off floor; static hold.
+ex_kettlebell_swing	https://musclewiki.com/exercise/kettlebell-swing	Single kettlebell; two-handed hip-driven swing to chest height.
+ex_burpee	https://musclewiki.com/exercise/burpee	Bodyweight squat to plank/push-up, return feet under body, and jump upward.
+ex_alternating_dumbbell_curl	https://musclewiki.com/ar-sa/exercise/dumbbell-curl	Public Arabic guide explicitly curls one dumbbell then repeats with the opposite arm. Assigned to the alternating item rather than the bilateral catalog curl.
+ex_seated_cable_row	https://musclewiki.com/ar-sa/exercise/machine-seated-cable-row	Seated upright bilateral cable row with hands toward abdomen. The page does not establish a specific grip width, so it is not assigned to close/wide-grip items.
+ex_smith_machine_hip_thrust	https://musclewiki.com/ar-sa/exercise/smith-machine-hip-thrust	Smith bar across hips; shoulders supported on bench; bilateral hip extension.
+ex_machine_preacher_curl	https://musclewiki.com/exercise/machine-seated-plate-loaded-preacher-curl	Upper arms supported on preacher pad; handles move a plate-loaded machine lever.
+ex_barbell_clean_and_press	https://musclewiki.com/es-es/exercise/barbell-clean-and-press	Barbell clean to shoulder rack followed by overhead press. Catalog does not specify floor versus hang start for this combined exercise.
+ex_barbell_overhead_press	https://musclewiki.com/tr-tr/exercise/barbell-overhead-press	Standing barbell overhead press; rack setup and explicit warning against leg/body cheating distinguish the strict press.
+ex_barbell_upright_row	https://musclewiki.com/fr-fr/exercise/barbell-upright-row	Overhand barbell; elbows rise vertically; bar approaches chest/chin height.
+ex_single_leg_press	https://musclewiki.com/fr-fr/exercise/machine-single-leg-leg-press	Machine has separate footplates; one side is pinned so the working leg presses independently.
+ex_machine_pullover	https://musclewiki.com/de-de/exercise/machine-pullover	Seated dedicated pullover machine with elbow pad; lever moves toward abdomen.
+ex_glute_bridge	https://musclewiki.com/exercise/glute-bridge	Floor-supported shoulders; bent knees and planted feet; unweighted hip extension.
+ex_bicycle_crunch	https://musclewiki.com/exercise/bicycle-crunch	Supine bodyweight alternating elbow-to-opposite-knee trunk flexion/rotation.
+ex_ez_bar_curl	https://musclewiki.com/es-es/exercise/ez-bar-curl	Standing shoulder-width supinated EZ-bar curl; not straight bar or preacher setup.
+ex_reverse_pec_deck	https://musclewiki.com/fr-fr/exercise/machine-reverse-fly	Chest against machine pad; overhand handles move backward with mostly straight elbows.
+ex_romanian_deadlift	https://musclewiki.com/exercise/barbell-romanian-deadlift	Barbell top-down hip hinge; knees mostly extended; detailed setup explicitly distinguishes RDL from a conventional floor-start rep.
+ex_stiff_leg_deadlift	https://musclewiki.com/exercise/barbell-stiff-leg-deadlifts	Barbell hip hinge with knees as fully extended as possible, distinct from the softer-knee RDL.
+ex_conventional_deadlift	https://musclewiki.com/exercise/barbell-deadlift	Conventional barbell floor pull; shoulder-width grip and bent knees; controlled return to floor.
+ex_single_leg_glute_bridge	https://musclewiki.com/ar-sa/exercise/single-leg-glute-bridge	Floor hip extension with one supporting bent knee and the other leg extended; bodyweight.
+ex_forward_lunge	https://musclewiki.com/pt-br/exercise/forward-lunge	Unweighted step forward, back knee lowers, then return by pushing through the front foot.
+ex_concentration_curl	https://musclewiki.com/es-es/exercise/dumbbell-concentration-curl	Seated single dumbbell curl with elbow supported against the inner thigh; supinated grip.
+ex_plank	https://musclewiki.com/exercise/forearm-plank	Unweighted forearms on floor, elbows under shoulders and toes supporting a straight body. Medicine-ball/TRX/weighted plank candidates were excluded.
+ex_straight_arm_cable_pulldown	https://musclewiki.com/exercise/cable-rope-pullover	The page explicitly uses a high cable and shoulder extension with fixed elbows. It meets both this item and the catalog cable-pullover item's movement/equipment requirements; IDs and storage remain independent.

@@ -98,6 +98,126 @@ abstract class AppLocalizations {
     Locale('en'),
   ];
 
+  /// No description provided for @activeSessionOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'This Session Only'**
+  String get activeSessionOnly;
+
+  /// No description provided for @activeSessionAndProgram.
+  ///
+  /// In en, this message translates to:
+  /// **'This Session + Program'**
+  String get activeSessionAndProgram;
+
+  /// No description provided for @activeExerciseScopeBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Update this workout now. Also update the program day only if you choose Session + Program.'**
+  String get activeExerciseScopeBody;
+
+  /// No description provided for @activeApplyEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get activeApplyEdit;
+
+  /// No description provided for @activeSessionEditSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Session updated. Program unchanged.'**
+  String get activeSessionEditSaved;
+
+  /// No description provided for @activeProgramEditSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Session and program day updated.'**
+  String get activeProgramEditSaved;
+
+  /// No description provided for @activeLoggedExerciseProtected.
+  ///
+  /// In en, this message translates to:
+  /// **'This exercise has logged sets. Keep it to preserve your records; add another exercise instead. Targets and order can still be edited.'**
+  String get activeLoggedExerciseProtected;
+
+  /// No description provided for @activeProgramConflict.
+  ///
+  /// In en, this message translates to:
+  /// **'The program day differs from this session. Use Session Only, or apply the program exercises before editing both.'**
+  String get activeProgramConflict;
+
+  /// No description provided for @activeProgramPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Session changes are saved, but the program update is unfinished. Retry to complete it. Stopping retries keeps your session and any program change already written.'**
+  String get activeProgramPending;
+
+  /// No description provided for @activeDuplicateExercise.
+  ///
+  /// In en, this message translates to:
+  /// **'This exercise is already included. No duplicate was added.'**
+  String get activeDuplicateExercise;
+
+  /// No description provided for @activeWorkoutNoLongerActive.
+  ///
+  /// In en, this message translates to:
+  /// **'This workout is no longer active. Reopen your current workout.'**
+  String get activeWorkoutNoLongerActive;
+
+  /// No description provided for @activeApplyProgram.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply program exercises'**
+  String get activeApplyProgram;
+
+  /// No description provided for @activeApplyProgramBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Program edits elsewhere affect future workouts only. Apply the current program day to this session now? This replaces session exercise edits and targets. Logged sets stay intact; changes that would remove a logged exercise are blocked.'**
+  String get activeApplyProgramBody;
+
+  /// No description provided for @activeRetryProgramEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry program update'**
+  String get activeRetryProgramEdit;
+
+  /// No description provided for @activeKeepSessionEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep changes and stop retrying'**
+  String get activeKeepSessionEdit;
+
+  /// No description provided for @appearanceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get appearanceTitle;
+
+  /// No description provided for @themeSystemDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'System default'**
+  String get themeSystemDefault;
+
+  /// No description provided for @themeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get themeLight;
+
+  /// No description provided for @themeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get themeDark;
+
+  /// No description provided for @themePreferenceSaveError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save your appearance preference.'**
+  String get themePreferenceSaveError;
+
   /// No description provided for @appBrandShort.
   ///
   /// In en, this message translates to:
@@ -151,6 +271,198 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Switch language'**
   String get languageToggleTooltip;
+
+  /// No description provided for @inactivityRemindersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Inactivity Reminders'**
+  String get inactivityRemindersTitle;
+
+  /// No description provided for @inactivityReminderSaveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save notification preference. Try again.'**
+  String get inactivityReminderSaveFailed;
+
+  /// No description provided for @repdbInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Instructions'**
+  String get repdbInstructions;
+
+  /// No description provided for @repdbPrimaryMuscles.
+  ///
+  /// In en, this message translates to:
+  /// **'Primary muscles'**
+  String get repdbPrimaryMuscles;
+
+  /// No description provided for @repdbSecondaryMuscles.
+  ///
+  /// In en, this message translates to:
+  /// **'Secondary muscles'**
+  String get repdbSecondaryMuscles;
+
+  /// No description provided for @repdbStartPosition.
+  ///
+  /// In en, this message translates to:
+  /// **'Starting position'**
+  String get repdbStartPosition;
+
+  /// No description provided for @repdbPeakPosition.
+  ///
+  /// In en, this message translates to:
+  /// **'Peak / end position'**
+  String get repdbPeakPosition;
+
+  /// No description provided for @repdbDataSources.
+  ///
+  /// In en, this message translates to:
+  /// **'Credits and exercise data sources'**
+  String get repdbDataSources;
+
+  /// No description provided for @repdbSourceLicense.
+  ///
+  /// In en, this message translates to:
+  /// **'RepDB Free Tier License'**
+  String get repdbSourceLicense;
+
+  /// No description provided for @repdbTranslationPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Arabic instructions are awaiting review. The original English instructions are shown below.'**
+  String get repdbTranslationPending;
+
+  /// No description provided for @repdbUnknownMetadata.
+  ///
+  /// In en, this message translates to:
+  /// **'Not supplied by the source'**
+  String get repdbUnknownMetadata;
+
+  /// No description provided for @repdbFormCues.
+  ///
+  /// In en, this message translates to:
+  /// **'Form cues'**
+  String get repdbFormCues;
+
+  /// No description provided for @repdbDatasetVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Dataset version'**
+  String get repdbDatasetVersion;
+
+  /// No description provided for @repdbAddToWorkout.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to workout'**
+  String get repdbAddToWorkout;
+
+  /// No description provided for @repdbLegacyReference.
+  ///
+  /// In en, this message translates to:
+  /// **'Legacy exercise. Choose a replacement from the new library if you want to update it.'**
+  String get repdbLegacyReference;
+
+  /// No description provided for @repdbResolveBeforeSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace the remaining legacy exercises before saving a new copy. Existing saved workouts are preserved.'**
+  String get repdbResolveBeforeSave;
+
+  /// No description provided for @homeGreetingMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Good morning'**
+  String get homeGreetingMorning;
+
+  /// No description provided for @homeGreetingAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Good afternoon'**
+  String get homeGreetingAfternoon;
+
+  /// No description provided for @homeGreetingEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Good evening'**
+  String get homeGreetingEvening;
+
+  /// No description provided for @homeGreetingSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready for today\'s workout?'**
+  String get homeGreetingSubtitle;
+
+  /// No description provided for @homeDashboardSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan, train and track your progress'**
+  String get homeDashboardSubtitle;
+
+  /// No description provided for @homeManagePrograms.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your programs'**
+  String get homeManagePrograms;
+
+  /// No description provided for @homeExploreTemplates.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore & save programs'**
+  String get homeExploreTemplates;
+
+  /// No description provided for @homeBeginSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Begin a training session'**
+  String get homeBeginSession;
+
+  /// No description provided for @homeProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Progress'**
+  String get homeProgress;
+
+  /// No description provided for @homeTrackResults.
+  ///
+  /// In en, this message translates to:
+  /// **'Track your results'**
+  String get homeTrackResults;
+
+  /// No description provided for @homeQuickActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Actions'**
+  String get homeQuickActions;
+
+  /// No description provided for @homeLogWorkout.
+  ///
+  /// In en, this message translates to:
+  /// **'Log Workout'**
+  String get homeLogWorkout;
+
+  /// No description provided for @homeBodyMetrics.
+  ///
+  /// In en, this message translates to:
+  /// **'Body Metrics'**
+  String get homeBodyMetrics;
+
+  /// No description provided for @homeNavigationHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get homeNavigationHome;
+
+  /// No description provided for @homeNavigationPrograms.
+  ///
+  /// In en, this message translates to:
+  /// **'Programs'**
+  String get homeNavigationPrograms;
+
+  /// No description provided for @homeNavigationMore.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get homeNavigationMore;
 
   /// No description provided for @loginSubtitle.
   ///
@@ -470,12 +782,6 @@ abstract class AppLocalizations {
   /// **'Start by adding your first exercise.'**
   String get startFirstExercise;
 
-  /// No description provided for @newExerciseButton.
-  ///
-  /// In en, this message translates to:
-  /// **'New Exercise'**
-  String get newExerciseButton;
-
   /// No description provided for @todaysVolumeLabel.
   ///
   /// In en, this message translates to:
@@ -505,6 +811,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Exercise Trends'**
   String get exerciseTrendsLabel;
+
+  /// No description provided for @progressSelectProgram.
+  ///
+  /// In en, this message translates to:
+  /// **'Program'**
+  String get progressSelectProgram;
+
+  /// No description provided for @progressSelectWorkoutDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout day'**
+  String get progressSelectWorkoutDay;
+
+  /// No description provided for @progressSelectExercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercise'**
+  String get progressSelectExercise;
+
+  /// No description provided for @progressNoCompletedHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'No linked completed workout history yet.'**
+  String get progressNoCompletedHistory;
 
   /// No description provided for @needMoreDataForProgress.
   ///
@@ -1190,6 +1520,84 @@ abstract class AppLocalizations {
   /// **'Add Workout Day'**
   String get addWorkoutDayButton;
 
+  /// No description provided for @manageTemplateExercisesButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage exercises'**
+  String get manageTemplateExercisesButton;
+
+  /// No description provided for @manageTemplateExercisesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercises for {name}'**
+  String manageTemplateExercisesTitle(String name);
+
+  /// No description provided for @searchExerciseLibraryHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search exercises'**
+  String get searchExerciseLibraryHint;
+
+  /// No description provided for @assignedTemplateExercisesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout plan'**
+  String get assignedTemplateExercisesTitle;
+
+  /// No description provided for @assignedTemplateExercisesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercises · {count}'**
+  String assignedTemplateExercisesCount(int count);
+
+  /// No description provided for @noAssignedTemplateExercises.
+  ///
+  /// In en, this message translates to:
+  /// **'No exercises assigned yet. Add exercises here so they are ready whenever you start this workout day.'**
+  String get noAssignedTemplateExercises;
+
+  /// No description provided for @exerciseLibraryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercise library'**
+  String get exerciseLibraryTitle;
+
+  /// No description provided for @noExerciseSearchResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No exercises match your search.'**
+  String get noExerciseSearchResults;
+
+  /// No description provided for @removeAssignedExerciseTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove exercise from workout day'**
+  String get removeAssignedExerciseTooltip;
+
+  /// No description provided for @addAssignedExerciseTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Add exercise to workout day'**
+  String get addAssignedExerciseTooltip;
+
+  /// No description provided for @templateExerciseDuplicateError.
+  ///
+  /// In en, this message translates to:
+  /// **'This exercise is already assigned.'**
+  String get templateExerciseDuplicateError;
+
+  /// No description provided for @templateExerciseSaveError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save workout-day exercises.'**
+  String get templateExerciseSaveError;
+
+  /// No description provided for @exerciseLibraryLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load the exercise library.'**
+  String get exerciseLibraryLoadError;
+
   /// No description provided for @createWorkoutDayTitle.
   ///
   /// In en, this message translates to:
@@ -1406,6 +1814,78 @@ abstract class AppLocalizations {
   /// **'Total volume logged: {volume} kg. This will mark the session complete and save it to your history.'**
   String finishWorkoutConfirmBody(String volume);
 
+  /// No description provided for @discardEmptyWorkoutTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard this empty workout?'**
+  String get discardEmptyWorkoutTitle;
+
+  /// No description provided for @discardEmptyWorkoutBody.
+  ///
+  /// In en, this message translates to:
+  /// **'No completed sets have been recorded. Keep training or discard this workout?'**
+  String get discardEmptyWorkoutBody;
+
+  /// No description provided for @keepTrainingButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep Training'**
+  String get keepTrainingButton;
+
+  /// No description provided for @discardWorkoutButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard Workout'**
+  String get discardWorkoutButton;
+
+  /// No description provided for @workoutCelebrationHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Great work! 💪🔥'**
+  String get workoutCelebrationHeading;
+
+  /// No description provided for @workoutCelebrationSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout complete. Every session brings you closer to your goal!'**
+  String get workoutCelebrationSubtitle;
+
+  /// No description provided for @completionExercisesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercises'**
+  String get completionExercisesLabel;
+
+  /// No description provided for @completionSetsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Sets'**
+  String get completionSetsLabel;
+
+  /// No description provided for @completionVolumeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Volume'**
+  String get completionVolumeLabel;
+
+  /// No description provided for @workoutDurationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get workoutDurationLabel;
+
+  /// No description provided for @completionDurationMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String completionDurationMinutes(int minutes);
+
+  /// No description provided for @backToHomeButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Home'**
+  String get backToHomeButton;
+
   /// No description provided for @workoutFinishedBody.
   ///
   /// In en, this message translates to:
@@ -1556,6 +2036,96 @@ abstract class AppLocalizations {
   /// **'Program Analytics'**
   String get programAnalyticsTitle;
 
+  /// No description provided for @analyticsSelectDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout day'**
+  String get analyticsSelectDay;
+
+  /// No description provided for @analyticsSelectExercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercise'**
+  String get analyticsSelectExercise;
+
+  /// No description provided for @analyticsWeightTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight progression'**
+  String get analyticsWeightTitle;
+
+  /// No description provided for @analyticsRepsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reps progression'**
+  String get analyticsRepsTitle;
+
+  /// No description provided for @analyticsVolumeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Training volume progression'**
+  String get analyticsVolumeTitle;
+
+  /// No description provided for @analyticsRepsUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'reps'**
+  String get analyticsRepsUnit;
+
+  /// No description provided for @analyticsVolumeUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'kg × reps'**
+  String get analyticsVolumeUnit;
+
+  /// No description provided for @analyticsRepsAtWeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Best reps at {weight} kg'**
+  String analyticsRepsAtWeight(String weight);
+
+  /// No description provided for @analyticsPreviousValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous ({date}): {value} {unit}'**
+  String analyticsPreviousValue(String date, String value, String unit);
+
+  /// No description provided for @analyticsLatestValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Latest ({date}): {value} {unit}'**
+  String analyticsLatestValue(String date, String value, String unit);
+
+  /// No description provided for @analyticsAbsoluteChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Change: {change} {unit}'**
+  String analyticsAbsoluteChange(String change, String unit);
+
+  /// No description provided for @analyticsPercentChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Change: {change}%'**
+  String analyticsPercentChange(String change);
+
+  /// No description provided for @analyticsPercentageUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Percentage change unavailable from a zero baseline.'**
+  String get analyticsPercentageUnavailable;
+
+  /// No description provided for @analyticsNeedMoreSessions.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete at least two sessions with this exercise to compare progression.'**
+  String get analyticsNeedMoreSessions;
+
+  /// No description provided for @analyticsNoComparableReps.
+  ///
+  /// In en, this message translates to:
+  /// **'No shared weight appears in the latest two sessions, so reps cannot be compared.'**
+  String get analyticsNoComparableReps;
+
   /// No description provided for @analyticsTooltip.
   ///
   /// In en, this message translates to:
@@ -1621,6 +2191,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Rest Timer'**
   String get restTimerLabel;
+
+  /// No description provided for @restDurationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rest duration'**
+  String get restDurationLabel;
+
+  /// No description provided for @restMinutesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'min'**
+  String get restMinutesLabel;
+
+  /// No description provided for @restSecondsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'sec'**
+  String get restSecondsLabel;
+
+  /// No description provided for @setDoneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get setDoneLabel;
+
+  /// No description provided for @waitForRestTimerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Wait until the rest timer finishes.'**
+  String get waitForRestTimerLabel;
+
+  /// No description provided for @markPreviousSetDoneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark the previous set done to start rest.'**
+  String get markPreviousSetDoneLabel;
 
   /// No description provided for @startRestTimerButton.
   ///
@@ -1766,6 +2372,30 @@ abstract class AppLocalizations {
   /// **'Current Program'**
   String get homeCurrentProgramLabel;
 
+  /// No description provided for @homeWorkoutPlansTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'My Workout Plans'**
+  String get homeWorkoutPlansTitle;
+
+  /// No description provided for @homeViewAllPlansButton.
+  ///
+  /// In en, this message translates to:
+  /// **'View all'**
+  String get homeViewAllPlansButton;
+
+  /// No description provided for @homeNoWorkoutPlansBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your first workout plan to organize your training days.'**
+  String get homeNoWorkoutPlansBody;
+
+  /// No description provided for @homeCreateWorkoutPlanButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a workout plan'**
+  String get homeCreateWorkoutPlanButton;
+
   /// No description provided for @homeWorkoutsCompletedThisWeekLabel.
   ///
   /// In en, this message translates to:
@@ -1903,6 +2533,660 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Restore'**
   String get restoreButton;
+
+  /// No description provided for @exercisePickerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select exercises'**
+  String get exercisePickerTitle;
+
+  /// No description provided for @exerciseFiltersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get exerciseFiltersTitle;
+
+  /// No description provided for @muscleGroupLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Muscle group'**
+  String get muscleGroupLabel;
+
+  /// No description provided for @equipmentLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Equipment'**
+  String get equipmentLabel;
+
+  /// No description provided for @createCustomExerciseButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Create custom exercise'**
+  String get createCustomExerciseButton;
+
+  /// No description provided for @addSelectedExercisesButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Add selected ({count})'**
+  String addSelectedExercisesButton(int count);
+
+  /// No description provided for @customExerciseDuplicateError.
+  ///
+  /// In en, this message translates to:
+  /// **'An exercise with this name already exists.'**
+  String get customExerciseDuplicateError;
+
+  /// No description provided for @customExerciseSaveError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save the custom exercise.'**
+  String get customExerciseSaveError;
+
+  /// No description provided for @createCustomExerciseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create custom exercise'**
+  String get createCustomExerciseTitle;
+
+  /// No description provided for @exerciseNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercise name'**
+  String get exerciseNameLabel;
+
+  /// No description provided for @muscleGroupOptionalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Muscle group (optional)'**
+  String get muscleGroupOptionalLabel;
+
+  /// No description provided for @equipmentOptionalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Equipment (optional)'**
+  String get equipmentOptionalLabel;
+
+  /// No description provided for @addExerciseButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Add exercise'**
+  String get addExerciseButton;
+
+  /// No description provided for @addExerciseToTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add exercises to'**
+  String get addExerciseToTitle;
+
+  /// No description provided for @addExerciseToBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose whether these exercises belong only to this workout or should be saved to the workout day for next time.'**
+  String get addExerciseToBody;
+
+  /// No description provided for @currentSessionOnlyAction.
+  ///
+  /// In en, this message translates to:
+  /// **'This workout only'**
+  String get currentSessionOnlyAction;
+
+  /// No description provided for @saveToWorkoutDayAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Save to workout day'**
+  String get saveToWorkoutDayAction;
+
+  /// No description provided for @exerciseLibrarySaveError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not add the selected exercises.'**
+  String get exerciseLibrarySaveError;
+
+  /// No description provided for @newExerciseButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Add exercise'**
+  String get newExerciseButton;
+
+  /// No description provided for @sessionOnlyExerciseLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Added to this workout only'**
+  String get sessionOnlyExerciseLabel;
+
+  /// No description provided for @replaceExerciseAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace exercise'**
+  String get replaceExerciseAction;
+
+  /// No description provided for @removeExerciseAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove exercise'**
+  String get removeExerciseAction;
+
+  /// No description provided for @exerciseChangeDestinationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Where should this change apply?'**
+  String get exerciseChangeDestinationTitle;
+
+  /// No description provided for @exerciseChangeDestinationBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose this workout only, or save the change to the workout day for future sessions. Saving to the workout day will not change this active workout.'**
+  String get exerciseChangeDestinationBody;
+
+  /// No description provided for @exerciseChangeFutureOnlyNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving to the workout day affects future sessions only. This current workout stays unchanged.'**
+  String get exerciseChangeFutureOnlyNote;
+
+  /// No description provided for @removeExerciseLoggedSetsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} has {count} recorded sets. Removing it only hides the exercise from this session; the sets remain in workout history and totals.'**
+  String removeExerciseLoggedSetsBody(Object name, int count);
+
+  /// No description provided for @personalHubTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Hub'**
+  String get personalHubTitle;
+
+  /// No description provided for @profileHeaderSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your training and account in one place'**
+  String get profileHeaderSubtitle;
+
+  /// No description provided for @profileEditName.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit name'**
+  String get profileEditName;
+
+  /// No description provided for @profilePhoneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number'**
+  String get profilePhoneLabel;
+
+  /// No description provided for @profileAddPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Add photo'**
+  String get profileAddPhoto;
+
+  /// No description provided for @profileChangePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Change photo'**
+  String get profileChangePhoto;
+
+  /// No description provided for @profileRemovePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove photo'**
+  String get profileRemovePhoto;
+
+  /// No description provided for @profilePhotoPreviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview profile photo'**
+  String get profilePhotoPreviewTitle;
+
+  /// No description provided for @profilePhotoSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile photo saved.'**
+  String get profilePhotoSaved;
+
+  /// No description provided for @profilePhotoRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile photo removed.'**
+  String get profilePhotoRemoved;
+
+  /// No description provided for @profilePhotoSaveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save the profile photo. Try another image.'**
+  String get profilePhotoSaveFailed;
+
+  /// No description provided for @profilePhotoRemoveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not remove the profile photo. Try again.'**
+  String get profilePhotoRemoveFailed;
+
+  /// No description provided for @profilePhotoRemoveConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove only this profile photo? Your account and workout data will stay unchanged.'**
+  String get profilePhotoRemoveConfirm;
+
+  /// No description provided for @profileNameSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Your name was updated.'**
+  String get profileNameSaved;
+
+  /// No description provided for @profileNameSaveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not update your name. Check your connection and try again.'**
+  String get profileNameSaveFailed;
+
+  /// No description provided for @profilePhoneVerificationNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Changing a phone number requires SMS verification.'**
+  String get profilePhoneVerificationNote;
+
+  /// No description provided for @profileProgressAction.
+  ///
+  /// In en, this message translates to:
+  /// **'My progress'**
+  String get profileProgressAction;
+
+  /// No description provided for @appSettingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'App settings'**
+  String get appSettingsTitle;
+
+  /// No description provided for @myProgressTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'My progress'**
+  String get myProgressTitle;
+
+  /// No description provided for @progressCompletedWorkoutsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed workouts'**
+  String get progressCompletedWorkoutsLabel;
+
+  /// No description provided for @progressThisWeekLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'This week'**
+  String get progressThisWeekLabel;
+
+  /// No description provided for @progressThisMonthLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'This month'**
+  String get progressThisMonthLabel;
+
+  /// No description provided for @progressWeeklyActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly activity'**
+  String get progressWeeklyActivity;
+
+  /// No description provided for @progressPersonalRecords.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal records'**
+  String get progressPersonalRecords;
+
+  /// No description provided for @progressHeaviestWeightRecord.
+  ///
+  /// In en, this message translates to:
+  /// **'Heaviest weight'**
+  String get progressHeaviestWeightRecord;
+
+  /// No description provided for @progressHighestSetVolumeRecord.
+  ///
+  /// In en, this message translates to:
+  /// **'Highest set volume'**
+  String get progressHighestSetVolumeRecord;
+
+  /// No description provided for @progressProgramAnalytics.
+  ///
+  /// In en, this message translates to:
+  /// **'Program analytics'**
+  String get progressProgramAnalytics;
+
+  /// No description provided for @progressRecentWorkouts.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout history'**
+  String get progressRecentWorkouts;
+
+  /// No description provided for @progressNoCompletedWorkouts.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed workouts will appear here after you finish a workout.'**
+  String get progressNoCompletedWorkouts;
+
+  /// No description provided for @progressDataUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Your workout progress could not be loaded right now.'**
+  String get progressDataUnavailable;
+
+  /// No description provided for @profileNameUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Name not available'**
+  String get profileNameUnavailable;
+
+  /// No description provided for @profileNameInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a name up to 80 characters.'**
+  String get profileNameInvalid;
+
+  /// No description provided for @settingsLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get settingsLanguage;
+
+  /// No description provided for @settingsNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications and reminders'**
+  String get settingsNotifications;
+
+  /// No description provided for @settingsNotificationAuthorized.
+  ///
+  /// In en, this message translates to:
+  /// **'Device notifications are allowed'**
+  String get settingsNotificationAuthorized;
+
+  /// No description provided for @settingsNotificationDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Device notifications are turned off'**
+  String get settingsNotificationDenied;
+
+  /// No description provided for @settingsNotificationNotRequested.
+  ///
+  /// In en, this message translates to:
+  /// **'Device notification permission has not been requested'**
+  String get settingsNotificationNotRequested;
+
+  /// No description provided for @settingsNotificationPermissionNote.
+  ///
+  /// In en, this message translates to:
+  /// **'The workout reminder switch is separate from your phone\'s notification permission.'**
+  String get settingsNotificationPermissionNote;
+
+  /// No description provided for @settingsPermissionHelpAction.
+  ///
+  /// In en, this message translates to:
+  /// **'How to enable notifications'**
+  String get settingsPermissionHelpAction;
+
+  /// No description provided for @settingsPermissionHelpBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Open your phone settings, choose Apps, select AE Coaching, then allow Notifications.'**
+  String get settingsPermissionHelpBody;
+
+  /// No description provided for @settingsLogoutDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out of this device. Your saved workouts and account data will remain.'**
+  String get settingsLogoutDescription;
+
+  /// No description provided for @profileNameEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit your name'**
+  String get profileNameEditTitle;
+
+  /// No description provided for @exercisePickerAlternateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'اختر التمارين'**
+  String get exercisePickerAlternateTitle;
+
+  /// No description provided for @exerciseIllustrationUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No illustration yet'**
+  String get exerciseIllustrationUnavailable;
+
+  /// No description provided for @exercisePreviewAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview exercise'**
+  String get exercisePreviewAction;
+
+  /// No description provided for @exerciseCustomBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get exerciseCustomBadge;
+
+  /// No description provided for @exerciseAllFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get exerciseAllFilter;
+
+  /// No description provided for @exerciseWatchVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch on MuscleWiki (external browser)'**
+  String get exerciseWatchVideo;
+
+  /// No description provided for @exerciseBrowserLaunchFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open the browser. Please try again.'**
+  String get exerciseBrowserLaunchFailed;
+
+  /// No description provided for @exerciseArtworkCredits.
+  ///
+  /// In en, this message translates to:
+  /// **'Illustration credits'**
+  String get exerciseArtworkCredits;
+
+  /// No description provided for @exerciseArtworkSource.
+  ///
+  /// In en, this message translates to:
+  /// **'View illustration source'**
+  String get exerciseArtworkSource;
+
+  /// No description provided for @exerciseArtworkLicense.
+  ///
+  /// In en, this message translates to:
+  /// **'Read illustration license (offline)'**
+  String get exerciseArtworkLicense;
+
+  /// No description provided for @exerciseMuscleName.
+  ///
+  /// In en, this message translates to:
+  /// **'{muscle, select, chest {Chest} back {Back} shoulders {Shoulders} biceps {Biceps} triceps {Triceps} quadriceps {Quadriceps} hamstrings_glutes {Hamstrings / glutes} calves {Calves} abs_core {Abs / core} full_body {Full body} other {{muscle}}}'**
+  String exerciseMuscleName(String muscle);
+
+  /// No description provided for @exerciseEquipmentName.
+  ///
+  /// In en, this message translates to:
+  /// **'{equipment, select, barbell {Barbell} dumbbell {Dumbbell} cable {Cable} machine {Machine} bodyweight {Bodyweight} smith_machine {Smith machine} ez_bar {EZ bar} kettlebell {Kettlebell} plate {Plate} trap_bar {Trap bar} ab_wheel {Ab wheel} other {{equipment}}}'**
+  String exerciseEquipmentName(String equipment);
+
+  /// No description provided for @workoutTemplatesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout Templates'**
+  String get workoutTemplatesTitle;
+
+  /// No description provided for @standardTemplatesIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a split, preview its days, then customize your own copy.'**
+  String get standardTemplatesIntro;
+
+  /// No description provided for @useWorkoutTemplate.
+  ///
+  /// In en, this message translates to:
+  /// **'Use Template'**
+  String get useWorkoutTemplate;
+
+  /// No description provided for @customizeTemplateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Customize Program'**
+  String get customizeTemplateTitle;
+
+  /// No description provided for @saveToMyPrograms.
+  ///
+  /// In en, this message translates to:
+  /// **'Save to My Programs'**
+  String get saveToMyPrograms;
+
+  /// No description provided for @standardTemplateSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Program saved to My Programs.'**
+  String get standardTemplateSaved;
+
+  /// No description provided for @standardTemplateSavedLocally.
+  ///
+  /// In en, this message translates to:
+  /// **'Program saved on this device. Cloud backup is incomplete; reopen My Programs and the program\'s days when connected.'**
+  String get standardTemplateSavedLocally;
+
+  /// No description provided for @standardTemplateLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to load workout templates.'**
+  String get standardTemplateLoadError;
+
+  /// No description provided for @standardTemplatesEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No workout templates are available.'**
+  String get standardTemplatesEmpty;
+
+  /// No description provided for @standardTemplateProgrammingNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Working sets exclude warm-ups. Start with loads that leave about 1–3 reps in reserve. Use the lower end of the volume if needed, add load gradually within the rep range, and allow recovery. Rest longer when needed. These are adjustable starting plans, not individualized prescriptions.'**
+  String get standardTemplateProgrammingNote;
+
+  /// No description provided for @standardTemplateAdvancedNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Six training days suit experienced lifters with enough recovery. A/B sessions share the weekly workload; they are not two copies of the three-day plan. Add rest days if recovery suffers.'**
+  String get standardTemplateAdvancedNote;
+
+  /// No description provided for @standardTemplateAnteriorPosteriorNote.
+  ///
+  /// In en, this message translates to:
+  /// **'A practical emphasis split: anterior days focus on chest, quads, delts, biceps and abs; posterior days focus on back, hamstrings, glutes, rear delts, triceps and calves. Movements naturally overlap.'**
+  String get standardTemplateAnteriorPosteriorNote;
+
+  /// No description provided for @suggestedTrainingWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested seven-day sequence'**
+  String get suggestedTrainingWeek;
+
+  /// No description provided for @standardRestDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Rest'**
+  String get standardRestDay;
+
+  /// No description provided for @workingSetsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Working sets'**
+  String get workingSetsLabel;
+
+  /// No description provided for @minimumRepsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum reps'**
+  String get minimumRepsLabel;
+
+  /// No description provided for @maximumRepsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum reps'**
+  String get maximumRepsLabel;
+
+  /// No description provided for @exerciseRestSecondsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rest (seconds)'**
+  String get exerciseRestSecondsLabel;
+
+  /// No description provided for @editExerciseTargets.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit sets, reps & rest'**
+  String get editExerciseTargets;
+
+  /// No description provided for @exerciseTargetsValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'Use 1–10 sets, 1–100 reps (minimum ≤ maximum) and 15–600 seconds rest.'**
+  String get exerciseTargetsValidation;
+
+  /// No description provided for @standardDraftInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a program name, name every day, and keep at least one exercise in each day. Check exercise targets.'**
+  String get standardDraftInvalid;
+
+  /// No description provided for @standardDraftSaveError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to save the program. Your draft is still available; try again.'**
+  String get standardDraftSaveError;
+
+  /// No description provided for @standardDraftAccountChanged.
+  ///
+  /// In en, this message translates to:
+  /// **'The account changed. Reopen Workout Templates for the current account.'**
+  String get standardDraftAccountChanged;
+
+  /// No description provided for @discardProgramDraftTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard this draft?'**
+  String get discardProgramDraftTitle;
+
+  /// No description provided for @discardProgramDraftBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This program has not been saved. Leaving will discard your customizations.'**
+  String get discardProgramDraftBody;
+
+  /// No description provided for @discardProgramDraft.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard draft'**
+  String get discardProgramDraft;
+
+  /// No description provided for @templateDaysPerWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} days / week'**
+  String templateDaysPerWeek(int count);
+
+  /// No description provided for @suggestedSequenceDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Day {day}'**
+  String suggestedSequenceDay(int day);
+
+  /// No description provided for @exerciseTargetSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan: {sets} sets × {min}–{max} reps · rest {seconds}s'**
+  String exerciseTargetSummary(int sets, int min, int max, int seconds);
 }
 
 class _AppLocalizationsDelegate

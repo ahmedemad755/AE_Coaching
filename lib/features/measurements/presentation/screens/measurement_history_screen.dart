@@ -2,6 +2,7 @@ import 'package:ae_coaching/auth/data/models/body_measurement.dart';
 import 'package:ae_coaching/features/measurements/presentation/cubit/measurement_cubit.dart';
 import 'package:ae_coaching/features/measurements/presentation/screens/add_edit_measurement_screen.dart';
 import 'package:ae_coaching/features/measurements/presentation/widgets/measurement_values_list.dart';
+import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,14 +14,11 @@ class MeasurementHistoryScreen extends StatefulWidget {
   const MeasurementHistoryScreen({super.key});
 
   @override
-  State<MeasurementHistoryScreen> createState() => _MeasurementHistoryScreenState();
+  State<MeasurementHistoryScreen> createState() =>
+      _MeasurementHistoryScreenState();
 }
 
 class _MeasurementHistoryScreenState extends State<MeasurementHistoryScreen> {
-  static const Color _blue = Color(0xff2f80ed);
-  static const Color _dark = Color(0xff202936);
-  static const Color _muted = Color(0xff7d8792);
-
   // Retains the last successfully loaded box so a transient state (a
   // background Firestore sync, or a delete round-trip) never flashes a
   // spinner/error over data that is already on screen.
@@ -41,29 +39,38 @@ class _MeasurementHistoryScreenState extends State<MeasurementHistoryScreen> {
     final result = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xfff5f9fc),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         title: Text(
           l10n.deleteCheckInTitle,
-          style: const TextStyle(fontWeight: FontWeight.w900, color: _dark),
+          style: TextStyle(
+            fontWeight: FontWeight.w900,
+            color: Theme.of(ctx).colorScheme.onSurface,
+          ),
         ),
         content: Text(
-          l10n.deleteCheckInBody(DateFormat('d MMM yyyy', dateLocale).format(date)),
-          style: const TextStyle(color: _muted),
+          l10n.deleteCheckInBody(
+            DateFormat('d MMM yyyy', dateLocale).format(date),
+          ),
+          style: TextStyle(color: Theme.of(ctx).colorScheme.onSurfaceVariant),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: Text(l10n.cancel, style: const TextStyle(color: _blue)),
+            child: Text(l10n.cancel),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(ctx, true),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.redAccent,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              backgroundColor: Theme.of(ctx).colorScheme.error,
+              foregroundColor: Theme.of(ctx).colorScheme.onError,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
-            child: Text(l10n.delete, style: const TextStyle(fontWeight: FontWeight.w800)),
+            child: Text(
+              l10n.delete,
+              style: const TextStyle(fontWeight: FontWeight.w800),
+            ),
           ),
         ],
       ),
@@ -76,10 +83,9 @@ class _MeasurementHistoryScreenState extends State<MeasurementHistoryScreen> {
     final l10n = AppLocalizations.of(context)!;
     final dateLocale = Localizations.localeOf(context).toString();
     return Scaffold(
-      backgroundColor: const Color(0xfff5f9fc),
       appBar: AppBar(
-        backgroundColor: _blue,
-        foregroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Theme.of(context).colorScheme.onPrimary,
         title: Text(l10n.measurementHistoryTitle),
       ),
       body: BlocConsumer<MeasurementCubit, MeasurementState>(
@@ -91,7 +97,7 @@ class _MeasurementHistoryScreenState extends State<MeasurementHistoryScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
-                backgroundColor: Colors.redAccent,
+                backgroundColor: Theme.of(context).colorScheme.error,
               ),
             );
           }
@@ -104,11 +110,18 @@ class _MeasurementHistoryScreenState extends State<MeasurementHistoryScreen> {
               return Center(
                 child: Text(
                   l10n.unableToLoadHistory,
-                  style: const TextStyle(color: _muted, fontWeight: FontWeight.w700),
+                  style: TextStyle(
+                    color: context.appColors.textMuted,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               );
             }
-            return const Center(child: CircularProgressIndicator(color: _blue));
+            return Center(
+              child: CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            );
           }
 
           return ValueListenableBuilder(
@@ -124,7 +137,10 @@ class _MeasurementHistoryScreenState extends State<MeasurementHistoryScreen> {
                     child: Text(
                       l10n.noMeasurementsHistoryEmpty,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(color: _muted, fontWeight: FontWeight.w700),
+                      style: TextStyle(
+                        color: context.appColors.textMuted,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                 );
@@ -138,7 +154,7 @@ class _MeasurementHistoryScreenState extends State<MeasurementHistoryScreen> {
                   return Container(
                     margin: const EdgeInsets.only(bottom: 10),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.surface,
                       borderRadius: BorderRadius.circular(8),
                       boxShadow: [
                         BoxShadow(
@@ -149,18 +165,40 @@ class _MeasurementHistoryScreenState extends State<MeasurementHistoryScreen> {
                       ],
                     ),
                     child: Theme(
-                      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                      data: Theme.of(
+                        context,
+                      ).copyWith(dividerColor: Colors.transparent),
                       child: ExpansionTile(
-                        tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 3),
-                        childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 14),
-                        leading: const CircleAvatar(
+                        tilePadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 3,
+                        ),
+                        childrenPadding: const EdgeInsets.fromLTRB(
+                          16,
+                          0,
+                          16,
+                          14,
+                        ),
+                        leading: CircleAvatar(
                           radius: 17,
-                          backgroundColor: Color(0xffd6e9ff),
-                          child: Icon(Icons.straighten, color: _blue, size: 18),
+                          backgroundColor: Theme.of(
+                            context,
+                          ).colorScheme.surfaceContainerHighest,
+                          child: Icon(
+                            Icons.straighten,
+                            color: Theme.of(context).colorScheme.primary,
+                            size: 18,
+                          ),
                         ),
                         title: Text(
-                          DateFormat('d MMM yyyy', dateLocale).format(measurement.date),
-                          style: const TextStyle(color: _dark, fontWeight: FontWeight.w900),
+                          DateFormat(
+                            'd MMM yyyy',
+                            dateLocale,
+                          ).format(measurement.date),
+                          style: TextStyle(
+                            color: context.appColors.textPrimary,
+                            fontWeight: FontWeight.w900,
+                          ),
                         ),
                         children: [
                           const Divider(height: 18),
@@ -175,8 +213,11 @@ class _MeasurementHistoryScreenState extends State<MeasurementHistoryScreen> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (_) => BlocProvider.value(
-                                          value: context.read<MeasurementCubit>(),
-                                          child: AddEditMeasurementScreen(existing: measurement),
+                                          value: context
+                                              .read<MeasurementCubit>(),
+                                          child: AddEditMeasurementScreen(
+                                            existing: measurement,
+                                          ),
                                         ),
                                       ),
                                     );
@@ -184,10 +225,17 @@ class _MeasurementHistoryScreenState extends State<MeasurementHistoryScreen> {
                                   icon: const Icon(Icons.edit, size: 18),
                                   label: Text(l10n.edit),
                                   style: OutlinedButton.styleFrom(
-                                    foregroundColor: _blue,
-                                    side: const BorderSide(color: _blue),
+                                    foregroundColor: Theme.of(
+                                      context,
+                                    ).colorScheme.primary,
+                                    side: BorderSide(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.primary,
+                                    ),
                                     shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8)),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -195,20 +243,34 @@ class _MeasurementHistoryScreenState extends State<MeasurementHistoryScreen> {
                               Expanded(
                                 child: OutlinedButton.icon(
                                   onPressed: () async {
-                                    final confirmed =
-                                        await _confirmDelete(context, measurement.date);
+                                    final confirmed = await _confirmDelete(
+                                      context,
+                                      measurement.date,
+                                    );
                                     if (confirmed) {
                                       // ignore: use_build_context_synchronously
-                                      context.read<MeasurementCubit>().deleteMeasurement(measurement.key);
+                                      context
+                                          .read<MeasurementCubit>()
+                                          .deleteMeasurement(measurement.key);
                                     }
                                   },
-                                  icon: const Icon(Icons.delete_outline, size: 18),
+                                  icon: const Icon(
+                                    Icons.delete_outline,
+                                    size: 18,
+                                  ),
                                   label: Text(l10n.delete),
                                   style: OutlinedButton.styleFrom(
-                                    foregroundColor: Colors.redAccent,
-                                    side: const BorderSide(color: Colors.redAccent),
+                                    foregroundColor: Theme.of(
+                                      context,
+                                    ).colorScheme.error,
+                                    side: BorderSide(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.error,
+                                    ),
                                     shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8)),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
                                   ),
                                 ),
                               ),

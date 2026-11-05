@@ -1,0 +1,9 @@
+{
+  "apk": "build/app/outputs/flutter-apk/app-debug.apk",
+  "bytes": 208769994,
+  "sha256": "36347ea7d54d12fb6afa72e83c920a298eb019974070ec82d856bbf244dc7f89",
+  "verified_images": 1217,
+  "premium_assets": 0,
+  "catalog_and_overlay_exact": true,
+  "fresh_kernel": true
+}
