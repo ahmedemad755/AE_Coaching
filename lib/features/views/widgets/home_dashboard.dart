@@ -1,3 +1,5 @@
+import 'dart:ui' show ImageFilter;
+
 import 'package:ae_coaching/core/routes/app_router.dart';
 import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/features/views/widgets/home_dashboard_cards.dart';
@@ -11,6 +13,7 @@ import 'package:ae_coaching/features/workout/presentation/widgets/home_workout_o
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ae_coaching/core/widgets/entrance_animation.dart';
 
 /// Presentation and navigation only. Existing Cubits own all workout data.
 class HomeDashboard extends StatefulWidget {
@@ -24,6 +27,10 @@ class HomeDashboard extends StatefulWidget {
     required this.volume,
     this.photoPath,
     this.onImageError,
+    this.programsTab,
+    this.progressTab,
+    this.moreTab,
+    this.onTabChanged,
   });
   final String name;
   final String? photoPath;
@@ -34,6 +41,15 @@ class HomeDashboard extends StatefulWidget {
   final String? Function() currentUserId;
   final Widget volume;
 
+  /// Bottom-bar destinations shown inside Home, so the bar stays visible.
+  /// When none are given, the bar falls back to pushing the existing routes.
+  final WidgetBuilder? programsTab;
+  final WidgetBuilder? progressTab;
+  final WidgetBuilder? moreTab;
+
+  /// Called with the new index whenever the selected bottom tab changes.
+  final ValueChanged<int>? onTabChanged;
+
   @override
   State<HomeDashboard> createState() => _HomeDashboardState();
 }
@@ -42,6 +58,37 @@ class _HomeDashboardState extends State<HomeDashboard> {
   final _scrollController = ScrollController();
   bool _starting = false;
   bool _openingTemplates = false;
+  int _tab = 0;
+  // Each visit rebuilds a tab so it reloads current data, like a fresh push.
+  final _visits = List<int>.filled(4, 0);
+
+  bool get _hasTabs =>
+      widget.programsTab != null &&
+      widget.progressTab != null &&
+      widget.moreTab != null;
+
+  void _selectTab(int index) {
+    if (index == _tab) {
+      if (index == 0) _scrollHomeToTop();
+      return;
+    }
+    setState(() {
+      _tab = index;
+      _visits[index]++;
+    });
+    widget.onTabChanged?.call(index);
+    if (index == 0) _refreshPrograms();
+  }
+
+  void _scrollHomeToTop() {
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        0,
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.easeOut,
+      );
+    }
+  }
 
   @override
   void dispose() {
@@ -55,6 +102,7 @@ class _HomeDashboardState extends State<HomeDashboard> {
   }
 
   Future<void> _openPrograms() async {
+    if (_hasTabs) return _selectTab(1);
     final owner = widget.currentUserId();
     await Navigator.pushNamed(context, AppNavigator.workoutPrograms);
     if (mounted && owner == widget.currentUserId()) await _refreshPrograms();
@@ -118,6 +166,7 @@ class _HomeDashboardState extends State<HomeDashboard> {
             ? programs.repository.getActiveProgram(programState.box)
             : null;
         if (active == null) {
+          if (_hasTabs) return _selectTab(1);
           await Navigator.pushNamed(context, AppNavigator.workoutPrograms);
         } else {
           await Navigator.pushNamed(
@@ -133,143 +182,255 @@ class _HomeDashboardState extends State<HomeDashboard> {
     }
   }
 
-  void _progress() => Navigator.pushNamed(context, AppNavigator.myProgress);
+  void _progress() => _hasTabs
+      ? _selectTab(2)
+      : Navigator.pushNamed(context, AppNavigator.myProgress);
+
+  void _more() => _hasTabs ? _selectTab(3) : widget.onProfile();
 
   @override
   Widget build(BuildContext context) {
+    final home = _buildHome(context);
+    final tabs = _hasTabs;
+    return PopScope(
+      canPop: !tabs || _tab == 0,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) _selectTab(0);
+      },
+      child: Scaffold(
+        backgroundColor: HomeDashboardStyle.background(context),
+        extendBody: true,
+        body: tabs
+            ? _AnimatedTabStack(
+                index: _tab,
+                children: [
+                  home,
+                  for (final (i, builder) in [
+                    widget.programsTab!,
+                    widget.progressTab!,
+                    widget.moreTab!,
+                  ].indexed)
+                    // Only Home stays alive in the background.
+                    if (_tab == i + 1)
+                      KeyedSubtree(
+                        key: ValueKey('home-tab-${i + 1}-${_visits[i + 1]}'),
+                        child: Builder(builder: builder),
+                      )
+                    else
+                      const SizedBox.shrink(),
+                ],
+              )
+            : home,
+        bottomNavigationBar: _BottomNavigation(
+          selectedIndex: _tab,
+          onSelected: (index) => switch (index) {
+            0 => _selectTab(0),
+            1 => _openPrograms(),
+            2 => _progress(),
+            _ => _more(),
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHome(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Scaffold(
-      backgroundColor: HomeDashboardStyle.background(context),
-      body: SafeArea(
-        bottom: false,
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 680),
-            child: HomeWorkoutOverviewSection(
-              controller: _scrollController,
-              onExploreTemplates: _openTemplates,
-              header: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  HomeHeader(
-                    name: widget.name,
-                    photoPath: widget.photoPath,
-                    onProfile: widget.onProfile,
-                    onSettings: widget.onSettings,
-                    onImageError: widget.onImageError,
-                  ),
-                  const SizedBox(height: 28),
-                  _NavigationGrid(
-                    cards: [
-                      HomeNavigationCard(
-                        key: const ValueKey('home-programs'),
-                        icon: Icons.calendar_month_outlined,
-                        title: l10n.myProgramsTitle,
-                        subtitle: l10n.homeManagePrograms,
-                        onTap: _openPrograms,
-                      ),
-                      HomeNavigationCard(
-                        key: const ValueKey('home-templates'),
-                        icon: Icons.layers_outlined,
-                        title: l10n.workoutTemplatesTitle,
-                        subtitle: l10n.homeExploreTemplates,
-                        emphasized: true,
-                        onTap: _openTemplates,
-                      ),
-                      HomeNavigationCard(
-                        key: const ValueKey('home-start-workout'),
-                        icon: Icons.fitness_center,
-                        title: l10n.startWorkoutFabLabel,
-                        subtitle: l10n.homeBeginSession,
-                        onTap: _startWorkout,
-                      ),
-                      HomeNavigationCard(
-                        key: const ValueKey('home-progress'),
-                        icon: Icons.bar_chart_rounded,
-                        title: l10n.homeProgress,
-                        subtitle: l10n.homeTrackResults,
-                        onTap: _progress,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              afterPlans: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.bolt,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          l10n.homeQuickActions,
-                          style: Theme.of(context).textTheme.titleLarge
-                              ?.copyWith(fontWeight: FontWeight.w800),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  _QuickActions(
-                    cards: [
-                      HomeQuickActionCard(
-                        key: const ValueKey('home-log-workout'),
-                        icon: Icons.add,
-                        label: l10n.homeLogWorkout,
-                        onTap: _startWorkout,
-                      ),
-                      HomeQuickActionCard(
-                        key: const ValueKey('home-body-metrics'),
-                        icon: Icons.straighten,
-                        label: l10n.homeBodyMetrics,
-                        onTap: () => Navigator.pushNamed(
-                          context,
-                          AppNavigator.measurements,
-                        ),
-                      ),
-                      HomeQuickActionCard(
-                        key: const ValueKey('home-history'),
-                        icon: Icons.history,
-                        label: l10n.historyLabel,
-                        onTap: _progress,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Align(
-                    alignment: AlignmentDirectional.centerStart,
-                    child: TextButton.icon(
-                      key: const ValueKey('home-progress-analysis'),
-                      onPressed: widget.onProgressAnalysis,
-                      icon: const Icon(Icons.analytics_outlined),
-                      label: Text(l10n.progressAnalyticsTooltip),
+    return SafeArea(
+      bottom: false,
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 680),
+          child: HomeWorkoutOverviewSection(
+            controller: _scrollController,
+            onExploreTemplates: _openTemplates,
+            header: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                HomeHeader(
+                  name: widget.name,
+                  photoPath: widget.photoPath,
+                  onProfile: _more,
+                  onSettings: widget.onSettings,
+                  onImageError: widget.onImageError,
+                ).animateIn(),
+                const SizedBox(height: 28),
+                _NavigationGrid(
+                  cards: [
+                    HomeNavigationCard(
+                      key: const ValueKey('home-programs'),
+                      icon: Icons.calendar_month_outlined,
+                      title: l10n.myProgramsTitle,
+                      subtitle: l10n.homeManagePrograms,
+                      onTap: _openPrograms,
                     ),
-                  ),
-                ],
-              ),
-              volume: widget.volume,
+                    HomeNavigationCard(
+                      key: const ValueKey('home-templates'),
+                      icon: Icons.layers_outlined,
+                      title: l10n.workoutTemplatesTitle,
+                      subtitle: l10n.homeExploreTemplates,
+                      emphasized: true,
+                      onTap: _openTemplates,
+                    ),
+                    HomeNavigationCard(
+                      key: const ValueKey('home-start-workout'),
+                      icon: Icons.fitness_center,
+                      title: l10n.startWorkoutFabLabel,
+                      subtitle: l10n.homeBeginSession,
+                      onTap: _startWorkout,
+                    ),
+                    HomeNavigationCard(
+                      key: const ValueKey('home-progress'),
+                      icon: Icons.bar_chart_rounded,
+                      title: l10n.homeProgress,
+                      subtitle: l10n.homeTrackResults,
+                      onTap: _progress,
+                    ),
+                  ],
+                ),
+              ],
             ),
+            afterPlans: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.bolt,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        l10n.homeQuickActions,
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                _QuickActions(
+                  cards: [
+                    HomeQuickActionCard(
+                      key: const ValueKey('home-log-workout'),
+                      icon: Icons.add,
+                      label: l10n.homeLogWorkout,
+                      onTap: _startWorkout,
+                    ),
+                    HomeQuickActionCard(
+                      key: const ValueKey('home-body-metrics'),
+                      icon: Icons.straighten,
+                      label: l10n.homeBodyMetrics,
+                      onTap: () => Navigator.pushNamed(
+                        context,
+                        AppNavigator.measurements,
+                      ),
+                    ),
+                    HomeQuickActionCard(
+                      key: const ValueKey('home-history'),
+                      icon: Icons.history,
+                      label: l10n.historyLabel,
+                      onTap: _progress,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: TextButton.icon(
+                    key: const ValueKey('home-progress-analysis'),
+                    onPressed: widget.onProgressAnalysis,
+                    icon: const Icon(Icons.analytics_outlined),
+                    label: Text(l10n.progressAnalyticsTooltip),
+                  ),
+                ),
+              ],
+            ),
+            volume: widget.volume,
           ),
         ),
       ),
-      bottomNavigationBar: _BottomNavigation(
-        onHome: () {
-          if (_scrollController.hasClients) {
-            _scrollController.animateTo(
-              0,
-              duration: const Duration(milliseconds: 250),
-              curve: Curves.easeOut,
-            );
-          }
-        },
-        onPrograms: _openPrograms,
-        onProgress: _progress,
-        onMore: widget.onProfile,
-      ),
+    );
+  }
+}
+
+/// Keeps Home alive and fades + slides the selected tab in from the side of
+/// the tapped destination.
+class _AnimatedTabStack extends StatefulWidget {
+  const _AnimatedTabStack({required this.index, required this.children});
+  final int index;
+  final List<Widget> children;
+
+  @override
+  State<_AnimatedTabStack> createState() => _AnimatedTabStackState();
+}
+
+class _AnimatedTabStackState extends State<_AnimatedTabStack>
+    with SingleTickerProviderStateMixin {
+  static const _restingOffset = AlwaysStoppedAnimation<Offset>(Offset.zero);
+
+  late final _controller = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 320),
+    value: 1,
+  );
+  late final _curve = CurvedAnimation(
+    parent: _controller,
+    curve: Curves.easeOutCubic,
+  );
+  double _direction = 1;
+
+  @override
+  void didUpdateWidget(_AnimatedTabStack oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.index == widget.index) return;
+    _direction = widget.index > oldWidget.index ? 1 : -1;
+    if (MediaQuery.of(context).disableAnimations) {
+      _controller.value = 1;
+    } else {
+      _controller.forward(from: 0);
+    }
+  }
+
+  @override
+  void dispose() {
+    _curve.dispose();
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final slide = Tween<Offset>(
+      begin: Offset(0.08 * _direction, 0),
+      end: Offset.zero,
+    ).animate(_curve);
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        for (var i = 0; i < widget.children.length; i++)
+          KeyedSubtree(
+            key: ValueKey('tab-slot-$i'),
+            child: Offstage(
+              offstage: i != widget.index,
+              child: TickerMode(
+                enabled: i == widget.index,
+                child: FadeTransition(
+                  opacity: i == widget.index
+                      ? _curve
+                      : kAlwaysCompleteAnimation,
+                  child: SlideTransition(
+                    position: i == widget.index ? slide : _restingOffset,
+                    textDirection: Directionality.of(context),
+                    child: widget.children[i],
+                  ),
+                ),
+              ),
+            ),
+          ),
+      ],
     );
   }
 }
@@ -290,7 +451,10 @@ class _NavigationGrid extends StatelessWidget {
             for (var i = 0; i < cards.length; i++)
               Padding(
                 padding: EdgeInsets.only(top: i == 0 ? 0 : 12),
-                child: SizedBox(width: double.infinity, child: cards[i]),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: cards[i].animateIn(index: i + 1),
+                ),
               ),
           ],
         );
@@ -312,9 +476,9 @@ class _NavigationGrid extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Expanded(child: cards[i]),
+                  Expanded(child: cards[i].animateIn(index: i + 1)),
                   const SizedBox(width: 12),
-                  Expanded(child: cards[i + 1]),
+                  Expanded(child: cards[i + 1].animateIn(index: i + 2)),
                 ],
               ),
             ),
@@ -356,19 +520,22 @@ class _QuickActions extends StatelessWidget {
   }
 }
 
-/// A single bar on Home. Other destinations use the existing route stack.
+/// The app's main bottom bar. The selected pill and icon animate between tabs.
 class _BottomNavigation extends StatelessWidget {
   const _BottomNavigation({
-    required this.onHome,
-    required this.onPrograms,
-    required this.onProgress,
-    required this.onMore,
+    required this.selectedIndex,
+    required this.onSelected,
   });
-  final VoidCallback onHome, onPrograms, onProgress, onMore;
+  final int selectedIndex;
+  final ValueChanged<int> onSelected;
+
+  static const _duration = Duration(milliseconds: 280);
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final scheme = Theme.of(context).colorScheme;
+    final muted = context.appColors.textMuted;
     final labels = [
       l10n.homeNavigationHome,
       l10n.homeNavigationPrograms,
@@ -381,71 +548,138 @@ class _BottomNavigation extends StatelessWidget {
       Icons.bar_chart_rounded,
       Icons.more_horiz,
     ];
-    final callbacks = [onHome, onPrograms, onProgress, onMore];
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        border: Border(top: BorderSide(color: context.appColors.border)),
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+    final dark = Theme.of(context).brightness == Brightness.dark;
+    const radius = BorderRadius.all(Radius.circular(28));
+    // Floating frosted-glass bar: the Scaffold extends its body behind it, so
+    // page content scrolls under the blur.
+    return SafeArea(
+      top: false,
+      minimum: const EdgeInsets.only(bottom: 12),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: radius,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: dark ? 0.35 : 0.12),
+                blurRadius: 24,
+                offset: const Offset(0, 10),
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: radius,
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  borderRadius: radius,
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      scheme.surface.withValues(alpha: dark ? 0.62 : 0.72),
+                      scheme.surface.withValues(alpha: dark ? 0.48 : 0.58),
+                    ],
+                  ),
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: dark ? 0.14 : 0.6),
+                  ),
+                ),
+                child: _items(context, labels, icons, scheme, muted),
+              ),
+            ),
+          ),
+        ),
       ),
-      child: SafeArea(
-        top: false,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              for (var i = 0; i < labels.length; i++)
-                Expanded(
-                  child: Semantics(
-                    selected: i == 0,
-                    child: InkWell(
-                      key: ValueKey('home-nav-$i'),
-                      borderRadius: BorderRadius.circular(16),
-                      onTap: callbacks[i],
-                      child: ConstrainedBox(
-                        constraints: const BoxConstraints(minHeight: 56),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 2,
-                            vertical: 4,
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                icons[i],
-                                color: i == 0
-                                    ? Theme.of(context).colorScheme.primary
-                                    : context.appColors.textMuted,
-                                size: 26,
+    );
+  }
+
+  Widget _items(
+    BuildContext context,
+    List<String> labels,
+    List<IconData> icons,
+    ColorScheme scheme,
+    Color muted,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          for (var i = 0; i < labels.length; i++)
+            Expanded(
+              child: Semantics(
+                selected: i == selectedIndex,
+                child: InkWell(
+                  key: ValueKey('home-nav-$i'),
+                  borderRadius: BorderRadius.circular(16),
+                  onTap: () => onSelected(i),
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(minHeight: 56),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 2,
+                        vertical: 4,
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          AnimatedContainer(
+                            duration: _duration,
+                            curve: Curves.easeOutCubic,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: i == selectedIndex ? 18 : 8,
+                              vertical: 2,
+                            ),
+                            decoration: BoxDecoration(
+                              color: scheme.primary.withValues(
+                                alpha: i == selectedIndex ? 0.16 : 0,
                               ),
-                              const SizedBox(height: 4),
-                              Text(
-                                labels[i],
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.labelMedium
-                                    ?.copyWith(
-                                      color: i == 0
-                                          ? Theme.of(
-                                              context,
-                                            ).colorScheme.primary
-                                          : context.appColors.textMuted,
-                                      fontWeight: i == 0
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: AnimatedScale(
+                              duration: _duration,
+                              curve: Curves.easeOutBack,
+                              scale: i == selectedIndex ? 1.12 : 1,
+                              child: TweenAnimationBuilder<Color?>(
+                                duration: _duration,
+                                tween: ColorTween(
+                                  end: i == selectedIndex
+                                      ? scheme.primary
+                                      : muted,
+                                ),
+                                builder: (context, color, _) =>
+                                    Icon(icons[i], color: color, size: 26),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          AnimatedDefaultTextStyle(
+                            duration: _duration,
+                            textAlign: TextAlign.center,
+                            style:
+                                (Theme.of(context).textTheme.labelMedium ??
+                                        const TextStyle())
+                                    .copyWith(
+                                      color: i == selectedIndex
+                                          ? scheme.primary
+                                          : muted,
+                                      fontWeight: i == selectedIndex
                                           ? FontWeight.w800
                                           : FontWeight.w500,
                                     ),
-                              ),
-                            ],
+                            child: Text(labels[i]),
                           ),
-                        ),
+                        ],
                       ),
                     ),
                   ),
                 ),
-            ],
-          ),
-        ),
+              ),
+            ),
+        ],
       ),
     );
   }

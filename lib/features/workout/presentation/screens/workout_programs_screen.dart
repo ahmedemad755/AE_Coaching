@@ -15,6 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:ae_coaching/core/widgets/app_shimmer.dart';
+import 'package:ae_coaching/core/widgets/entrance_animation.dart';
 
 /// My Programs — the first Programs UI. Shows the active program, a
 /// list of previous/archived ones, and Create/Rename/Make Active/
@@ -296,6 +298,15 @@ class _WorkoutProgramsScreenState extends State<WorkoutProgramsScreen> {
     );
   }
 
+  /// Space taken by a bar drawn over this screen (Home's floating bottom bar),
+  /// beyond the system inset the Scaffold already handles.
+  static double _bottomBarOverlap(BuildContext context) {
+    final overlap =
+        MediaQuery.paddingOf(context).bottom -
+        MediaQuery.viewPaddingOf(context).bottom;
+    return overlap > 0 ? overlap : 0;
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -308,39 +319,37 @@ class _WorkoutProgramsScreenState extends State<WorkoutProgramsScreen> {
         foregroundColor: isDark ? colors.textPrimary : Colors.white,
         title: Text(l10n.myProgramsTitle),
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(
-            WorkoutTemplateSpacing.tapTarget + 8,
-          ),
+          preferredSize: const Size.fromHeight(_TemplatesEntryCard.height + 16),
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: WorkoutTemplateSpacing.screen,
-              vertical: 4,
+            padding: const EdgeInsets.fromLTRB(
+              WorkoutTemplateSpacing.screen,
+              4,
+              WorkoutTemplateSpacing.screen,
+              12,
             ),
-            child: Align(
-              alignment: AlignmentDirectional.centerStart,
-              child: TextButton.icon(
-                key: const ValueKey('browse-workout-templates'),
-                style: TextButton.styleFrom(
-                  foregroundColor: isDark ? colors.textPrimary : Colors.white,
-                  minimumSize: const Size(0, WorkoutTemplateSpacing.tapTarget),
-                ),
-                onPressed: _openWorkoutTemplates,
-                icon: const Icon(Icons.view_week_outlined),
-                label: Text(l10n.workoutTemplatesTitle),
-              ),
+            child: _TemplatesEntryCard(
+              key: const ValueKey('browse-workout-templates'),
+              onTap: _openWorkoutTemplates,
             ),
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _openCreateDialog,
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Theme.of(context).colorScheme.onPrimary,
-        elevation: 10,
-        icon: const Icon(Icons.add_circle_outline),
-        label: Text(
-          l10n.createProgramButton,
-          style: const TextStyle(fontWeight: FontWeight.w800),
+      floatingActionButton: Padding(
+        // Inside Home's tabs the floating bottom bar covers the lower edge;
+        // the Scaffold doesn't move the FAB for it, so lift it above the bar.
+        // Pushed as a normal route this is 0 and the FAB stays where it was.
+        padding: EdgeInsets.only(bottom: _bottomBarOverlap(context)),
+        child: FloatingActionButton.extended(
+          key: const ValueKey('create-program-fab'),
+          onPressed: _openCreateDialog,
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          foregroundColor: Theme.of(context).colorScheme.onPrimary,
+          elevation: 10,
+          icon: const Icon(Icons.add_circle_outline),
+          label: Text(
+            l10n.createProgramButton,
+            style: const TextStyle(fontWeight: FontWeight.w800),
+          ),
         ),
       ),
       body: BlocConsumer<WorkoutProgramCubit, WorkoutProgramState>(
@@ -395,11 +404,7 @@ class _WorkoutProgramsScreenState extends State<WorkoutProgramsScreen> {
                 ),
               );
             }
-            return Center(
-              child: CircularProgressIndicator(
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            );
+            return const ShimmerList(itemHeight: 110);
           }
 
           return ValueListenableBuilder(
@@ -415,13 +420,14 @@ class _WorkoutProgramsScreenState extends State<WorkoutProgramsScreen> {
               }
 
               return ListView(
-                padding: const EdgeInsets.fromLTRB(
+                padding: EdgeInsets.fromLTRB(
                   WorkoutTemplateSpacing.screen,
                   WorkoutTemplateSpacing.screen,
                   WorkoutTemplateSpacing.screen,
                   WorkoutTemplateSpacing.screen +
                       WorkoutTemplateSpacing.tapTarget +
-                      WorkoutTemplateSpacing.section,
+                      WorkoutTemplateSpacing.section +
+                      MediaQuery.paddingOf(context).bottom,
                 ),
                 children: [
                   BlocBuilder<WorkoutSessionCubit, WorkoutSessionState>(
@@ -488,7 +494,7 @@ class _WorkoutProgramsScreenState extends State<WorkoutProgramsScreen> {
                       ),
                     ),
                   ],
-                ],
+                ].staggered(),
               );
             },
           );
@@ -837,6 +843,119 @@ class _EmptyState extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Prominent, clearly tappable entry to the standard workout templates:
+/// icon badge, title + hint, and a direction-aware chevron.
+class _TemplatesEntryCard extends StatelessWidget {
+  const _TemplatesEntryCard({super.key, required this.onTap});
+  final VoidCallback onTap;
+
+  static const height = 64.0;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final colors = context.appColors;
+    final scheme = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    // On the blue light-mode app bar the card is frosted white; in dark mode
+    // it is a raised surface with a primary accent.
+    final foreground = isDark ? colors.textPrimary : Colors.white;
+    final muted = isDark
+        ? colors.textMuted
+        : Colors.white.withValues(alpha: 0.82);
+    final radius = BorderRadius.circular(18);
+    return Semantics(
+      button: true,
+      child: Material(
+        color: isDark
+            ? colors.surfaceRaised
+            : Colors.white.withValues(alpha: 0.16),
+        shape: RoundedRectangleBorder(
+          borderRadius: radius,
+          side: BorderSide(
+            color: isDark
+                ? scheme.primary.withValues(alpha: 0.45)
+                : Colors.white.withValues(alpha: 0.38),
+          ),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: radius,
+          splashColor: foreground.withValues(alpha: 0.12),
+          child: SizedBox(
+            height: height,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Row(
+                children: [
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: isDark ? scheme.primary : Colors.white,
+                    ),
+                    child: Icon(
+                      Icons.auto_awesome_mosaic_outlined,
+                      size: 22,
+                      color: isDark ? scheme.onPrimary : scheme.primary,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l10n.workoutTemplatesTitle,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: foreground,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          l10n.homeExploreTemplates,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: muted,
+                            fontSize: 12.5,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Container(
+                    width: 32,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: foreground.withValues(alpha: 0.14),
+                    ),
+                    child: Icon(
+                      // Mirrors automatically in RTL.
+                      Icons.chevron_right,
+                      color: foreground,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),

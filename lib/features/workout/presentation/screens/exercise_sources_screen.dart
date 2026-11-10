@@ -4,6 +4,7 @@ import 'package:ae_coaching/features/workout/presentation/widgets/exercise_video
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ae_coaching/core/widgets/app_shimmer.dart';
 
 class ExerciseSourcesScreen extends StatelessWidget {
   const ExerciseSourcesScreen({super.key});
@@ -51,7 +52,7 @@ class ExerciseSourcesScreen extends StatelessWidget {
                     snapshot.data!,
                     textDirection: TextDirection.ltr,
                   )
-                : const Center(child: CircularProgressIndicator()),
+                : const ShimmerParagraph(),
           ),
         ],
       ),

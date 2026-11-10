@@ -11,6 +11,8 @@ import 'package:ae_coaching/features/workout/presentation/widgets/exercise_libra
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:ae_coaching/core/widgets/app_shimmer.dart';
+import 'package:ae_coaching/core/widgets/entrance_animation.dart';
 
 class ExercisePickerDialog extends StatefulWidget {
   final ExerciseLibraryCatalog catalog;
@@ -473,7 +475,10 @@ class _ExercisePickerDialogState extends State<ExercisePickerDialog> {
                   future: _results,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState != ConnectionState.done) {
-                      return const Center(child: CircularProgressIndicator());
+                      return const ShimmerList(
+                        itemHeight: 72,
+                        padding: EdgeInsets.zero,
+                      );
                     }
                     if (snapshot.hasError) {
                       return Center(child: Text(l10n.exerciseLibraryLoadError));
@@ -493,7 +498,7 @@ class _ExercisePickerDialogState extends State<ExercisePickerDialog> {
                       cacheExtent: 200,
                       itemCount: results.length,
                       separatorBuilder: (_, _) => const SizedBox(height: 10),
-                      itemBuilder: (context, index) {
+                      itemBuilder: staggeredItemBuilder((context, index) {
                         final item = results[index];
                         final excluded = _isExcluded(item);
                         final selected = _selected.containsKey(item.id);
@@ -508,7 +513,7 @@ class _ExercisePickerDialogState extends State<ExercisePickerDialog> {
                               ? null
                               : (value) => _toggleExercise(item, value),
                         );
-                      },
+                      }),
                     );
                   },
                 ),

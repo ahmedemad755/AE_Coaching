@@ -11,6 +11,8 @@ import 'package:ae_coaching/features/workout/presentation/screens/workout_progra
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ae_coaching/core/widgets/app_shimmer.dart';
+import 'package:ae_coaching/core/widgets/entrance_animation.dart';
 
 class StandardWorkoutTemplatesScreen extends StatelessWidget {
   final StandardWorkoutTemplateRepository templates;
@@ -41,7 +43,7 @@ class StandardWorkoutTemplatesScreen extends StatelessWidget {
               >(
                 builder: (context, state) {
                   if (state.loading) {
-                    return const Center(child: CircularProgressIndicator());
+                    return const ShimmerList(itemHeight: 96);
                   }
                   if (state.failed) {
                     return Center(
@@ -152,7 +154,7 @@ class StandardWorkoutTemplatesScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                    ],
+                    ].staggered(),
                   );
                 },
               ),
@@ -281,7 +283,7 @@ class StandardWorkoutTemplatePreviewScreen extends StatelessWidget {
                 ),
               ),
             ),
-        ],
+        ].staggered(),
       ),
       bottomNavigationBar: SafeArea(
         child: Padding(

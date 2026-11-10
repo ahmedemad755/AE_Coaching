@@ -1789,4 +1789,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String exerciseTargetSummary(int sets, int min, int max, int seconds) {
     return 'الخطة: $sets مجموعات × $min–$max تكرار · راحة $seconds ث';
   }
+
+  @override
+  String get loadingLabel => 'جارٍ التحميل';
 }

@@ -14,12 +14,15 @@ import 'package:ae_coaching/features/workout/presentation/cubit/rest_timer_cubit
 import 'package:ae_coaching/features/workout/presentation/cubit/workout_session_cubit.dart';
 import 'package:ae_coaching/features/workout/presentation/screens/workout_completion_summary_screen.dart';
 import 'package:ae_coaching/features/workout/presentation/widgets/log_set_dialog.dart';
+import 'package:ae_coaching/features/workout/presentation/widgets/planned_set_row.dart';
 import 'package:ae_coaching/features/workout/presentation/screens/exercise_library_screen.dart';
 import 'package:ae_coaching/features/workout/presentation/widgets/rest_timer_widget.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:ae_coaching/features/workout/presentation/widgets/workout_exercise_targets_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ae_coaching/core/widgets/app_shimmer.dart';
+import 'package:ae_coaching/core/widgets/entrance_animation.dart';
 
 /// Route arguments for [ActiveWorkoutSessionScreen].
 class ActiveWorkoutSessionArgs {
@@ -351,6 +354,45 @@ class _ActiveWorkoutSessionScreenState extends State<ActiveWorkoutSessionScreen>
         reps: result.reps,
         notes: result.notes,
       );
+    } finally {
+      if (mounted) setState(() => _isLoggingSet = false);
+    }
+  }
+
+  /// Saves a ready-made template set the trainee just filled in, then marks it
+  /// done (which starts the rest timer), so one tap on ✓ does both. Follows
+  /// the same rest/previous-set rules as the "+" button.
+  Future<bool> _logPlannedSet(
+    String exerciseName,
+    double weight,
+    int reps,
+  ) async {
+    if (_editingBlocked || !_canAddSet) {
+      _showAddSetBlockedMessage();
+      return false;
+    }
+    setState(() => _isLoggingSet = true);
+    try {
+      await context.read<SessionExerciseCubit>().logSet(
+        session: widget.session,
+        exerciseName: exerciseName,
+        weight: weight,
+        reps: reps,
+      );
+      if (!mounted) return true;
+      final logged = _latestRecordedSet;
+      if (logged != null) _markSetDone(logged, true);
+      return true;
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.unableToLogSetError),
+            backgroundColor: context.appColors.error,
+          ),
+        );
+      }
+      return false;
     } finally {
       if (mounted) setState(() => _isLoggingSet = false);
     }
@@ -1093,9 +1135,42 @@ class _ActiveWorkoutSessionScreenState extends State<ActiveWorkoutSessionScreen>
                     ),
                 ],
               ),
+            if (row.assignment?.hasTargets == true &&
+                row.sets.length < row.assignment!.workingSets!)
+              BlocBuilder<RestTimerCubit, RestTimerState>(
+                builder: (context, _) =>
+                    _buildPlannedSets(row, row.assignment!),
+              ),
           ],
         ),
       ),
+    );
+  }
+
+  /// The template's remaining working sets, ready to fill in. Sets logged so
+  /// far take the first slots; extra sets beyond the plan still use "+".
+  Widget _buildPlannedSets(
+    SessionExerciseRow row,
+    WorkoutTemplateExerciseAssignment targets,
+  ) {
+    final min = targets.targetRepsMin!;
+    final max = targets.targetRepsMax!;
+    final canLog = !_editingBlocked && _canAddSet;
+    return Column(
+      children: [
+        for (var n = row.sets.length + 1; n <= targets.workingSets!; n++)
+          PlannedSetRow(
+            key: ValueKey('planned-set-${row.exerciseName}-$n'),
+            setNumber: n,
+            repsHint: min == max ? '$min' : '$min–$max',
+            weightHint: n <= row.previousSets.length
+                ? row.previousSets[n - 1].weight
+                : null,
+            enabled: canLog,
+            onSubmit: (weight, reps) =>
+                _logPlannedSet(row.exerciseName, weight, reps),
+          ),
+      ],
     );
   }
 
@@ -1251,16 +1326,17 @@ class _ActiveWorkoutSessionScreenState extends State<ActiveWorkoutSessionScreen>
                     );
                   }
                   return ReorderableListView.builder(
+                    proxyDecorator: entranceSafeProxyDecorator,
                     key: const PageStorageKey("active-exercises"),
                     padding: const EdgeInsets.fromLTRB(16, 0, 16, 88),
                     buildDefaultDragHandles: false,
                     itemCount: state.rows.length,
                     onReorder: (oldIndex, newIndex) =>
                         _reorderSessionRows(state.rows, oldIndex, newIndex),
-                    itemBuilder: (context, index) {
+                    itemBuilder: staggeredItemBuilder((context, index) {
                       final row = state.rows[index];
                       return _buildExerciseRow(row, index: index);
-                    },
+                    }),
                   );
                 }
                 if (state is SessionExerciseError) {
@@ -1271,7 +1347,9 @@ class _ActiveWorkoutSessionScreenState extends State<ActiveWorkoutSessionScreen>
                     ),
                   );
                 }
-                return const Center(child: CircularProgressIndicator());
+                return const ShimmerList(
+                  padding: EdgeInsets.fromLTRB(16, 0, 16, 88),
+                );
               },
             ),
           ),

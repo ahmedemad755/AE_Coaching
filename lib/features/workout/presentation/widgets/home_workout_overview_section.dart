@@ -11,6 +11,8 @@ import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:ae_coaching/core/widgets/app_shimmer.dart';
+import 'package:ae_coaching/core/widgets/entrance_animation.dart';
 
 String _fmtVolume(double value) =>
     value.toStringAsFixed(value.truncateToDouble() == value ? 0 : 1);
@@ -66,61 +68,74 @@ class HomeWorkoutOverviewSection extends StatelessWidget {
           child: ListView(
             controller: controller,
             physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.all(16),
+            // The floating bottom bar overlaps the body; keep the end reachable.
+            padding: EdgeInsets.fromLTRB(
+              16,
+              16,
+              16,
+              16 + MediaQuery.paddingOf(context).bottom,
+            ),
             children: [
               if (header != null) ...[header!, const SizedBox(height: 24)],
-              if (overview?.activeSession != null)
-                _ActiveSessionCard(session: overview!.activeSession!),
-              if (overview?.activeSession != null) const SizedBox(height: 14),
-              HomeWorkoutPlansSection(
-                activeProgramSummary: overview?.activeProgram,
-                onExploreTemplates: onExploreTemplates,
-                onProgramsChanged: () =>
-                    context.read<HomeWorkoutOverviewCubit>().loadOverview(),
-              ),
-              if (afterPlans != null) ...[
+              ...<Widget>[
+                if (overview?.activeSession != null)
+                  _ActiveSessionCard(session: overview!.activeSession!),
+                if (overview?.activeSession != null) const SizedBox(height: 14),
+                HomeWorkoutPlansSection(
+                  activeProgramSummary: overview?.activeProgram,
+                  onExploreTemplates: onExploreTemplates,
+                  onProgramsChanged: () =>
+                      context.read<HomeWorkoutOverviewCubit>().loadOverview(),
+                ),
+                if (afterPlans != null) ...[
+                  const SizedBox(height: 24),
+                  afterPlans!,
+                ],
+                if (volume != null) ...[const SizedBox(height: 24), volume!],
                 const SizedBox(height: 24),
-                afterPlans!,
-              ],
-              if (volume != null) ...[const SizedBox(height: 24), volume!],
-              const SizedBox(height: 24),
-              Text(
-                l10n.homeRecentWorkoutsTitle,
-                style: TextStyle(
-                  color: colors.textPrimary,
-                  fontWeight: FontWeight.w900,
-                  fontSize: 16,
-                ),
-              ),
-              const SizedBox(height: 10),
-              if (state is HomeWorkoutOverviewError) ...[
-                Text(state.message, style: TextStyle(color: colors.textMuted)),
-                TextButton.icon(
-                  onPressed: context
-                      .read<HomeWorkoutOverviewCubit>()
-                      .loadOverview,
-                  icon: const Icon(Icons.refresh),
-                  label: Text(l10n.retry),
-                ),
-              ] else if (overview == null)
-                const Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Center(child: CircularProgressIndicator()),
-                )
-              else if (overview.recentSessions.isEmpty)
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: Text(
-                    l10n.homeNoRecentWorkoutsBody,
-                    style: TextStyle(
-                      color: colors.textMuted,
-                      fontWeight: FontWeight.w600,
-                    ),
+                Text(
+                  l10n.homeRecentWorkoutsTitle,
+                  style: TextStyle(
+                    color: colors.textPrimary,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 16,
                   ),
-                )
-              else
-                for (final session in overview.recentSessions)
-                  _RecentSessionCard(summary: session),
+                ),
+                const SizedBox(height: 10),
+                if (state is HomeWorkoutOverviewError) ...[
+                  Text(
+                    state.message,
+                    style: TextStyle(color: colors.textMuted),
+                  ),
+                  TextButton.icon(
+                    onPressed: context
+                        .read<HomeWorkoutOverviewCubit>()
+                        .loadOverview,
+                    icon: const Icon(Icons.refresh),
+                    label: Text(l10n.retry),
+                  ),
+                ] else if (overview == null)
+                  const ShimmerList(
+                    itemCount: 2,
+                    itemHeight: 76,
+                    padding: EdgeInsets.symmetric(vertical: 8),
+                    shrinkWrap: true,
+                  )
+                else if (overview.recentSessions.isEmpty)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: Text(
+                      l10n.homeNoRecentWorkoutsBody,
+                      style: TextStyle(
+                        color: colors.textMuted,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  )
+                else
+                  for (final session in overview.recentSessions)
+                    _RecentSessionCard(summary: session),
+              ].staggered(delay: const Duration(milliseconds: 300)),
             ],
           ),
         );

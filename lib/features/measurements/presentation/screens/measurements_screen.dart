@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:ae_coaching/core/widgets/app_shimmer.dart';
 
 /// Body Measurements home screen: shows the latest check-in and gives
 /// access to Add / History / Analytics.
@@ -167,11 +168,7 @@ class _MeasurementsScreenState extends State<MeasurementsScreen> {
                 ),
               );
             }
-            return Center(
-              child: CircularProgressIndicator(
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            );
+            return const ShimmerList();
           }
 
           return ValueListenableBuilder(

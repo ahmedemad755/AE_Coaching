@@ -16,6 +16,7 @@ import 'package:ae_coaching/service_locator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ae_coaching/core/widgets/app_shimmer.dart';
 
 class PersonalHubScreen extends StatefulWidget {
   const PersonalHubScreen({super.key, required this.onLogout});
@@ -337,7 +338,7 @@ class _PersonalHubScreenState extends State<PersonalHubScreen> {
     if (uid.isEmpty || uid != _uid) {
       return Scaffold(
         appBar: AppBar(title: Text(l10n.personalHubTitle)),
-        body: const Center(child: CircularProgressIndicator()),
+        body: const ShimmerProfile(),
       );
     }
 
@@ -350,7 +351,7 @@ class _PersonalHubScreenState extends State<PersonalHubScreen> {
         ],
       ),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(18, 18, 18, 30),
+        padding: EdgeInsets.fromLTRB(18, 18, 18, 30 + MediaQuery.paddingOf(context).bottom),
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -407,7 +408,7 @@ class _PersonalHubScreenState extends State<PersonalHubScreen> {
             future: _progress,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Padding(padding: EdgeInsets.all(18), child: Center(child: CircularProgressIndicator()));
+                return const Padding(padding: EdgeInsets.symmetric(vertical: 8), child: AppShimmer(child: ShimmerBone(height: 120, radius: 20)));
               }
               if (snapshot.hasError) {
                 return ListTile(leading: const Icon(Icons.info_outline), title: Text(l10n.progressDataUnavailable));

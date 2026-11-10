@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'dart:math' as math;
+import 'package:ae_coaching/core/widgets/app_shimmer.dart';
 
 /// Route arguments for [ProgramAnalyticsScreen].
 class ProgramAnalyticsArgs {
@@ -63,11 +64,7 @@ class _ProgramAnalyticsScreenState extends State<ProgramAnalyticsScreen> {
             );
           }
           if (state is! ProgramAnalyticsLoaded) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            );
+            return const ShimmerDashboard();
           }
 
           final days = state.summary.days;

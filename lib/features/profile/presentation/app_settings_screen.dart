@@ -10,6 +10,7 @@ import 'package:ae_coaching/service_locator.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ae_coaching/core/widgets/app_shimmer.dart';
 
 class AppSettingsScreen extends StatefulWidget {
   const AppSettingsScreen({super.key, required this.onLogout});
@@ -186,12 +187,7 @@ class _AppSettingsScreenState extends State<AppSettingsScreen>
             future: _permissionStatus,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const ListTile(
-                  leading: SizedBox.square(
-                    dimension: 18,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  ),
-                );
+                return const ShimmerTileRow();
               }
               if (snapshot.hasError || !snapshot.hasData) {
                 return ListTile(

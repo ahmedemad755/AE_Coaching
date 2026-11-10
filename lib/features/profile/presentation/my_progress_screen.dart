@@ -18,6 +18,7 @@ import 'package:ae_coaching/service_locator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:ae_coaching/core/widgets/app_shimmer.dart';
 
 class MyProgressScreen extends StatefulWidget {
   const MyProgressScreen({super.key});
@@ -119,7 +120,7 @@ class _MyProgressScreenState extends State<MyProgressScreen> {
       return Scaffold(
         backgroundColor: colors.canvas,
         appBar: AppBar(title: Text(l10n.myProgressTitle)),
-        body: const Center(child: CircularProgressIndicator()),
+        body: const ShimmerDashboard(),
       );
     }
     return Scaffold(
@@ -129,7 +130,7 @@ class _MyProgressScreenState extends State<MyProgressScreen> {
         future: _data,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return const ShimmerDashboard();
           }
           if (snapshot.hasError) {
             return Center(
@@ -198,7 +199,12 @@ class _MyProgressScreenState extends State<MyProgressScreen> {
       });
 
     return ListView(
-      padding: const EdgeInsets.fromLTRB(18, 18, 18, 30),
+      padding: EdgeInsets.fromLTRB(
+        18,
+        18,
+        18,
+        30 + MediaQuery.paddingOf(context).bottom,
+      ),
       children: [
         if (data.sessions.isNotEmpty) ...[
           Row(

@@ -3187,6 +3187,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Plan: {sets} sets × {min}–{max} reps · rest {seconds}s'**
   String exerciseTargetSummary(int sets, int min, int max, int seconds);
+
+  /// No description provided for @loadingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading'**
+  String get loadingLabel;
 }
 
 class _AppLocalizationsDelegate

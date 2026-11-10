@@ -12,6 +12,7 @@ import 'package:ae_coaching/features/workout/presentation/widgets/workout_templa
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:ae_coaching/features/workout/presentation/widgets/workout_exercise_targets_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:ae_coaching/core/widgets/entrance_animation.dart';
 
 class TemplateExerciseManager extends StatefulWidget {
   final WorkoutTemplate template;
@@ -214,12 +215,13 @@ class _TemplateExerciseManagerState extends State<TemplateExerciseManager> {
               ),
             ),
             child: ReorderableListView.builder(
+              proxyDecorator: entranceSafeProxyDecorator,
               shrinkWrap: true,
               physics: const ClampingScrollPhysics(),
               buildDefaultDragHandles: false,
               itemCount: _assignments.length,
               onReorder: _reorder,
-              itemBuilder: (context, index) {
+              itemBuilder: staggeredItemBuilder((context, index) {
                 final assignment = _assignments[index];
                 return Material(
                   key: ValueKey(assignment.assignmentId),
@@ -294,7 +296,7 @@ class _TemplateExerciseManagerState extends State<TemplateExerciseManager> {
                     ),
                   ),
                 );
-              },
+              }),
             ),
           ),
       ],

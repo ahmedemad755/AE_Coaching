@@ -9,6 +9,7 @@ import 'package:ae_coaching/l10n/app_localizations_ar.dart';
 import 'package:ae_coaching/l10n/app_localizations_en.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ae_coaching/core/widgets/app_shimmer.dart';
 
 class ExerciseLibraryCard extends StatelessWidget {
   const ExerciseLibraryCard({
@@ -290,7 +291,7 @@ class ExerciseLibraryCard extends StatelessWidget {
                   ? Text(l10n.exerciseLibraryLoadError)
                   : snapshot.hasData
                   ? SelectableText(snapshot.data!)
-                  : const Center(child: CircularProgressIndicator()),
+                  : const ShimmerParagraph(),
             ),
           ),
         ),

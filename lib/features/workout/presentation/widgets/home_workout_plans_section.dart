@@ -9,6 +9,7 @@ import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:ae_coaching/core/widgets/app_shimmer.dart';
 
 class HomeWorkoutPlansSection extends StatefulWidget {
   final HomeActiveProgramSummary? activeProgramSummary;
@@ -136,10 +137,7 @@ class _HomeWorkoutPlansSectionState extends State<HomeWorkoutPlansSection> {
               onRetry: _loadPrograms,
             );
           }
-          return const SizedBox(
-            height: 72,
-            child: Center(child: CircularProgressIndicator()),
-          );
+          return const AppShimmer(child: ShimmerBone(height: 120, radius: 20));
         }
 
         return ValueListenableBuilder<Box<WorkoutProgram>>(

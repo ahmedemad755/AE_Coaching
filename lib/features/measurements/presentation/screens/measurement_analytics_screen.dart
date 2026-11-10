@@ -7,6 +7,7 @@ import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:ae_coaching/core/widgets/app_shimmer.dart';
 
 /// Body Measurements analytics.
 ///
@@ -86,11 +87,7 @@ class _MeasurementAnalyticsScreenState
                 ),
               );
             }
-            return Center(
-              child: CircularProgressIndicator(
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            );
+            return const ShimmerDashboard();
           }
 
           return ValueListenableBuilder(

@@ -78,6 +78,29 @@ class WidgetActiveExercises extends SessionExerciseCubit {
   @override
   Future<void> refreshForSession(WorkoutSession session) async => show();
   @override
+  Future<void> logSet({
+    required WorkoutSession session,
+    required String exerciseName,
+    required double weight,
+    required int reps,
+    String? notes,
+  }) async {
+    logged.add(
+      ExerciseSet(
+        exerciseName: exerciseName,
+        weight: weight,
+        reps: reps,
+        date: DateTime.now().add(Duration(microseconds: logged.length)),
+        notes: notes,
+        programId: session.programId,
+        workoutTemplateId: session.workoutTemplateId,
+        workoutSessionId: session.id,
+      ),
+    );
+    show();
+  }
+
+  @override
   Future<void> editActiveExercises({
     required WorkoutSession session,
     required ActiveWorkoutEditAction action,
@@ -367,12 +390,100 @@ void main() {
               .workingSets,
           4,
         );
-        expect(rowActions(), findsNWidgets(2));
+        // Template exercises now show their planned set rows, so both cards
+        // may not fit on screen at once; scroll through and count them.
+        final rowKeys = <Key>{};
+        for (var i = 0; i < 6; i++) {
+          rowKeys.addAll(tester.widgetList(rowActions()).map((w) => w.key!));
+          await tester.drag(
+            find.byType(ReorderableListView),
+            const Offset(0, -300),
+          );
+          await tester.pumpAndSettle();
+        }
+        expect(rowKeys, hasLength(2));
         expect(tester.takeException(), isNull);
         await tester.pumpWidget(const SizedBox.shrink());
       },
     );
   }
+
+  testWidgets(
+    'template sets are ready to fill: weight + reps, one tap saves and marks done',
+    (tester) async {
+      await tester.binding.setSurfaceSize(const Size(390, 900));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      await open(tester, 'en');
+      final l10n = strings(tester);
+      final name = session
+          .templateExerciseAssignmentsSnapshot
+          .first
+          .exerciseNameSnapshot;
+      Finder planned(int n) => find.byKey(ValueKey('planned-set-$name-$n'));
+
+      // workingSets: 2 → both sets are ready, with the 8–12 target shown.
+      expect(planned(1), findsOneWidget);
+      expect(planned(2), findsOneWidget);
+      expect(planned(3), findsNothing);
+      expect(find.textContaining('8–12'), findsWidgets);
+
+      await tester.enterText(
+        find.byKey(const ValueKey('planned-weight-1')),
+        '62.5',
+      );
+      await tester.enterText(
+        find.byKey(const ValueKey('planned-reps-1')),
+        '10',
+      );
+      await tester.tap(find.byKey(const ValueKey('planned-save-1')));
+      await tester.pump();
+      await tester.pump();
+
+      expect(exercises.logged, hasLength(1));
+      expect(exercises.logged.single.weight, 62.5);
+      expect(exercises.logged.single.reps, 10);
+      // The filled slot became a real set, already marked done.
+      expect(planned(1), findsNothing);
+      expect(planned(2), findsOneWidget);
+      final done = tester.widget<Checkbox>(find.byType(Checkbox).first);
+      expect(done.value, isTrue);
+      expect(rest.state.isRunning, isTrue);
+
+      // Same rest rule as "+": set 2 can't be saved until the rest is over.
+      await tester.enterText(
+        find.byKey(const ValueKey('planned-weight-2')),
+        '62.5',
+      );
+      await tester.enterText(find.byKey(const ValueKey('planned-reps-2')), '9');
+      await tester.tap(find.byKey(const ValueKey('planned-save-2')));
+      await tester.pump();
+      expect(exercises.logged, hasLength(1));
+      expect(find.text(l10n.waitForRestTimerLabel), findsOneWidget);
+
+      // Extra sets beyond the plan are still available.
+      expect(find.byIcon(Icons.hourglass_top), findsWidgets);
+      rest.stop();
+      await tester.pump();
+      await tester.pumpWidget(const SizedBox.shrink());
+    },
+  );
+
+  testWidgets('a planned set rejects missing reps without logging', (
+    tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(390, 900));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await open(tester, 'ar');
+    await tester.enterText(
+      find.byKey(const ValueKey('planned-weight-1')),
+      '40',
+    );
+    await tester.tap(find.byKey(const ValueKey('planned-save-1')));
+    await tester.pump();
+    expect(exercises.logged, isEmpty);
+    expect(find.text(strings(tester).unableToLogSetError), findsOneWidget);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
 
   testWidgets(
     'logged exercise removal is blocked before picker/scope and shows localized explanation',

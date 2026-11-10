@@ -10,6 +10,7 @@ import 'package:ae_coaching/service_locator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ae_coaching/core/widgets/app_shimmer.dart';
 
 /// Bootstrap gate reached only when Hive says "not logged in" but a
 /// Firebase [FirebaseAuth.currentUser] is non-null underneath — i.e. a
@@ -114,9 +115,7 @@ class _SessionReconciliationViewState extends State<SessionReconciliationView> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                CircularProgressIndicator(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
+                const SizedBox(width: 220, child: ShimmerParagraph(lines: 3)),
                 const SizedBox(height: 16),
                 Text(
                   l10n.sessionCheckingMessage,

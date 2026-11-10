@@ -11,6 +11,7 @@ import 'package:ae_coaching/features/workout/presentation/screens/exercise_libra
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:ae_coaching/core/widgets/entrance_animation.dart';
 
 class ManageTemplateExercisesDialog extends StatefulWidget {
   final WorkoutTemplate template;
@@ -190,9 +191,10 @@ class _ManageTemplateExercisesDialogState
                         ),
                       )
                     : ReorderableListView.builder(
+                        proxyDecorator: entranceSafeProxyDecorator,
                         itemCount: _assignments.length,
                         onReorder: _reorder,
-                        itemBuilder: (context, index) {
+                        itemBuilder: staggeredItemBuilder((context, index) {
                           final assignment = _assignments[index];
                           return ListTile(
                             key: ValueKey(assignment.assignmentId),
@@ -218,7 +220,7 @@ class _ManageTemplateExercisesDialogState
                               ),
                             ),
                           );
-                        },
+                        }),
                       ),
               ),
               const SizedBox(height: 12),

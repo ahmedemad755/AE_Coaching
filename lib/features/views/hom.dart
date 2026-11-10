@@ -8,6 +8,8 @@ import 'package:ae_coaching/core/storage/user_storage_manager.dart';
 import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/features/analytics/presentation/workout_analytics_screen.dart';
 import 'package:ae_coaching/features/profile/data/local_profile_photo_store.dart';
+import 'package:ae_coaching/features/profile/presentation/my_progress_screen.dart';
+import 'package:ae_coaching/features/profile/presentation/personal_hub_screen.dart';
 import 'package:ae_coaching/features/profile/presentation/profile_navigation.dart';
 import 'package:ae_coaching/features/views/widgets/home_dashboard.dart';
 import 'package:ae_coaching/features/workout/data/models/exercise_set.dart';
@@ -18,6 +20,7 @@ import 'package:ae_coaching/features/workout/domain/services/home_progress_compa
 import 'package:ae_coaching/features/workout/presentation/bloc/workout_cubit.dart';
 import 'package:ae_coaching/features/workout/presentation/cubit/home_workout_overview_cubit.dart';
 import 'package:ae_coaching/features/workout/presentation/cubit/workout_session_cubit.dart';
+import 'package:ae_coaching/features/workout/presentation/screens/workout_programs_screen.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:ae_coaching/service_locator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,6 +28,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:ae_coaching/core/widgets/app_shimmer.dart';
 
 class Hom extends StatefulWidget {
   const Hom({super.key});
@@ -271,6 +275,13 @@ class _HomState extends State<Hom> {
       AppNavigator.personalHub,
       arguments: PersonalHubArgs(onLogout: _logout),
     );
+    await _refreshProfile(uid);
+  }
+
+  /// The More tab can rename the user or change the photo; mirror it on Home.
+  Future<void> _refreshProfile([String? uid]) async {
+    uid ??= FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return;
     if (!mounted || FirebaseAuth.instance.currentUser?.uid != uid) return;
     final savedName = sl<SessionStorage>().currentUserName.trim();
     if (savedName.isNotEmpty && savedName != _userName) {
@@ -608,7 +619,7 @@ class _HomState extends State<Hom> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+      return const Scaffold(body: ShimmerHome());
     }
     return MultiBlocListener(
       listeners: [
@@ -630,6 +641,12 @@ class _HomState extends State<Hom> {
         onProfile: _openPersonalHub,
         onSettings: _openAppSettings,
         onProgressAnalysis: _showProgressAnalysis,
+        programsTab: (_) => const WorkoutProgramsScreen(),
+        progressTab: (_) => const MyProgressScreen(),
+        moreTab: (_) => PersonalHubScreen(onLogout: _logout),
+        onTabChanged: (index) {
+          if (index == 0) unawaited(_refreshProfile());
+        },
         onImageError: () {
           final uid = _profilePhotoUid;
           final failedPath = _profilePhotoPath;

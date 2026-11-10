@@ -105,7 +105,15 @@ Widget _wrap(
   WorkoutSessionCubit sessionCubit, {
   ThemeMode themeMode = ThemeMode.light,
   Locale locale = const Locale('en'),
+  bool underFloatingBar = false,
 }) {
+  final screen = MultiBlocProvider(
+    providers: [
+      BlocProvider.value(value: cubit),
+      BlocProvider.value(value: sessionCubit),
+    ],
+    child: const WorkoutProgramsScreen(),
+  );
   return MaterialApp(
     theme: AppTheme.light,
     darkTheme: AppTheme.dark,
@@ -113,13 +121,17 @@ Widget _wrap(
     locale: locale,
     localizationsDelegates: AppLocalizations.localizationsDelegates,
     supportedLocales: AppLocalizations.supportedLocales,
-    home: MultiBlocProvider(
-      providers: [
-        BlocProvider.value(value: cubit),
-        BlocProvider.value(value: sessionCubit),
-      ],
-      child: const WorkoutProgramsScreen(),
-    ),
+    // Mirrors Home's tab shell: content extends behind a floating bar.
+    home: underFloatingBar
+        ? Scaffold(
+            extendBody: true,
+            body: screen,
+            bottomNavigationBar: const SizedBox(
+              key: ValueKey('floating-bar'),
+              height: 90,
+            ),
+          )
+        : screen,
   );
 }
 
@@ -202,9 +214,12 @@ Widget _wrapHomePlans(
 Future<void> _pumpUntilLoaded(
   WidgetTester tester,
   WorkoutProgramCubit cubit,
-  WorkoutSessionCubit sessionCubit,
-) async {
-  await tester.pumpWidget(_wrap(cubit, sessionCubit));
+  WorkoutSessionCubit sessionCubit, {
+  bool underFloatingBar = false,
+}) async {
+  await tester.pumpWidget(
+    _wrap(cubit, sessionCubit, underFloatingBar: underFloatingBar),
+  );
   await tester.pump();
   await tester.pump(const Duration(milliseconds: 300));
   await tester.pump(const Duration(milliseconds: 300));
@@ -285,6 +300,31 @@ void main() {
     if (await tempDir.exists()) {
       await tempDir.delete(recursive: true);
     }
+  });
+
+  testWidgets('Create Program sits above the floating bottom bar', (
+    tester,
+  ) async {
+    await _pumpUntilLoaded(tester, cubit, sessionCubit, underFloatingBar: true);
+
+    final fab = tester.getRect(
+      find.byKey(const ValueKey('create-program-fab')),
+    );
+    final bar = tester.getRect(find.byKey(const ValueKey('floating-bar')));
+    expect(fab.bottom, lessThanOrEqualTo(bar.top));
+  });
+
+  testWidgets('Create Program keeps its usual spot as a standalone screen', (
+    tester,
+  ) async {
+    await _pumpUntilLoaded(tester, cubit, sessionCubit);
+
+    final fab = tester.getRect(
+      find.byKey(const ValueKey('create-program-fab')),
+    );
+    final screen = tester.getSize(find.byType(MaterialApp));
+    // Default endFloat margin, no extra lift.
+    expect(screen.height - fab.bottom, moreOrLessEquals(16));
   });
 
   testWidgets('shows the empty state when there are no programs', (

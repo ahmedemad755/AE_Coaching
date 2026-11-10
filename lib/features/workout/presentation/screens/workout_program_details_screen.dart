@@ -21,6 +21,8 @@ import 'package:ae_coaching/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:ae_coaching/core/widgets/app_shimmer.dart';
+import 'package:ae_coaching/core/widgets/entrance_animation.dart';
 
 /// Route arguments for [WorkoutProgramDetailsScreen] — same pattern as
 /// `WorkoutAnalyticsArgs`.
@@ -363,11 +365,7 @@ class _WorkoutProgramDetailsScreenState
                         ),
                       );
                     }
-                    return Center(
-                      child: CircularProgressIndicator(
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    );
+                    return const ShimmerList();
                   }
 
                   return ValueListenableBuilder(
@@ -421,7 +419,7 @@ class _WorkoutProgramDetailsScreenState
                       return ListView.builder(
                         padding: const EdgeInsets.fromLTRB(18, 18, 18, 100),
                         itemCount: templates.length,
-                        itemBuilder: (context, index) {
+                        itemBuilder: staggeredItemBuilder((context, index) {
                           final template = templates[index];
                           return Padding(
                             key: ValueKey(template.id),
@@ -450,7 +448,7 @@ class _WorkoutProgramDetailsScreenState
                               ).languageCode,
                             ),
                           );
-                        },
+                        }),
                       );
                     },
                   );

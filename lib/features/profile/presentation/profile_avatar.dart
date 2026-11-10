@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:ae_coaching/core/widgets/app_shimmer.dart';
 
 class ProfileAvatar extends StatelessWidget {
   const ProfileAvatar({
@@ -69,7 +70,9 @@ class ProfileAvatar extends StatelessWidget {
             ),
             if (isLoading)
               const Positioned.fill(
-                child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                child: AppShimmer(
+                  child: ShimmerBone(height: null, radius: 999),
+                ),
               )
             else if (showActionBadge)
               PositionedDirectional(

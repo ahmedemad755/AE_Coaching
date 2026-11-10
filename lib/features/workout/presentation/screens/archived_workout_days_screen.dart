@@ -6,6 +6,8 @@ import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:ae_coaching/core/widgets/app_shimmer.dart';
+import 'package:ae_coaching/core/widgets/entrance_animation.dart';
 
 /// Route arguments for [ArchivedWorkoutDaysScreen].
 class ArchivedWorkoutDaysArgs {
@@ -105,11 +107,7 @@ class _ArchivedWorkoutDaysScreenState extends State<ArchivedWorkoutDaysScreen> {
         builder: (context, state) {
           final box = _box;
           if (box == null) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            );
+            return const ShimmerList();
           }
 
           return ValueListenableBuilder(
@@ -146,7 +144,7 @@ class _ArchivedWorkoutDaysScreenState extends State<ArchivedWorkoutDaysScreen> {
               return ListView.builder(
                 padding: const EdgeInsets.all(18),
                 itemCount: archived.length,
-                itemBuilder: (context, index) {
+                itemBuilder: staggeredItemBuilder((context, index) {
                   final template = archived[index];
                   return Card(
                     margin: const EdgeInsets.only(bottom: 10),
@@ -186,7 +184,7 @@ class _ArchivedWorkoutDaysScreenState extends State<ArchivedWorkoutDaysScreen> {
                       ),
                     ),
                   );
-                },
+                }),
               );
             },
           );

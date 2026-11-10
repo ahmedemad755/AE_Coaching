@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:ae_coaching/core/widgets/app_shimmer.dart';
 
 /// Lists every recorded check-in, newest first, with view/edit/delete.
 class MeasurementHistoryScreen extends StatefulWidget {
@@ -117,11 +118,7 @@ class _MeasurementHistoryScreenState extends State<MeasurementHistoryScreen> {
                 ),
               );
             }
-            return Center(
-              child: CircularProgressIndicator(
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            );
+            return const ShimmerList(leading: false);
           }
 
           return ValueListenableBuilder(

@@ -173,6 +173,7 @@ void main() {
     ThemeMode theme = ThemeMode.dark,
     double scale = 1,
     String? name,
+    bool tabs = false,
   }) => MaterialApp(
     theme: AppTheme.light,
     darkTheme: AppTheme.dark,
@@ -215,6 +216,9 @@ void main() {
         onProgressAnalysis: () => analysis++,
         currentUserId: () => f.uid,
         volume: const Text('Today volume fixture'),
+        programsTab: tabs ? (_) => const Text('Programs tab fixture') : null,
+        progressTab: tabs ? (_) => const Text('Progress tab fixture') : null,
+        moreTab: tabs ? (_) => const Text('More tab fixture') : null,
       ),
     ),
   );
@@ -550,6 +554,45 @@ void main() {
       );
       await tester.tap(find.byKey(const ValueKey('home-progress-analysis')));
       expect(analysis, 1);
+      expect(tester.takeException(), isNull);
+    },
+  );
+
+  testWidgets(
+    'bottom tabs animate in place and keep the bar on every main page',
+    (tester) async {
+      phone(tester, 390);
+      await tester.pumpWidget(app(tabs: true));
+      await tester.pumpAndSettle();
+      final routes = destinations.length;
+      for (final entry in {
+        1: 'Programs tab fixture',
+        2: 'Progress tab fixture',
+        3: 'More tab fixture',
+      }.entries) {
+        await tester.tap(find.byKey(ValueKey('home-nav-${entry.key}')));
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 100));
+        final fade = tester.widget<FadeTransition>(
+          find
+              .ancestor(
+                of: find.text(entry.value),
+                matching: find.byType(FadeTransition),
+              )
+              .first,
+        );
+        expect(fade.opacity.value, inExclusiveRange(0, 1));
+        await tester.pumpAndSettle();
+        expect(find.text(entry.value), findsOneWidget);
+        expect(find.byKey(const ValueKey('home-nav-0')), findsOneWidget);
+      }
+      // System back on a tab returns to Home instead of leaving the app.
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+      expect(find.text('More tab fixture'), findsNothing);
+      expect(find.byKey(const ValueKey('home-programs')), findsOneWidget);
+      expect(destinations.length, routes);
+      expect(profiles, 0);
       expect(tester.takeException(), isNull);
     },
   );

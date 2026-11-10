@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:ae_coaching/core/widgets/app_shimmer.dart';
 
 /// Full gallery of every recorded progress photo, newest first, with
 /// full-screen view and delete (with confirmation).
@@ -137,11 +138,7 @@ class _ProgressPhotoHistoryScreenState
                 ),
               );
             }
-            return Center(
-              child: CircularProgressIndicator(
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            );
+            return const ShimmerGrid();
           }
 
           return ValueListenableBuilder(

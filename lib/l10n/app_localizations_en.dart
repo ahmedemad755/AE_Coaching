@@ -1805,4 +1805,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String exerciseTargetSummary(int sets, int min, int max, int seconds) {
     return 'Plan: $sets sets × $min–$max reps · rest ${seconds}s';
   }
+
+  @override
+  String get loadingLabel => 'Loading';
 }

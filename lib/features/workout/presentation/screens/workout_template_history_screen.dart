@@ -7,6 +7,8 @@ import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:ae_coaching/core/widgets/app_shimmer.dart';
+import 'package:ae_coaching/core/widgets/entrance_animation.dart';
 
 /// Route arguments for [WorkoutTemplateHistoryScreen].
 class WorkoutTemplateHistoryArgs {
@@ -70,11 +72,7 @@ class _WorkoutTemplateHistoryScreenState
             );
           }
           if (state is! WorkoutHistoryLoaded) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            );
+            return const ShimmerList(leading: false);
           }
 
           if (state.sessions.isEmpty) {
@@ -118,7 +116,7 @@ class _WorkoutTemplateHistoryScreenState
                   session: session,
                   sets: state.setsBySessionId[session.id] ?? const [],
                 ),
-            ],
+            ].staggered(),
           );
         },
       ),
@@ -270,10 +268,7 @@ class _SessionCard extends StatelessWidget {
             ),
             for (var index = 0; index < entry.value.length; index++)
               Padding(
-                padding: const EdgeInsetsDirectional.only(
-                  start: 8,
-                  top: 8,
-                ),
+                padding: const EdgeInsetsDirectional.only(start: 8, top: 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
