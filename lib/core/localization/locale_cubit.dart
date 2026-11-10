@@ -12,8 +12,8 @@ import 'package:ae_coaching/core/notifications/inactivity_reminder_service.dart'
 ///
 /// Ownership note (Stage 8 audit): [SessionStorage] also owns keys in
 /// this same `authBox` (`isLoggedIn`, `currentUserUid`,
-/// `currentUserName`, `currentUserPhone`). This is a deliberate,
-/// pre-existing overlap, not a bug — `appLocale` and SessionStorage's 4
+/// `currentUserName`, `currentUserEmail`). This is a deliberate,
+/// pre-existing overlap, not a bug — `appLocale` and SessionStorage's
 /// keys are disjoint, and a Hive box is just a key-value map, so two
 /// independent owners writing to different keys in it is safe. Neither
 /// class reads or writes the other's key(s). Left unchanged rather

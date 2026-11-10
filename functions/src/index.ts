@@ -5,5 +5,8 @@ import { initializeApp } from 'firebase-admin/app';
 // service-account key file is ever bundled or referenced here.
 initializeApp();
 
-export { requestPasswordReset } from './requestPasswordReset';
-export { completePasswordReset } from './completePasswordReset';
+// Nothing is exported. The phone-OTP password-reset callables were retired
+// with email/password authentication (password reset is now Firebase's own
+// email link). `inactivityReminder.ts` is a retained, non-exported
+// prototype: workout inactivity reminders are scheduled locally on device.
+export {};

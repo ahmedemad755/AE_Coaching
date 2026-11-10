@@ -1,13 +1,13 @@
+import 'package:ae_coaching/auth/presentation/auth_flow_navigation.dart';
 import 'package:ae_coaching/auth/presentation/cubit/auth_cubit.dart';
 import 'package:ae_coaching/auth/presentation/view/LoginView.dart';
 import 'package:ae_coaching/features/analytics/presentation/workout_analytics_screen.dart';
-import 'package:ae_coaching/auth/presentation/view/complete_registration_view.dart';
 import 'package:ae_coaching/auth/presentation/view/forgot_password_view.dart';
-import 'package:ae_coaching/auth/presentation/view/otp_view.dart';
+import 'package:ae_coaching/auth/presentation/view/complete_profile_view.dart';
 import 'package:ae_coaching/auth/presentation/view/register_view.dart';
-import 'package:ae_coaching/auth/presentation/view/reset_password_view.dart';
+import 'package:ae_coaching/auth/presentation/view/verify_email_view.dart';
 import 'package:ae_coaching/auth/presentation/view/session_reconciliation_view.dart';
-import 'package:ae_coaching/auth/presentation/view/verify_phone_migration_view.dart';
+import 'package:ae_coaching/core/bootstrap/startup_destination.dart';
 import 'package:ae_coaching/core/session/session_storage.dart';
 import 'package:ae_coaching/features/workout/data/repositories/combined_exercise_library_catalog.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_template_import_service.dart';
@@ -47,21 +47,34 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppNavigator {
   static const String initial = '/';
-  static const String otp = 'otp';
   static const String login = 'login';
   static const String register = 'register';
-  // Phase 3: cross-restart resume for an interrupted OTP registration.
-  static const String completeRegistration = 'complete-registration';
-  // Phase 4: legacy user phone-provider migration, shown after a
-  // successful password login when no phone provider is linked yet.
-  static const String verifyPhoneMigration = 'verify-phone-migration';
-  // Phase 5: signed-out Forgot Password (phone OTP based).
+  // Signed-out Forgot Password (email reset link since Stage 3B).
   static const String forgotPassword = 'forgot-password';
-  static const String resetPassword = 'reset-password';
   static const String home = 'home';
   static const String personalHub = 'personal-hub';
   static const String appSettings = 'app-settings';
   static const String myProgress = 'my-progress';
+
+  // Stage 3B: email-first verification gate and missing-profile recovery.
+  static const String verifyEmail = 'verify-email';
+  static const String completeProfile = 'complete-profile';
+  // Account check opened directly (not via the startup fast path), e.g.
+  // after a profile read/write failure, so its Retry state is always
+  // reached.
+  static const String sessionCheck = 'session-check';
+
+  /// Routes reachable without a verified identity. Everything else is
+  /// guarded by AppRouter.guardedRouteName. completeProfile is NOT
+  /// public: it needs a verified identity (just no profile yet).
+  static const Set<String> publicRoutes = {
+    initial,
+    login,
+    register,
+    forgotPassword,
+    verifyEmail,
+    sessionCheck,
+  };
   static const String workoutAnalytics = 'workout-analytics';
   // Body Measurements feature — separate from Workout Analytics.
   static const String measurements = 'measurements';
@@ -108,7 +121,32 @@ class AppRouter {
     }
   }
 
+  /// Reads Firebase Auth's persisted user for the route guard.
+  /// Overridable in tests (no Firebase there).
+  @visibleForTesting
+  static StartupAuthSnapshot Function() readAuthSnapshot = () =>
+      StartupAuthSnapshot.read(auth: FirebaseAuth.instance);
+
+  /// Pure guard decision: the route name to actually build. Any route
+  /// outside [AppNavigator.publicRoutes] needs a cleared identity
+  /// (signed in, email verified, not a phone-era account). Otherwise the
+  /// request is redirected to the startup check, which re-derives the
+  /// correct destination. This is client-side navigation gating only;
+  /// see [canEnterProtectedRoute].
+  static String? guardedRouteName(
+    String? requested,
+    StartupAuthSnapshot snapshot,
+  ) {
+    if (AppNavigator.publicRoutes.contains(requested)) return requested;
+    if (canEnterProtectedRoute(snapshot)) return requested;
+    return AppNavigator.initial;
+  }
+
   static Route? onGenerateRoute(RouteSettings settings) {
+    final allowedName = guardedRouteName(settings.name, readAuthSnapshot());
+    if (allowedName != settings.name) {
+      return onGenerateRoute(RouteSettings(name: allowedName));
+    }
     switch (settings.name) {
       case AppNavigator.initial:
         // فحص حالة الدخول داخل الراوتر لتحديد الصفحة الأولى
@@ -117,39 +155,39 @@ class AppRouter {
         // synchronously (a plain Hive .get() under the hood) — this
         // stays a synchronous, startup-time read exactly as before;
         // nothing here became async.
-        final sessionStorage = sl<SessionStorage>();
-        final bool isLoggedIn = sessionStorage.isLoggedIn;
-        final String currentUserUid = sessionStorage.currentUserUid;
-        final firebaseUser = FirebaseAuth.instance.currentUser;
-        final bool hasActiveSession =
-            isLoggedIn &&
-            currentUserUid.trim().isNotEmpty &&
-            firebaseUser != null &&
-            firebaseUser.uid == currentUserUid.trim();
-
-        if (hasActiveSession) {
-          return MaterialPageRoute(builder: (_) => _homeWithProviders());
-        }
-
-        if (firebaseUser != null) {
-          // Hive says logged out, but a real Firebase session exists
-          // underneath — a stray or partially-completed Phase 3 OTP
-          // registration. Reconcile it before deciding where to route,
-          // instead of silently leaving it under a logged-out UI.
-          return MaterialPageRoute(
-            builder: (_) => BlocProvider(
-              create: (context) => sl<AuthCubit>(),
-              child: const SessionReconciliationView(),
-            ),
-          );
-        }
-
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => sl<AuthCubit>(),
-            child: const LoginView(),
+        //
+        // The destination comes from Firebase Auth's persisted identity
+        // (authoritative), and the local marker is only a hint. No route
+        // is ever restored from storage, so a stale auth screen can't come back
+        // after a restart. See resolveStartupDestination for the policy.
+        final destination = resolveStartupDestination(
+          StartupAuthSnapshot.read(
+            auth: FirebaseAuth.instance,
+            sessionStorage: sl<SessionStorage>(),
           ),
         );
+
+        switch (destination) {
+          case StartupDestination.home:
+            return MaterialPageRoute(builder: (_) => _homeWithProviders());
+          case StartupDestination.sessionCheck:
+            // A real Firebase identity whose status local state can't
+            // prove: an unverified email, a missing profile, a phone-era
+            // test account, or a session the marker doesn't cover.
+            return MaterialPageRoute(
+              builder: (_) => BlocProvider(
+                create: (context) => sl<AuthCubit>(),
+                child: const SessionReconciliationView(),
+              ),
+            );
+          case StartupDestination.login:
+            return MaterialPageRoute(
+              builder: (_) => BlocProvider(
+                create: (context) => sl<AuthCubit>(),
+                child: const LoginView(),
+              ),
+            );
+        }
 
       case AppNavigator.register:
         return MaterialPageRoute(
@@ -163,69 +201,42 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => sl<AuthCubit>(),
-            child: const ForgotPasswordView(),
-          ),
-        );
-
-      case AppNavigator.resetPassword:
-        final args = settings.arguments;
-        if (args is! ResetPasswordArgs) {
-          return MaterialPageRoute(
-            builder: (_) => const _InvalidResetPasswordRoute(),
-          );
-        }
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => sl<AuthCubit>(),
-            child: ResetPasswordView(
-              phone: args.phone,
-              challengeId: args.challengeId,
+            child: ForgotPasswordView(
+              initialEmail: settings.arguments is String
+                  ? settings.arguments as String
+                  : '',
             ),
           ),
         );
 
-      case AppNavigator.completeRegistration:
+      case AppNavigator.verifyEmail:
         final args = settings.arguments;
-        if (args is! CompleteRegistrationArgs) {
-          return MaterialPageRoute(
-            builder: (_) => const _InvalidCompleteRegistrationRoute(),
-          );
-        }
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => sl<AuthCubit>(),
-            child: CompleteRegistrationView(step: args.step, phone: args.phone),
-          ),
-        );
-
-      case AppNavigator.verifyPhoneMigration:
-        final args = settings.arguments;
-        if (args is! VerifyPhoneMigrationArgs) {
-          return MaterialPageRoute(
-            builder: (_) => const _InvalidVerifyPhoneMigrationRoute(),
-          );
-        }
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => sl<AuthCubit>(),
-            child: VerifyPhoneMigrationView(
-              uid: args.uid,
-              name: args.name,
-              phone: args.phone,
+            child: VerifyEmailView(
+              email: args is VerifyEmailArgs ? args.email : '',
+              verificationEmailSent:
+                  args is VerifyEmailArgs && args.verificationEmailSent,
             ),
           ),
         );
 
-      case AppNavigator.otp:
-        final args = settings.arguments as Map<String, dynamic>;
+      case AppNavigator.sessionCheck:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => sl<AuthCubit>(),
-            child: OtpView(
-              phoneNumber: args['phone'],
-              password: args['password'],
-              verificationId: args['verificationId'],
-              name: args['name'], // 🔥 ضفنا استقبال الاسم هنا
+            child: const SessionReconciliationView(),
+          ),
+        );
+
+      case AppNavigator.completeProfile:
+        final args = settings.arguments;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<AuthCubit>(),
+            child: CompleteProfileView(
+              email: args is CompleteProfileArgs ? args.email : '',
             ),
           ),
         );
@@ -477,21 +488,6 @@ class _InvalidWorkoutProgramDetailsRoute extends _InvalidRouteScreen {
     : super(
         'Workout program details route requires WorkoutProgramDetailsArgs.',
       );
-}
-
-class _InvalidVerifyPhoneMigrationRoute extends _InvalidRouteScreen {
-  const _InvalidVerifyPhoneMigrationRoute()
-    : super('Verify phone migration route requires VerifyPhoneMigrationArgs.');
-}
-
-class _InvalidResetPasswordRoute extends _InvalidRouteScreen {
-  const _InvalidResetPasswordRoute()
-    : super('Reset password route requires ResetPasswordArgs.');
-}
-
-class _InvalidCompleteRegistrationRoute extends _InvalidRouteScreen {
-  const _InvalidCompleteRegistrationRoute()
-    : super('Complete registration route requires CompleteRegistrationArgs.');
 }
 
 class _InvalidArchivedWorkoutDaysRoute extends _InvalidRouteScreen {

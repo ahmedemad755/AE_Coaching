@@ -1,4 +1,5 @@
 import 'package:ae_coaching/core/di/sl_instance.dart';
+import 'package:ae_coaching/core/bootstrap/startup_destination.dart';
 import 'package:ae_coaching/core/routes/app_router.dart';
 import 'package:ae_coaching/core/storage/user_storage_manager.dart';
 import 'package:ae_coaching/core/theme/app_theme.dart';
@@ -101,6 +102,14 @@ void main() {
   late _Programs programs;
   late _Sessions sessions;
   setUp(() async {
+    // The route guard reads Firebase Auth; tests run as a verified user.
+    final originalAuthSnapshot = AppRouter.readAuthSnapshot;
+    AppRouter.readAuthSnapshot = () => const StartupAuthSnapshot(
+      firebaseUid: 'test-user',
+      firebaseEmail: 'test@example.com',
+      firebaseEmailVerified: true,
+    );
+    addTearDown(() => AppRouter.readAuthSnapshot = originalAuthSnapshot);
     await sl.reset();
     templates = standardTemplateCatalog();
     await templates.loadTemplates();

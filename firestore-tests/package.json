@@ -1,0 +1,13 @@
+{
+  "name": "ae-coaching-firestore-rules-tests",
+  "private": true,
+  "description": "Emulator-only tests for ../firestore.rules. Never touches a real Firebase project (demo- project id).",
+  "type": "module",
+  "scripts": {
+    "test": "firebase emulators:exec --only firestore --project demo-ae-coaching --config ../firebase.json \"node --test --test-concurrency=1 rules.test.mjs\""
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^5.0.2",
+    "firebase": "^12.19.0"
+  }
+}

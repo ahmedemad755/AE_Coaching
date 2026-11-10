@@ -32,26 +32,26 @@ void main() {
       await storage.persistLoggedInSession(
         uid: 'uid-1',
         name: 'Ahmed',
-        phone: '+201012345678',
+        email: 'ahmed@example.com',
       );
 
       expect(box.get('isLoggedIn'), isTrue);
       expect(box.get('currentUserUid'), 'uid-1');
       expect(box.get('currentUserName'), 'Ahmed');
-      expect(box.get('currentUserPhone'), '+201012345678');
+      expect(box.get('currentUserEmail'), 'ahmed@example.com');
     });
 
     test('read accessors reflect exactly what was written', () async {
       await storage.persistLoggedInSession(
         uid: 'uid-2',
         name: 'Sara',
-        phone: '+201099998887',
+        email: 'sara@example.com',
       );
 
       expect(storage.isLoggedIn, isTrue);
       expect(storage.currentUserUid, 'uid-2');
       expect(storage.currentUserName, 'Sara');
-      expect(storage.currentUserPhone, '+201099998887');
+      expect(storage.currentUserEmail, 'sara@example.com');
     });
 
     test('defaults match the exact values every existing call site '
@@ -65,12 +65,13 @@ void main() {
   group('B: clearSession resets/removes exactly the intended '
       'auth-session state', () {
     test('sets isLoggedIn to false (kept as an explicit key, not '
-        'deleted) and deletes the 3 identity keys — matches '
-        "hom.dart's _logout() exactly", () async {
+        'deleted) and deletes the identity keys, including a phone-era '
+        "phone key — matches hom.dart's _logout() exactly", () async {
+      await box.put('currentUserPhone', '+201055556666');
       await storage.persistLoggedInSession(
         uid: 'uid-3',
         name: 'Omar',
-        phone: '+201055556666',
+        email: 'omar@example.com',
       );
 
       await storage.clearSession();
@@ -79,6 +80,7 @@ void main() {
       expect(box.get('isLoggedIn'), isFalse);
       expect(box.containsKey('currentUserUid'), isFalse);
       expect(box.containsKey('currentUserName'), isFalse);
+      expect(box.containsKey('currentUserEmail'), isFalse);
       expect(box.containsKey('currentUserPhone'), isFalse);
     });
 
@@ -87,7 +89,7 @@ void main() {
       await storage.persistLoggedInSession(
         uid: 'uid-4',
         name: 'Laila',
-        phone: '+201077778888',
+        email: 'laila@example.com',
       );
       await storage.clearSession();
 
@@ -104,7 +106,7 @@ void main() {
       await storage.persistLoggedInSession(
         uid: 'uid-5',
         name: 'Nour',
-        phone: '+201066667777',
+        email: 'nour@example.com',
       );
 
       await storage.markLoggedOut();
@@ -113,7 +115,7 @@ void main() {
       // Unlike clearSession, the identity keys are left untouched.
       expect(box.get('currentUserUid'), 'uid-5');
       expect(box.get('currentUserName'), 'Nour');
-      expect(box.get('currentUserPhone'), '+201066667777');
+      expect(box.get('currentUserEmail'), 'nour@example.com');
     });
   });
 
@@ -124,7 +126,7 @@ void main() {
       await storage.persistLoggedInSession(
         uid: 'old-uid',
         name: 'Kept Name',
-        phone: '+201000000000',
+        email: 'kept@example.com',
       );
 
       await storage.updateCurrentUserUid('new-uid');
@@ -135,17 +137,72 @@ void main() {
     });
   });
 
+  group('Stage 3B: email-first sessions', () {
+    test('an email session stores the email and no phone', () async {
+      await storage.persistLoggedInSession(
+        uid: 'uid-1',
+        name: 'Ahmed',
+        email: 'ahmed@example.com',
+      );
+      expect(storage.currentUserEmail, 'ahmed@example.com');
+      expect(box.containsKey('currentUserPhone'), isFalse);
+    });
+
+    test('switching from a phone-era session to an email account never '
+        "carries the previous user's phone or identity over", () async {
+      // What a phone-era build left on an upgraded device.
+      await box.put('isLoggedIn', true);
+      await box.put('currentUserUid', 'legacy');
+      await box.put('currentUserName', 'Old');
+      await box.put('currentUserPhone', '+201012345678');
+      await storage.persistLoggedInSession(
+        uid: 'uid-2',
+        name: 'New',
+        email: 'new@example.com',
+      );
+      expect(storage.currentUserUid, 'uid-2');
+      expect(storage.currentUserName, 'New');
+      expect(box.containsKey('currentUserPhone'), isFalse);
+    });
+
+    test('clearSession removes the email too', () async {
+      await storage.persistLoggedInSession(
+        uid: 'uid-1',
+        name: 'Ahmed',
+        email: 'ahmed@example.com',
+      );
+      await storage.clearSession();
+      expect(storage.isLoggedIn, isFalse);
+      expect(box.containsKey('currentUserEmail'), isFalse);
+      expect(storage.currentUserEmail, '');
+    });
+
+    test('nothing credential-like is ever written', () async {
+      await storage.persistLoggedInSession(
+        uid: 'uid-1',
+        name: 'Ahmed',
+        email: 'ahmed@example.com',
+      );
+      expect(box.keys.toSet(), {
+        'isLoggedIn',
+        'currentUserUid',
+        'currentUserName',
+        'currentUserEmail',
+      });
+    });
+  });
+
   test('profile name update changes only the current saved name', () async {
     await storage.persistLoggedInSession(
       uid: 'profile-user',
       name: 'Before',
-      phone: '+201000000000',
+      email: 'profile@example.com',
     );
     await storage.updateCurrentUserName(uid: 'profile-user', name: 'After');
 
     expect(storage.currentUserName, 'After');
     expect(storage.currentUserUid, 'profile-user');
-    expect(storage.currentUserPhone, '+201000000000');
+    expect(storage.currentUserEmail, 'profile@example.com');
     expect(storage.isLoggedIn, isTrue);
 
     await expectLater(

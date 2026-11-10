@@ -1,1 +1,7 @@
 include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    # Generated build output and tooling snapshots (git-ignored). Not app
+    # code, and may reference code from other branches.
+    - build/**

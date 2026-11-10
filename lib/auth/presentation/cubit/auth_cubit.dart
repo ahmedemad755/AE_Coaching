@@ -1,369 +1,187 @@
-import 'dart:developer'
-    as developer; // استيراد الـ developer log لطباعة احترافية
-import 'package:ae_coaching/auth/domain/entities/auth_session_inspection.dart';
-import 'package:ae_coaching/auth/domain/entities/auth_user.dart';
-import 'package:ae_coaching/auth/domain/usecases/complete_profile_for_current_user_usecase.dart';
-import 'package:ae_coaching/auth/domain/usecases/inspect_session_usecase.dart';
-import 'package:ae_coaching/auth/domain/usecases/link_password_to_current_user_usecase.dart';
-import 'package:ae_coaching/auth/domain/usecases/link_phone_migration_usecase.dart';
-import 'package:ae_coaching/auth/domain/usecases/login_usecase.dart';
-import 'package:ae_coaching/auth/domain/usecases/register_with_phone_password_usecase.dart';
-import 'package:ae_coaching/auth/domain/usecases/register_with_otp_usecase.dart';
-import 'package:ae_coaching/auth/domain/usecases/request_otp_usecase.dart';
-import 'package:ae_coaching/auth/domain/usecases/request_phone_migration_otp_usecase.dart';
-import 'package:ae_coaching/auth/domain/usecases/request_password_reset_otp_usecase.dart';
-import 'package:ae_coaching/auth/domain/usecases/reset_password_with_otp_usecase.dart';
+import 'dart:developer' as developer;
+
+import 'package:ae_coaching/auth/domain/entities/email_session_resolution.dart';
+import 'package:ae_coaching/auth/domain/usecases/email_auth_usecases.dart';
 import 'package:ae_coaching/auth/presentation/cubit/auth_state.dart';
 import 'package:ae_coaching/core/errors/exception_message_mapper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+/// Email-first authentication state (Stage 3C: the only supported flow).
+/// One instance per auth screen (a DI factory). The authoritative state
+/// lives in Firebase Auth and `users/{uid}`, never here.
 class AuthCubit extends Cubit<AuthState> {
-  final LoginUseCase loginUseCase;
-  final RequestOtpUseCase requestOtpUseCase;
-  final RegisterWithOtpUseCase registerWithOtpUseCase;
-  final RegisterWithPhonePasswordUseCase registerWithPhonePasswordUseCase;
-  final InspectSessionUseCase inspectSessionUseCase;
-  final LinkPasswordToCurrentUserUseCase linkPasswordToCurrentUserUseCase;
-  final CompleteProfileForCurrentUserUseCase
-  completeProfileForCurrentUserUseCase;
-  final RequestPhoneMigrationOtpUseCase requestPhoneMigrationOtpUseCase;
-  final LinkPhoneMigrationUseCase linkPhoneMigrationUseCase;
-  final RequestPasswordResetOtpUseCase requestPasswordResetOtpUseCase;
-  final ResetPasswordWithOtpUseCase resetPasswordWithOtpUseCase;
+  final EmailAuthUseCases emailAuth;
 
-  AuthCubit({
-    required this.loginUseCase,
-    required this.requestOtpUseCase,
-    required this.registerWithOtpUseCase,
-    required this.registerWithPhonePasswordUseCase,
-    required this.inspectSessionUseCase,
-    required this.linkPasswordToCurrentUserUseCase,
-    required this.completeProfileForCurrentUserUseCase,
-    required this.requestPhoneMigrationOtpUseCase,
-    required this.linkPhoneMigrationUseCase,
-    required this.requestPasswordResetOtpUseCase,
-    required this.resetPasswordWithOtpUseCase,
-  }) : super(AuthInitial());
+  AuthCubit({required this.emailAuth}) : super(AuthInitial());
 
-  Future<void> login(String phoneOrEmail, String password) async {
-    developer.log(
-      '=== [Login Attempt] === Started for: $phoneOrEmail',
-      name: 'AuthCubit',
-    );
+  /// A screen can be popped while a Firebase call is still in flight
+  /// (its BlocProvider then closes this cubit). The late result is
+  /// dropped instead of throwing "emit after close".
+  @override
+  void emit(AuthState state) {
+    if (isClosed) return;
+    super.emit(state);
+  }
+
+  /// Duplicate-submission guard. Every action emits [AuthLoading]
+  /// synchronously before its first await, so a second tap in the same
+  /// frame (before the disabled button rebuilds) is ignored here: no
+  /// second account, email or sign-in request.
+  bool get _isBusy => state is AuthLoading;
+
+  /// Leaves Verify Email / Complete Profile / a failed account check and
+  /// returns the app to [AuthStatus.unauthenticated]. Ends the Firebase
+  /// session only. The account, its uid and its data are never deleted,
+  /// so signing in again resumes exactly where the user left off.
+  Future<void> signOut() async {
+    if (_isBusy) return;
+    developer.log('=== [Sign Out Attempt] ===', name: 'AuthCubit');
     emit(AuthLoading());
     try {
-      final user = await loginUseCase(phoneOrEmail, password);
-
-      developer.log(
-        '=== [Login Success] === User UID: ${user.uid}',
-        name: 'AuthCubit',
-      );
-      emit(AuthSuccess(message: "Logged in successfully", user: user));
+      await emailAuth.signOut();
+      emit(AuthSignedOut());
     } catch (e, stackTrace) {
-      _logError('Login Failed', e, stackTrace);
+      _logError('Sign Out Failed', e, stackTrace);
       emit(AuthError(mapGenericExceptionToMessage(e)));
     }
   }
 
-  Future<void> requestOtp(String phoneNumber) async {
-    developer.log(
-      '=== [OTP Request Attempt] === Phone: $phoneNumber',
-      name: 'AuthCubit',
-    );
-    emit(AuthLoading());
-    try {
-      final String verificationId = await requestOtpUseCase(phoneNumber);
-
-      developer.log(
-        '=== [OTP Sent Success] === VerificationID: $verificationId',
-        name: 'AuthCubit',
-      );
-      emit(AuthOtpSent(verificationId, phoneNumber));
-    } catch (e, stackTrace) {
-      _logError('Request OTP Failed', e, stackTrace);
-      emit(AuthError(mapGenericExceptionToMessage(e)));
-    }
-  }
-
-  Future<void> registerWithOtp({
-    required String verificationId,
-    required String smsCode,
-    required String name,
-    required String phone,
-    required String password,
+  /// Maps a resolved session to exactly one state. Login, registration,
+  /// startup and refresh all route through here, so none of them can
+  /// diverge on what counts as "authenticated".
+  Future<void> _emitResolution(
+    EmailSessionResolution resolution, {
+    String? successMessage,
   }) async {
-    developer.log(
-      '=== [Register With OTP Attempt] === Phone: $phone, Name: $name',
-      name: 'AuthCubit',
-    );
-    emit(AuthLoading());
-    try {
-      final user = await registerWithOtpUseCase(
-        verificationId: verificationId,
-        smsCode: smsCode,
-        name: name,
-        phone: phone,
-        password: password,
-      );
-
-      developer.log(
-        '=== [Register With OTP Success] === User UID: ${user.uid}',
-        name: 'AuthCubit',
-      );
-      emit(AuthSuccess(message: "Account created successfully", user: user));
-    } catch (e, stackTrace) {
-      _logError('Register With OTP Failed', e, stackTrace);
-      emit(AuthError(mapGenericExceptionToMessage(e)));
-    }
-  }
-
-  Future<void> registerWithPhonePassword({
-    required String name,
-    required String phone,
-    required String password,
-  }) async {
-    developer.log(
-      '=== [Register Phone/Password Attempt] === Phone: $phone, Name: $name',
-      name: 'AuthCubit',
-    );
-    emit(AuthLoading());
-    try {
-      final user = await registerWithPhonePasswordUseCase(
-        name: name,
-        phone: phone,
-        password: password,
-      );
-
-      developer.log(
-        '=== [Register Phone/Password Success] === User UID: ${user.uid}',
-        name: 'AuthCubit',
-      );
-      emit(AuthSuccess(message: "Account created successfully", user: user));
-    } catch (e, stackTrace) {
-      _logError('Register Phone/Password Failed', e, stackTrace);
-      emit(AuthError(mapGenericExceptionToMessage(e)));
-    }
-  }
-
-  /// Startup/reconciliation: is there a real Firebase session
-  /// underneath a Hive-logged-out UI, and if so is it complete or a
-  /// resumable partial registration? Never creates a new UID.
-  Future<void> reconcileSession() async {
-    developer.log('=== [Reconcile Session Attempt] ===', name: 'AuthCubit');
-    emit(AuthLoading());
-    try {
-      final inspection = await inspectSessionUseCase();
-
-      if (inspection.completedUser != null) {
-        developer.log(
-          '=== [Reconcile Session] === Complete profile found, UID: ${inspection.completedUser!.uid}',
-          name: 'AuthCubit',
-        );
-        emit(AuthSuccess(user: inspection.completedUser));
-        return;
-      }
-
-      if (inspection.recoveryStep != null) {
-        developer.log(
-          '=== [Reconcile Session] === Resumable registration, step: ${inspection.recoveryStep}',
-          name: 'AuthCubit',
-        );
+    switch (resolution.status) {
+      case AuthStatus.authenticated:
+        emit(AuthSuccess(message: successMessage, user: resolution.user));
+      case AuthStatus.pendingEmailVerification:
         emit(
-          AuthPartialRegistration(
-            step: inspection.recoveryStep!,
-            phone: inspection.phone!,
+          AuthEmailVerificationRequired(
+            email: resolution.email,
+            verificationEmailSent: resolution.verificationEmailSent,
           ),
         );
-        return;
-      }
-
-      developer.log(
-        '=== [Reconcile Session] === Nothing to reconcile',
-        name: 'AuthCubit',
-      );
-      emit(AuthInitial());
-    } catch (e, stackTrace) {
-      _logError('Reconcile Session Failed', e, stackTrace);
-      emit(AuthError(mapGenericExceptionToMessage(e)));
-    }
-  }
-
-  /// Resume path: link a (possibly new/stronger) password onto the
-  /// SAME already phone-authenticated session. Never re-verifies phone.
-  Future<void> linkPasswordToCurrentUser({
-    required String phone,
-    required String password,
-  }) async {
-    developer.log(
-      '=== [Link Password Resume Attempt] === Phone: $phone',
-      name: 'AuthCubit',
-    );
-    emit(AuthLoading());
-    try {
-      await linkPasswordToCurrentUserUseCase(phone: phone, password: password);
-      developer.log(
-        '=== [Link Password Resume Success] ===',
-        name: 'AuthCubit',
-      );
-      emit(
-        AuthPartialRegistration(
-          step: RegistrationRecoveryStep.needsProfile,
-          phone: phone,
-        ),
-      );
-    } catch (e, stackTrace) {
-      _logError('Link Password Resume Failed', e, stackTrace);
-      emit(AuthError(mapGenericExceptionToMessage(e)));
-    }
-  }
-
-  /// Resume path: write `users/{uid}` for the SAME already-linked
-  /// session. Never repeats authentication.
-  Future<void> completeProfileForCurrentUser({
-    required String name,
-    required String phone,
-  }) async {
-    developer.log(
-      '=== [Complete Profile Resume Attempt] === Phone: $phone, Name: $name',
-      name: 'AuthCubit',
-    );
-    emit(AuthLoading());
-    try {
-      final user = await completeProfileForCurrentUserUseCase(
-        name: name,
-        phone: phone,
-      );
-      developer.log(
-        '=== [Complete Profile Resume Success] === User UID: ${user.uid}',
-        name: 'AuthCubit',
-      );
-      emit(AuthSuccess(message: "Account setup complete", user: user));
-    } catch (e, stackTrace) {
-      _logError('Complete Profile Resume Failed', e, stackTrace);
-      emit(AuthError(mapGenericExceptionToMessage(e)));
-    }
-  }
-
-  /// Phase 4 — legacy migration. Sends an OTP to the account's own
-  /// canonical [phone] (never user-typed). Semantically distinct from
-  /// [requestOtp]: this can only ever be called for an already
-  /// authenticated legacy user, and never routes through
-  /// [registerWithOtpUseCase].
-  Future<void> requestPhoneMigrationOtp(String phone) async {
-    developer.log(
-      '=== [Migration OTP Request Attempt] === Phone: $phone',
-      name: 'AuthCubit',
-    );
-    emit(AuthLoading());
-    try {
-      final String verificationId = await requestPhoneMigrationOtpUseCase(
-        phone,
-      );
-      developer.log('=== [Migration OTP Sent Success] ===', name: 'AuthCubit');
-      emit(AuthOtpSent(verificationId, phone));
-    } catch (e, stackTrace) {
-      _logError('Request Migration OTP Failed', e, stackTrace);
-      emit(AuthError(mapGenericExceptionToMessage(e)));
-    }
-  }
-
-  /// Phase 4 — legacy migration. Links the phone credential onto the
-  /// SAME already-authenticated user (never signInWithCredential, never
-  /// a new UID). [uid]/[name]/[phone] are the values already known from
-  /// the login that started this flow — used only to report the
-  /// now-fully-migrated user back to the UI, not re-fetched.
-  Future<void> linkPhoneMigration({
-    required String verificationId,
-    required String smsCode,
-    required String uid,
-    required String name,
-    required String phone,
-  }) async {
-    developer.log(
-      '=== [Link Phone Migration Attempt] === UID: $uid',
-      name: 'AuthCubit',
-    );
-    emit(AuthLoading());
-    try {
-      await linkPhoneMigrationUseCase(
-        verificationId: verificationId,
-        smsCode: smsCode,
-      );
-      developer.log(
-        '=== [Link Phone Migration Success] === UID unchanged: $uid',
-        name: 'AuthCubit',
-      );
-      emit(
-        AuthSuccess(
-          message: "Phone verified successfully",
-          user: AuthUser(
-            uid: uid,
-            name: name,
-            phoneNumber: phone,
-            needsPhoneVerification: false,
+      case AuthStatus.incompleteProfile:
+        emit(AuthProfileIncomplete(resolution.email));
+      case AuthStatus.profileUnavailable:
+        emit(
+          AuthProfileUnavailable(
+            email: resolution.email,
+            failure: resolution.profileFailure ?? ProfileFailure.unknown,
           ),
-        ),
-      );
+        );
+      case AuthStatus.unsupportedLegacyAccount:
+        // Decision A: never modified or deleted, only signed out.
+        await emailAuth.signOut();
+        emit(AuthLegacyAccountSignedOut());
+      case AuthStatus.unauthenticated:
+        emit(AuthSignedOut());
+    }
+  }
+
+  Future<void> _runEmail(String action, Future<void> Function() body) async {
+    if (_isBusy) return;
+    developer.log('=== [$action] ===', name: 'AuthCubit');
+    emit(AuthLoading());
+    try {
+      await body();
     } catch (e, stackTrace) {
-      _logError('Link Phone Migration Failed', e, stackTrace);
+      _logError(action, e, stackTrace);
       emit(AuthError(mapGenericExceptionToMessage(e)));
     }
   }
 
-  /// Phase 5B — signed-out Forgot Password. Sends an OTP request to the
-  /// TRUSTED BACKEND (Cloud Function `requestPasswordReset`) for the
-  /// phone the user typed. Never assumes an account exists — that is
-  /// only ever determined server-side, never here. Emits
-  /// [AuthPasswordResetOtpSent], never [AuthOtpSent] — see that state's
-  /// doc comment for why they must not be conflated.
-  Future<void> requestPasswordResetOtp(String phone) async {
-    developer.log(
-      '=== [Password Reset OTP Request Attempt] === Phone: $phone',
-      name: 'AuthCubit',
+  Future<void> registerWithEmail({
+    required String name,
+    required String email,
+    required String password,
+    String? languageCode,
+  }) => _runEmail('Register With Email', () async {
+    final resolution = await emailAuth.register(
+      name: name,
+      email: email,
+      password: password,
+      languageCode: languageCode,
     );
-    emit(AuthLoading());
+    await _emitResolution(resolution);
+  });
+
+  Future<void> loginWithEmail({
+    required String email,
+    required String password,
+  }) => _runEmail('Login With Email', () async {
+    final resolution = await emailAuth.login(email: email, password: password);
+    await _emitResolution(resolution, successMessage: 'Logged in successfully');
+  });
+
+  /// Startup / resume: authoritative check of the persisted session.
+  Future<void> resolveEmailSession() => _runEmail('Resolve Session', () async {
+    await _emitResolution(await emailAuth.resolveSession());
+  });
+
+  Future<void> resendVerificationEmail({String? languageCode}) =>
+      _runEmail('Resend Verification Email', () async {
+        await emailAuth.resendVerification(languageCode: languageCode);
+        emit(AuthVerificationEmailSent());
+      });
+
+  /// "I've verified my email". With [silent] (automatic check when the
+  /// app returns to the foreground) there's no spinner and no error. A
+  /// state is emitted only when something actually changed.
+  Future<void> refreshEmailVerification({bool silent = false}) async {
+    if (!silent) {
+      return _runEmail('Refresh Email Verification', () async {
+        await _emitResolution(
+          await emailAuth.refreshVerification(),
+          successMessage: 'Email verified successfully',
+        );
+      });
+    }
+    if (_isBusy) return;
     try {
-      final String challengeId = await requestPasswordResetOtpUseCase(phone);
-      developer.log(
-        '=== [Password Reset OTP Sent Success] ===',
-        name: 'AuthCubit',
-      );
-      emit(AuthPasswordResetOtpSent(challengeId: challengeId, phone: phone));
+      final resolution = await emailAuth.refreshVerification();
+      if (resolution.status != AuthStatus.pendingEmailVerification) {
+        await _emitResolution(
+          resolution,
+          successMessage: 'Email verified successfully',
+        );
+      }
     } catch (e, stackTrace) {
-      _logError('Request Password Reset OTP Failed', e, stackTrace);
-      emit(AuthError(mapGenericExceptionToMessage(e)));
+      _logError('Silent Verification Check', e, stackTrace);
     }
   }
 
-  /// Phase 5B — signed-out Forgot Password. Submits the OTP + new
-  /// password to the TRUSTED BACKEND (Cloud Function
-  /// `completePasswordReset`), which alone decides whether an eligible
-  /// account exists and performs the password update — this Cubit (and
-  /// the client entirely) never signs in, never resolves identity, and
-  /// never calls Firebase Auth's updatePassword directly. Emits
-  /// [AuthPasswordResetSuccess], never [AuthSuccess]: the backend
-  /// always ends signed out, so this must never be mistaken for an
-  /// authenticated session.
-  Future<void> resetPassword({
-    required String challengeId,
-    required String smsCode,
-    required String newPassword,
-  }) async {
-    developer.log('=== [Reset Password Attempt] ===', name: 'AuthCubit');
-    emit(AuthLoading());
-    try {
-      await resetPasswordWithOtpUseCase(
-        challengeId: challengeId,
-        smsCode: smsCode,
-        newPassword: newPassword,
-      );
-      developer.log('=== [Reset Password Success] ===', name: 'AuthCubit');
-      emit(AuthPasswordResetSuccess("Password changed successfully"));
-    } catch (e, stackTrace) {
-      _logError('Reset Password Failed', e, stackTrace);
-      emit(AuthError(mapGenericExceptionToMessage(e)));
-    }
-  }
+  Future<void> requestEmailChange({
+    required String newEmail,
+    String? languageCode,
+  }) => _runEmail('Request Email Change', () async {
+    final sentTo = await emailAuth.requestEmailChange(
+      newEmail: newEmail,
+      languageCode: languageCode,
+    );
+    emit(AuthEmailChangeRequested(sentTo));
+  });
+
+  Future<void> sendPasswordResetEmail({
+    required String email,
+    String? languageCode,
+  }) => _runEmail('Send Password Reset Email', () async {
+    final sentTo = await emailAuth.sendPasswordReset(
+      email: email,
+      languageCode: languageCode,
+    );
+    emit(AuthPasswordResetEmailSent(sentTo));
+  });
+
+  Future<void> completeEmailProfile({required String name}) =>
+      _runEmail('Complete Profile', () async {
+        await _emitResolution(
+          await emailAuth.completeProfile(name: name),
+          successMessage: 'Account setup complete',
+        );
+      });
 
   // دالة مساعدة موحدة لطباعة الأخطاء بشكل منظم ومفصل جداً في الـ Console
   void _logError(String action, Object error, StackTrace stackTrace) {

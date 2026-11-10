@@ -1,112 +1,132 @@
-import 'package:ae_coaching/auth/domain/repositories/auth_repository.dart';
-import 'package:ae_coaching/auth/domain/usecases/complete_profile_for_current_user_usecase.dart';
-import 'package:ae_coaching/auth/domain/usecases/inspect_session_usecase.dart';
-import 'package:ae_coaching/auth/domain/usecases/link_password_to_current_user_usecase.dart';
-import 'package:ae_coaching/auth/domain/usecases/link_phone_migration_usecase.dart';
-import 'package:ae_coaching/auth/domain/usecases/login_usecase.dart';
-import 'package:ae_coaching/auth/domain/usecases/register_with_otp_usecase.dart';
-import 'package:ae_coaching/auth/domain/usecases/register_with_phone_password_usecase.dart';
-import 'package:ae_coaching/auth/domain/usecases/request_otp_usecase.dart';
-import 'package:ae_coaching/auth/domain/usecases/request_password_reset_otp_usecase.dart';
-import 'package:ae_coaching/auth/domain/usecases/request_phone_migration_otp_usecase.dart';
-import 'package:ae_coaching/auth/domain/usecases/reset_password_with_otp_usecase.dart';
 import 'package:ae_coaching/auth/presentation/cubit/auth_cubit.dart';
 import 'package:ae_coaching/auth/presentation/view/loginview.dart';
+import 'package:ae_coaching/auth/presentation/view/register_view.dart';
 import 'package:ae_coaching/core/theme/app_theme.dart';
+import 'package:ae_coaching/core/theme/auth_screen_theme.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-class _UnusedAuthRepository implements AuthRepository {
-  @override
-  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+import 'support/auth_cubit_builder.dart';
+
+/// The email auth screens must follow the app's Light/Dark theme (the
+/// AuthScreenTheme + app color scheme), in Arabic (RTL) as well.
+Future<BuildContext> _pump(
+  WidgetTester tester, {
+  required Widget screen,
+  required ThemeMode mode,
+}) async {
+  final AuthCubit cubit = buildAuthCubit();
+  addTearDown(cubit.close);
+  await tester.pumpWidget(
+    BlocProvider.value(
+      value: cubit,
+      child: MaterialApp(
+        locale: const Locale('ar'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
+        themeMode: mode,
+        home: Scaffold(body: screen),
+      ),
+    ),
+  );
+  await tester.pumpAndSettle();
+  return tester.element(find.byWidget(screen));
 }
 
-AuthCubit _authCubit() {
-  final repository = _UnusedAuthRepository();
-  return AuthCubit(
-    loginUseCase: LoginUseCase(repository),
-    requestOtpUseCase: RequestOtpUseCase(repository),
-    registerWithOtpUseCase: RegisterWithOtpUseCase(repository),
-    registerWithPhonePasswordUseCase: RegisterWithPhonePasswordUseCase(
-      repository,
-    ),
-    inspectSessionUseCase: InspectSessionUseCase(repository),
-    linkPasswordToCurrentUserUseCase: LinkPasswordToCurrentUserUseCase(
-      repository,
-    ),
-    completeProfileForCurrentUserUseCase: CompleteProfileForCurrentUserUseCase(
-      repository,
-    ),
-    requestPhoneMigrationOtpUseCase: RequestPhoneMigrationOtpUseCase(
-      repository,
-    ),
-    linkPhoneMigrationUseCase: LinkPhoneMigrationUseCase(repository),
-    requestPasswordResetOtpUseCase: RequestPasswordResetOtpUseCase(repository),
-    resetPasswordWithOtpUseCase: ResetPasswordWithOtpUseCase(repository),
+void _expectThemedField(WidgetTester tester, Finder field, BuildContext ctx) {
+  final scheme = Theme.of(ctx).colorScheme;
+  final textField = tester.widget<TextField>(
+    find.descendant(of: field, matching: find.byType(TextField)),
   );
+  final decoration = textField.decoration!;
+  expect(
+    (decoration.enabledBorder! as OutlineInputBorder).borderSide.color,
+    scheme.primary,
+  );
+  expect(
+    (decoration.errorBorder! as OutlineInputBorder).borderSide.color,
+    scheme.error,
+  );
+  if (Theme.of(ctx).brightness == Brightness.dark) {
+    expect(decoration.fillColor, isNot(Colors.white));
+  }
+}
+
+void _expectThemedPanel(WidgetTester tester, BuildContext ctx) {
+  final panelColor = AuthScreenTheme.panelColor(ctx);
+  final panels = tester
+      .widgetList<Container>(find.byType(Container))
+      .where(
+        (c) =>
+            c.decoration is BoxDecoration &&
+            (c.decoration! as BoxDecoration).color == panelColor,
+      );
+  expect(panels, isNotEmpty, reason: 'auth card uses AuthScreenTheme panel');
 }
 
 void main() {
   for (final mode in [ThemeMode.light, ThemeMode.dark]) {
-    testWidgets('Login form follows $mode theme and supports Arabic errors', (
+    final brightness = mode == ThemeMode.dark
+        ? Brightness.dark
+        : Brightness.light;
+
+    testWidgets('Login follows $mode theme, RTL and Arabic errors', (
       tester,
     ) async {
-      final cubit = _authCubit();
-      addTearDown(cubit.close);
-      const locale = Locale('ar');
+      const screen = LoginView();
+      final ctx = await _pump(tester, screen: screen, mode: mode);
+      final l10n = AppLocalizations.of(ctx)!;
 
-      await tester.pumpWidget(
-        BlocProvider.value(
-          value: cubit,
-          child: MaterialApp(
-            locale: locale,
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
-            theme: AppTheme.light,
-            darkTheme: AppTheme.dark,
-            themeMode: mode,
-            home: const LoginView(),
-          ),
-        ),
+      expect(Directionality.of(ctx), TextDirection.rtl);
+      expect(Theme.of(ctx).brightness, brightness);
+      _expectThemedPanel(tester, ctx);
+      _expectThemedField(
+        tester,
+        find.byKey(const Key('login_email_field')),
+        ctx,
       );
+
+      await tester.tap(find.byKey(const Key('login_submit_button')));
       await tester.pumpAndSettle();
-
-      final context = tester.element(find.byType(LoginView));
-      final l10n = AppLocalizations.of(context)!;
-      final scheme = Theme.of(context).colorScheme;
-      expect(Directionality.of(context), TextDirection.rtl);
-      expect(
-        Theme.of(context).brightness,
-        mode == ThemeMode.dark ? Brightness.dark : Brightness.light,
-      );
-      expect(
-        tester.widget<Text>(find.text(l10n.appBrandFull)).style?.color,
-        scheme.onSurface,
-      );
-
-      final phoneField = tester.widget<TextField>(
-        find.descendant(
-          of: find.byType(TextFormField).first,
-          matching: find.byType(TextField),
-        ),
-      );
-      expect(
-        phoneField.decoration!.fillColor,
-        Theme.of(context).inputDecorationTheme.fillColor,
-      );
-      expect(
-        (phoneField.decoration!.errorBorder! as OutlineInputBorder)
-            .borderSide
-            .color,
-        scheme.error,
-      );
-
-      await tester.tap(find.text(l10n.loginButton));
-      await tester.pumpAndSettle();
-      expect(find.text(l10n.phoneNumberRequired), findsOneWidget);
+      expect(find.text(l10n.emailRequired), findsOneWidget);
       expect(find.text(l10n.passwordRequired), findsOneWidget);
+    });
+
+    testWidgets('Register follows $mode theme, RTL and Arabic errors', (
+      tester,
+    ) async {
+      const screen = RegisterView();
+      final ctx = await _pump(tester, screen: screen, mode: mode);
+      final l10n = AppLocalizations.of(ctx)!;
+
+      expect(Directionality.of(ctx), TextDirection.rtl);
+      expect(Theme.of(ctx).brightness, brightness);
+      _expectThemedPanel(tester, ctx);
+      for (final key in [
+        'register_name_field',
+        'register_email_field',
+        'register_password_field',
+        'register_confirm_field',
+      ]) {
+        _expectThemedField(tester, find.byKey(Key(key)), ctx);
+      }
+      expect(
+        tester.widget<Text>(find.text(l10n.createAccountTitle)).style?.color,
+        Theme.of(ctx).extension<AppSemanticColors>()?.textPrimary ??
+            Theme.of(ctx).colorScheme.onSurface,
+      );
+
+      await tester.ensureVisible(
+        find.byKey(const Key('register_submit_button')),
+      );
+      await tester.tap(find.byKey(const Key('register_submit_button')));
+      await tester.pumpAndSettle();
+      expect(find.text(l10n.fullNameRequired), findsOneWidget);
+      expect(find.text(l10n.emailRequired), findsOneWidget);
     });
   }
 }

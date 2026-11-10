@@ -49,19 +49,20 @@ android/key.properties
 android/*.jks
 android/*.keystore
 
-# Phase 5B backend (Cloud Functions) — Node tooling artifacts
-functions/node_modules/
-functions/lib/
-functions/*.log
+# Firebase emulator / CLI logs
 firestore-debug.log
 ui-debug.log
 firebase-debug.log
 .firebase/
 
-# Phase 5B Stage 3 — local-only Functions Emulator test config/artifacts.
-# .secret.local holds FAKE placeholder values only (see functions/README.md);
-# never a real secret. The SMS outbox is a local file the emulator-only
-# EmulatorFileSmsProvider writes to so E2E tests can read the OTP a
-# separate emulator process "sent" — never created outside emulator mode.
+# Local secrets file left over from the retired (never deployed) SMS
+# Cloud Functions. Kept ignored so it can never be committed.
 functions/.secret.local
-functions/.emulator-sms-outbox.jsonl
+
+# Retained Functions prototype (functions/) — Node tooling artifacts
+functions/node_modules/
+functions/lib/
+functions/*.log
+
+# Firestore rules emulator tests (firestore-tests/) — npm install output
+firestore-tests/node_modules/

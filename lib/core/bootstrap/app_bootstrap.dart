@@ -50,8 +50,11 @@ class AppBootstrap {
       options: DefaultFirebaseOptions.currentPlatform,
     );
 
-    // Phase 5B: the trusted password-reset backend enforces App Check on
-    // both callable functions. In debug builds this uses the Android
+    // App Check attests that requests come from this genuine app. It was
+    // introduced for the (since retired, never deployed) SMS reset
+    // backend, and is kept because Firestore/Auth can enforce it too.
+    // Enforcement is a Firebase Console decision. In debug builds this
+    // uses the Android
     // debug provider (prints a token to the console that must be
     // registered in Firebase Console for local testing — not done as
     // part of this stage). Release builds are wired to Play Integrity in

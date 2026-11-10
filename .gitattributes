@@ -1,0 +1,4 @@
+# Hash-pinned data assets: never convert line endings. Their exact bytes are
+# reviewed (docs/exercise-media-review.json records the catalog SHA-256),
+# so a CRLF checkout (core.autocrlf=true) must not rewrite them.
+lib/assets/data/*.json -text

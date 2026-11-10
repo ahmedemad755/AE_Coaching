@@ -44,8 +44,10 @@ Exercise sets logged before the Program/Session architecture existed are preserv
 - Stored locally on-device (not uploaded to the cloud).
 
 ### 🔐 Authentication
-- Phone number + password login via Firebase Auth.
-- Registration with SMS OTP verification.
+- Email + password registration and login via Firebase Auth.
+- Mandatory email verification (Firebase verification link), with resend,
+  change email and sign out.
+- Password reset by email (Firebase reset link).
 
 ### 🌐 Localization
 - Arabic (default) and English, with a language toggle available from the login screen and the home screen.
@@ -66,7 +68,7 @@ Exercise sets logged before the Program/Session architecture existed are preserv
 
 ```
 lib/
-├── auth/                      # Login, registration, OTP, auth models
+├── auth/                      # Email auth: login, registration, verification, profile
 ├── core/
 │   ├── localization/          # LocaleCubit, auth message localizer
 │   └── routes/                # AppNavigator / AppRouter
@@ -101,7 +103,7 @@ Each feature (`workout`, `measurements`, `progress_photos`) is self-contained: i
 
 ### Prerequisites
 - [Flutter SDK](https://docs.flutter.dev/get-started/install) (3.9+ recommended)
-- A Firebase project with Auth (Phone) and Firestore enabled
+- A Firebase project with Auth (Email/Password) and Firestore enabled
 - Android Studio / Xcode for mobile builds
 
 ### Setup

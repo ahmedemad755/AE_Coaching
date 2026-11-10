@@ -99,6 +99,48 @@ void main() {
     await tester.pumpAndSettle();
   }
 
+  /// Filters live in a bottom sheet: open it from the "Filters (n)" button
+  /// ([activeBefore] = filters already active, as the label shows), toggle
+  /// each chip (scrolling the sheet to reach it), then tap Close to return
+  /// to the filtered list — exactly what a user does.
+  Future<void> toggleFilters(
+    WidgetTester tester, {
+    required int activeBefore,
+    required List<String> chipKeys,
+  }) async {
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(ExercisePickerDialog)),
+    )!;
+    await tester.tap(find.text('${l10n.exerciseFiltersTitle} ($activeBefore)'));
+    await tester.pumpAndSettle();
+    final sheetScrollable = find
+        .descendant(
+          of: find.byType(BottomSheet),
+          matching: find.byType(Scrollable),
+        )
+        .first;
+    for (final key in chipKeys) {
+      final chip = find.byKey(ValueKey(key));
+      await tester.scrollUntilVisible(
+        chip,
+        150,
+        maxScrolls: 100,
+        scrollable: sheetScrollable,
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(chip);
+      await tester.pumpAndSettle();
+    }
+    await tester.tap(
+      find.descendant(
+        of: find.byType(BottomSheet),
+        matching: find.widgetWithText(FilledButton, l10n.close),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.byType(BottomSheet), findsNothing);
+  }
+
   testWidgets('real bundled catalog is visible with default filters', (
     tester,
   ) async {
@@ -193,10 +235,11 @@ void main() {
       );
       expect(shownExercise('Lat Pulldown'), findsOneWidget);
 
-      await tester.tap(find.text('Filters'));
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(const ValueKey('muscle-filter-back')));
-      await tester.pumpAndSettle();
+      await toggleFilters(
+        tester,
+        activeBefore: 0,
+        chipKeys: ['muscle-filter-back'],
+      );
       await revealExercise(tester, shownExercise('Lat Pulldown'));
       expect(shownExercise('Lat Pulldown'), findsOneWidget);
 
@@ -204,8 +247,8 @@ void main() {
       await tester.pumpAndSettle();
       await tester.scrollUntilVisible(
         shownExercise('Lat Pulldown'),
-        // Illustrated cards include credits and can be taller. Small drags
-        // keep the target inside the narrow viewport below expanded filters.
+        // Illustrated cards include credits and can be taller; small drags
+        // keep the target inside the viewport.
         100,
         maxScrolls: 200,
         scrollable: find
@@ -221,24 +264,24 @@ void main() {
       await tester.pumpAndSettle();
       expect(shownExercise('Dumbbell Hammer Curl'), findsNothing);
 
-      await tester.tap(find.byKey(const ValueKey('muscle-filter-back')));
-      await tester.ensureVisible(
-        find.byKey(const ValueKey('muscle-filter-brachialis')),
+      // Swap Back for Brachialis: still one active filter.
+      await toggleFilters(
+        tester,
+        activeBefore: 1,
+        chipKeys: ['muscle-filter-back', 'muscle-filter-brachialis'],
       );
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(const ValueKey('muscle-filter-brachialis')));
-      await tester.pumpAndSettle();
       await revealExercise(tester, shownExercise('Dumbbell Hammer Curl'));
       expect(shownExercise('Dumbbell Hammer Curl'), findsOneWidget);
 
-      await tester.ensureVisible(
-        find.byKey(const ValueKey('muscle-filter-brachialis')),
+      // Clearing the muscle filter keeps the search result.
+      await toggleFilters(
+        tester,
+        activeBefore: 1,
+        chipKeys: ['muscle-filter-brachialis'],
       );
-      await tester.pumpAndSettle();
-      await tester.tap(find.byKey(const ValueKey('muscle-filter-brachialis')));
-      await tester.pumpAndSettle();
       await revealExercise(tester, shownExercise('Dumbbell Hammer Curl'));
       expect(shownExercise('Dumbbell Hammer Curl'), findsOneWidget);
+      expect(find.text('Filters (0)'), findsOneWidget);
     },
   );
 
@@ -246,18 +289,11 @@ void main() {
     tester,
   ) async {
     await openPicker(tester, 'ar');
-    final l10n = AppLocalizations.of(
-      tester.element(find.byType(ExercisePickerDialog)),
-    )!;
-    await tester.tap(find.text(l10n.exerciseFiltersTitle));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const ValueKey('muscle-filter-back')));
-    await tester.ensureVisible(
-      find.byKey(const ValueKey('equipment-filter-cable')),
+    await toggleFilters(
+      tester,
+      activeBefore: 0,
+      chipKeys: ['muscle-filter-back', 'equipment-filter-cable'],
     );
-    await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const ValueKey('equipment-filter-cable')));
-    await tester.pumpAndSettle();
 
     final search = find.byType(TextField).first;
     await tester.enterText(search, 'سحب أمامي');
@@ -280,12 +316,12 @@ void main() {
       findsOneWidget,
     );
 
-    await tester.ensureVisible(
-      find.byKey(const ValueKey('equipment-filter-cable')),
+    // Clearing only the equipment filter keeps muscle + search results.
+    await toggleFilters(
+      tester,
+      activeBefore: 2,
+      chipKeys: ['equipment-filter-cable'],
     );
-    await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const ValueKey('equipment-filter-cable')));
-    await tester.pumpAndSettle();
     await revealExercise(
       tester,
       find.byKey(const ValueKey('exercise-card-repdb:lat-pulldown')),
@@ -312,7 +348,7 @@ void main() {
 
   testWidgets('default filter chips are all unselected', (tester) async {
     await openPicker(tester, 'en');
-    await tester.tap(find.text('Filters'));
+    await tester.tap(find.text('Filters (0)'));
     await tester.pumpAndSettle();
 
     final chips = tester.widgetList<FilterChip>(

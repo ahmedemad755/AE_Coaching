@@ -1,5 +1,5 @@
-import 'package:ae_coaching/auth/domain/entities/auth_session_inspection.dart';
 import 'package:ae_coaching/auth/domain/entities/auth_user.dart';
+import 'package:ae_coaching/auth/domain/validation/profile_integrity.dart';
 
 abstract class AuthState {}
 
@@ -20,46 +20,58 @@ class AuthError extends AuthState {
   AuthError(this.message);
 }
 
-// تمت إضافة حالة نجاح إرسال كود الـ OTP مع الـ ID
-class AuthOtpSent extends AuthState {
-  final String verificationId;
-  final String phone;
-  AuthOtpSent(this.verificationId, this.phone);
+/// The Firebase session was ended on purpose (Sign out from Verify Email,
+/// Complete Profile or a failed account check). Screens react by going to
+/// Login, never Home.
+class AuthSignedOut extends AuthState {}
+
+/// Signed in, but the email isn't verified. The only allowed screen is
+/// Verify Email. Never treated as authenticated.
+class AuthEmailVerificationRequired extends AuthState {
+  final String email;
+
+  /// True right after registration if the first email went out, so the
+  /// screen starts the resend cooldown instead of offering an immediate
+  /// resend.
+  final bool verificationEmailSent;
+
+  AuthEmailVerificationRequired({
+    required this.email,
+    this.verificationEmailSent = false,
+  });
 }
 
-/// A resumable, in-progress OTP registration is missing exactly one of
-/// two things: a linked password, or a written `users/{uid}` profile.
-/// Deliberately the only state added for Phase 3's recovery flow — no
-/// larger state hierarchy.
-class AuthPartialRegistration extends AuthState {
-  final RegistrationRecoveryStep step;
-  final String phone;
-  AuthPartialRegistration({required this.step, required this.phone});
+/// Verified, but `users/{uid}` is missing and no name could be
+/// recovered. The user must enter a name.
+class AuthProfileIncomplete extends AuthState {
+  final String email;
+  AuthProfileIncomplete(this.email);
 }
 
-/// Phase 5B — signed-out Forgot Password: the trusted backend created
-/// an OTP challenge. Deliberately distinct from [AuthOtpSent]:
-/// [challengeId] is an opaque token issued by the Cloud Function, never
-/// a Firebase phone-auth verificationId, and must never be stored in
-/// [AuthOtpSent.verificationId]. Phase 3 (fresh registration) and
-/// Phase 4 (legacy migration) continue to use real Firebase Phone Auth
-/// and keep emitting [AuthOtpSent] unchanged.
-class AuthPasswordResetOtpSent extends AuthState {
-  final String challengeId;
-  final String phone;
-  AuthPasswordResetOtpSent({required this.challengeId, required this.phone});
+/// A phone-era test account's session was found and signed out. The
+/// account and its data are untouched.
+class AuthLegacyAccountSignedOut extends AuthState {}
+
+class AuthVerificationEmailSent extends AuthState {}
+
+/// A link was sent to [newEmail]. The sign-in email changes only after it
+/// is opened.
+class AuthEmailChangeRequested extends AuthState {
+  final String newEmail;
+  AuthEmailChangeRequested(this.newEmail);
 }
 
-/// Phase 5B — signed-out Forgot Password completed successfully.
-/// Deliberately NOT [AuthSuccess]: every other screen in this app
-/// treats [AuthSuccess] as "the user is now authenticated" and reacts
-/// by writing a logged-in Hive session and navigating Home. A password
-/// reset never authenticates the caller (the backend always ends
-/// signed out) — using a distinct type makes that structurally
-/// impossible to get wrong by copy-paste or by a future shared
-/// listener, rather than relying on this one screen happening not to
-/// react to [AuthSuccess] that way.
-class AuthPasswordResetSuccess extends AuthState {
-  final String message;
-  AuthPasswordResetSuccess(this.message);
+/// Neutral by design: shown whether or not an account exists.
+class AuthPasswordResetEmailSent extends AuthState {
+  final String email;
+  AuthPasswordResetEmailSent(this.email);
+}
+
+/// Verified, but the profile could not be confirmed (offline, permission
+/// denied, conflicting document). Never a success: the account check
+/// shows the real reason with Retry / Sign out.
+class AuthProfileUnavailable extends AuthState {
+  final String email;
+  final ProfileFailure failure;
+  AuthProfileUnavailable({required this.email, required this.failure});
 }

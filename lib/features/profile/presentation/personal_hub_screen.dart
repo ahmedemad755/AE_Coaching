@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:ui' as ui;
+import 'package:ae_coaching/auth/domain/validation/auth_input_rules.dart';
 import 'package:ae_coaching/core/routes/app_router.dart';
 import 'package:ae_coaching/core/session/session_storage.dart';
 import 'package:ae_coaching/core/theme/app_theme.dart';
@@ -31,7 +32,7 @@ class _PersonalHubScreenState extends State<PersonalHubScreen> {
   StreamSubscription<User?>? _authSubscription;
   String _uid = '';
   String _name = '';
-  String _phone = '';
+  String _email = '';
   String? _photoPath;
   bool _photoBusy = false;
   bool _profileBusy = false;
@@ -69,8 +70,12 @@ class _PersonalHubScreenState extends State<PersonalHubScreen> {
     final sessionMatchesUser = user != null && session.currentUserUid == user.uid;
     _name = sessionMatchesUser ? session.currentUserName.trim() : '';
     if (_name.isEmpty) _name = user?.displayName?.trim() ?? '';
-    _phone = sessionMatchesUser ? session.currentUserPhone.trim() : '';
-    if (_phone.isEmpty) _phone = user?.phoneNumber ?? '';
+    // Firebase Auth is authoritative for the signed-in email; the session
+    // copy is only a fallback for the same user.
+    _email = user?.email?.trim() ?? '';
+    if (_email.isEmpty && sessionMatchesUser) {
+      _email = session.currentUserEmail.trim();
+    }
   }
 
   Future<MyProgressSummary> _loadProgress(String uid) async {
@@ -263,14 +268,14 @@ class _PersonalHubScreenState extends State<PersonalHubScreen> {
     if (_profileBusy || _uid.isEmpty) return;
     final uid = _uid;
     final controller = TextEditingController(text: _name);
-    final name = await showDialog<String>(
+    final rawName = await showDialog<String>(
       context: context,
       builder: (dialogContext) => AlertDialog(
         title: Text(l10n.profileNameEditTitle),
         content: TextField(
           controller: controller,
           autofocus: true,
-          maxLength: 80,
+          maxLength: AuthInputRules.nameMaxLength,
           textCapitalization: TextCapitalization.words,
           decoration: InputDecoration(labelText: l10n.fullNameHint),
           onSubmitted: (value) => Navigator.pop(dialogContext, value.trim()),
@@ -282,13 +287,16 @@ class _PersonalHubScreenState extends State<PersonalHubScreen> {
       ),
     );
     controller.dispose();
-    if (name == null ||
+    if (rawName == null ||
         !mounted ||
         _uid != uid ||
         FirebaseAuth.instance.currentUser?.uid != uid) {
       return;
     }
-    if (name.isEmpty || name.length > 80) {
+    // Same rule as registration and firestore.rules (1-60 characters,
+    // at least one letter), so a valid edit is never rejected server-side.
+    final name = AuthInputRules.normalizeName(rawName);
+    if (AuthInputRules.validateName(name) != null) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.profileNameInvalid)));
       return;
     }
@@ -374,20 +382,19 @@ class _PersonalHubScreenState extends State<PersonalHubScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(_name.isEmpty ? l10n.profileNameUnavailable : _name, maxLines: 2, style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800)),
-                    if (_phone.isNotEmpty) ...[
+                    if (_email.isNotEmpty) ...[
                       const SizedBox(height: 4),
                       Wrap(
                         spacing: 5,
                         children: [
-                          Text(l10n.profilePhoneLabel),
+                          Text(l10n.profileEmailLabel),
                           const SizedBox(width: 5),
                           Directionality(
                             textDirection: TextDirection.ltr,
-                            child: Text(_phone),
+                            child: Text(_email, key: const ValueKey('profile-email')),
                           ),
                         ],
                       ),
-                      Text(l10n.profilePhoneVerificationNote, style: Theme.of(context).textTheme.labelSmall?.copyWith(color: colors.textMuted)),
                     ],
                     const SizedBox(height: 6),
                     Text(l10n.profileHeaderSubtitle, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: colors.textMuted)),

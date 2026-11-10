@@ -83,11 +83,16 @@ void main() {
   });
 
   test(
-    'saves only the trimmed existing name field for the signed-in user',
+    'saves the normalized name, owner uid and a server updatedAt '
+    '(matches the users/{uid} update rule)',
     () async {
-      await repository.updateName(uid: 'user-a', name: '  Ahmed Emad  ');
+      await repository.updateName(uid: 'user-a', name: '  Ahmed   Emad  ');
       expect(firestore.profiles.requestedUid, 'user-a');
-      expect(firestore.profiles.document.fields, {'name': 'Ahmed Emad'});
+      final fields = firestore.profiles.document.fields!;
+      expect(fields.keys.toSet(), {'uid', 'name', 'updatedAt'});
+      expect(fields['uid'], 'user-a');
+      expect(fields['name'], 'Ahmed Emad');
+      expect(fields['updatedAt'], isA<FieldValue>());
       expect((auth.currentUser as _User).savedName, 'Ahmed Emad');
     },
   );
@@ -95,7 +100,9 @@ void main() {
   test(
     'invalid names and other accounts never reach profile storage',
     () async {
-      for (final name in ['', '   ', List.filled(81, 'a').join()]) {
+      // Same rule as AuthInputRules.validateName / firestore.rules:
+      // blank, > 60 characters, or no letters at all.
+      for (final name in ['', '   ', List.filled(61, 'a').join(), '123']) {
         await expectLater(
           repository.updateName(uid: 'user-a', name: name),
           throwsArgumentError,
@@ -124,7 +131,7 @@ void main() {
   test('Auth fallback failure preserves a successful profile save', () async {
     (auth.currentUser as _User).failDisplayName = true;
     await repository.updateName(uid: 'user-a', name: 'Ahmed');
-    expect(firestore.profiles.document.fields, {'name': 'Ahmed'});
+    expect(firestore.profiles.document.fields!['name'], 'Ahmed');
   });
 
   test(

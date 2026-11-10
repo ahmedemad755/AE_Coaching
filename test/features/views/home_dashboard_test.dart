@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:ae_coaching/core/di/sl_instance.dart';
+import 'package:ae_coaching/core/bootstrap/startup_destination.dart';
 import 'package:ae_coaching/core/routes/app_router.dart';
 import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/features/views/widgets/home_dashboard.dart';
@@ -129,6 +130,14 @@ void main() {
   int profiles = 0, settings = 0, analysis = 0;
 
   setUp(() async {
+    // The route guard reads Firebase Auth; tests run as a verified user.
+    final originalAuthSnapshot = AppRouter.readAuthSnapshot;
+    AppRouter.readAuthSnapshot = () => const StartupAuthSnapshot(
+      firebaseUid: 'test-user',
+      firebaseEmail: 'test@example.com',
+      firebaseEmailVerified: true,
+    );
+    addTearDown(() => AppRouter.readAuthSnapshot = originalAuthSnapshot);
     await sl.reset();
     f = StandardTemplateFixture();
     await f.open();
@@ -174,6 +183,8 @@ void main() {
     double scale = 1,
     String? name,
     bool tabs = false,
+    WidgetBuilder? progressTab,
+    bool reduceMotion = false,
   }) => MaterialApp(
     theme: AppTheme.light,
     darkTheme: AppTheme.dark,
@@ -182,9 +193,10 @@ void main() {
     localizationsDelegates: AppLocalizations.localizationsDelegates,
     supportedLocales: AppLocalizations.supportedLocales,
     builder: (context, child) => MediaQuery(
-      data: MediaQuery.of(
-        context,
-      ).copyWith(textScaler: TextScaler.linear(scale)),
+      data: MediaQuery.of(context).copyWith(
+        textScaler: TextScaler.linear(scale),
+        disableAnimations: reduceMotion,
+      ),
       child: RepaintBoundary(
         key: const ValueKey('dashboard-capture'),
         child: child,
@@ -217,7 +229,9 @@ void main() {
         currentUserId: () => f.uid,
         volume: const Text('Today volume fixture'),
         programsTab: tabs ? (_) => const Text('Programs tab fixture') : null,
-        progressTab: tabs ? (_) => const Text('Progress tab fixture') : null,
+        progressTab: tabs
+            ? progressTab ?? (_) => const Text('Progress tab fixture')
+            : null,
         moreTab: tabs ? (_) => const Text('More tab fixture') : null,
       ),
     ),
@@ -596,6 +610,144 @@ void main() {
       expect(tester.takeException(), isNull);
     },
   );
+
+  group('tab transition animation', () {
+    FadeTransition fadeOf(WidgetTester tester, String text) =>
+        tester.widget<FadeTransition>(
+          find
+              .ancestor(of: find.text(text), matching: find.byType(FadeTransition))
+              .first,
+        );
+    SlideTransition slideOf(WidgetTester tester, String text) =>
+        tester.widget<SlideTransition>(
+          find
+              .ancestor(
+                of: find.text(text),
+                matching: find.byType(SlideTransition),
+              )
+              .first,
+        );
+
+    testWidgets(
+      'a tab change runs a visible ~300ms easeInOutCubic fade + slide',
+      (tester) async {
+        phone(tester, 390);
+        await tester.pumpWidget(app(tabs: true));
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.byKey(const ValueKey('home-nav-2')));
+        await tester.pump(); // tab change frame: animation restarts at 0
+        await tester.pump(const Duration(milliseconds: 150));
+        final midOpacity = fadeOf(tester, 'Progress tab fixture').opacity.value;
+        final midOffset = slideOf(tester, 'Progress tab fixture').position.value;
+        // Halfway through easeInOutCubic is exactly 0.5.
+        expect(midOpacity, closeTo(Curves.easeInOutCubic.transform(0.5), 0.02));
+        // Moving to a tab on the right slides in from that side, visibly.
+        expect(midOffset.dx, greaterThan(0.01));
+
+        await tester.pump(const Duration(milliseconds: 150));
+        expect(fadeOf(tester, 'Progress tab fixture').opacity.value, 1);
+        expect(
+          slideOf(tester, 'Progress tab fixture').position.value,
+          Offset.zero,
+        );
+      },
+    );
+
+    testWidgets('going back to a tab on the left slides the other way, and '
+        'RTL mirrors the slide', (tester) async {
+      phone(tester, 390);
+      await tester.pumpWidget(app(tabs: true, language: 'ar'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const ValueKey('home-nav-3')));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(const ValueKey('home-nav-1')));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
+      final slide = slideOf(tester, 'Programs tab fixture');
+      expect(slide.position.value.dx, lessThan(-0.01));
+      expect(slide.textDirection, TextDirection.rtl);
+    });
+
+    testWidgets('reduced motion switches tabs instantly', (tester) async {
+      phone(tester, 390);
+      await tester.pumpWidget(app(tabs: true, reduceMotion: true));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(const ValueKey('home-nav-1')));
+      await tester.pump();
+      expect(fadeOf(tester, 'Programs tab fixture').opacity.value, 1);
+      expect(
+        slideOf(tester, 'Programs tab fixture').position.value,
+        Offset.zero,
+      );
+    });
+
+    testWidgets('rapid repeated tab switching settles on the last tab only', (
+      tester,
+    ) async {
+      phone(tester, 390);
+      await tester.pumpWidget(app(tabs: true));
+      await tester.pumpAndSettle();
+
+      for (final index in [1, 2, 3, 2, 1, 3, 1]) {
+        await tester.tap(find.byKey(ValueKey('home-nav-$index')));
+        await tester.pump(const Duration(milliseconds: 16));
+      }
+      await tester.pumpAndSettle();
+
+      expect(find.text('Programs tab fixture'), findsOneWidget);
+      expect(find.text('Progress tab fixture'), findsNothing);
+      expect(find.text('More tab fixture'), findsNothing);
+      expect(fadeOf(tester, 'Programs tab fixture').opacity.value, 1);
+      expect(find.byKey(const ValueKey('home-nav-0')), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('a tab keeps its scroll position across tab switches', (
+      tester,
+    ) async {
+      phone(tester, 390);
+      await tester.pumpWidget(
+        app(
+          tabs: true,
+          progressTab: (_) => ListView.builder(
+            itemCount: 80,
+            itemBuilder: (_, i) =>
+                SizedBox(height: 56, child: Text('Progress row $i')),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const ValueKey('home-nav-2')));
+      await tester.pumpAndSettle();
+
+      await tester.drag(find.text('Progress row 2'), const Offset(0, -900));
+      await tester.pumpAndSettle();
+      double offset() => tester
+          .state<ScrollableState>(
+            find
+                .ancestor(
+                  of: find.textContaining('Progress row').first,
+                  matching: find.byType(Scrollable),
+                )
+                .first,
+          )
+          .position
+          .pixels;
+      final scrolled = offset();
+      expect(scrolled, greaterThan(500));
+
+      await tester.tap(find.byKey(const ValueKey('home-nav-3')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const ValueKey('home-nav-2')));
+      await tester.pumpAndSettle();
+
+      expect(offset(), scrolled);
+      expect(find.text('Progress row 0'), findsNothing);
+    });
+  });
 
   testWidgets(
     'Start and Log Workout resume the existing session without changing its data',

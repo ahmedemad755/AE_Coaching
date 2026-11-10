@@ -1,15 +1,22 @@
+import 'package:ae_coaching/auth/domain/validation/auth_input_rules.dart';
+import 'package:ae_coaching/auth/presentation/auth_flow_navigation.dart';
 import 'package:ae_coaching/auth/presentation/cubit/auth_cubit.dart';
 import 'package:ae_coaching/auth/presentation/cubit/auth_state.dart';
+import 'package:ae_coaching/auth/presentation/widgets/auth_dialogs.dart';
+import 'package:ae_coaching/auth/presentation/widgets/auth_password_field.dart';
 import 'package:ae_coaching/core/localization/auth_message_localizer.dart';
-import 'package:ae_coaching/core/routes/app_router.dart';
 import 'package:ae_coaching/core/theme/auth_screen_theme.dart';
-import 'package:ae_coaching/core/session/session_storage.dart';
-import 'package:ae_coaching/core/utils/phone_normalizer.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
-import 'package:ae_coaching/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+/// Email-first registration (Stage 3B): name, email, password, confirm.
+///
+/// Success always continues to Verify Email. The account exists from
+/// here on, but it is NOT a local session and can't reach Home until the
+/// email is verified. Validation rules live in [AuthInputRules], and the
+/// use case re-checks them before Firebase is called. The password is
+/// sent exactly as typed (edge whitespace is rejected, never trimmed).
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
 
@@ -18,31 +25,85 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
-  final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormFieldState<String>> _confirmFieldKey = GlobalKey();
 
-  bool _isPasswordObscured = true; // متغير إخفاء/إظهار الباسورد
+  final FocusNode _emailFocus = FocusNode();
+  final FocusNode _passwordFocus = FocusNode();
+  final FocusNode _confirmFocus = FocusNode();
+
+  /// Errors appear only after the first submit attempt, then update live.
+  bool _submitAttempted = false;
 
   @override
   void dispose() {
-    _phoneController.dispose();
-    _passwordController.dispose();
     _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmController.dispose();
+    _emailFocus.dispose();
+    _passwordFocus.dispose();
+    _confirmFocus.dispose();
     super.dispose();
   }
 
   InputDecoration _fieldDecoration(
     String hint,
     IconData icon, {
-    Widget? suffixIcon,
+    String? helperText,
   }) {
-    return AuthScreenTheme.fieldDecoration(
-      context,
-      hint: hint,
-      icon: icon,
-      suffixIcon: suffixIcon,
+    final scheme = Theme.of(context).colorScheme;
+    final blue = context.authBlue;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return InputDecoration(
+      hintText: hint,
+      helperText: helperText,
+      helperMaxLines: 2,
+      errorMaxLines: 3,
+      counterText: '',
+      prefixIcon: Icon(icon, color: blue),
+      filled: true,
+      fillColor: isDark
+          ? Theme.of(context).inputDecorationTheme.fillColor ?? scheme.surface
+          : Colors.white,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: blue),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: blue, width: 1.6),
+      ),
+      disabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: blue.withValues(alpha: 0.4)),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: scheme.error),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: scheme.error, width: 1.6),
+      ),
+    );
+  }
+
+  void _submit() {
+    if (context.read<AuthCubit>().state is AuthLoading) return;
+    setState(() => _submitAttempted = true);
+    if (!_formKey.currentState!.validate()) return;
+    FocusScope.of(context).unfocus();
+    context.read<AuthCubit>().registerWithEmail(
+      name: _nameController.text,
+      email: _emailController.text,
+      password: _passwordController.text,
+      languageCode: Localizations.localeOf(context).languageCode,
     );
   }
 
@@ -54,52 +115,31 @@ class _RegisterViewState extends State<RegisterView> {
         decoration: AuthScreenTheme.background(context),
         child: BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) async {
-            if (state is AuthSuccess) {
-              if (state.user != null) {
-                await sl<SessionStorage>().persistLoggedInSession(
-                  uid: state.user!.uid,
-                  name: state.user!.name,
-                  phone: state.user!.phoneNumber,
-                );
-              }
-
-              if (!context.mounted) return;
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(localizeAuthMessage(l10n, state.message)),
-                ),
-              );
-              Navigator.pushNamedAndRemoveUntil(
+            if (state is AuthEmailVerificationRequired) {
+              AuthFlowNavigation.toVerifyEmail(
                 context,
-                AppNavigator.home,
-                (route) => false,
+                state.email,
+                verificationEmailSent: state.verificationEmailSent,
               );
-              // Temporarily disabled while testing without SMS OTP.
-              // } else if (state is AuthOtpSent) {
-              //   Navigator.pushNamed(
-              //     context,
-              //     AppNavigator.otp,
-              //     arguments: {
-              //       'phone': state.phone,
-              //       'password': _passwordController.text.trim(),
-              //       'name': _nameController.text.trim(),
-              //       'verificationId': state.verificationId,
-              //     },
-              //   );
+            } else if (state is AuthSuccess && state.user != null) {
+              // Not reachable for a new email/password account (it is
+              // always unverified), but routed safely if a provider ever
+              // returns a verified identity.
+              await AuthFlowNavigation.enterApp(context, state.user!);
+            } else if (state is AuthProfileUnavailable) {
+              AuthFlowNavigation.toAccountCheck(context);
             } else if (state is AuthError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.message),
-                  backgroundColor: Theme.of(context).colorScheme.error,
-                ),
-              );
+              showAuthSnackBar(context, state.message, isError: true);
             }
           },
           builder: (context, state) {
+            final isLoading = state is AuthLoading;
             return SafeArea(
               child: Center(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.all(24),
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 380),
                     child: Container(
@@ -109,185 +149,207 @@ class _RegisterViewState extends State<RegisterView> {
                         borderRadius: BorderRadius.circular(8),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.16),
+                            color: Colors.black.withValues(
+                              alpha:
+                                  Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? 0.4
+                                  : 0.16,
+                            ),
                             blurRadius: 34,
                             offset: const Offset(0, 20),
                           ),
                         ],
                       ),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Align(
-                              alignment: AlignmentDirectional.centerStart,
-                              child: IconButton(
-                                onPressed: () => Navigator.pop(context),
-                                icon: const Icon(Icons.arrow_back_ios_new),
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                            ),
-                            Text(
-                              l10n.createAccountTitle,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.onSurface,
-                                fontSize: 26,
-                                fontWeight: FontWeight.w900,
-                              ),
-                            ),
-                            const SizedBox(height: 6),
-                            Text(
-                              l10n.startJourneySubtitle,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onSurfaceVariant,
-                              ),
-                            ),
-                            const SizedBox(height: 22),
-                            TextFormField(
-                              controller: _nameController,
-                              decoration: _fieldDecoration(
-                                l10n.fullNameHint,
-                                Icons.person,
-                              ),
-                              validator: (value) =>
-                                  value == null || value.isEmpty
-                                  ? l10n.fullNameRequired
-                                  : null,
-                            ),
-                            const SizedBox(height: 14),
-                            TextFormField(
-                              controller: _phoneController,
-                              keyboardType: TextInputType.phone,
-                              decoration: _fieldDecoration(
-                                l10n.phoneNumberFieldHint,
-                                Icons.phone,
-                              ),
-                              validator: (value) =>
-                                  value == null || value.isEmpty
-                                  ? l10n.phoneNumberRequiredRegister
-                                  : null,
-                            ),
-                            const SizedBox(height: 14),
-                            TextFormField(
-                              controller: _passwordController,
-                              obscureText: _isPasswordObscured,
-                              decoration: _fieldDecoration(
-                                l10n.passwordHint,
-                                Icons.lock,
-                                suffixIcon: IconButton(
-                                  icon: Icon(
-                                    _isPasswordObscured
-                                        ? Icons.visibility_off
-                                        : Icons.visibility,
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.onSurfaceVariant,
-                                  ),
-                                  onPressed: () {
-                                    setState(() {
-                                      _isPasswordObscured =
-                                          !_isPasswordObscured;
-                                    });
-                                  },
+                      child: AutofillGroup(
+                        child: Form(
+                          key: _formKey,
+                          autovalidateMode: _submitAttempted
+                              ? AutovalidateMode.onUserInteraction
+                              : AutovalidateMode.disabled,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Align(
+                                alignment: AlignmentDirectional.centerStart,
+                                child: IconButton(
+                                  onPressed: () => Navigator.maybePop(context),
+                                  icon: const BackButtonIcon(),
+                                  color: context.authBlue,
+                                  tooltip: MaterialLocalizations.of(
+                                    context,
+                                  ).backButtonTooltip,
                                 ),
                               ),
-                              validator: (value) =>
-                                  value == null || value.length < 6
-                                  ? l10n.passwordTooShort
-                                  : null,
-                            ),
-                            const SizedBox(height: 18),
-                            SizedBox(
-                              height: 50,
-                              child: ElevatedButton(
-                                onPressed: state is AuthLoading
-                                    ? null
-                                    : () {
-                                        if (_formKey.currentState!.validate()) {
-                                          try {
-                                            final normalizedPhone =
-                                                EgyptianPhoneNormalizer.normalize(
-                                                  _phoneController.text,
-                                                );
-
-                                            // OTP registration is temporarily
-                                            // bypassed while SMS billing is
-                                            // being configured.
-                                            // — password/name are held
-                                            // Previously, these values were
-                                            // passed to OtpView after the
-                                            // OTP request succeeded.
-                                            context
-                                                .read<AuthCubit>()
-                                                .registerWithPhonePassword(
-                                                  name: _nameController.text
-                                                      .trim(),
-                                                  phone: normalizedPhone,
-                                                  password: _passwordController
-                                                      .text
-                                                      .trim(),
-                                                );
-                                            // Previous OTP flow:
-                                            // context
-                                            //     .read<AuthCubit>()
-                                            //     .requestOtp(normalizedPhone);
-                                          } on PhoneNormalizationException catch (
-                                            e
-                                          ) {
-                                            ScaffoldMessenger.of(
-                                              context,
-                                            ).showSnackBar(
-                                              SnackBar(
-                                                content: Text(e.message),
-                                                backgroundColor: Theme.of(
-                                                  context,
-                                                ).colorScheme.error,
-                                              ),
-                                            );
-                                          }
-                                        }
-                                      },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Theme.of(
-                                    context,
-                                  ).colorScheme.primary,
-                                  foregroundColor: Theme.of(
-                                    context,
-                                  ).colorScheme.onPrimary,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  elevation: 8,
-                                  shadowColor: const Color(
-                                    0xff2f80ed,
-                                  ).withValues(alpha: 0.35),
+                              Text(
+                                l10n.createAccountTitle,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: context.authDark,
+                                  fontSize: 26,
+                                  fontWeight: FontWeight.w900,
                                 ),
-                                child: state is AuthLoading
-                                    ? SizedBox(
-                                        height: 22,
-                                        width: 22,
-                                        child: CircularProgressIndicator(
-                                          color: Theme.of(
-                                            context,
-                                          ).colorScheme.onPrimary,
-                                          strokeWidth: 2.4,
-                                        ),
-                                      )
-                                    : Text(
-                                        l10n.createAccountButton,
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.w800,
-                                        ),
+                              ),
+                              const SizedBox(height: 6),
+                              Text(
+                                l10n.startJourneySubtitle,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(color: context.authMuted),
+                              ),
+                              const SizedBox(height: 22),
+                              TextFormField(
+                                key: const Key('register_name_field'),
+                                controller: _nameController,
+                                enabled: !isLoading,
+                                keyboardType: TextInputType.name,
+                                textCapitalization: TextCapitalization.words,
+                                textInputAction: TextInputAction.next,
+                                autofillHints: const [AutofillHints.name],
+                                maxLength: AuthInputRules.nameMaxLength + 10,
+                                onFieldSubmitted: (_) =>
+                                    _emailFocus.requestFocus(),
+                                decoration: _fieldDecoration(
+                                  l10n.fullNameHint,
+                                  Icons.person,
+                                ),
+                                validator: (value) => localizeNameError(
+                                  l10n,
+                                  AuthInputRules.validateName(value ?? ''),
+                                ),
+                              ),
+                              const SizedBox(height: 14),
+                              TextFormField(
+                                key: const Key('register_email_field'),
+                                controller: _emailController,
+                                focusNode: _emailFocus,
+                                enabled: !isLoading,
+                                keyboardType: TextInputType.emailAddress,
+                                textInputAction: TextInputAction.next,
+                                // Email addresses read left-to-right in
+                                // Arabic too.
+                                textDirection: TextDirection.ltr,
+                                autocorrect: false,
+                                enableSuggestions: false,
+                                autofillHints: const [AutofillHints.email],
+                                onFieldSubmitted: (_) =>
+                                    _passwordFocus.requestFocus(),
+                                decoration: _fieldDecoration(
+                                  l10n.emailHint,
+                                  Icons.email_outlined,
+                                ),
+                                validator: (value) => localizeEmailError(
+                                  l10n,
+                                  AuthInputRules.validateEmail(value ?? ''),
+                                ),
+                              ),
+                              const SizedBox(height: 14),
+                              AuthPasswordField(
+                                key: const Key('register_password_field'),
+                                toggleKey: const Key(
+                                  'register_password_toggle',
+                                ),
+                                controller: _passwordController,
+                                focusNode: _passwordFocus,
+                                enabled: !isLoading,
+                                autofillHints: const [
+                                  AutofillHints.newPassword,
+                                ],
+                                textInputAction: TextInputAction.next,
+                                onFieldSubmitted: (_) =>
+                                    _confirmFocus.requestFocus(),
+                                onChanged: (_) {
+                                  // Keep "passwords do not match" honest
+                                  // when the first field changes after
+                                  // the second was filled in.
+                                  if (_submitAttempted &&
+                                      _confirmController.text.isNotEmpty) {
+                                    _confirmFieldKey.currentState?.validate();
+                                  }
+                                },
+                                decoration: _fieldDecoration(
+                                  l10n.passwordHint,
+                                  Icons.lock,
+                                  helperText: l10n.passwordRequirementsHelper(
+                                    AuthInputRules.passwordMinLength,
+                                  ),
+                                ),
+                                validator: (value) => localizeNewPasswordError(
+                                  l10n,
+                                  AuthInputRules.validateNewPassword(
+                                    value ?? '',
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 14),
+                              AuthPasswordField(
+                                key: const Key('register_confirm_field'),
+                                fieldKey: _confirmFieldKey,
+                                controller: _confirmController,
+                                focusNode: _confirmFocus,
+                                enabled: !isLoading,
+                                autofillHints: const [
+                                  AutofillHints.newPassword,
+                                ],
+                                textInputAction: TextInputAction.done,
+                                onFieldSubmitted: (_) => _submit(),
+                                decoration: _fieldDecoration(
+                                  l10n.confirmPasswordHint,
+                                  Icons.lock_outline,
+                                ),
+                                validator: (value) =>
+                                    localizeConfirmPasswordError(
+                                      l10n,
+                                      AuthInputRules.validateConfirmation(
+                                        _passwordController.text,
+                                        value ?? '',
                                       ),
+                                    ),
                               ),
-                            ),
-                          ],
+                              const SizedBox(height: 18),
+                              SizedBox(
+                                height: 50,
+                                child: ElevatedButton(
+                                  key: const Key('register_submit_button'),
+                                  onPressed: isLoading ? null : _submit,
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Theme.of(
+                                      context,
+                                    ).colorScheme.primary,
+                                    foregroundColor: Theme.of(
+                                      context,
+                                    ).colorScheme.onPrimary,
+                                    disabledBackgroundColor: context.authBlue
+                                        .withValues(alpha: 0.7),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    elevation: 8,
+                                    shadowColor: context.authBlue.withValues(
+                                      alpha: 0.35,
+                                    ),
+                                  ),
+                                  child: isLoading
+                                      ? SizedBox(
+                                          height: 22,
+                                          width: 22,
+                                          child: CircularProgressIndicator(
+                                            color: Theme.of(
+                                              context,
+                                            ).colorScheme.onPrimary,
+                                            strokeWidth: 2.4,
+                                          ),
+                                        )
+                                      : Text(
+                                          l10n.createAccountButton,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.w800,
+                                          ),
+                                        ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

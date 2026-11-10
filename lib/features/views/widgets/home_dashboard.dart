@@ -60,6 +60,8 @@ class _HomeDashboardState extends State<HomeDashboard> {
   bool _openingTemplates = false;
   int _tab = 0;
   // Each visit rebuilds a tab so it reloads current data, like a fresh push.
+  // Scroll positions still survive: each tab has a stable PageStorageKey
+  // and Home's route-level PageStorage bucket outlives the rebuild.
   final _visits = List<int>.filled(4, 0);
 
   bool get _hasTabs =>
@@ -214,7 +216,10 @@ class _HomeDashboardState extends State<HomeDashboard> {
                     if (_tab == i + 1)
                       KeyedSubtree(
                         key: ValueKey('home-tab-${i + 1}-${_visits[i + 1]}'),
-                        child: Builder(builder: builder),
+                        child: KeyedSubtree(
+                          key: PageStorageKey<String>('home-tab-${i + 1}'),
+                          child: Builder(builder: builder),
+                        ),
                       )
                     else
                       const SizedBox.shrink(),
@@ -360,6 +365,9 @@ class _HomeDashboardState extends State<HomeDashboard> {
 /// the tapped destination.
 class _AnimatedTabStack extends StatefulWidget {
   const _AnimatedTabStack({required this.index, required this.children});
+
+  static const duration = Duration(milliseconds: 300);
+  static const curve = Curves.easeInOutCubic;
   final int index;
   final List<Widget> children;
 
@@ -373,12 +381,12 @@ class _AnimatedTabStackState extends State<_AnimatedTabStack>
 
   late final _controller = AnimationController(
     vsync: this,
-    duration: const Duration(milliseconds: 320),
+    duration: _AnimatedTabStack.duration,
     value: 1,
   );
   late final _curve = CurvedAnimation(
     parent: _controller,
-    curve: Curves.easeOutCubic,
+    curve: _AnimatedTabStack.curve,
   );
   double _direction = 1;
 

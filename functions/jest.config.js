@@ -9,19 +9,5 @@ module.exports = {
       rootDir: '.',
       testMatch: ['<rootDir>/test/unit/**/*.test.ts'],
     },
-    {
-      displayName: 'emulator',
-      preset: 'ts-jest',
-      testEnvironment: 'node',
-      rootDir: '.',
-      testMatch: ['<rootDir>/test/emulator/**/*.test.ts'],
-    },
-    {
-      displayName: 'e2e',
-      preset: 'ts-jest',
-      testEnvironment: 'node',
-      rootDir: '.',
-      testMatch: ['<rootDir>/test/e2e/**/*.test.ts'],
-    },
   ],
 };

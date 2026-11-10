@@ -470,18 +470,6 @@ abstract class AppLocalizations {
   /// **'Login to Your Account'**
   String get loginSubtitle;
 
-  /// No description provided for @phoneNumberHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Phone number'**
-  String get phoneNumberHint;
-
-  /// No description provided for @phoneNumberRequired.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter your phone number'**
-  String get phoneNumberRequired;
-
   /// No description provided for @passwordHint.
   ///
   /// In en, this message translates to:
@@ -548,95 +536,11 @@ abstract class AppLocalizations {
   /// **'Please enter your name'**
   String get fullNameRequired;
 
-  /// No description provided for @phoneNumberFieldHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Phone Number'**
-  String get phoneNumberFieldHint;
-
-  /// No description provided for @phoneNumberRequiredRegister.
-  ///
-  /// In en, this message translates to:
-  /// **'Please enter phone number'**
-  String get phoneNumberRequiredRegister;
-
-  /// No description provided for @passwordTooShort.
-  ///
-  /// In en, this message translates to:
-  /// **'Password too short'**
-  String get passwordTooShort;
-
   /// No description provided for @createAccountButton.
   ///
   /// In en, this message translates to:
   /// **'CREATE ACCOUNT'**
   String get createAccountButton;
-
-  /// No description provided for @accountCreatedSuccess.
-  ///
-  /// In en, this message translates to:
-  /// **'Account created successfully'**
-  String get accountCreatedSuccess;
-
-  /// No description provided for @accountCreatedPendingLogin.
-  ///
-  /// In en, this message translates to:
-  /// **'Account created successfully. Please login.'**
-  String get accountCreatedPendingLogin;
-
-  /// No description provided for @verifyPhoneTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Verify Phone'**
-  String get verifyPhoneTitle;
-
-  /// No description provided for @enterCodeSentTo.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter the 6-digit code sent to {phone}'**
-  String enterCodeSentTo(String phone);
-
-  /// No description provided for @resendCodeTooltip.
-  ///
-  /// In en, this message translates to:
-  /// **'Resend Code'**
-  String get resendCodeTooltip;
-
-  /// No description provided for @enterSixDigitCodeValidator.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter the 6-digit code'**
-  String get enterSixDigitCodeValidator;
-
-  /// No description provided for @resendButton.
-  ///
-  /// In en, this message translates to:
-  /// **'RESEND'**
-  String get resendButton;
-
-  /// No description provided for @verifyButton.
-  ///
-  /// In en, this message translates to:
-  /// **'VERIFY'**
-  String get verifyButton;
-
-  /// No description provided for @accountVerifiedMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Account Verified! Please Login.'**
-  String get accountVerifiedMessage;
-
-  /// No description provided for @completeRegistrationSetPasswordTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Set a password'**
-  String get completeRegistrationSetPasswordTitle;
-
-  /// No description provided for @completeRegistrationSetPasswordSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Your phone number {phone} is verified. Choose a password to secure your account.'**
-  String completeRegistrationSetPasswordSubtitle(String phone);
 
   /// No description provided for @completeRegistrationFinishProfileTitle.
   ///
@@ -650,65 +554,17 @@ abstract class AppLocalizations {
   /// **'Just need your name to finish setting up your account.'**
   String get completeRegistrationFinishProfileSubtitle;
 
-  /// No description provided for @completeRegistrationCancelAndSignOut.
-  ///
-  /// In en, this message translates to:
-  /// **'This isn\'t me — start over'**
-  String get completeRegistrationCancelAndSignOut;
-
   /// No description provided for @sessionCheckingMessage.
   ///
   /// In en, this message translates to:
   /// **'Checking your account...'**
   String get sessionCheckingMessage;
 
-  /// No description provided for @verifyPhoneMigrationTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Verify your phone'**
-  String get verifyPhoneMigrationTitle;
-
-  /// No description provided for @verifyPhoneMigrationSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'For your account\'s security, confirm the code sent to {phone}.'**
-  String verifyPhoneMigrationSubtitle(String phone);
-
-  /// No description provided for @phoneVerifiedSuccessMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Phone verified successfully'**
-  String get phoneVerifiedSuccessMessage;
-
   /// No description provided for @forgotPasswordTitle.
   ///
   /// In en, this message translates to:
   /// **'Reset your password'**
   String get forgotPasswordTitle;
-
-  /// No description provided for @forgotPasswordSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter your phone number and we\'ll send you a verification code.'**
-  String get forgotPasswordSubtitle;
-
-  /// No description provided for @sendCodeButton.
-  ///
-  /// In en, this message translates to:
-  /// **'SEND CODE'**
-  String get sendCodeButton;
-
-  /// No description provided for @resetPasswordTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter new password'**
-  String get resetPasswordTitle;
-
-  /// No description provided for @resetPasswordSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter the code sent to {phone} and choose a new password.'**
-  String resetPasswordSubtitle(String phone);
 
   /// No description provided for @confirmPasswordHint.
   ///
@@ -727,12 +583,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Passwords do not match'**
   String get passwordsDoNotMatch;
-
-  /// No description provided for @resetPasswordButton.
-  ///
-  /// In en, this message translates to:
-  /// **'RESET PASSWORD'**
-  String get resetPasswordButton;
 
   /// No description provided for @passwordChangedSuccessMessage.
   ///
@@ -2708,11 +2558,11 @@ abstract class AppLocalizations {
   /// **'Edit name'**
   String get profileEditName;
 
-  /// No description provided for @profilePhoneLabel.
+  /// No description provided for @profileEmailLabel.
   ///
   /// In en, this message translates to:
-  /// **'Phone number'**
-  String get profilePhoneLabel;
+  /// **'Email'**
+  String get profileEmailLabel;
 
   /// No description provided for @profileAddPhoto.
   ///
@@ -2779,12 +2629,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not update your name. Check your connection and try again.'**
   String get profileNameSaveFailed;
-
-  /// No description provided for @profilePhoneVerificationNote.
-  ///
-  /// In en, this message translates to:
-  /// **'Changing a phone number requires SMS verification.'**
-  String get profilePhoneVerificationNote;
 
   /// No description provided for @profileProgressAction.
   ///
@@ -2879,7 +2723,7 @@ abstract class AppLocalizations {
   /// No description provided for @profileNameInvalid.
   ///
   /// In en, this message translates to:
-  /// **'Enter a name up to 80 characters.'**
+  /// **'Enter a name of up to 60 characters that includes at least one letter.'**
   String get profileNameInvalid;
 
   /// No description provided for @settingsLanguage.
@@ -3193,6 +3037,378 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Loading'**
   String get loadingLabel;
+
+  /// No description provided for @resendCodeIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend in {seconds}s'**
+  String resendCodeIn(int seconds);
+
+  /// No description provided for @signOutUseAnotherAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out and use another account'**
+  String get signOutUseAnotherAccount;
+
+  /// No description provided for @leaveVerificationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave verification?'**
+  String get leaveVerificationTitle;
+
+  /// No description provided for @signOutButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get signOutButton;
+
+  /// No description provided for @stayButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay'**
+  String get stayButton;
+
+  /// No description provided for @verificationInProgressMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait until verification finishes.'**
+  String get verificationInProgressMessage;
+
+  /// No description provided for @sessionCheckFailedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t check your account'**
+  String get sessionCheckFailedTitle;
+
+  /// No description provided for @sessionCheckFailedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your internet connection and try again.'**
+  String get sessionCheckFailedBody;
+
+  /// No description provided for @nameTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Name must be {max} characters or fewer'**
+  String nameTooLong(int max);
+
+  /// No description provided for @nameNeedsLetters.
+  ///
+  /// In en, this message translates to:
+  /// **'Name must include letters'**
+  String get nameNeedsLetters;
+
+  /// No description provided for @passwordMinLengthError.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least {min} characters'**
+  String passwordMinLengthError(int min);
+
+  /// No description provided for @passwordMaxLengthError.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be {max} characters or fewer'**
+  String passwordMaxLengthError(int max);
+
+  /// No description provided for @passwordEdgeWhitespaceError.
+  ///
+  /// In en, this message translates to:
+  /// **'Password can\'t start or end with a space'**
+  String get passwordEdgeWhitespaceError;
+
+  /// No description provided for @passwordRequirementsHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'At least {min} characters'**
+  String passwordRequirementsHelper(int min);
+
+  /// No description provided for @showPasswordTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Show password'**
+  String get showPasswordTooltip;
+
+  /// No description provided for @hidePasswordTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide password'**
+  String get hidePasswordTooltip;
+
+  /// No description provided for @changePasswordAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Change password'**
+  String get changePasswordAction;
+
+  /// No description provided for @authErrorWeakPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Please choose a stronger password (at least 6 characters).'**
+  String get authErrorWeakPassword;
+
+  /// No description provided for @authErrorNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Network error. Please check your connection and try again.'**
+  String get authErrorNetwork;
+
+  /// No description provided for @authErrorTooManyRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many attempts. Please try again later.'**
+  String get authErrorTooManyRequests;
+
+  /// No description provided for @authErrorAccountDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'This account has been disabled. Please contact support.'**
+  String get authErrorAccountDisabled;
+
+  /// No description provided for @authErrorGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get authErrorGeneric;
+
+  /// No description provided for @authErrorInvalidName.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid name.'**
+  String get authErrorInvalidName;
+
+  /// No description provided for @emailHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get emailHint;
+
+  /// No description provided for @emailRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email address'**
+  String get emailRequired;
+
+  /// No description provided for @emailInvalidError.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email address'**
+  String get emailInvalidError;
+
+  /// No description provided for @emailTooLongError.
+  ///
+  /// In en, this message translates to:
+  /// **'Email address is too long'**
+  String get emailTooLongError;
+
+  /// No description provided for @emailReservedError.
+  ///
+  /// In en, this message translates to:
+  /// **'This email address can\'t be used'**
+  String get emailReservedError;
+
+  /// No description provided for @verifyEmailTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify your email'**
+  String get verifyEmailTitle;
+
+  /// No description provided for @verifyEmailBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We sent a verification link to {email}. Open it, then come back and tap \"I\'ve verified\".'**
+  String verifyEmailBody(String email);
+
+  /// No description provided for @verifyEmailNotSentBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t send the verification email to {email}. Tap Resend to try again.'**
+  String verifyEmailNotSentBody(String email);
+
+  /// No description provided for @verifyEmailSpamHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Can\'t find it? Check your spam or junk folder.'**
+  String get verifyEmailSpamHint;
+
+  /// No description provided for @iveVerifiedButton.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'VE VERIFIED'**
+  String get iveVerifiedButton;
+
+  /// No description provided for @resendEmailButton.
+  ///
+  /// In en, this message translates to:
+  /// **'RESEND EMAIL'**
+  String get resendEmailButton;
+
+  /// No description provided for @verificationEmailSentMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification email sent.'**
+  String get verificationEmailSentMessage;
+
+  /// No description provided for @emailNotVerifiedYetMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your email isn\'t verified yet. Open the link we sent, then try again.'**
+  String get emailNotVerifiedYetMessage;
+
+  /// No description provided for @changeEmailButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Change email'**
+  String get changeEmailButton;
+
+  /// No description provided for @changeEmailBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll send a verification link to the new address. Your sign-in email changes after you open it.'**
+  String get changeEmailBody;
+
+  /// No description provided for @newEmailHint.
+  ///
+  /// In en, this message translates to:
+  /// **'New email'**
+  String get newEmailHint;
+
+  /// No description provided for @sendLinkButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Send link'**
+  String get sendLinkButton;
+
+  /// No description provided for @emailChangeRequestedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification link sent to {email}. Open it to finish changing your email.'**
+  String emailChangeRequestedMessage(String email);
+
+  /// No description provided for @emailVerifiedSuccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Email verified successfully'**
+  String get emailVerifiedSuccessMessage;
+
+  /// No description provided for @accountSetupCompleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Account setup complete'**
+  String get accountSetupCompleteMessage;
+
+  /// No description provided for @legacyAccountSignedOutMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This test account is no longer supported. Please create a new account with your email.'**
+  String get legacyAccountSignedOutMessage;
+
+  /// No description provided for @leaveEmailVerificationBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ll be signed out. Log in again any time to finish verifying your email.'**
+  String get leaveEmailVerificationBody;
+
+  /// No description provided for @forgotPasswordEmailSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your account email and we\'ll send you a link to reset your password.'**
+  String get forgotPasswordEmailSubtitle;
+
+  /// No description provided for @sendResetLinkButton.
+  ///
+  /// In en, this message translates to:
+  /// **'SEND RESET LINK'**
+  String get sendResetLinkButton;
+
+  /// No description provided for @passwordResetEmailSentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your email'**
+  String get passwordResetEmailSentTitle;
+
+  /// No description provided for @passwordResetEmailSentBody.
+  ///
+  /// In en, this message translates to:
+  /// **'If an account exists for {email}, we\'ve sent a link to reset your password.'**
+  String passwordResetEmailSentBody(String email);
+
+  /// No description provided for @backToLoginButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to login'**
+  String get backToLoginButton;
+
+  /// No description provided for @authErrorIncorrectEmailCredentials.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect email or password.'**
+  String get authErrorIncorrectEmailCredentials;
+
+  /// No description provided for @authErrorEmailInUse.
+  ///
+  /// In en, this message translates to:
+  /// **'An account already exists for this email. Please log in instead.'**
+  String get authErrorEmailInUse;
+
+  /// No description provided for @authErrorNewEmailInUse.
+  ///
+  /// In en, this message translates to:
+  /// **'This email address is already used by another account.'**
+  String get authErrorNewEmailInUse;
+
+  /// No description provided for @authErrorRecentLoginEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'For your security, please sign in again to change your email.'**
+  String get authErrorRecentLoginEmail;
+
+  /// No description provided for @authErrorSessionExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Your session has expired. Please sign in again.'**
+  String get authErrorSessionExpired;
+
+  /// No description provided for @authErrorSessionEnded.
+  ///
+  /// In en, this message translates to:
+  /// **'Your session has ended. Please sign in again.'**
+  String get authErrorSessionEnded;
+
+  /// No description provided for @accountSetupFailedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t finish setting up your account'**
+  String get accountSetupFailedTitle;
+
+  /// No description provided for @profilePermissionDeniedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Access to your account profile was denied. Please try again later, or contact support if this continues.'**
+  String get profilePermissionDeniedBody;
+
+  /// No description provided for @profileConflictingBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account profile needs attention. Please contact support.'**
+  String get profileConflictingBody;
+
+  /// No description provided for @profileUnknownFailureBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong while setting up your account. Please try again.'**
+  String get profileUnknownFailureBody;
+
+  /// No description provided for @authErrorProfilePermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t save your profile because access was denied. Please contact support.'**
+  String get authErrorProfilePermissionDenied;
+
+  /// No description provided for @authErrorProfileConflicting.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account profile needs attention. Please contact support.'**
+  String get authErrorProfileConflicting;
 }
 
 class _AppLocalizationsDelegate

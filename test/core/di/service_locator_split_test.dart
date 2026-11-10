@@ -1,18 +1,8 @@
 import 'dart:io';
 
-import 'package:ae_coaching/auth/data/datasources/auth_remote_data_source.dart';
-import 'package:ae_coaching/auth/domain/repositories/auth_repository.dart';
-import 'package:ae_coaching/auth/domain/usecases/complete_profile_for_current_user_usecase.dart';
-import 'package:ae_coaching/auth/domain/usecases/inspect_session_usecase.dart';
-import 'package:ae_coaching/auth/domain/usecases/link_password_to_current_user_usecase.dart';
-import 'package:ae_coaching/auth/domain/usecases/link_phone_migration_usecase.dart';
-import 'package:ae_coaching/auth/domain/usecases/login_usecase.dart';
-import 'package:ae_coaching/auth/domain/usecases/register_with_phone_password_usecase.dart';
-import 'package:ae_coaching/auth/domain/usecases/register_with_otp_usecase.dart';
-import 'package:ae_coaching/auth/domain/usecases/request_otp_usecase.dart';
-import 'package:ae_coaching/auth/domain/usecases/request_phone_migration_otp_usecase.dart';
-import 'package:ae_coaching/auth/domain/usecases/request_password_reset_otp_usecase.dart';
-import 'package:ae_coaching/auth/domain/usecases/reset_password_with_otp_usecase.dart';
+import 'package:ae_coaching/auth/data/datasources/email_auth_remote_data_source.dart';
+import 'package:ae_coaching/auth/domain/repositories/email_auth_repository.dart';
+import 'package:ae_coaching/auth/domain/usecases/email_auth_usecases.dart';
 import 'package:ae_coaching/auth/presentation/cubit/auth_cubit.dart';
 import 'package:ae_coaching/core/session/session_storage.dart';
 import 'package:ae_coaching/core/notifications/inactivity_reminder_service.dart';
@@ -115,20 +105,11 @@ void main() {
       expect(sl.isRegistered<InactivityReminderService>(), isTrue);
       expect(sl.isRegistered<LocalProfilePhotoStore>(), isTrue);
       expect(sl.isRegistered<UserProfileRepository>(), isTrue);
-      // Auth
-      expect(sl.isRegistered<RequestOtpUseCase>(), isTrue);
-      expect(sl.isRegistered<RegisterWithOtpUseCase>(), isTrue);
-      expect(sl.isRegistered<RegisterWithPhonePasswordUseCase>(), isTrue);
-      expect(sl.isRegistered<LoginUseCase>(), isTrue);
-      expect(sl.isRegistered<InspectSessionUseCase>(), isTrue);
-      expect(sl.isRegistered<LinkPasswordToCurrentUserUseCase>(), isTrue);
-      expect(sl.isRegistered<CompleteProfileForCurrentUserUseCase>(), isTrue);
-      expect(sl.isRegistered<RequestPhoneMigrationOtpUseCase>(), isTrue);
-      expect(sl.isRegistered<LinkPhoneMigrationUseCase>(), isTrue);
-      expect(sl.isRegistered<RequestPasswordResetOtpUseCase>(), isTrue);
-      expect(sl.isRegistered<ResetPasswordWithOtpUseCase>(), isTrue);
-      expect(sl.isRegistered<AuthRepository>(), isTrue);
-      expect(sl.isRegistered<AuthRemoteDataSource>(), isTrue);
+      // Auth (email-first; the 15 phone-era registrations were removed
+      // in Stage 3C)
+      expect(sl.isRegistered<EmailAuthUseCases>(), isTrue);
+      expect(sl.isRegistered<EmailAuthRepository>(), isTrue);
+      expect(sl.isRegistered<EmailAuthRemoteDataSource>(), isTrue);
       // Legacy workout (Stage 7 removed its four use-case wrappers —
       // WorkoutCubit now depends on WorkoutRepository directly)
       expect(sl.isRegistered<WorkoutRepository>(), isTrue);

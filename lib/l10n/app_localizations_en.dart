@@ -207,12 +207,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginSubtitle => 'Login to Your Account';
 
   @override
-  String get phoneNumberHint => 'Phone number';
-
-  @override
-  String get phoneNumberRequired => 'Enter your phone number';
-
-  @override
   String get passwordHint => 'Password';
 
   @override
@@ -246,54 +240,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fullNameRequired => 'Please enter your name';
 
   @override
-  String get phoneNumberFieldHint => 'Phone Number';
-
-  @override
-  String get phoneNumberRequiredRegister => 'Please enter phone number';
-
-  @override
-  String get passwordTooShort => 'Password too short';
-
-  @override
   String get createAccountButton => 'CREATE ACCOUNT';
-
-  @override
-  String get accountCreatedSuccess => 'Account created successfully';
-
-  @override
-  String get accountCreatedPendingLogin =>
-      'Account created successfully. Please login.';
-
-  @override
-  String get verifyPhoneTitle => 'Verify Phone';
-
-  @override
-  String enterCodeSentTo(String phone) {
-    return 'Enter the 6-digit code sent to $phone';
-  }
-
-  @override
-  String get resendCodeTooltip => 'Resend Code';
-
-  @override
-  String get enterSixDigitCodeValidator => 'Enter the 6-digit code';
-
-  @override
-  String get resendButton => 'RESEND';
-
-  @override
-  String get verifyButton => 'VERIFY';
-
-  @override
-  String get accountVerifiedMessage => 'Account Verified! Please Login.';
-
-  @override
-  String get completeRegistrationSetPasswordTitle => 'Set a password';
-
-  @override
-  String completeRegistrationSetPasswordSubtitle(String phone) {
-    return 'Your phone number $phone is verified. Choose a password to secure your account.';
-  }
 
   @override
   String get completeRegistrationFinishProfileTitle => 'Finish your profile';
@@ -303,40 +250,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Just need your name to finish setting up your account.';
 
   @override
-  String get completeRegistrationCancelAndSignOut =>
-      'This isn\'t me — start over';
-
-  @override
   String get sessionCheckingMessage => 'Checking your account...';
 
   @override
-  String get verifyPhoneMigrationTitle => 'Verify your phone';
-
-  @override
-  String verifyPhoneMigrationSubtitle(String phone) {
-    return 'For your account\'s security, confirm the code sent to $phone.';
-  }
-
-  @override
-  String get phoneVerifiedSuccessMessage => 'Phone verified successfully';
-
-  @override
   String get forgotPasswordTitle => 'Reset your password';
-
-  @override
-  String get forgotPasswordSubtitle =>
-      'Enter your phone number and we\'ll send you a verification code.';
-
-  @override
-  String get sendCodeButton => 'SEND CODE';
-
-  @override
-  String get resetPasswordTitle => 'Enter new password';
-
-  @override
-  String resetPasswordSubtitle(String phone) {
-    return 'Enter the code sent to $phone and choose a new password.';
-  }
 
   @override
   String get confirmPasswordHint => 'Confirm password';
@@ -346,9 +263,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get passwordsDoNotMatch => 'Passwords do not match';
-
-  @override
-  String get resetPasswordButton => 'RESET PASSWORD';
 
   @override
   String get passwordChangedSuccessMessage => 'Password changed successfully';
@@ -1506,7 +1420,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileEditName => 'Edit name';
 
   @override
-  String get profilePhoneLabel => 'Phone number';
+  String get profileEmailLabel => 'Email';
 
   @override
   String get profileAddPhoto => 'Add photo';
@@ -1544,10 +1458,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get profileNameSaveFailed =>
       'Could not update your name. Check your connection and try again.';
-
-  @override
-  String get profilePhoneVerificationNote =>
-      'Changing a phone number requires SMS verification.';
 
   @override
   String get profileProgressAction => 'My progress';
@@ -1597,7 +1507,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileNameUnavailable => 'Name not available';
 
   @override
-  String get profileNameInvalid => 'Enter a name up to 80 characters.';
+  String get profileNameInvalid =>
+      'Enter a name of up to 60 characters that includes at least one letter.';
 
   @override
   String get settingsLanguage => 'Language';
@@ -1808,4 +1719,233 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loadingLabel => 'Loading';
+
+  @override
+  String resendCodeIn(int seconds) {
+    return 'Resend in ${seconds}s';
+  }
+
+  @override
+  String get signOutUseAnotherAccount => 'Sign out and use another account';
+
+  @override
+  String get leaveVerificationTitle => 'Leave verification?';
+
+  @override
+  String get signOutButton => 'Sign out';
+
+  @override
+  String get stayButton => 'Stay';
+
+  @override
+  String get verificationInProgressMessage =>
+      'Please wait until verification finishes.';
+
+  @override
+  String get sessionCheckFailedTitle => 'We couldn\'t check your account';
+
+  @override
+  String get sessionCheckFailedBody =>
+      'Check your internet connection and try again.';
+
+  @override
+  String nameTooLong(int max) {
+    return 'Name must be $max characters or fewer';
+  }
+
+  @override
+  String get nameNeedsLetters => 'Name must include letters';
+
+  @override
+  String passwordMinLengthError(int min) {
+    return 'Password must be at least $min characters';
+  }
+
+  @override
+  String passwordMaxLengthError(int max) {
+    return 'Password must be $max characters or fewer';
+  }
+
+  @override
+  String get passwordEdgeWhitespaceError =>
+      'Password can\'t start or end with a space';
+
+  @override
+  String passwordRequirementsHelper(int min) {
+    return 'At least $min characters';
+  }
+
+  @override
+  String get showPasswordTooltip => 'Show password';
+
+  @override
+  String get hidePasswordTooltip => 'Hide password';
+
+  @override
+  String get changePasswordAction => 'Change password';
+
+  @override
+  String get authErrorWeakPassword =>
+      'Please choose a stronger password (at least 6 characters).';
+
+  @override
+  String get authErrorNetwork =>
+      'Network error. Please check your connection and try again.';
+
+  @override
+  String get authErrorTooManyRequests =>
+      'Too many attempts. Please try again later.';
+
+  @override
+  String get authErrorAccountDisabled =>
+      'This account has been disabled. Please contact support.';
+
+  @override
+  String get authErrorGeneric => 'Something went wrong. Please try again.';
+
+  @override
+  String get authErrorInvalidName => 'Please enter a valid name.';
+
+  @override
+  String get emailHint => 'Email';
+
+  @override
+  String get emailRequired => 'Enter your email address';
+
+  @override
+  String get emailInvalidError => 'Enter a valid email address';
+
+  @override
+  String get emailTooLongError => 'Email address is too long';
+
+  @override
+  String get emailReservedError => 'This email address can\'t be used';
+
+  @override
+  String get verifyEmailTitle => 'Verify your email';
+
+  @override
+  String verifyEmailBody(String email) {
+    return 'We sent a verification link to $email. Open it, then come back and tap \"I\'ve verified\".';
+  }
+
+  @override
+  String verifyEmailNotSentBody(String email) {
+    return 'We couldn\'t send the verification email to $email. Tap Resend to try again.';
+  }
+
+  @override
+  String get verifyEmailSpamHint =>
+      'Can\'t find it? Check your spam or junk folder.';
+
+  @override
+  String get iveVerifiedButton => 'I\'VE VERIFIED';
+
+  @override
+  String get resendEmailButton => 'RESEND EMAIL';
+
+  @override
+  String get verificationEmailSentMessage => 'Verification email sent.';
+
+  @override
+  String get emailNotVerifiedYetMessage =>
+      'Your email isn\'t verified yet. Open the link we sent, then try again.';
+
+  @override
+  String get changeEmailButton => 'Change email';
+
+  @override
+  String get changeEmailBody =>
+      'We\'ll send a verification link to the new address. Your sign-in email changes after you open it.';
+
+  @override
+  String get newEmailHint => 'New email';
+
+  @override
+  String get sendLinkButton => 'Send link';
+
+  @override
+  String emailChangeRequestedMessage(String email) {
+    return 'Verification link sent to $email. Open it to finish changing your email.';
+  }
+
+  @override
+  String get emailVerifiedSuccessMessage => 'Email verified successfully';
+
+  @override
+  String get accountSetupCompleteMessage => 'Account setup complete';
+
+  @override
+  String get legacyAccountSignedOutMessage =>
+      'This test account is no longer supported. Please create a new account with your email.';
+
+  @override
+  String get leaveEmailVerificationBody =>
+      'You\'ll be signed out. Log in again any time to finish verifying your email.';
+
+  @override
+  String get forgotPasswordEmailSubtitle =>
+      'Enter your account email and we\'ll send you a link to reset your password.';
+
+  @override
+  String get sendResetLinkButton => 'SEND RESET LINK';
+
+  @override
+  String get passwordResetEmailSentTitle => 'Check your email';
+
+  @override
+  String passwordResetEmailSentBody(String email) {
+    return 'If an account exists for $email, we\'ve sent a link to reset your password.';
+  }
+
+  @override
+  String get backToLoginButton => 'Back to login';
+
+  @override
+  String get authErrorIncorrectEmailCredentials =>
+      'Incorrect email or password.';
+
+  @override
+  String get authErrorEmailInUse =>
+      'An account already exists for this email. Please log in instead.';
+
+  @override
+  String get authErrorNewEmailInUse =>
+      'This email address is already used by another account.';
+
+  @override
+  String get authErrorRecentLoginEmail =>
+      'For your security, please sign in again to change your email.';
+
+  @override
+  String get authErrorSessionExpired =>
+      'Your session has expired. Please sign in again.';
+
+  @override
+  String get authErrorSessionEnded =>
+      'Your session has ended. Please sign in again.';
+
+  @override
+  String get accountSetupFailedTitle =>
+      'We couldn\'t finish setting up your account';
+
+  @override
+  String get profilePermissionDeniedBody =>
+      'Access to your account profile was denied. Please try again later, or contact support if this continues.';
+
+  @override
+  String get profileConflictingBody =>
+      'Your account profile needs attention. Please contact support.';
+
+  @override
+  String get profileUnknownFailureBody =>
+      'Something went wrong while setting up your account. Please try again.';
+
+  @override
+  String get authErrorProfilePermissionDenied =>
+      'We couldn\'t save your profile because access was denied. Please contact support.';
+
+  @override
+  String get authErrorProfileConflicting =>
+      'Your account profile needs attention. Please contact support.';
 }

@@ -206,12 +206,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get loginSubtitle => 'تسجيل الدخول لحسابك';
 
   @override
-  String get phoneNumberHint => 'رقم الهاتف';
-
-  @override
-  String get phoneNumberRequired => 'من فضلك أدخل رقم هاتفك';
-
-  @override
   String get passwordHint => 'كلمة المرور';
 
   @override
@@ -245,54 +239,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get fullNameRequired => 'من فضلك أدخل اسمك';
 
   @override
-  String get phoneNumberFieldHint => 'رقم الهاتف';
-
-  @override
-  String get phoneNumberRequiredRegister => 'من فضلك أدخل رقم الهاتف';
-
-  @override
-  String get passwordTooShort => 'كلمة المرور قصيرة جدًا';
-
-  @override
   String get createAccountButton => 'إنشاء الحساب';
-
-  @override
-  String get accountCreatedSuccess => 'تم إنشاء الحساب بنجاح';
-
-  @override
-  String get accountCreatedPendingLogin =>
-      'تم إنشاء الحساب بنجاح. من فضلك سجّل الدخول.';
-
-  @override
-  String get verifyPhoneTitle => 'تفعيل رقم الهاتف';
-
-  @override
-  String enterCodeSentTo(String phone) {
-    return 'أدخل الكود المكوّن من 6 أرقام اللي اتبعت لـ $phone';
-  }
-
-  @override
-  String get resendCodeTooltip => 'إعادة إرسال الكود';
-
-  @override
-  String get enterSixDigitCodeValidator => 'أدخل الكود المكوّن من 6 أرقام';
-
-  @override
-  String get resendButton => 'إعادة الإرسال';
-
-  @override
-  String get verifyButton => 'تأكيد';
-
-  @override
-  String get accountVerifiedMessage => 'تم تفعيل الحساب! من فضلك سجّل الدخول.';
-
-  @override
-  String get completeRegistrationSetPasswordTitle => 'اختر كلمة مرور';
-
-  @override
-  String completeRegistrationSetPasswordSubtitle(String phone) {
-    return 'تم تفعيل رقم هاتفك $phone. اختر كلمة مرور لتأمين حسابك.';
-  }
 
   @override
   String get completeRegistrationFinishProfileTitle => 'أكمل ملفك الشخصي';
@@ -302,38 +249,10 @@ class AppLocalizationsAr extends AppLocalizations {
       'محتاجين اسمك بس عشان نخلّص إعداد حسابك.';
 
   @override
-  String get completeRegistrationCancelAndSignOut => 'دي مش أنا — ابدأ من جديد';
-
-  @override
   String get sessionCheckingMessage => 'جاري التحقق من حسابك...';
 
   @override
-  String get verifyPhoneMigrationTitle => 'تفعيل رقم هاتفك';
-
-  @override
-  String verifyPhoneMigrationSubtitle(String phone) {
-    return 'لأمان حسابك، أدخل الكود اللي اتبعت لـ $phone.';
-  }
-
-  @override
-  String get phoneVerifiedSuccessMessage => 'تم تفعيل رقم الهاتف بنجاح';
-
-  @override
   String get forgotPasswordTitle => 'إعادة تعيين كلمة المرور';
-
-  @override
-  String get forgotPasswordSubtitle => 'أدخل رقم هاتفك وهنبعتلك كود تفعيل.';
-
-  @override
-  String get sendCodeButton => 'إرسال الكود';
-
-  @override
-  String get resetPasswordTitle => 'أدخل كلمة مرور جديدة';
-
-  @override
-  String resetPasswordSubtitle(String phone) {
-    return 'أدخل الكود اللي اتبعت لـ $phone واختر كلمة مرور جديدة.';
-  }
 
   @override
   String get confirmPasswordHint => 'تأكيد كلمة المرور';
@@ -343,9 +262,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get passwordsDoNotMatch => 'كلمتا المرور غير متطابقتين';
-
-  @override
-  String get resetPasswordButton => 'تغيير كلمة المرور';
 
   @override
   String get passwordChangedSuccessMessage => 'تم تغيير كلمة المرور بنجاح';
@@ -1494,7 +1410,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profileEditName => 'تعديل الاسم';
 
   @override
-  String get profilePhoneLabel => 'رقم الهاتف';
+  String get profileEmailLabel => 'البريد الإلكتروني';
 
   @override
   String get profileAddPhoto => 'إضافة صورة';
@@ -1532,10 +1448,6 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get profileNameSaveFailed =>
       'تعذر تحديث الاسم. تحقق من الاتصال وحاول مجددًا.';
-
-  @override
-  String get profilePhoneVerificationNote =>
-      'تغيير رقم الهاتف يتطلب التحقق برسالة SMS.';
 
   @override
   String get profileProgressAction => 'تقدمي';
@@ -1584,7 +1496,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profileNameUnavailable => 'الاسم غير متاح';
 
   @override
-  String get profileNameInvalid => 'أدخل اسمًا لا يتجاوز 80 حرفًا.';
+  String get profileNameInvalid =>
+      'اكتب اسمًا لا يزيد عن 60 حرفًا ويحتوي على حرف واحد على الأقل.';
 
   @override
   String get settingsLanguage => 'اللغة';
@@ -1792,4 +1705,229 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get loadingLabel => 'جارٍ التحميل';
+
+  @override
+  String resendCodeIn(int seconds) {
+    return 'إعادة الإرسال بعد $seconds ث';
+  }
+
+  @override
+  String get signOutUseAnotherAccount => 'تسجيل الخروج واستخدام حساب تاني';
+
+  @override
+  String get leaveVerificationTitle => 'عايز تسيب التحقق؟';
+
+  @override
+  String get signOutButton => 'تسجيل الخروج';
+
+  @override
+  String get stayButton => 'استنى';
+
+  @override
+  String get verificationInProgressMessage => 'استنى لحد ما التحقق يخلص.';
+
+  @override
+  String get sessionCheckFailedTitle => 'معرفناش نتحقق من حسابك';
+
+  @override
+  String get sessionCheckFailedBody => 'اتأكد من اتصال الإنترنت وحاول تاني.';
+
+  @override
+  String nameTooLong(int max) {
+    return 'الاسم لازم يكون $max حرف أو أقل';
+  }
+
+  @override
+  String get nameNeedsLetters => 'الاسم لازم يحتوي على حروف';
+
+  @override
+  String passwordMinLengthError(int min) {
+    return 'كلمة المرور لازم تكون $min حروف على الأقل';
+  }
+
+  @override
+  String passwordMaxLengthError(int max) {
+    return 'كلمة المرور لازم تكون $max حرف أو أقل';
+  }
+
+  @override
+  String get passwordEdgeWhitespaceError =>
+      'كلمة المرور ماينفعش تبدأ أو تنتهي بمسافة';
+
+  @override
+  String passwordRequirementsHelper(int min) {
+    return '$min حروف على الأقل';
+  }
+
+  @override
+  String get showPasswordTooltip => 'إظهار كلمة المرور';
+
+  @override
+  String get hidePasswordTooltip => 'إخفاء كلمة المرور';
+
+  @override
+  String get changePasswordAction => 'تغيير كلمة المرور';
+
+  @override
+  String get authErrorWeakPassword =>
+      'من فضلك اختار كلمة مرور أقوى (6 حروف على الأقل).';
+
+  @override
+  String get authErrorNetwork =>
+      'مشكلة في الاتصال. اتأكد من الإنترنت وحاول تاني.';
+
+  @override
+  String get authErrorTooManyRequests => 'محاولات كتير. حاول تاني بعد شوية.';
+
+  @override
+  String get authErrorAccountDisabled =>
+      'الحساب ده متوقف. من فضلك تواصل مع الدعم.';
+
+  @override
+  String get authErrorGeneric => 'حصلت مشكلة. حاول تاني.';
+
+  @override
+  String get authErrorInvalidName => 'من فضلك أدخل اسم صحيح.';
+
+  @override
+  String get emailHint => 'البريد الإلكتروني';
+
+  @override
+  String get emailRequired => 'من فضلك أدخل بريدك الإلكتروني';
+
+  @override
+  String get emailInvalidError => 'من فضلك أدخل بريد إلكتروني صحيح';
+
+  @override
+  String get emailTooLongError => 'البريد الإلكتروني طويل جدًا';
+
+  @override
+  String get emailReservedError => 'لا يمكن استخدام هذا البريد الإلكتروني';
+
+  @override
+  String get verifyEmailTitle => 'تأكيد البريد الإلكتروني';
+
+  @override
+  String verifyEmailBody(String email) {
+    return 'أرسلنا رابط تأكيد إلى $email. افتح الرابط، ثم ارجع واضغط \"تم التأكيد\".';
+  }
+
+  @override
+  String verifyEmailNotSentBody(String email) {
+    return 'لم نتمكن من إرسال رسالة التأكيد إلى $email. اضغط إعادة الإرسال للمحاولة مرة أخرى.';
+  }
+
+  @override
+  String get verifyEmailSpamHint =>
+      'لا تجد الرسالة؟ تحقق من مجلد الرسائل غير المرغوب فيها (Spam).';
+
+  @override
+  String get iveVerifiedButton => 'تم التأكيد';
+
+  @override
+  String get resendEmailButton => 'إعادة إرسال الرسالة';
+
+  @override
+  String get verificationEmailSentMessage => 'تم إرسال رسالة التأكيد.';
+
+  @override
+  String get emailNotVerifiedYetMessage =>
+      'لم يتم تأكيد بريدك الإلكتروني بعد. افتح الرابط الذي أرسلناه ثم حاول مرة أخرى.';
+
+  @override
+  String get changeEmailButton => 'تغيير البريد الإلكتروني';
+
+  @override
+  String get changeEmailBody =>
+      'سنرسل رابط تأكيد إلى العنوان الجديد. يتغير بريد تسجيل الدخول بعد فتح الرابط.';
+
+  @override
+  String get newEmailHint => 'البريد الإلكتروني الجديد';
+
+  @override
+  String get sendLinkButton => 'إرسال الرابط';
+
+  @override
+  String emailChangeRequestedMessage(String email) {
+    return 'تم إرسال رابط التأكيد إلى $email. افتحه لإتمام تغيير بريدك الإلكتروني.';
+  }
+
+  @override
+  String get emailVerifiedSuccessMessage => 'تم تأكيد البريد الإلكتروني بنجاح';
+
+  @override
+  String get accountSetupCompleteMessage => 'تم إعداد الحساب بنجاح';
+
+  @override
+  String get legacyAccountSignedOutMessage =>
+      'حساب التجربة هذا لم يعد مدعومًا. من فضلك أنشئ حسابًا جديدًا ببريدك الإلكتروني.';
+
+  @override
+  String get leaveEmailVerificationBody =>
+      'سيتم تسجيل خروجك. يمكنك تسجيل الدخول مرة أخرى في أي وقت لإكمال تأكيد بريدك الإلكتروني.';
+
+  @override
+  String get forgotPasswordEmailSubtitle =>
+      'أدخل البريد الإلكتروني لحسابك وسنرسل لك رابطًا لإعادة تعيين كلمة المرور.';
+
+  @override
+  String get sendResetLinkButton => 'إرسال رابط إعادة التعيين';
+
+  @override
+  String get passwordResetEmailSentTitle => 'تحقق من بريدك الإلكتروني';
+
+  @override
+  String passwordResetEmailSentBody(String email) {
+    return 'إذا كان هناك حساب مرتبط بـ $email، فقد أرسلنا رابطًا لإعادة تعيين كلمة المرور.';
+  }
+
+  @override
+  String get backToLoginButton => 'العودة لتسجيل الدخول';
+
+  @override
+  String get authErrorIncorrectEmailCredentials =>
+      'البريد الإلكتروني أو كلمة المرور غير صحيحة.';
+
+  @override
+  String get authErrorEmailInUse =>
+      'يوجد حساب بالفعل بهذا البريد الإلكتروني. من فضلك سجّل الدخول.';
+
+  @override
+  String get authErrorNewEmailInUse =>
+      'هذا البريد الإلكتروني مستخدم بالفعل في حساب آخر.';
+
+  @override
+  String get authErrorRecentLoginEmail =>
+      'لحمايتك، من فضلك سجّل الدخول مرة أخرى لتغيير بريدك الإلكتروني.';
+
+  @override
+  String get authErrorSessionExpired =>
+      'انتهت صلاحية الجلسة. من فضلك سجّل الدخول مرة أخرى.';
+
+  @override
+  String get authErrorSessionEnded =>
+      'انتهت الجلسة. من فضلك سجّل الدخول مرة أخرى.';
+
+  @override
+  String get accountSetupFailedTitle => 'لم نتمكن من إكمال إعداد حسابك';
+
+  @override
+  String get profilePermissionDeniedBody =>
+      'تم رفض الوصول إلى ملف حسابك. حاول مرة أخرى لاحقًا، أو تواصل مع الدعم إذا استمرت المشكلة.';
+
+  @override
+  String get profileConflictingBody =>
+      'ملف حسابك يحتاج إلى مراجعة. من فضلك تواصل مع الدعم.';
+
+  @override
+  String get profileUnknownFailureBody =>
+      'حدث خطأ أثناء إعداد حسابك. حاول مرة أخرى.';
+
+  @override
+  String get authErrorProfilePermissionDenied =>
+      'لم نتمكن من حفظ ملفك الشخصي لأنه تم رفض الوصول. من فضلك تواصل مع الدعم.';
+
+  @override
+  String get authErrorProfileConflicting =>
+      'ملف حسابك يحتاج إلى مراجعة. من فضلك تواصل مع الدعم.';
 }

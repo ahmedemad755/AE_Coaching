@@ -9,6 +9,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import 'package:ae_coaching/core/bootstrap/startup_destination.dart';
 import 'package:ae_coaching/core/routes/app_router.dart';
 import 'package:ae_coaching/core/notifications/fcm_notification_routing.dart';
 
@@ -43,6 +44,11 @@ class FcmDeviceService {
   bool _initialized = false;
   bool _readyForRegistration = false;
 
+  /// `uid:tokenId` of the last token written in this process, so repeated
+  /// triggers (user reloads, session-marker writes, startup) don't rewrite
+  /// the same document. Cleared on sign-out and unregister.
+  String? _lastRegistration;
+
   Future<AuthorizationStatus> notificationAuthorizationStatus() async {
     final settings = await _messaging.getNotificationSettings();
     return settings.authorizationStatus;
@@ -61,6 +67,28 @@ class FcmDeviceService {
         authenticatedUid == sessionUid;
   }
 
+  /// Token registration eligibility: the same cleared identity the route
+  /// guard requires (signed in, not a phone-era test account, verified
+  /// when password-based) AND, stricter than the guard, a verified email
+  /// for every provider. firestore.rules enforces the same
+  /// `email_verified` requirement on token writes.
+  @visibleForTesting
+  static bool isEligibleForTokenRegistration(StartupAuthSnapshot snapshot) =>
+      canEnterProtectedRoute(snapshot) && snapshot.firebaseEmailVerified;
+
+  static StartupAuthSnapshot _snapshotOf(User? user) => StartupAuthSnapshot(
+    firebaseUid: user?.uid,
+    firebaseEmail: user?.email ?? '',
+    firebaseEmailVerified: user?.emailVerified ?? false,
+    firebaseUsesPassword:
+        user?.providerData.any((p) => p.providerId == 'password') ?? false,
+  );
+
+  /// Runs one registration attempt now, through the same serial queue as
+  /// the production triggers.
+  @visibleForTesting
+  Future<void> syncTokenForTesting() => _enqueue(_registerCurrentSession);
+
   @visibleForTesting
   static String tokenDocumentId(String token) =>
       sha256.convert(utf8.encode(token)).toString();
@@ -71,9 +99,13 @@ class FcmDeviceService {
       if (!await _messaging.isSupported()) return;
       _initialized = true;
 
-      _authSubscription = _auth.authStateChanges().listen((user) {
+      // userChanges (not authStateChanges) also fires after user.reload(),
+      // which is how the app learns an email was just verified, so
+      // eligibility is re-evaluated at that moment too.
+      _authSubscription = _auth.userChanges().listen((user) {
         if (user == null) {
           _blockedUids.clear();
+          _lastRegistration = null;
         } else if (_readyForRegistration && !_blockedUids.contains(user.uid)) {
           _schedule(_registerCurrentSession);
         }
@@ -117,6 +149,7 @@ class FcmDeviceService {
     required String expectedUid,
   }) async {
     _blockedUids.add(expectedUid);
+    _lastRegistration = null;
     await _enqueue(() async {
       final currentUid = _auth.currentUser?.uid;
       if (currentUid != expectedUid) {
@@ -156,6 +189,10 @@ class FcmDeviceService {
     )) {
       return;
     }
+    // Never for unauthenticated, unverified or phone-era accounts, and
+    // before any permission prompt. A stale local session marker alone
+    // (e.g. left by a phone-era build) is not enough.
+    if (!isEligibleForTokenRegistration(_snapshotOf(user))) return;
 
     final settings = await _messaging.getNotificationSettings();
     final prompted =
@@ -189,13 +226,22 @@ class FcmDeviceService {
       sessionUid: _box.get('currentUserUid', defaultValue: '') as String,
       isLoggedIn: _box.get('isLoggedIn', defaultValue: false) as bool,
     );
-    if (!stillOwnsSession || currentUid != uid || _blockedUids.contains(uid)) {
+    if (!stillOwnsSession ||
+        currentUid != uid ||
+        _blockedUids.contains(uid) ||
+        !isEligibleForTokenRegistration(_snapshotOf(_auth.currentUser))) {
       return;
     }
 
     final tokenId = tokenDocumentId(token);
     final previousOwnerUid = _box.get(_tokenOwnerUidKey) as String?;
     final previousTokenId = _box.get(_tokenIdKey) as String?;
+    final registration = '$uid:$tokenId';
+    if (_lastRegistration == registration &&
+        previousOwnerUid == uid &&
+        previousTokenId == tokenId) {
+      return; // Already registered by this process; nothing changed.
+    }
     final tokenRef = _tokenDocument(uid!, tokenId);
     final batch = _firestore.batch();
     final snapshot = await tokenRef.get();
@@ -222,6 +268,7 @@ class FcmDeviceService {
     if (_auth.currentUser?.uid != uid || _blockedUids.contains(uid)) return;
     await _box.put(_tokenOwnerUidKey, uid);
     await _box.put(_tokenIdKey, tokenId);
+    _lastRegistration = registration;
   }
 
   DocumentReference<Map<String, dynamic>> _tokenDocument(

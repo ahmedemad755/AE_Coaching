@@ -293,7 +293,7 @@ void main() {
     await tester.pumpAndSettle();
     final l10n = await AppLocalizations.delegate.load(const Locale('ar'));
     expect(find.text(l10n.addSelectedExercisesButton(1)), findsOneWidget);
-    await tester.tap(find.text(l10n.exerciseFiltersTitle));
+    await tester.tap(find.text('${l10n.exerciseFiltersTitle} (0)'));
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const ValueKey('muscle-filter-chest')));
     await tester.pumpAndSettle();
@@ -303,7 +303,8 @@ void main() {
   testWidgets('muscle and equipment filters apply together', (tester) async {
     await tester.pumpWidget(app(const Locale('en')));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Filters'));
+    // The filter button shows the active-filter count: "Filters (0)".
+    await tester.tap(find.text('Filters (0)'));
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const ValueKey('muscle-filter-chest')));
     await tester.pumpAndSettle();
