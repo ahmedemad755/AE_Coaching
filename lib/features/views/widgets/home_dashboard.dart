@@ -14,6 +14,8 @@ import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ae_coaching/core/widgets/entrance_animation.dart';
+import 'package:ae_coaching/core/widgets/visible_data_refresher.dart';
+import 'package:flutter/foundation.dart';
 
 /// Presentation and navigation only. Existing Cubits own all workout data.
 class HomeDashboard extends StatefulWidget {
@@ -59,15 +61,92 @@ class _HomeDashboardState extends State<HomeDashboard> {
   bool _starting = false;
   bool _openingTemplates = false;
   int _tab = 0;
-  // Each visit rebuilds a tab so it reloads current data, like a fresh push.
-  // Scroll positions still survive: each tab has a stable PageStorageKey
-  // and Home's route-level PageStorage bucket outlives the rebuild.
-  final _visits = List<int>.filled(4, 0);
+
+  // Persistent tabs: a tab is built the first time it is opened and then
+  // stays mounted (offstage while hidden), so its State, scroll positions
+  // and local UI state survive tab switches and nothing reloads just
+  // because the user navigated. Tabs belong to one signed-in user: they
+  // are keyed by [_tabsOwner] and rebuilt from scratch when it changes.
+  final Set<int> _activated = {0};
+  String _tabsOwner = '';
+
+  // Home's overview reloads only after the data it shows changed (see
+  // VisibleDataRefresher), while Home is the visible tab of the visible
+  // route, instead of on every return to the Home tab.
+  final _homeVisible = ValueNotifier<bool>(true);
+  ValueListenable<bool>? _routeVisible;
+  late final _overviewRefresher = VisibleDataRefresher(
+    reload: () => context.read<HomeWorkoutOverviewCubit>().loadOverview(),
+  );
 
   bool get _hasTabs =>
       widget.programsTab != null &&
       widget.progressTab != null &&
       widget.moreTab != null;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabsOwner = widget.currentUserId() ?? '';
+    _overviewRefresher.attachVisibility(_homeVisible);
+    _watchOverviewSources(_tabsOwner);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // False while another route covers Home (for example an active
+    // workout): changes made there are picked up on return.
+    final routeVisible = TickerMode.getNotifier(context);
+    if (!identical(routeVisible, _routeVisible)) {
+      _routeVisible?.removeListener(_updateHomeVisible);
+      _routeVisible = routeVisible..addListener(_updateHomeVisible);
+      _updateHomeVisible();
+    }
+  }
+
+  @override
+  void didUpdateWidget(HomeDashboard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final owner = widget.currentUserId() ?? '';
+    if (owner != _tabsOwner) _onOwnerChanged(owner);
+  }
+
+  void _updateHomeVisible() =>
+      _homeVisible.value = _tab == 0 && (_routeVisible?.value ?? true);
+
+  Future<void> _watchOverviewSources(String owner) async {
+    if (owner.isEmpty) return;
+    try {
+      final sources = await context
+          .read<HomeWorkoutOverviewCubit>()
+          .sourceChanges();
+      if (mounted && owner == _tabsOwner) _overviewRefresher.watch(sources);
+    } catch (error) {
+      // No change notifications: Home still refreshes after its own
+      // actions and on pull-to-refresh, exactly as before.
+      debugPrint('Home overview change tracking unavailable: $error');
+    }
+  }
+
+  /// The signed-in user changed under a mounted Home (for example the
+  /// session was invalidated): drop every tab built for the previous user
+  /// and replace Home's data, so nothing of theirs stays on screen.
+  void _onOwnerChanged(String owner) {
+    _tabsOwner = owner;
+    _activated
+      ..clear()
+      ..add(0);
+    _tab = 0;
+    _updateHomeVisible();
+    _overviewRefresher.reset();
+    _watchOverviewSources(owner);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || owner != _tabsOwner) return;
+      context.read<WorkoutProgramCubit>().refreshPrograms();
+      context.read<HomeWorkoutOverviewCubit>().loadOverview();
+    });
+  }
 
   void _selectTab(int index) {
     if (index == _tab) {
@@ -76,10 +155,10 @@ class _HomeDashboardState extends State<HomeDashboard> {
     }
     setState(() {
       _tab = index;
-      _visits[index]++;
+      _activated.add(index);
     });
+    _updateHomeVisible();
     widget.onTabChanged?.call(index);
-    if (index == 0) _refreshPrograms();
   }
 
   void _scrollHomeToTop() {
@@ -94,6 +173,9 @@ class _HomeDashboardState extends State<HomeDashboard> {
 
   @override
   void dispose() {
+    _routeVisible?.removeListener(_updateHomeVisible);
+    _overviewRefresher.dispose();
+    _homeVisible.dispose();
     _scrollController.dispose();
     super.dispose();
   }
@@ -194,46 +276,54 @@ class _HomeDashboardState extends State<HomeDashboard> {
   Widget build(BuildContext context) {
     final home = _buildHome(context);
     final tabs = _hasTabs;
-    return PopScope(
-      canPop: !tabs || _tab == 0,
-      onPopInvokedWithResult: (didPop, _) {
-        if (!didPop) _selectTab(0);
-      },
-      child: Scaffold(
-        backgroundColor: HomeDashboardStyle.background(context),
-        extendBody: true,
-        body: tabs
-            ? _AnimatedTabStack(
-                index: _tab,
-                children: [
-                  home,
-                  for (final (i, builder) in [
-                    widget.programsTab!,
-                    widget.progressTab!,
-                    widget.moreTab!,
-                  ].indexed)
-                    // Only Home stays alive in the background.
-                    if (_tab == i + 1)
-                      KeyedSubtree(
-                        key: ValueKey('home-tab-${i + 1}-${_visits[i + 1]}'),
-                        child: KeyedSubtree(
-                          key: PageStorageKey<String>('home-tab-${i + 1}'),
-                          child: Builder(builder: builder),
-                        ),
-                      )
-                    else
-                      const SizedBox.shrink(),
-                ],
-              )
-            : home,
-        bottomNavigationBar: _BottomNavigation(
-          selectedIndex: _tab,
-          onSelected: (index) => switch (index) {
-            0 => _selectTab(0),
-            1 => _openPrograms(),
-            2 => _progress(),
-            _ => _more(),
-          },
+    return BlocListener<HomeWorkoutOverviewCubit, HomeWorkoutOverviewState>(
+      // Any overview load (this Home's or a mutation-driven one elsewhere)
+      // already reads the latest data, so pending changes are covered.
+      listenWhen: (_, state) => state is HomeWorkoutOverviewLoading,
+      listener: (_, _) => _overviewRefresher.markClean(),
+      child: PopScope(
+        canPop: !tabs || _tab == 0,
+        onPopInvokedWithResult: (didPop, _) {
+          if (!didPop) _selectTab(0);
+        },
+        child: Scaffold(
+          backgroundColor: HomeDashboardStyle.background(context),
+          extendBody: true,
+          body: tabs
+              ? _AnimatedTabStack(
+                  index: _tab,
+                  children: [
+                    home,
+                    for (final (i, builder) in [
+                      widget.programsTab!,
+                      widget.progressTab!,
+                      widget.moreTab!,
+                    ].indexed)
+                      // Built on first open, then kept mounted for this user.
+                      if (_activated.contains(i + 1))
+                        KeyedSubtree(
+                          key: ValueKey('home-tab-${i + 1}-$_tabsOwner'),
+                          child: KeyedSubtree(
+                            key: PageStorageKey<String>(
+                              'home-tab-${i + 1}-$_tabsOwner',
+                            ),
+                            child: Builder(builder: builder),
+                          ),
+                        )
+                      else
+                        const SizedBox.shrink(),
+                  ],
+                )
+              : home,
+          bottomNavigationBar: _BottomNavigation(
+            selectedIndex: _tab,
+            onSelected: (index) => switch (index) {
+              0 => _selectTab(0),
+              1 => _openPrograms(),
+              2 => _progress(),
+              _ => _more(),
+            },
+          ),
         ),
       ),
     );
@@ -361,8 +451,13 @@ class _HomeDashboardState extends State<HomeDashboard> {
   }
 }
 
-/// Keeps Home alive and fades + slides the selected tab in from the side of
-/// the tapped destination.
+/// Keeps every built tab mounted and fades + slides the selected tab in from
+/// the side of the tapped destination.
+///
+/// Hidden tabs keep their State but are offstage (not painted, no pointer
+/// input, excluded from semantics), cannot take focus, and have their
+/// tickers paused. Every slot keeps a fixed position in the tree, so
+/// switching tabs never rebuilds a tab's subtree from scratch.
 class _AnimatedTabStack extends StatefulWidget {
   const _AnimatedTabStack({required this.index, required this.children});
 
@@ -423,16 +518,19 @@ class _AnimatedTabStackState extends State<_AnimatedTabStack>
             key: ValueKey('tab-slot-$i'),
             child: Offstage(
               offstage: i != widget.index,
-              child: TickerMode(
-                enabled: i == widget.index,
-                child: FadeTransition(
-                  opacity: i == widget.index
-                      ? _curve
-                      : kAlwaysCompleteAnimation,
-                  child: SlideTransition(
-                    position: i == widget.index ? slide : _restingOffset,
-                    textDirection: Directionality.of(context),
-                    child: widget.children[i],
+              child: ExcludeFocus(
+                excluding: i != widget.index,
+                child: TickerMode(
+                  enabled: i == widget.index,
+                  child: FadeTransition(
+                    opacity: i == widget.index
+                        ? _curve
+                        : kAlwaysCompleteAnimation,
+                    child: SlideTransition(
+                      position: i == widget.index ? slide : _restingOffset,
+                      textDirection: Directionality.of(context),
+                      child: widget.children[i],
+                    ),
                   ),
                 ),
               ),

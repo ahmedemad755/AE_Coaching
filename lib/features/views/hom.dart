@@ -643,10 +643,12 @@ class _HomState extends State<Hom> {
         onProgressAnalysis: _showProgressAnalysis,
         programsTab: (_) => const WorkoutProgramsScreen(),
         progressTab: (_) => const MyProgressScreen(),
-        moreTab: (_) => PersonalHubScreen(onLogout: _logout),
-        onTabChanged: (index) {
-          if (index == 0) unawaited(_refreshProfile());
-        },
+        // The tab stays mounted, so the header is refreshed when the More
+        // tab actually changes the name or photo, not on every tab switch.
+        moreTab: (_) => PersonalHubScreen(
+          onLogout: _logout,
+          onProfileChanged: () => unawaited(_refreshProfile()),
+        ),
         onImageError: () {
           final uid = _profilePhotoUid;
           final failedPath = _profilePhotoPath;

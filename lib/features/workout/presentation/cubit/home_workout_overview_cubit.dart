@@ -41,6 +41,17 @@ class HomeWorkoutOverviewCubit extends Cubit<HomeWorkoutOverviewState> {
   }) : service = service ?? const HomeWorkoutOverviewService(),
        super(const HomeWorkoutOverviewInitial());
 
+  /// Change notifications for every per-user box this overview is built
+  /// from (sessions, programs, templates, sets), so a kept-alive Home can
+  /// reload only after its data actually changed instead of on every
+  /// navigation. Read-only: subscribing never writes anything.
+  Future<List<Stream<Object?>>> sourceChanges() async => [
+    (await sessionRepository.getUserBox()).watch(),
+    (await programRepository.getUserBox()).watch(),
+    (await templateRepository.getUserBox()).watch(),
+    (await setRepository.getUserBox()).watch(),
+  ];
+
   Future<void> loadOverview() async {
     emit(const HomeWorkoutOverviewLoading());
     try {

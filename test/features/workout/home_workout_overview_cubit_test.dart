@@ -129,6 +129,55 @@ void main() {
   });
 
   test(
+    'sourceChanges notifies for each box the overview reads, without loading',
+    () async {
+      final sources = await cubit.sourceChanges();
+      expect(sources, hasLength(4));
+      final fired = List<int>.filled(sources.length, 0);
+      final subscriptions = [
+        for (final (i, source) in sources.indexed)
+          source.listen((_) => fired[i]++),
+      ];
+      addTearDown(() async {
+        for (final subscription in subscriptions) {
+          await subscription.cancel();
+        }
+      });
+      expect(cubit.state, isA<HomeWorkoutOverviewInitial>());
+
+      // Order: sessions, programs, templates, sets.
+      final program = await programRepository.createProgram(
+        name: 'PPL',
+        makeActive: true,
+      );
+      final day = await templateRepository.createTemplate(
+        programId: program.id,
+        name: 'Push',
+      );
+      final session = await sessionRepository.startWorkoutSession(
+        programId: program.id,
+        workoutTemplateId: day.id,
+        workoutNameSnapshot: 'Push',
+      );
+      await setRepository.addSet(
+        programId: program.id,
+        workoutTemplateId: day.id,
+        workoutSessionId: session.id,
+        exerciseName: 'Bench Press',
+        weight: 80,
+        reps: 8,
+      );
+      await Future<void>.delayed(Duration.zero);
+
+      for (final (i, count) in fired.indexed) {
+        expect(count, greaterThan(0), reason: 'source $i');
+      }
+      // Watching is passive: it never loads the overview by itself.
+      expect(cubit.state, isA<HomeWorkoutOverviewInitial>());
+    },
+  );
+
+  test(
     'no active program and no completed workouts: both empty states load correctly',
     () async {
       await cubit.loadOverview();

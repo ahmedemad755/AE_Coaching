@@ -18,11 +18,21 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ae_coaching/core/widgets/app_shimmer.dart';
+import 'package:ae_coaching/core/widgets/visible_data_refresher.dart';
 
 class PersonalHubScreen extends StatefulWidget {
-  const PersonalHubScreen({super.key, required this.onLogout});
+  const PersonalHubScreen({
+    super.key,
+    required this.onLogout,
+    this.onProfileChanged,
+  });
 
   final ProfileLogoutCallback onLogout;
+
+  /// Called after the name or photo was changed here, so a screen that
+  /// shows them (Home's header) refreshes exactly then, not on every
+  /// navigation.
+  final VoidCallback? onProfileChanged;
 
   @override
   State<PersonalHubScreen> createState() => _PersonalHubScreenState();
@@ -38,6 +48,17 @@ class _PersonalHubScreenState extends State<PersonalHubScreen> {
   bool _profileBusy = false;
   late Future<MyProgressSummary> _progress;
 
+  /// True while a change-driven refresh replaces [_progress]: the current
+  /// numbers stay on screen until the new ones land. Never true for a
+  /// first load or a different user's load.
+  bool _refreshingProgress = false;
+
+  // Kept alive as the More tab, the progress card reloads only after the
+  // boxes it reads changed, and only while this screen is visible.
+  late final _progressRefresher = VisibleDataRefresher(
+    reload: _refreshProgressInBackground,
+  );
+
   @override
   void initState() {
     super.initState();
@@ -47,13 +68,31 @@ class _PersonalHubScreenState extends State<PersonalHubScreen> {
     );
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _progressRefresher.attachVisibility(TickerMode.getNotifier(context));
+  }
+
+  Future<void> _refreshProgressInBackground() async {
+    if (!mounted || _uid.isEmpty) return;
+    final next = _loadProgress(_uid);
+    setState(() {
+      _refreshingProgress = true;
+      _progress = next;
+    });
+    await next;
+  }
+
   void _setAccount(User? user, {bool initial = false}) {
     final uid = user?.uid ?? '';
     if (!initial && uid == _uid) return;
     if (!initial && mounted) {
+      _progressRefresher.reset();
       setState(() {
         _uid = uid;
         _photoPath = null;
+        _refreshingProgress = false;
         _loadAccountFields(user);
         _progress = _loadProgress(uid);
       });
@@ -89,6 +128,9 @@ class _PersonalHubScreenState extends State<PersonalHubScreen> {
     final setBox = await setRepository.getUserBox();
     if (FirebaseAuth.instance.currentUser?.uid != uid) {
       return _emptyProgress();
+    }
+    if (mounted && uid == _uid) {
+      _progressRefresher.watch([sessionBox.watch(), setBox.watch()]);
     }
     return const MyProgressSummaryService().summarize(
       sessions: sessionRepository.getAllCompletedSessions(sessionBox),
@@ -207,6 +249,7 @@ class _PersonalHubScreenState extends State<PersonalHubScreen> {
       );
       if (mounted && _uid == uid && FirebaseAuth.instance.currentUser?.uid == uid) {
         setState(() => _photoPath = path);
+        widget.onProfileChanged?.call();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.profilePhotoSaved)));
       }
     } catch (_) {
@@ -244,6 +287,7 @@ class _PersonalHubScreenState extends State<PersonalHubScreen> {
       await sl<LocalProfilePhotoStore>().removePhoto(uid);
       if (mounted && _uid == uid && FirebaseAuth.instance.currentUser?.uid == uid) {
         setState(() => _photoPath = null);
+        widget.onProfileChanged?.call();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.profilePhotoRemoved)));
       }
     } catch (_) {
@@ -308,6 +352,7 @@ class _PersonalHubScreenState extends State<PersonalHubScreen> {
       await sl<SessionStorage>().updateCurrentUserName(uid: uid, name: name);
       if (mounted && _uid == uid) {
         setState(() => _name = name);
+        widget.onProfileChanged?.call();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.profileNameSaved)));
       }
     } catch (_) {
@@ -333,6 +378,7 @@ class _PersonalHubScreenState extends State<PersonalHubScreen> {
 
   @override
   void dispose() {
+    _progressRefresher.dispose();
     _authSubscription?.cancel();
     super.dispose();
   }
@@ -414,7 +460,8 @@ class _PersonalHubScreenState extends State<PersonalHubScreen> {
           FutureBuilder<MyProgressSummary>(
             future: _progress,
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
+              if (snapshot.connectionState == ConnectionState.waiting &&
+                  !(_refreshingProgress && snapshot.hasData)) {
                 return const Padding(padding: EdgeInsets.symmetric(vertical: 8), child: AppShimmer(child: ShimmerBone(height: 120, radius: 20)));
               }
               if (snapshot.hasError) {

@@ -19,6 +19,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ae_coaching/core/widgets/app_shimmer.dart';
+import 'package:ae_coaching/core/widgets/visible_data_refresher.dart';
 
 class MyProgressScreen extends StatefulWidget {
   const MyProgressScreen({super.key});
@@ -32,6 +33,15 @@ class _MyProgressScreenState extends State<MyProgressScreen> {
   String _uid = '';
   late Future<_ProgressData> _data;
 
+  /// True while a change-driven refresh replaces [_data]: the current data
+  /// stays on screen (no shimmer, scroll position kept) until it lands.
+  /// Never true for a first load or a different user's load.
+  bool _refreshing = false;
+
+  // Kept alive as a Home tab, this screen reloads only after the boxes it
+  // reads changed, and only while it is visible.
+  late final _refresher = VisibleDataRefresher(reload: _refreshInBackground);
+
   @override
   void initState() {
     super.initState();
@@ -40,11 +50,29 @@ class _MyProgressScreenState extends State<MyProgressScreen> {
     _authSubscription = FirebaseAuth.instance.authStateChanges().listen((user) {
       final uid = user?.uid ?? '';
       if (uid == _uid || !mounted) return;
+      _refresher.reset();
       setState(() {
         _uid = uid;
+        _refreshing = false;
         _data = _load(uid);
       });
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _refresher.attachVisibility(TickerMode.getNotifier(context));
+  }
+
+  Future<void> _refreshInBackground() async {
+    if (!mounted || _uid.isEmpty) return;
+    final next = _load(_uid);
+    setState(() {
+      _refreshing = true;
+      _data = next;
+    });
+    await next;
   }
 
   Future<_ProgressData> _load(String uid) async {
@@ -69,6 +97,14 @@ class _MyProgressScreenState extends State<MyProgressScreen> {
     if (FirebaseAuth.instance.currentUser?.uid != uid) {
       return _ProgressData.empty();
     }
+    if (mounted && uid == _uid) {
+      _refresher.watch([
+        programBox.watch(),
+        templateBox.watch(),
+        sessionBox.watch(),
+        setBox.watch(),
+      ]);
+    }
     final programs = programRepository.getPrograms(programBox);
     final templates = templateBox.values.toList();
     final allSets = setBox.values.toList();
@@ -92,6 +128,7 @@ class _MyProgressScreenState extends State<MyProgressScreen> {
 
   @override
   void dispose() {
+    _refresher.dispose();
     _authSubscription?.cancel();
     super.dispose();
   }
@@ -129,7 +166,8 @@ class _MyProgressScreenState extends State<MyProgressScreen> {
       body: FutureBuilder<_ProgressData>(
         future: _data,
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+          if (snapshot.connectionState == ConnectionState.waiting &&
+              !(_refreshing && snapshot.hasData)) {
             return const ShimmerDashboard();
           }
           if (snapshot.hasError) {
@@ -145,7 +183,10 @@ class _MyProgressScreenState extends State<MyProgressScreen> {
                     ),
                     const SizedBox(height: 10),
                     TextButton.icon(
-                      onPressed: () => setState(() => _data = _load(_uid)),
+                      onPressed: () => setState(() {
+                        _refreshing = false;
+                        _data = _load(_uid);
+                      }),
                       icon: const Icon(Icons.refresh),
                       label: Text(l10n.retry),
                     ),

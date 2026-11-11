@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:ui' as ui;
 
@@ -65,10 +66,24 @@ class _Overview extends HomeWorkoutOverviewCubit {
       );
   HomeWorkoutOverview next = HomeWorkoutOverview.empty;
   int loads = 0;
+
+  /// Stands in for the Hive box change notifications of the boxes the
+  /// overview reads; tests add an event to simulate a data change.
+  final changes = StreamController<Object?>.broadcast();
+
+  @override
+  Future<List<Stream<Object?>>> sourceChanges() async => [changes.stream];
+
   @override
   Future<void> loadOverview() async {
     loads++;
     emit(HomeWorkoutOverviewLoaded(next));
+  }
+
+  @override
+  Future<void> close() async {
+    await changes.close();
+    return super.close();
   }
 
   void show(HomeWorkoutOverviewState state) => emit(state);
@@ -105,6 +120,56 @@ class _Importer extends WorkoutTemplateImportService {
   }
 }
 
+/// How often each persistent-tab probe was created and disposed.
+final _probeInits = <String, int>{};
+final _probeDisposes = <String, int>{};
+
+/// A tab body with its own State, local UI state (a tap counter), a
+/// focusable control, semantics and a scrollable list, used to prove the
+/// tab survives switching instead of being rebuilt.
+class _TabProbe extends StatefulWidget {
+  const _TabProbe(this.name);
+  final String name;
+  @override
+  State<_TabProbe> createState() => _TabProbeState();
+}
+
+class _TabProbeState extends State<_TabProbe> {
+  int taps = 0;
+  final focusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _probeInits.update(widget.name, (n) => n + 1, ifAbsent: () => 1);
+  }
+
+  @override
+  void dispose() {
+    _probeDisposes.update(widget.name, (n) => n + 1, ifAbsent: () => 1);
+    focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => ListView(
+    children: [
+      Text('${widget.name} taps $taps'),
+      TextButton(
+        key: ValueKey('${widget.name}-tap'),
+        focusNode: focusNode,
+        onPressed: () => setState(() => taps++),
+        child: Semantics(
+          label: '${widget.name} action',
+          child: const Text('+'),
+        ),
+      ),
+      for (var i = 0; i < 60; i++)
+        SizedBox(height: 48, child: Text('${widget.name} row $i')),
+    ],
+  );
+}
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   setUpAll(() async {
@@ -130,6 +195,8 @@ void main() {
   int profiles = 0, settings = 0, analysis = 0;
 
   setUp(() async {
+    _probeInits.clear();
+    _probeDisposes.clear();
     // The route guard reads Firebase Auth; tests run as a verified user.
     final originalAuthSnapshot = AppRouter.readAuthSnapshot;
     AppRouter.readAuthSnapshot = () => const StartupAuthSnapshot(
@@ -183,7 +250,10 @@ void main() {
     double scale = 1,
     String? name,
     bool tabs = false,
+    WidgetBuilder? programsTab,
     WidgetBuilder? progressTab,
+    WidgetBuilder? moreTab,
+    String? userId,
     bool reduceMotion = false,
   }) => MaterialApp(
     theme: AppTheme.light,
@@ -226,13 +296,15 @@ void main() {
         onProfile: () => profiles++,
         onSettings: () => settings++,
         onProgressAnalysis: () => analysis++,
-        currentUserId: () => f.uid,
+        currentUserId: () => userId ?? f.uid,
         volume: const Text('Today volume fixture'),
-        programsTab: tabs ? (_) => const Text('Programs tab fixture') : null,
+        programsTab: tabs
+            ? programsTab ?? (_) => const Text('Programs tab fixture')
+            : null,
         progressTab: tabs
             ? progressTab ?? (_) => const Text('Progress tab fixture')
             : null,
-        moreTab: tabs ? (_) => const Text('More tab fixture') : null,
+        moreTab: tabs ? moreTab ?? (_) => const Text('More tab fixture') : null,
       ),
     ),
   );
@@ -611,11 +683,290 @@ void main() {
     },
   );
 
+  group('persistent tabs', () {
+    Widget probes({String? userId}) => app(
+      tabs: true,
+      userId: userId,
+      programsTab: (_) => const _TabProbe('programs'),
+      progressTab: (_) => const _TabProbe('progress'),
+      moreTab: (_) => const _TabProbe('more'),
+    );
+    Future<void> go(WidgetTester tester, int index) async {
+      await tester.tap(find.byKey(ValueKey('home-nav-$index')));
+      await tester.pumpAndSettle();
+    }
+
+    Finder probe(String name) => find.byWidgetPredicate(
+      (w) => w is _TabProbe && w.name == name,
+      skipOffstage: false,
+    );
+    double scrollOffset(WidgetTester tester, String name) => tester
+        .state<ScrollableState>(
+          find
+              .descendant(of: probe(name), matching: find.byType(Scrollable))
+              .first,
+        )
+        .position
+        .pixels;
+
+    testWidgets(
+      'tabs build lazily, then each initializes once and is never disposed '
+      'by repeated switching',
+      (tester) async {
+        phone(tester, 390);
+        await tester.pumpWidget(probes());
+        await tester.pumpAndSettle();
+        expect(_probeInits, isEmpty, reason: 'nothing built before opened');
+
+        await go(tester, 1);
+        expect(_probeInits, {'programs': 1});
+
+        for (var round = 0; round < 3; round++) {
+          for (final index in [2, 3, 0, 1, 3, 2, 0, 1]) {
+            await go(tester, index);
+          }
+        }
+        expect(_probeInits, {'programs': 1, 'progress': 1, 'more': 1});
+        expect(_probeDisposes, isEmpty);
+        expect(tester.takeException(), isNull);
+      },
+    );
+
+    testWidgets(
+      'local UI state and scroll position survive switching and Android Back',
+      (tester) async {
+        phone(tester, 390);
+        await tester.pumpWidget(probes());
+        await tester.pumpAndSettle();
+        await go(tester, 2);
+        await tester.tap(find.byKey(const ValueKey('progress-tap')));
+        await tester.tap(find.byKey(const ValueKey('progress-tap')));
+        await tester.pump();
+        await tester.drag(find.text('progress row 3'), const Offset(0, -700));
+        await tester.pumpAndSettle();
+        final scrolled = scrollOffset(tester, 'progress');
+        expect(scrolled, greaterThan(400));
+
+        await go(tester, 3);
+        // System Back on a tab returns to Home, keeping the tab alive.
+        await tester.binding.handlePopRoute();
+        await tester.pumpAndSettle();
+        expect(find.byKey(const ValueKey('home-programs')), findsOneWidget);
+        await go(tester, 2);
+
+        expect(scrollOffset(tester, 'progress'), scrolled);
+        await tester.drag(find.byType(Scrollable).last, const Offset(0, 2000));
+        await tester.pumpAndSettle();
+        expect(find.text('progress taps 2'), findsOneWidget);
+        expect(_probeInits['progress'], 1);
+      },
+    );
+
+    testWidgets(
+      'hidden tabs take no pointer input, focus or semantics, and pause '
+      'their tickers',
+      (tester) async {
+        phone(tester, 390);
+        final semantics = tester.ensureSemantics();
+        await tester.pumpWidget(probes());
+        await tester.pumpAndSettle();
+        await go(tester, 1);
+        await go(tester, 2);
+
+        final hidden = tester.state<_TabProbeState>(probe('programs'));
+        expect(find.text('programs taps 0'), findsNothing); // offstage
+        expect(TickerMode.of(hidden.context), isFalse);
+        expect(
+          TickerMode.of(
+            tester.state<_TabProbeState>(probe('progress')).context,
+          ),
+          isTrue,
+        );
+
+        hidden.focusNode.requestFocus();
+        await tester.pump();
+        expect(hidden.focusNode.hasFocus, isFalse);
+
+        // The label is merged into its button's node ("<name> action\n+").
+        expect(find.bySemanticsLabel(RegExp('programs action')), findsNothing);
+        expect(
+          find.bySemanticsLabel(RegExp('progress action')),
+          findsOneWidget,
+        );
+
+        await tester.tap(
+          find.byKey(const ValueKey('programs-tap'), skipOffstage: false),
+          warnIfMissed: false,
+        );
+        await tester.pump();
+        expect(hidden.taps, 0);
+        semantics.dispose();
+      },
+    );
+
+    testWidgets('switching tabs alone loads no data', (tester) async {
+      phone(tester, 390);
+      await tester.pumpWidget(probes());
+      await tester.pumpAndSettle();
+      await go(tester, 1);
+      final loads = overview.loads;
+      final refreshes = programs.refreshes;
+
+      for (var round = 0; round < 5; round++) {
+        for (final index in [0, 1, 2, 3, 0, 2]) {
+          await go(tester, index);
+        }
+      }
+      expect(overview.loads, loads);
+      expect(programs.refreshes, refreshes);
+    });
+
+    testWidgets(
+      'a data change refreshes Home once: now while visible, later when hidden',
+      (tester) async {
+        phone(tester, 390);
+        await tester.pumpWidget(probes());
+        await tester.pumpAndSettle();
+        final base = overview.loads;
+
+        overview.changes.add(null);
+        await tester.pump(const Duration(milliseconds: 200));
+        await tester.pumpAndSettle();
+        expect(overview.loads, base + 1, reason: 'visible: refresh now');
+
+        await go(tester, 1);
+        for (var i = 0; i < 5; i++) {
+          overview.changes.add(null);
+          await tester.pump(const Duration(milliseconds: 200));
+        }
+        expect(overview.loads, base + 1, reason: 'hidden: just remembered');
+
+        await go(tester, 0);
+        await tester.pump(const Duration(milliseconds: 200));
+        await tester.pumpAndSettle();
+        expect(overview.loads, base + 2, reason: 'one catch-up on return');
+
+        await go(tester, 1);
+        await go(tester, 0);
+        await tester.pump(const Duration(milliseconds: 200));
+        expect(overview.loads, base + 2, reason: 'no new change, no reload');
+      },
+    );
+
+    testWidgets(
+      'changes made on a screen pushed over Home refresh it once on return',
+      (tester) async {
+        phone(tester, 390);
+        await tester.pumpWidget(probes());
+        await tester.pumpAndSettle();
+        final base = overview.loads;
+        tester
+            .state<NavigatorState>(find.byType(Navigator))
+            .push(
+              MaterialPageRoute<void>(
+                builder: (_) => const Scaffold(body: Text('Active workout')),
+              ),
+            );
+        await tester.pumpAndSettle();
+        for (var i = 0; i < 4; i++) {
+          overview.changes.add(null);
+          await tester.pump(const Duration(milliseconds: 200));
+        }
+        expect(overview.loads, base);
+
+        tester.state<NavigatorState>(find.byType(Navigator)).pop();
+        await tester.pump(const Duration(milliseconds: 200));
+        await tester.pumpAndSettle();
+        expect(overview.loads, base + 1);
+      },
+    );
+
+    testWidgets(
+      'a different signed-in user gets fresh tabs; nothing of the previous '
+      "user's tabs survives",
+      (tester) async {
+        phone(tester, 390);
+        await tester.pumpWidget(probes(userId: 'user-a'));
+        await tester.pumpAndSettle();
+        await go(tester, 1);
+        await tester.tap(find.byKey(const ValueKey('programs-tap')));
+        await tester.pump();
+        expect(find.text('programs taps 1'), findsOneWidget);
+        await go(tester, 2);
+        await go(tester, 3);
+        final loads = overview.loads;
+        final refreshes = programs.refreshes;
+
+        await tester.pumpWidget(probes(userId: 'user-b'));
+        await tester.pumpAndSettle();
+
+        expect(_probeDisposes, {'programs': 1, 'progress': 1, 'more': 1});
+        expect(find.byType(_TabProbe, skipOffstage: false), findsNothing);
+        expect(find.byKey(const ValueKey('home-programs')), findsOneWidget);
+        // Home's data is replaced for the new user, once.
+        expect(overview.loads, loads + 1);
+        expect(programs.refreshes, refreshes + 1);
+
+        await go(tester, 1);
+        expect(find.text('programs taps 0'), findsOneWidget);
+        expect(_probeInits['programs'], 2);
+      },
+    );
+
+    testWidgets('leaving Home (logout) disposes every tab', (tester) async {
+      phone(tester, 390);
+      await tester.pumpWidget(probes());
+      await tester.pumpAndSettle();
+      for (final index in [1, 2, 3]) {
+        await go(tester, index);
+      }
+      await tester.pumpWidget(const MaterialApp(home: Text('Login')));
+      expect(_probeDisposes, {'programs': 1, 'progress': 1, 'more': 1});
+    });
+
+    testWidgets('the fade + slide still plays when returning to a kept-alive '
+        'tab', (tester) async {
+      phone(tester, 390);
+      await tester.pumpWidget(probes());
+      await tester.pumpAndSettle();
+      await go(tester, 1);
+      await go(tester, 2);
+
+      await tester.tap(find.byKey(const ValueKey('home-nav-1')));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 150));
+      final fade = tester.widget<FadeTransition>(
+        find
+            .ancestor(
+              of: find.text('programs taps 0'),
+              matching: find.byType(FadeTransition),
+            )
+            .first,
+      );
+      final slide = tester.widget<SlideTransition>(
+        find
+            .ancestor(
+              of: find.text('programs taps 0'),
+              matching: find.byType(SlideTransition),
+            )
+            .first,
+      );
+      expect(fade.opacity.value, inExclusiveRange(0, 1));
+      expect(slide.position.value.dx, lessThan(-0.01));
+      await tester.pumpAndSettle();
+      expect(fade.opacity.value, 1);
+      expect(_probeInits['programs'], 1);
+    });
+  });
+
   group('tab transition animation', () {
     FadeTransition fadeOf(WidgetTester tester, String text) =>
         tester.widget<FadeTransition>(
           find
-              .ancestor(of: find.text(text), matching: find.byType(FadeTransition))
+              .ancestor(
+                of: find.text(text),
+                matching: find.byType(FadeTransition),
+              )
               .first,
         );
     SlideTransition slideOf(WidgetTester tester, String text) =>
@@ -639,7 +990,10 @@ void main() {
         await tester.pump(); // tab change frame: animation restarts at 0
         await tester.pump(const Duration(milliseconds: 150));
         final midOpacity = fadeOf(tester, 'Progress tab fixture').opacity.value;
-        final midOffset = slideOf(tester, 'Progress tab fixture').position.value;
+        final midOffset = slideOf(
+          tester,
+          'Progress tab fixture',
+        ).position.value;
         // Halfway through easeInOutCubic is exactly 0.5.
         expect(midOpacity, closeTo(Curves.easeInOutCubic.transform(0.5), 0.02));
         // Moving to a tab on the right slides in from that side, visibly.
