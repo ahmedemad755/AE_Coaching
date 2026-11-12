@@ -1,4 +1,5 @@
 import 'package:ae_coaching/auth/domain/entities/auth_user.dart';
+import 'package:ae_coaching/core/feedback/app_feedback.dart';
 import 'package:ae_coaching/auth/presentation/widgets/auth_dialogs.dart';
 import 'package:ae_coaching/core/localization/auth_message_localizer.dart';
 import 'package:ae_coaching/core/routes/app_router.dart';
@@ -51,9 +52,7 @@ class AuthFlowNavigation {
     if (!context.mounted) return;
     final l10n = AppLocalizations.of(context)!;
     if (message != null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(localizeAuthMessage(l10n, message))),
-      );
+      AppFeedback.success(localizeAuthMessage(l10n, message));
     }
     Navigator.pushNamedAndRemoveUntil(
       context,
@@ -99,9 +98,9 @@ class AuthFlowNavigation {
 
   static void toLogin(BuildContext context, {String? notice}) {
     if (notice != null) {
-      // The root ScaffoldMessenger keeps this visible across the route
+      // The root feedback overlay keeps this visible across the route
       // change.
-      showAuthSnackBar(context, notice);
+      showAuthFeedback(context, notice, type: FeedbackType.warning);
     }
     Navigator.pushNamedAndRemoveUntil(
       context,

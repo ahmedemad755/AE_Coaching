@@ -1,4 +1,5 @@
 import 'package:ae_coaching/auth/domain/entities/email_auth_messages.dart';
+import 'package:ae_coaching/core/feedback/app_feedback.dart';
 import 'package:ae_coaching/auth/domain/validation/auth_input_rules.dart';
 import 'package:ae_coaching/auth/presentation/auth_flow_navigation.dart';
 import 'package:ae_coaching/auth/presentation/cubit/auth_cubit.dart';
@@ -95,7 +96,7 @@ class _VerifyEmailViewState extends State<VerifyEmailView>
   Future<void> _confirmSignOut() async {
     final l10n = AppLocalizations.of(context)!;
     if (_isLoading) {
-      showAuthSnackBar(context, l10n.verificationInProgressMessage);
+      showAuthFeedback(context, l10n.verificationInProgressMessage);
       return;
     }
     if (await confirmAuthSignOut(context, l10n.leaveEmailVerificationBody) &&
@@ -137,7 +138,11 @@ class _VerifyEmailViewState extends State<VerifyEmailView>
             } else if (state is AuthEmailVerificationRequired) {
               setState(() => _email = state.email);
               if (_explicitCheckPending) {
-                showAuthSnackBar(context, l10n.emailNotVerifiedYetMessage);
+                showAuthFeedback(
+                  context,
+                  l10n.emailNotVerifiedYetMessage,
+                  type: FeedbackType.warning,
+                );
               }
               _explicitCheckPending = false;
             } else if (state is AuthProfileUnavailable) {
@@ -147,11 +152,16 @@ class _VerifyEmailViewState extends State<VerifyEmailView>
             } else if (state is AuthVerificationEmailSent) {
               setState(() => _emailSent = true);
               _cooldown.start();
-              showAuthSnackBar(context, l10n.verificationEmailSentMessage);
+              showAuthFeedback(
+                context,
+                l10n.verificationEmailSentMessage,
+                type: FeedbackType.emailVerification,
+              );
             } else if (state is AuthEmailChangeRequested) {
-              showAuthSnackBar(
+              showAuthFeedback(
                 context,
                 l10n.emailChangeRequestedMessage(state.newEmail),
+                type: FeedbackType.emailVerification,
               );
             } else if (state is AuthLegacyAccountSignedOut) {
               AuthFlowNavigation.toLogin(
@@ -165,7 +175,11 @@ class _VerifyEmailViewState extends State<VerifyEmailView>
               if (EmailAuthMessages.endedSession.contains(state.message)) {
                 AuthFlowNavigation.toLogin(context, notice: state.message);
               } else {
-                showAuthSnackBar(context, state.message, isError: true);
+                showAuthFeedback(
+                  context,
+                  state.message,
+                  type: FeedbackType.error,
+                );
               }
             }
           },

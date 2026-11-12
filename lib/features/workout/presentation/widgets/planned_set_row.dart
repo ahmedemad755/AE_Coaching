@@ -1,4 +1,5 @@
 import 'package:ae_coaching/core/theme/app_theme.dart';
+import 'package:ae_coaching/core/feedback/app_feedback.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -65,12 +66,7 @@ class _PlannedSetRowState extends State<PlannedSetRow> {
         weight < 0 ||
         reps == null ||
         reps <= 0) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.unableToLogSetError),
-          backgroundColor: context.appColors.error,
-        ),
-      );
+      AppFeedback.error(l10n.unableToLogSetError);
       return;
     }
     FocusScope.of(context).unfocus();

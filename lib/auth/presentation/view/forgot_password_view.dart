@@ -1,4 +1,5 @@
 import 'package:ae_coaching/auth/domain/validation/auth_input_rules.dart';
+import 'package:ae_coaching/core/feedback/app_feedback.dart';
 import 'package:ae_coaching/auth/presentation/cubit/auth_cubit.dart';
 import 'package:ae_coaching/auth/presentation/cubit/auth_state.dart';
 import 'package:ae_coaching/auth/presentation/widgets/auth_dialogs.dart';
@@ -55,7 +56,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
           if (state is AuthPasswordResetEmailSent) {
             setState(() => _sentTo = state.email);
           } else if (state is AuthError) {
-            showAuthSnackBar(context, state.message, isError: true);
+            showAuthFeedback(context, state.message, type: FeedbackType.error);
           }
         },
         builder: (context, state) {

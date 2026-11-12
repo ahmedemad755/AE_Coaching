@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -93,9 +94,40 @@ void main() {
       expect(_read('pubspec.yaml').contains('cloud_functions'), isFalse);
     });
 
-    test('firebase.json no longer deploys or emulates Cloud Functions', () {
-      final config = _read('firebase.json');
-      expect(config.contains('"functions"'), isFalse);
+    // Cloud Functions came back for server-driven workout reminders only
+    // (Stage 2). The phone/SMS password-reset backend must never return:
+    // the one functions codebase exports exactly the reminder and token
+    // functions, and nothing in it handles phones, SMS, OTPs or resets.
+    test('the only Cloud Functions are the reminder ones, never the SMS backend', () {
+      final config = jsonDecode(_read('firebase.json')) as Map<String, dynamic>;
+      final targets = config['functions'] as List<dynamic>;
+      expect(targets, hasLength(1));
+      expect((targets.single as Map<String, dynamic>)['source'], 'functions');
+
+      final exported = RegExp(r'export \{([^}]*)\}')
+          .allMatches(_read('functions/src/index.ts'))
+          .expand((m) => m.group(1)!.split(','))
+          .map((name) => name.trim())
+          .where((name) => name.isNotEmpty)
+          .toSet();
+      expect(exported, {
+        'onWorkoutSessionCreated',
+        'onWorkoutSetCreated',
+        'onReminderPreferencesWritten',
+        'sendDueInactivityReminders',
+        'onFcmTokenWritten',
+      });
+
+      final backendSource = Directory('functions/src')
+          .listSync(recursive: true)
+          .whereType<File>()
+          .where((file) => file.path.endsWith('.ts'))
+          .map((file) => file.readAsStringSync())
+          .join('\n');
+      expect(
+        RegExp(r'PasswordReset|sendSms|smsProvider|otp|phoneNumber', caseSensitive: false).hasMatch(backendSource),
+        isFalse,
+      );
     });
   });
 }

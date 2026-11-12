@@ -110,6 +110,38 @@ class AppLocalizationsAr extends AppLocalizations {
       'تعذر حفظ إعداد التنبيهات. حاول مجددًا.';
 
   @override
+  String get inactivityRemindersSubtitle =>
+      'تذكير لطيف لما تغيب عن تسجيل تمرينك لفترة.';
+
+  @override
+  String get inactivityReminderLoading => 'جارٍ تحميل إعداد التذكير…';
+
+  @override
+  String get inactivityReminderSaving => 'جارٍ حفظ إعداد التذكير…';
+
+  @override
+  String get inactivityReminderSaved => 'تم حفظ إعداد التذكير.';
+
+  @override
+  String get inactivityReminderSavedOffline =>
+      'تم الحفظ على هذا الجهاز، وسيتم رفعه عند عودة الاتصال.';
+
+  @override
+  String get inactivityReminderPendingSync =>
+      'في انتظار المزامنة. لم يتم تأكيد التغيير بعد.';
+
+  @override
+  String get inactivityReminderOffline =>
+      'أنت غير متصل. اتصل بالإنترنت لتحميل إعداد التذكير.';
+
+  @override
+  String get inactivityReminderUnavailable =>
+      'أكّد بريدك الإلكتروني لإدارة تذكيرات التمرين.';
+
+  @override
+  String get inactivityReminderLoadFailed => 'تعذر تحميل إعداد التذكير.';
+
+  @override
   String get repdbInstructions => 'طريقة الأداء';
 
   @override
@@ -1930,4 +1962,39 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get authErrorProfileConflicting =>
       'ملف حسابك يحتاج إلى مراجعة. من فضلك تواصل مع الدعم.';
+
+  @override
+  String get feedbackDismiss => 'إغلاق';
+
+  @override
+  String get feedbackSuccessLabel => 'تم بنجاح';
+
+  @override
+  String get feedbackErrorLabel => 'خطأ';
+
+  @override
+  String get feedbackWarningLabel => 'تنبيه';
+
+  @override
+  String get feedbackInfoLabel => 'معلومة';
+
+  @override
+  String get feedbackLoadingLabel => 'جارٍ التنفيذ';
+
+  @override
+  String get feedbackGenericError => 'حدث خطأ ما. حاول مرة أخرى.';
+
+  @override
+  String get feedbackSignInRequired =>
+      'انتهت جلستك. يرجى تسجيل الدخول مرة أخرى.';
+
+  @override
+  String get feedbackItemUnavailable =>
+      'هذا العنصر لم يعد متاحًا. حدّث الصفحة وحاول مرة أخرى.';
+
+  @override
+  String get logoutFailedMessage => 'تعذّر تسجيل الخروج. حاول مرة أخرى.';
+
+  @override
+  String get feedbackWorkoutNotActive => 'هذا التمرين لم يعد نشطًا.';
 }

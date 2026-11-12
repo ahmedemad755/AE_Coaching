@@ -15,8 +15,13 @@ rules_version = '2';
 //   users/{uid}/workout_templates/{id}   workout days
 //   users/{uid}/workout_sessions/{id}    sessions / history
 //   users/{uid}/fcmTokens/{id}           this device's FCM push token
-// Nothing else is used: no root collections, no settings documents, no
-// Storage-backed photos (progress photos are local Hive only).
+//   users/{uid}/settings/notifications   reminder preferences (app writes)
+// Server-owned (Cloud Functions via the Admin SDK; no client access at all):
+//   users/{uid}/notificationState/{id}   inactivity reminder state
+//   fcmTokenOwners/{tokenId}             push token ownership registry
+//   serverConfig/{docId}                 operator switches (reminder delivery gate)
+// Nothing else is used: no other root collections or settings documents,
+// no Storage-backed photos (progress photos are local Hive only).
 //
 // Principles:
 //   * Deny by default. Every allowed path is matched explicitly; there is
@@ -199,6 +204,45 @@ service cloud.firestore {
           && isValidFcmToken(tokenId, incoming())
           && incoming().createdAt == resource.data.createdAt;
       }
+
+      // ── users/{userId}/settings/notifications ───────────────────────────
+      // Inactivity reminder preferences: written by the app, mirrored into
+      // the server's reminder state by onReminderPreferencesWritten. Only
+      // the `notifications` settings document exists. The stored document
+      // always holds exactly the four approved fields, so a partial update
+      // keeps it complete. Not deletable: "off" is an explicit `false`.
+      match /settings/{settingId} {
+        allow get: if isVerifiedOwner(userId) && settingId == 'notifications';
+        allow list: if false;
+        allow create, update: if isVerifiedOwner(userId)
+          && settingId == 'notifications'
+          && isValidNotificationSettings(incoming());
+        allow delete: if false;
+      }
+
+      // ── users/{userId}/notificationState/{docId} (server-owned) ─────────
+      // Reminder schedule, leases and send attempts. Written only by Cloud
+      // Functions through the Admin SDK (which bypasses these rules). A
+      // client must not read it (it reveals activity times) or write it
+      // (it would steer the scheduler).
+      match /notificationState/{docId} {
+        allow read, write: if false;
+      }
+    }
+
+    // ── fcmTokenOwners/{tokenId} (server-owned) ───────────────────────────
+    // Which account owns each push token id. Admin SDK only; a client
+    // writing it could redirect another account's notifications.
+    match /fcmTokenOwners/{tokenId} {
+      allow read, write: if false;
+    }
+
+    // ── serverConfig/{docId} (server-owned) ───────────────────────────────
+    // Operator switches such as the reminder delivery gate
+    // (serverConfig/inactivityReminders). Admin SDK / Console only; a
+    // client that could write it would bypass the rollout gate.
+    match /serverConfig/{docId} {
+      allow read, write: if false;
     }
 
     // ── Document shapes ───────────────────────────────────────────────────
@@ -286,16 +330,43 @@ service cloud.firestore {
         && optionalString(d, 'workoutNote');
     }
     // defaultTargetPlatform.name values ("iOS"/"macOS" are camel-cased).
+    // `serverRemindersReadyAt` (optional): builds that receive server
+    // reminders set it to this write's server time, equal to `updatedAt`.
+    // Older builds don't send it. Their merge-writes carry an existing value
+    // unchanged, which the server then treats as stale (≠ updatedAt). It is
+    // a device capability, never authorization.
     function isValidFcmToken(tokenId, d) {
       return tokenId.matches('^[0-9a-f]{64}$')
-        && d.keys().hasOnly(['token', 'createdAt', 'updatedAt', 'platform'])
+        && d.keys().hasOnly(['token', 'createdAt', 'updatedAt', 'platform', 'serverRemindersReadyAt'])
         && d.keys().hasAll(['token', 'createdAt', 'updatedAt', 'platform'])
+        && (!('serverRemindersReadyAt' in d)
+          || d.serverRemindersReadyAt == request.time
+          || (resource != null
+            && 'serverRemindersReadyAt' in resource.data
+            && d.serverRemindersReadyAt == resource.data.serverRemindersReadyAt))
         && d.token is string
         && d.token.size() > 0
         && d.token.size() <= 4096
         && d.createdAt is timestamp
         && d.updatedAt == request.time
         && d.platform in ['android', 'iOS', 'macOS'];
+    }
+
+    // Reminder preferences: exactly the fields the server reads
+    // (RawReminderPreferences). `timeZone` is an IANA-style name such as
+    // "Africa/Cairo", "America/Argentina/Buenos_Aires", "UTC" or
+    // "Etc/GMT+2"; the server re-validates it against its time-zone
+    // database and falls back to the default for unknown zones.
+    function isValidNotificationSettings(d) {
+      return d.keys().hasOnly(['inactivityRemindersEnabled', 'language', 'timeZone', 'updatedAt'])
+        && d.keys().hasAll(['inactivityRemindersEnabled', 'language', 'timeZone', 'updatedAt'])
+        && d.inactivityRemindersEnabled is bool
+        && d.language in ['ar', 'en']
+        && d.timeZone is string
+        && d.timeZone.size() > 0
+        && d.timeZone.size() <= 64
+        && d.timeZone.matches('^[A-Za-z][A-Za-z0-9_+-]*(/[A-Za-z0-9_+-]+){0,2}$')
+        && d.updatedAt == request.time;
     }
 
   }

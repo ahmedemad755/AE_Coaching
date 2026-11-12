@@ -1,4 +1,5 @@
 import 'package:ae_coaching/features/workout/data/models/standard_workout_template.dart';
+import 'package:ae_coaching/core/feedback/app_feedback.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_program_draft.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_template_exercise_assignment.dart';
 import 'package:ae_coaching/features/workout/data/repositories/custom_exercise_repository.dart';
@@ -298,9 +299,7 @@ class StandardWorkoutTemplatePreviewScreen extends StatelessWidget {
             onPressed: () async {
               final owner = importer.currentUserId();
               if (owner == null || owner.isEmpty) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(l10n.standardDraftAccountChanged)),
-                );
+                AppFeedback.warning(l10n.standardDraftAccountChanged);
                 return;
               }
               final saved = await Navigator.push<WorkoutTemplateImportResult>(

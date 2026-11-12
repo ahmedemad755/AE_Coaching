@@ -1,25 +1,20 @@
+import 'package:ae_coaching/core/feedback/app_feedback.dart';
 import 'package:ae_coaching/core/localization/auth_message_localizer.dart';
 import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/core/theme/auth_screen_theme.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
-/// Shows [message] (translated if it's a known auth string), replacing
-/// any snackbar already on screen.
-void showAuthSnackBar(
+/// Shows auth feedback through the global feedback overlay. [message] is
+/// translated when it is a known auth string (raw Firebase text never
+/// reaches the user; unknown errors map to the localized generic error).
+void showAuthFeedback(
   BuildContext context,
   String message, {
-  bool isError = false,
+  FeedbackType type = FeedbackType.info,
 }) {
   final l10n = AppLocalizations.of(context)!;
-  ScaffoldMessenger.of(context)
-    ..hideCurrentSnackBar()
-    ..showSnackBar(
-      SnackBar(
-        content: Text(localizeAuthError(l10n, message)),
-        backgroundColor: isError ? Theme.of(context).colorScheme.error : null,
-      ),
-    );
+  AppFeedback.show(type, localizeAuthError(l10n, message));
 }
 
 /// "Leave verification?" confirmation. Resolves to true only when the

@@ -1,4 +1,5 @@
 import 'package:ae_coaching/features/workout/data/models/exercise_library_item.dart';
+import 'package:ae_coaching/core/feedback/app_feedback.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_program_draft.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_template.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_template_exercise_assignment.dart';
@@ -137,9 +138,12 @@ class _WorkoutProgramDraftScreenState extends State<WorkoutProgramDraftScreen> {
             WorkoutDraftError.accountChanged =>
               l10n.standardDraftAccountChanged,
           };
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(message)));
+          AppFeedback.show(
+            state.error == WorkoutDraftError.saveFailed
+                ? FeedbackType.error
+                : FeedbackType.warning,
+            message,
+          );
         }
       },
       builder: (context, state) {

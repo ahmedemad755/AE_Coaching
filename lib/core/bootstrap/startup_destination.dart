@@ -91,3 +91,9 @@ StartupDestination resolveStartupDestination(StartupAuthSnapshot s) {
 /// Firestore rules checking `request.auth.token.email_verified`
 /// (Stage 3D).
 bool canEnterProtectedRoute(StartupAuthSnapshot s) => s.identityCleared;
+
+/// Stricter than [canEnterProtectedRoute]: a verified email for every
+/// provider. Required for data that firestore.rules guard with
+/// `email_verified` (FCM tokens, notification preferences).
+bool hasVerifiedEmailIdentity(StartupAuthSnapshot s) =>
+    canEnterProtectedRoute(s) && s.firebaseEmailVerified;

@@ -1,4 +1,8 @@
 import 'dart:async';
+import 'package:ae_coaching/features/workout/presentation/screens/workout_programs_screen.dart';
+import 'package:ae_coaching/core/feedback/app_feedback.dart';
+import 'package:ae_coaching/core/feedback/feedback_card.dart';
+import 'package:ae_coaching/core/feedback/feedback_host.dart';
 import 'dart:io';
 import 'dart:ui' as ui;
 
@@ -54,6 +58,14 @@ class _Programs extends WorkoutProgramCubit {
     refreshes++;
     await super.refreshPrograms();
   }
+
+  /// A failed program operation, exactly as the Cubit reports it.
+  void fail(String message) => emit(
+    WorkoutProgramError(
+      operation: WorkoutProgramOperation.create,
+      message: message,
+    ),
+  );
 }
 
 class _Overview extends HomeWorkoutOverviewCubit {
@@ -269,7 +281,7 @@ void main() {
       ),
       child: RepaintBoundary(
         key: const ValueKey('dashboard-capture'),
-        child: child,
+        child: AppFeedbackHost(child: child ?? const SizedBox.shrink()),
       ),
     ),
     onGenerateRoute: (route) {
@@ -591,7 +603,7 @@ void main() {
       );
       await tester.pumpAndSettle();
       expect(programs.refreshes, before);
-      expect(find.byType(SnackBar), findsNothing);
+      expect(find.byType(FeedbackCard), findsNothing);
       expect(tester.takeException(), isNull);
     },
   );
@@ -682,6 +694,67 @@ void main() {
       expect(tester.takeException(), isNull);
     },
   );
+
+  group('global feedback on Home', () {
+    testWidgets('a program error is shown once, localized, never as raw text', (
+      tester,
+    ) async {
+      phone(tester, 390);
+      await tester.pumpWidget(app(language: 'ar'));
+      await tester.pumpAndSettle();
+      final l10n = await AppLocalizations.delegate.load(const Locale('ar'));
+
+      programs.fail('User not authenticated');
+      await tester.pumpAndSettle();
+
+      expect(find.byType(FeedbackCard), findsOneWidget);
+      expect(
+        find.descendant(
+          of: find.byType(FeedbackCard),
+          matching: find.text(l10n.feedbackSignInRequired),
+        ),
+        findsOneWidget,
+      );
+      expect(find.textContaining('User not authenticated'), findsNothing);
+    });
+
+    testWidgets(
+      'two kept-alive listeners of the same Cubit produce exactly one card',
+      (tester) async {
+        phone(tester, 390);
+        await tester.pumpWidget(
+          app(tabs: true, programsTab: (_) => const WorkoutProgramsScreen()),
+        );
+        await tester.pumpAndSettle();
+        // Open Programs once: it stays mounted next to Home's plans section,
+        // and both listen to the shared WorkoutProgramCubit.
+        await tester.tap(find.byKey(const ValueKey('home-nav-1')));
+        await tester.pumpAndSettle();
+        expect(
+          find.byType(WorkoutProgramsScreen, skipOffstage: false),
+          findsOneWidget,
+        );
+        await tester.tap(find.byKey(const ValueKey('home-nav-0')));
+        await tester.pumpAndSettle();
+
+        programs.fail('Something exploded deep in a repository');
+        await tester.pumpAndSettle();
+
+        expect(find.byType(FeedbackCard), findsOneWidget);
+        expect(
+          AppFeedback.controller!.queued,
+          isEmpty,
+          reason: 'the second identical report is deduplicated',
+        );
+        expect(
+          AppFeedback.controller!.current!.revision,
+          greaterThan(0),
+          reason: 'both listeners reported it; the repeat was merged',
+        );
+        expect(find.textContaining('exploded'), findsNothing);
+      },
+    );
+  });
 
   group('persistent tabs', () {
     Widget probes({String? userId}) => app(
@@ -1161,7 +1234,12 @@ void main() {
       await back(tester);
       overview.show(const HomeWorkoutOverviewError('Offline fixture'));
       await tester.pumpAndSettle();
-      await visible(tester, find.text('Offline fixture'));
+      // The inline error is localized and user-safe, never the raw text.
+      final l10n = AppLocalizations.of(
+        tester.element(find.byType(HomeDashboard)),
+      )!;
+      await visible(tester, find.text(l10n.feedbackGenericError));
+      expect(find.text('Offline fixture'), findsNothing);
       final before = overview.loads;
       await visible(tester, find.text('Retry'));
       await tester.tap(find.text('Retry'));

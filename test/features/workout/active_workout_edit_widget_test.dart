@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:ae_coaching/core/feedback/feedback_host.dart';
 import 'package:ae_coaching/core/di/sl_instance.dart';
 import 'package:ae_coaching/core/storage/user_storage_manager.dart';
 import 'package:ae_coaching/core/theme/app_theme.dart';
@@ -205,6 +206,7 @@ void main() {
   });
 
   Widget app(String language) => MaterialApp(
+    builder: AppFeedbackHost.builder,
     theme: language == 'ar' ? AppTheme.light : AppTheme.dark,
     locale: Locale(language),
     supportedLocales: AppLocalizations.supportedLocales,

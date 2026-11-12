@@ -1,4 +1,5 @@
 import 'package:ae_coaching/features/workout/data/models/workout_session.dart';
+import 'package:ae_coaching/core/localization/operation_message_localizer.dart';
 import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/features/workout/data/models/exercise_set.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_template.dart';
@@ -68,7 +69,10 @@ class _WorkoutTemplateHistoryScreenState
         builder: (context, state) {
           if (state is WorkoutHistoryError) {
             return Center(
-              child: Text(state.message, style: TextStyle(color: colors.error)),
+              child: Text(
+                localizeOperationError(l10n, state.message),
+                style: TextStyle(color: colors.error),
+              ),
             );
           }
           if (state is! WorkoutHistoryLoaded) {

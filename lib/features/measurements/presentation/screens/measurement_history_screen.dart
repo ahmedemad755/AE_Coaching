@@ -1,4 +1,6 @@
 import 'package:ae_coaching/auth/data/models/body_measurement.dart';
+import 'package:ae_coaching/core/localization/operation_message_localizer.dart';
+import 'package:ae_coaching/core/feedback/app_feedback.dart';
 import 'package:ae_coaching/features/measurements/presentation/cubit/measurement_cubit.dart';
 import 'package:ae_coaching/features/measurements/presentation/screens/add_edit_measurement_screen.dart';
 import 'package:ae_coaching/features/measurements/presentation/widgets/measurement_values_list.dart';
@@ -95,10 +97,10 @@ class _MeasurementHistoryScreenState extends State<MeasurementHistoryScreen> {
             setState(() => _box = state.box);
           }
           if (state is MeasurementError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: Theme.of(context).colorScheme.error,
+            AppFeedback.error(
+              localizeOperationError(
+                AppLocalizations.of(context)!,
+                state.message,
               ),
             );
           }

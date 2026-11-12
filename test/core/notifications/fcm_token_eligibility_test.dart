@@ -282,10 +282,18 @@ void main() {
           'updatedAt',
           'platform',
           'createdAt',
+          'serverRemindersReadyAt',
         });
         expect(doc['token'], 'device-token-1');
         expect(doc['updatedAt'], isA<FieldValue>());
         expect(doc['createdAt'], isA<FieldValue>());
+        // Readiness for server reminders: the same server timestamp as
+        // updatedAt, written by every registration of this build.
+        expect(doc['serverRemindersReadyAt'], isA<FieldValue>());
+        expect(
+          FcmDeviceService.serverRemindersReadyField,
+          'serverRemindersReadyAt',
+        );
         expect(box.get('fcmTokenOwnerUid'), 'alice');
       },
     );

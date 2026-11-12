@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:ae_coaching/core/feedback/app_feedback.dart';
 import 'dart:io';
 import 'dart:ui' as ui;
 import 'package:ae_coaching/auth/domain/validation/auth_input_rules.dart';
@@ -250,11 +251,11 @@ class _PersonalHubScreenState extends State<PersonalHubScreen> {
       if (mounted && _uid == uid && FirebaseAuth.instance.currentUser?.uid == uid) {
         setState(() => _photoPath = path);
         widget.onProfileChanged?.call();
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.profilePhotoSaved)));
+        AppFeedback.success(l10n.profilePhotoSaved);
       }
     } catch (_) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.profilePhotoSaveFailed)));
+        AppFeedback.error(l10n.profilePhotoSaveFailed);
       }
     } finally {
       if (mounted) setState(() => _photoBusy = false);
@@ -288,7 +289,7 @@ class _PersonalHubScreenState extends State<PersonalHubScreen> {
       if (mounted && _uid == uid && FirebaseAuth.instance.currentUser?.uid == uid) {
         setState(() => _photoPath = null);
         widget.onProfileChanged?.call();
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.profilePhotoRemoved)));
+        AppFeedback.success(l10n.profilePhotoRemoved);
       }
     } catch (_) {
       if (mounted) {
@@ -300,7 +301,7 @@ class _PersonalHubScreenState extends State<PersonalHubScreen> {
             FirebaseAuth.instance.currentUser?.uid != uid) {
           return;
         }
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.profilePhotoRemoveFailed)));
+        AppFeedback.error(l10n.profilePhotoRemoveFailed);
       }
     } finally {
       if (mounted) setState(() => _photoBusy = false);
@@ -341,7 +342,7 @@ class _PersonalHubScreenState extends State<PersonalHubScreen> {
     // at least one letter), so a valid edit is never rejected server-side.
     final name = AuthInputRules.normalizeName(rawName);
     if (AuthInputRules.validateName(name) != null) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.profileNameInvalid)));
+      AppFeedback.warning(l10n.profileNameInvalid);
       return;
     }
 
@@ -353,11 +354,11 @@ class _PersonalHubScreenState extends State<PersonalHubScreen> {
       if (mounted && _uid == uid) {
         setState(() => _name = name);
         widget.onProfileChanged?.call();
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.profileNameSaved)));
+        AppFeedback.success(l10n.profileNameSaved);
       }
     } catch (_) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.profileNameSaveFailed)));
+        AppFeedback.error(l10n.profileNameSaveFailed);
       }
     } finally {
       if (mounted) setState(() => _profileBusy = false);

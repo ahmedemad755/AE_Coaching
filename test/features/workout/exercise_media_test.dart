@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:ae_coaching/core/feedback/feedback_host.dart';
 import 'dart:io';
 import 'dart:ui' as ui;
 
@@ -44,6 +45,7 @@ class _Browser extends UrlLauncherPlatform {
 }
 
 Widget app(Widget child, {String language = 'en'}) => MaterialApp(
+  builder: AppFeedbackHost.builder,
   theme: AppTheme.light,
   darkTheme: AppTheme.dark,
   themeMode: ThemeMode.dark,

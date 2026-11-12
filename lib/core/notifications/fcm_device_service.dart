@@ -28,6 +28,10 @@ class FcmDeviceService {
   static const _tokenOwnerUidKey = 'fcmTokenOwnerUid';
   static const _tokenIdKey = 'fcmTokenId';
 
+  /// Token-document field confirming this build handles server reminders
+  /// (contract with firestore.rules and Cloud Functions).
+  static const serverRemindersReadyField = 'serverRemindersReadyAt';
+
   final FirebaseAuth _auth;
   final FirebaseFirestore _firestore;
   final FirebaseMessaging _messaging;
@@ -41,6 +45,11 @@ class FcmDeviceService {
   StreamSubscription<BoxEvent>? _sessionSubscription;
   Future<void> _operationQueue = Future<void>.value();
   final Set<String> _blockedUids = {};
+
+  /// FCM message ids already routed, so the same tap delivered twice
+  /// (getInitialMessage and onMessageOpenedApp, or a re-attached engine)
+  /// navigates once.
+  final Set<String> _handledMessageIds = {};
   bool _initialized = false;
   bool _readyForRegistration = false;
 
@@ -74,7 +83,7 @@ class FcmDeviceService {
   /// `email_verified` requirement on token writes.
   @visibleForTesting
   static bool isEligibleForTokenRegistration(StartupAuthSnapshot snapshot) =>
-      canEnterProtectedRoute(snapshot) && snapshot.firebaseEmailVerified;
+      hasVerifiedEmailIdentity(snapshot);
 
   static StartupAuthSnapshot _snapshotOf(User? user) => StartupAuthSnapshot(
     firebaseUid: user?.uid,
@@ -251,6 +260,12 @@ class FcmDeviceService {
       'token': token,
       'updatedAt': FieldValue.serverTimestamp(),
       'platform': defaultTargetPlatform.name,
+      // This build receives server inactivity reminders (it no longer
+      // schedules the retired local one). Same server timestamp as
+      // `updatedAt` in this write; the server treats a token as ready only
+      // while the two are equal, so a later registration by an older build
+      // (which refreshes `updatedAt` alone) makes it ineligible again.
+      serverRemindersReadyField: FieldValue.serverTimestamp(),
     };
     if (!snapshot.exists) {
       data['createdAt'] = FieldValue.serverTimestamp();
@@ -294,7 +309,15 @@ class FcmDeviceService {
     });
   }
 
+  /// The tap handler the FCM streams call, for tests (those streams are
+  /// static platform channels).
+  @visibleForTesting
+  void handleNotificationTapForTesting(RemoteMessage message) =>
+      _handleNotificationTap(message);
+
   void _handleNotificationTap(RemoteMessage message) {
+    final messageId = message.messageId;
+    if (messageId != null && !_handledMessageIds.add(messageId)) return;
     if (FcmNotificationRouting.destinationForData(message.data) ==
         FcmNotificationDestination.home) {
       AppRouter.openHomeFromNotification();

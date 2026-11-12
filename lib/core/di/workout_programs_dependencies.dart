@@ -4,7 +4,6 @@ import 'package:ae_coaching/features/workout/data/repositories/legacy_exercise_m
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ae_coaching/features/workout/data/repositories/standard_workout_template_repository.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_template_import_service.dart';
-import 'package:ae_coaching/core/notifications/inactivity_reminder_service.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_cascade_deletion_service.dart';
 import 'package:ae_coaching/features/workout/data/repositories/combined_exercise_library_catalog.dart';
 import 'package:ae_coaching/features/workout/data/repositories/custom_exercise_repository.dart';
@@ -115,10 +114,7 @@ void initWorkoutCascadeDeletion() {
 // they must all observe the exact same instance to stay in sync.
 void initWorkoutSessions() {
   sl.registerLazySingleton(
-    () => WorkoutSessionRepository(
-      storageManager: sl(),
-      inactivityReminderRecorder: sl<InactivityReminderService>(),
-    ),
+    () => WorkoutSessionRepository(storageManager: sl()),
   );
   sl.registerLazySingleton(() => WorkoutSessionCubit(repository: sl()));
 }

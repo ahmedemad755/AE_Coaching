@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:ae_coaching/core/notifications/inactivity_reminder_service.dart';
 import 'package:ae_coaching/core/storage/user_storage_manager.dart';
 import 'package:ae_coaching/features/workout/data/datasources/workout_session_remote_data_source.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_session.dart';
@@ -26,24 +25,10 @@ class _FakeWorkoutSessionRemoteDataSource
   }
 }
 
-class _FakeInactivityReminderRecorder implements InactivityReminderRecorder {
-  final List<String> completedSessionIds = [];
-
-  @override
-  Future<void> onWorkoutCompleted({
-    required String uid,
-    required String sessionId,
-    required DateTime completedAt,
-  }) async {
-    completedSessionIds.add(sessionId);
-  }
-}
-
 void main() {
   late Directory tempDir;
   late WorkoutSessionCubit cubit;
   late _FakeWorkoutSessionRemoteDataSource remoteDataSource;
-  late _FakeInactivityReminderRecorder inactivityReminderRecorder;
 
   const programA = 'program_A';
   const push1 = 'template_push1';
@@ -62,12 +47,10 @@ void main() {
     }
 
     remoteDataSource = _FakeWorkoutSessionRemoteDataSource();
-    inactivityReminderRecorder = _FakeInactivityReminderRecorder();
     cubit = WorkoutSessionCubit(
       repository: WorkoutSessionRepository(
         remoteDataSource: remoteDataSource,
         storageManager: UserStorageManager(),
-        inactivityReminderRecorder: inactivityReminderRecorder,
         uidOverride: () => 'test-uid',
       ),
     );
@@ -130,7 +113,6 @@ void main() {
         terminal?.templateExerciseAssignmentsSnapshot.single.exerciseId,
         'custom_exercise_1',
       );
-      expect(inactivityReminderRecorder.completedSessionIds, isEmpty);
     },
   );
 
@@ -231,7 +213,6 @@ void main() {
       expect(finished!.isCompleted, isTrue);
       expect(finished.totalVolume, equals(480));
       expect(finished.completedAt, isNotNull);
-      expect(inactivityReminderRecorder.completedSessionIds, [sessionId]);
     },
   );
 
@@ -256,7 +237,6 @@ void main() {
       expect(terminal.isCompleted, isFalse);
       expect(terminal.totalVolume, 0);
       expect(terminal.completedAt, isNull);
-      expect(inactivityReminderRecorder.completedSessionIds, isEmpty);
 
       final box = await cubit.repository.getUserBox();
       expect(box.values, hasLength(1));
@@ -270,7 +250,6 @@ void main() {
       expect(repeated, isNull);
       expect(box.values, hasLength(1));
       expect(box.get(sessionId)!.isCancelled, isTrue);
-      expect(inactivityReminderRecorder.completedSessionIds, isEmpty);
     },
   );
 

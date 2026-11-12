@@ -1,4 +1,6 @@
 import 'package:ae_coaching/features/workout/data/models/custom_exercise.dart';
+import 'package:ae_coaching/core/feedback/feedback_host.dart';
+import 'package:ae_coaching/core/feedback/feedback_card.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_program_draft.dart';
 import 'package:ae_coaching/features/workout/data/repositories/combined_exercise_library_catalog.dart';
 import 'package:ae_coaching/features/workout/data/repositories/custom_exercise_repository.dart';
@@ -68,6 +70,7 @@ void main() {
             WorkoutTemplateImportResult? saved;
             await tester.pumpWidget(
               MaterialApp(
+                builder: AppFeedbackHost.builder,
                 locale: Locale(language),
                 localizationsDelegates: AppLocalizations.localizationsDelegates,
                 supportedLocales: AppLocalizations.supportedLocales,
@@ -141,7 +144,7 @@ void main() {
             await tester.pumpAndSettle();
             expect(saved, isNotNull);
             expect(find.text(warning), findsNothing);
-            expect(find.byType(SnackBar), findsNothing);
+            expect(find.byType(FeedbackCard), findsNothing);
             expect(tester.takeException(), isNull);
             await tester.runAsync(() async {
               final days = (await f.days.getUserBox()).values

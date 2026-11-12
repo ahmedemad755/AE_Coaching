@@ -1,4 +1,5 @@
 import 'package:ae_coaching/core/theme/app_theme.dart';
+import 'package:ae_coaching/core/feedback/app_feedback.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
@@ -45,12 +46,7 @@ class _CreateProgramDialogState extends State<CreateProgramDialog> {
     final l10n = AppLocalizations.of(context)!;
     final name = _nameController.text.trim();
     if (name.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.enterProgramNameValidation),
-          backgroundColor: context.appColors.error,
-        ),
-      );
+      AppFeedback.warning(l10n.enterProgramNameValidation);
       return;
     }
 

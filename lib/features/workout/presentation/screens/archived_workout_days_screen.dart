@@ -1,4 +1,6 @@
 import 'package:ae_coaching/features/workout/data/models/workout_program.dart';
+import 'package:ae_coaching/core/localization/operation_message_localizer.dart';
+import 'package:ae_coaching/core/feedback/app_feedback.dart';
 import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_template.dart';
 import 'package:ae_coaching/features/workout/presentation/cubit/workout_template_cubit.dart';
@@ -96,10 +98,10 @@ class _ArchivedWorkoutDaysScreenState extends State<ArchivedWorkoutDaysScreen> {
             setState(() => _box = state.box);
           }
           if (state is WorkoutTemplateError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: colors.error,
+            AppFeedback.error(
+              localizeOperationError(
+                AppLocalizations.of(context)!,
+                state.message,
               ),
             );
           }

@@ -1,4 +1,6 @@
 import 'dart:ui' show ImageFilter;
+import 'package:ae_coaching/core/localization/operation_message_localizer.dart';
+import 'package:ae_coaching/core/feedback/app_feedback.dart';
 
 import 'package:ae_coaching/core/routes/app_router.dart';
 import 'package:ae_coaching/core/theme/app_theme.dart';
@@ -205,14 +207,15 @@ class _HomeDashboardState extends State<HomeDashboard> {
       await _refreshPrograms();
       if (!mounted || owner != widget.currentUserId()) return;
       final l10n = AppLocalizations.of(context)!;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            result.cloudSyncIncomplete
-                ? l10n.standardTemplateSavedLocally
-                : l10n.standardTemplateSaved,
-          ),
-        ),
+      // Saved, but cloud backup still needs attention: a warning, not a
+      // plain success.
+      AppFeedback.show(
+        result.cloudSyncIncomplete
+            ? FeedbackType.warning
+            : FeedbackType.success,
+        result.cloudSyncIncomplete
+            ? l10n.standardTemplateSavedLocally
+            : l10n.standardTemplateSaved,
       );
     } finally {
       _openingTemplates = false;
@@ -230,9 +233,9 @@ class _HomeDashboardState extends State<HomeDashboard> {
       if (!mounted || owner != widget.currentUserId()) return;
       final state = sessions.state;
       if (state is WorkoutSessionError) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(state.message)));
+        AppFeedback.error(
+          localizeOperationError(AppLocalizations.of(context)!, state.message),
+        );
         return;
       }
       if (state is WorkoutSessionActive) {

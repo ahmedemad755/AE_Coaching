@@ -1,4 +1,5 @@
 import 'package:ae_coaching/auth/presentation/auth_flow_navigation.dart';
+import 'package:ae_coaching/core/feedback/feedback_host.dart';
 import 'package:ae_coaching/core/routes/app_router.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ Widget buildAuthTestApp({
   Locale locale = const Locale('en'),
 }) {
   return MaterialApp(
+    builder: AppFeedbackHost.builder,
     locale: locale,
     supportedLocales: AppLocalizations.supportedLocales,
     localizationsDelegates: AppLocalizations.localizationsDelegates,

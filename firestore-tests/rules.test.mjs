@@ -584,3 +584,152 @@ describe('Personal Hub profile name edit', () => {
       updateDoc(doc(db(BOB), 'users/alice'), nameEdit('Ahmed')));
   });
 });
+
+describe('Server-owned inactivity reminder documents (Cloud Functions only)', () => {
+  const STATE = 'users/alice/notificationState/inactivity';
+  const OWNER = 'fcmTokenOwners/0123abcd';
+
+  it('the reminder state cannot be read, created, changed or deleted by clients', async () => {
+    await seed(STATE, { nextReminderAt: Timestamp.fromMillis(1000), remindersSentInCycle: 1 });
+    for (const f of [db(ALICE), db(BOB), anon()]) {
+      await assertFails(getDoc(doc(f, STATE)));
+      await assertFails(setDoc(doc(f, STATE), { nextReminderAt: null }));
+      await assertFails(updateDoc(doc(f, STATE), { remindersSentInCycle: 0 }));
+      await assertFails(deleteDoc(doc(f, STATE)));
+      await assertFails(getDocs(collection(f, 'users/alice/notificationState')));
+    }
+  });
+
+  it('the reminder delivery gate cannot be read or flipped by any client', async () => {
+    const GATE = 'serverConfig/inactivityReminders';
+    await seed(GATE, { deliveryMode: 'off' });
+    for (const f of [db(ALICE), db(BOB), anon()]) {
+      await assertFails(getDoc(doc(f, GATE)));
+      await assertFails(setDoc(doc(f, GATE), { deliveryMode: 'all' }));
+      await assertFails(updateDoc(doc(f, GATE), { deliveryMode: 'all' }));
+      await assertFails(setDoc(doc(f, 'serverConfig/other'), { any: 'thing' }));
+      await assertFails(deleteDoc(doc(f, GATE)));
+      await assertFails(getDocs(collection(f, 'serverConfig')));
+    }
+    assert((await readRaw(GATE)).deliveryMode === 'off', 'gate unchanged');
+  });
+
+  it('the token ownership registry is invisible and read-only to clients', async () => {
+    await seed(OWNER, { uid: 'alice', registeredAt: Timestamp.fromMillis(1000) });
+    for (const f of [db(ALICE), db(BOB), anon()]) {
+      await assertFails(getDoc(doc(f, OWNER)));
+      await assertFails(setDoc(doc(f, OWNER), { uid: 'bob', registeredAt: Timestamp.fromMillis(2000) }));
+      await assertFails(deleteDoc(doc(f, OWNER)));
+      await assertFails(getDocs(collection(f, 'fcmTokenOwners')));
+    }
+  });
+});
+
+describe('users/{uid}/settings/notifications (reminder preferences)', () => {
+  const PATH = 'users/alice/settings/notifications';
+  /** The full document the app will write (Stage 3). */
+  const prefs = (extra = {}) => ({
+    inactivityRemindersEnabled: true,
+    language: 'ar',
+    timeZone: 'Africa/Cairo',
+    updatedAt: serverTimestamp(),
+    ...extra,
+  });
+
+  it('the verified owner can create, read back and update preferences', async () => {
+    const f = db(ALICE);
+    await assertSucceeds(setDoc(doc(f, PATH), prefs()));
+    await assertSucceeds(getDoc(doc(f, PATH)));
+    await assertSucceeds(updateDoc(doc(f, PATH), { inactivityRemindersEnabled: false, updatedAt: serverTimestamp() }));
+    await assertSucceeds(setDoc(doc(f, PATH), prefs({ language: 'en', timeZone: 'America/Argentina/Buenos_Aires' })));
+    for (const zone of ['UTC', 'Etc/GMT+2', 'Asia/Riyadh', 'America/Port-au-Prince']) {
+      await assertSucceeds(setDoc(doc(f, PATH), prefs({ timeZone: zone })));
+    }
+    const stored = await readRaw(PATH);
+    assert(stored.timeZone === 'America/Port-au-Prince', 'time zone saved');
+  });
+
+  it('other users, unverified users and signed-out clients are denied', async () => {
+    await seed(PATH, { inactivityRemindersEnabled: true, language: 'ar', timeZone: 'Africa/Cairo', updatedAt: Timestamp.fromMillis(1000) });
+    for (const f of [db(BOB), db(ALICE, { verified: false }), anon()]) {
+      await assertFails(getDoc(doc(f, PATH)));
+      await assertFails(setDoc(doc(f, PATH), prefs()));
+      await assertFails(updateDoc(doc(f, PATH), { inactivityRemindersEnabled: false, updatedAt: serverTimestamp() }));
+    }
+    await assertFails(setDoc(doc(db(BOB), 'users/bob/settings/other'), prefs()));
+  });
+
+  it('only the four approved fields, with valid values, are accepted', async () => {
+    const f = db(ALICE);
+    const bad = [
+      prefs({ extra: 'x' }),
+      prefs({ nextReminderAt: Timestamp.fromMillis(0) }),
+      prefs({ inactivityRemindersEnabled: 'false' }),
+      prefs({ inactivityRemindersEnabled: 0 }),
+      prefs({ language: 'fr' }),
+      prefs({ language: 'AR' }),
+      prefs({ timeZone: '' }),
+      prefs({ timeZone: 'Africa Cairo' }),
+      prefs({ timeZone: '../../etc' }),
+      prefs({ timeZone: 'A/B/C/D' }),
+      prefs({ timeZone: `Zone/${'x'.repeat(60)}` }),
+      prefs({ timeZone: 3 }),
+      prefs({ updatedAt: Timestamp.fromMillis(1000) }),
+      { inactivityRemindersEnabled: true, language: 'ar', updatedAt: serverTimestamp() },
+    ];
+    for (const data of bad) await assertFails(setDoc(doc(f, PATH), data));
+  });
+
+  it('partial updates must keep the document complete and stamp updatedAt', async () => {
+    await seed(PATH, { inactivityRemindersEnabled: true, language: 'ar', timeZone: 'Africa/Cairo', updatedAt: Timestamp.fromMillis(1000) });
+    const f = db(ALICE);
+    await assertFails(updateDoc(doc(f, PATH), { inactivityRemindersEnabled: false }));
+    await assertFails(updateDoc(doc(f, PATH), { language: 'de', updatedAt: serverTimestamp() }));
+    await assertFails(updateDoc(doc(f, PATH), { secret: true, updatedAt: serverTimestamp() }));
+  });
+
+  it('preferences cannot be deleted or listed', async () => {
+    await seed(PATH, { inactivityRemindersEnabled: true, language: 'ar', timeZone: 'Africa/Cairo', updatedAt: Timestamp.fromMillis(1000) });
+    await assertFails(deleteDoc(doc(db(ALICE), PATH)));
+    await assertFails(getDocs(collection(db(ALICE), 'users/alice/settings')));
+  });
+});
+
+describe('fcmTokens: per-device server-reminder readiness', () => {
+  /** What a build that receives server reminders writes. */
+  const readyWrite = (t = TOKEN) => ({ ...firstTokenWrite(t), serverRemindersReadyAt: serverTimestamp() });
+  /** What an older build writes on re-registration (set with merge). */
+  const oldBuildRefresh = (t = TOKEN) => ({ token: t, updatedAt: serverTimestamp(), platform: 'android' });
+
+  it('a new build confirms readiness with the same server time as updatedAt', async () => {
+    await assertSucceeds(setDoc(doc(db(ALICE), tokenPath('alice')), readyWrite(), { merge: true }));
+    const stored = await readRaw(tokenPath('alice'));
+    assert(stored.serverRemindersReadyAt.isEqual(stored.updatedAt), 'marker equals updatedAt');
+  });
+
+  it('old builds keep working: without the marker, and over an existing one', async () => {
+    const ref = doc(db(ALICE), tokenPath('alice'));
+    await assertSucceeds(setDoc(ref, firstTokenWrite(), { merge: true }));
+    await seed(tokenPath('alice'), {
+      token: TOKEN,
+      platform: 'android',
+      createdAt: Timestamp.fromMillis(1000),
+      updatedAt: Timestamp.fromMillis(2000),
+      serverRemindersReadyAt: Timestamp.fromMillis(2000),
+    });
+    await assertSucceeds(setDoc(ref, oldBuildRefresh(), { merge: true }));
+    const stored = await readRaw(tokenPath('alice'));
+    // Carried unchanged, now older than updatedAt: the server reads it as stale.
+    assert(stored.serverRemindersReadyAt.toMillis() === 2000, 'marker unchanged');
+    assert(!stored.serverRemindersReadyAt.isEqual(stored.updatedAt), 'marker stale');
+  });
+
+  it('the marker cannot be backdated, forged or set on another account', async () => {
+    const ref = doc(db(ALICE), tokenPath('alice'));
+    await assertFails(setDoc(ref, { ...firstTokenWrite(), serverRemindersReadyAt: Timestamp.fromMillis(5) }));
+    await assertFails(setDoc(ref, { ...firstTokenWrite(), serverRemindersReadyAt: true }));
+    await assertSucceeds(setDoc(ref, readyWrite(), { merge: true }));
+    await assertFails(setDoc(ref, { ...oldBuildRefresh(), serverRemindersReadyAt: Timestamp.fromMillis(5) }, { merge: true }));
+    await assertFails(setDoc(doc(db(BOB), tokenPath('alice', 'bob-token')), readyWrite('bob-token'), { merge: true }));
+  });
+});

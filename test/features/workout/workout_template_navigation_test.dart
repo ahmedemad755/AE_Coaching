@@ -1,4 +1,5 @@
 import 'package:ae_coaching/core/di/sl_instance.dart';
+import 'package:ae_coaching/core/feedback/feedback_host.dart';
 import 'package:ae_coaching/core/bootstrap/startup_destination.dart';
 import 'package:ae_coaching/core/routes/app_router.dart';
 import 'package:ae_coaching/core/storage/user_storage_manager.dart';
@@ -136,6 +137,7 @@ void main() {
   });
 
   Widget app() => MaterialApp(
+    builder: AppFeedbackHost.builder,
     theme: AppTheme.dark,
     locale: const Locale('en'),
     localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -188,6 +190,7 @@ void main() {
       Object? caught;
       await tester.pumpWidget(
         MaterialApp(
+          builder: AppFeedbackHost.builder,
           // Deliberately reproduce the former faulty factory in this fixture only.
           onGenerateRoute: (_) => MaterialPageRoute<dynamic>(
             builder: (_) => const SizedBox.shrink(),

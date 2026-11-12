@@ -9,5 +9,13 @@ module.exports = {
       rootDir: '.',
       testMatch: ['<rootDir>/test/unit/**/*.test.ts'],
     },
+    {
+      // Needs the Firestore emulator: run through `npm run test:emulator:exec`.
+      displayName: 'emulator',
+      preset: 'ts-jest',
+      testEnvironment: 'node',
+      rootDir: '.',
+      testMatch: ['<rootDir>/test/emulator/**/*.test.ts'],
+    },
   ],
 };

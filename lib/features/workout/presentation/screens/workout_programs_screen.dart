@@ -1,4 +1,6 @@
 import 'package:ae_coaching/core/routes/app_router.dart';
+import 'package:ae_coaching/core/localization/operation_message_localizer.dart';
+import 'package:ae_coaching/core/feedback/app_feedback.dart';
 import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_program.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_template_import_service.dart';
@@ -138,14 +140,13 @@ class _WorkoutProgramsScreenState extends State<WorkoutProgramsScreen> {
     await context.read<WorkoutProgramCubit>().refreshPrograms();
     if (!mounted) return;
     final l10n = AppLocalizations.of(context)!;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          result.cloudSyncIncomplete
-              ? l10n.standardTemplateSavedLocally
-              : l10n.standardTemplateSaved,
-        ),
-      ),
+    // Saved, but cloud backup still needs attention: a warning, not a
+    // plain success.
+    AppFeedback.show(
+      result.cloudSyncIncomplete ? FeedbackType.warning : FeedbackType.success,
+      result.cloudSyncIncomplete
+          ? l10n.standardTemplateSavedLocally
+          : l10n.standardTemplateSaved,
     );
   }
 
@@ -358,10 +359,10 @@ class _WorkoutProgramsScreenState extends State<WorkoutProgramsScreen> {
             setState(() => _box = state.box);
           }
           if (state is WorkoutProgramError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: colors.error,
+            AppFeedback.error(
+              localizeOperationError(
+                AppLocalizations.of(context)!,
+                state.message,
               ),
             );
           }

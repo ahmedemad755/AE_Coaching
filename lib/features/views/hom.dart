@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'package:ae_coaching/core/localization/operation_message_localizer.dart';
+import 'package:ae_coaching/core/feedback/app_feedback.dart';
 import 'package:ae_coaching/core/localization/locale_cubit.dart';
 import 'package:ae_coaching/core/notifications/fcm_device_service.dart';
-import 'package:ae_coaching/core/notifications/inactivity_reminder_service.dart';
+import 'package:ae_coaching/features/notification_settings/application/notification_preferences_sync.dart';
 import 'package:ae_coaching/core/routes/app_router.dart';
 import 'package:ae_coaching/core/session/session_storage.dart';
 import 'package:ae_coaching/core/storage/user_storage_manager.dart';
@@ -41,6 +43,11 @@ class _HomState extends State<Hom> {
   Box<ExerciseSet>?
   exerciseBox; // محتفظين بيه فقط للـ ValueListenableBuilder المحلى أو العرض السريع
   bool _isLoading = true;
+
+  /// Set before logout closes this user's boxes. Signing out rebuilds Hom
+  /// (its auth listener, the per-user theme) BEFORE navigation leaves it, so
+  /// from here on Hom must not build anything bound to per-user data.
+  bool _signingOut = false;
   String _userName = 'User';
   String _profilePhotoUid = '';
   String? _profilePhotoPath;
@@ -116,8 +123,12 @@ class _HomState extends State<Hom> {
     _userName = _resolveUserName(firebaseUser);
     _profilePhotoUid = uid;
     unawaited(_loadProfilePhoto(uid));
-    await sl<InactivityReminderService>().syncLanguage(
-      context.read<LocaleCubit>().state.languageCode,
+    // Background, never blocks Home: language, device time zone and the
+    // first preference document for this verified account.
+    unawaited(
+      sl<NotificationPreferencesSync>().syncCurrentAccount(
+        languageCode: context.read<LocaleCubit>().state.languageCode,
+      ),
     );
     await sessionStorage.updateCurrentUserUid(uid);
 
@@ -176,19 +187,11 @@ class _HomState extends State<Hom> {
               //    makes currentUser null).
               final outgoingUid = FirebaseAuth.instance.currentUser?.uid;
 
+              // Stop building per-user UI before anything below closes its
+              // boxes (see _signingOut).
+              if (mounted) setState(() => _signingOut = true);
+
               try {
-                if (outgoingUid != null && outgoingUid.isNotEmpty) {
-                  try {
-                    await sl<InactivityReminderService>().cancelForLogout(
-                      expectedUid: outgoingUid,
-                    );
-                  } catch (error, stackTrace) {
-                    debugPrint(
-                      'Local inactivity reminder cancellation failed: '
-                      '$error\n$stackTrace',
-                    );
-                  }
-                }
                 if (outgoingUid != null && outgoingUid.isNotEmpty) {
                   await sl<FcmDeviceService>().unregisterCurrentDeviceToken(
                     expectedUid: outgoingUid,
@@ -237,16 +240,14 @@ class _HomState extends State<Hom> {
                 // and the user remains on this screen rather than
                 // being navigated away as if logout fully completed.
                 debugPrint('Logout failed: $error\n$stackTrace');
-                // Use the State's own `context` (guaranteed correct
-                // ScaffoldMessenger ancestry), guarded by this State's
-                // own `mounted` — the same pattern this screen already
+                // Localized through the State's own `context`, guarded by
+                // this State's own `mounted` — the same pattern this screen already
                 // uses on the success path above.
                 if (mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Logout failed. Please try again.'),
-                    ),
+                  AppFeedback.error(
+                    AppLocalizations.of(context)!.logoutFailedMessage,
                   );
+                  unawaited(_restoreAfterFailedLogout());
                 }
               }
             },
@@ -265,6 +266,20 @@ class _HomState extends State<Hom> {
         ],
       ),
     );
+  }
+
+  /// A logout that failed part-way may already have closed this user's
+  /// boxes. Reopen them (the user is still signed in) before showing
+  /// per-user UI again; until then Hom keeps its loading placeholder.
+  Future<void> _restoreAfterFailedLogout() async {
+    try {
+      await _initUserBox();
+    } catch (error, stackTrace) {
+      debugPrint(
+        'Restoring Home after a failed logout failed: $error\n$stackTrace',
+      );
+    }
+    if (mounted) setState(() => _signingOut = false);
   }
 
   Future<void> _openPersonalHub() async {
@@ -607,18 +622,17 @@ class _HomState extends State<Hom> {
     }
 
     if (state is WorkoutError) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(state.message),
-          backgroundColor: Theme.of(context).colorScheme.error,
-        ),
+      AppFeedback.error(
+        localizeOperationError(AppLocalizations.of(context)!, state.message),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
+    // No per-user UI without an open box: while loading, while signing out,
+    // and in the signed-out redirect (where no box is opened at all).
+    if (_isLoading || _signingOut || exerciseBox == null) {
       return const Scaffold(body: ShimmerHome());
     }
     return MultiBlocListener(

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:ae_coaching/core/feedback/app_feedback.dart';
 
 import 'package:ae_coaching/auth/data/models/body_measurement.dart';
 import 'package:ae_coaching/features/measurements/presentation/cubit/measurement_cubit.dart';
@@ -147,12 +148,7 @@ class _AddEditMeasurementScreenState extends State<AddEditMeasurementScreen> {
 
     if (!hasAnyValue) {
       final l10n = AppLocalizations.of(context)!;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.enterAtLeastOneMeasurement),
-          backgroundColor: Theme.of(context).colorScheme.error,
-        ),
-      );
+      AppFeedback.warning(l10n.enterAtLeastOneMeasurement);
       return;
     }
 

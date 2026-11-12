@@ -1,4 +1,5 @@
 import 'package:ae_coaching/features/workout/data/models/exercise_library_item.dart';
+import 'package:ae_coaching/core/feedback/app_feedback.dart';
 import 'package:ae_coaching/features/workout/presentation/widgets/exercise_illustrations.dart';
 import 'package:ae_coaching/features/workout/presentation/widgets/exercise_video_links.dart';
 import 'package:ae_coaching/features/workout/presentation/screens/exercise_detail_screen.dart';
@@ -194,9 +195,7 @@ class ExerciseLibraryCard extends StatelessWidget {
       // Native launch errors have the same localized, retryable outcome.
     }
     if (!opened && context.mounted) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(message)));
+      AppFeedback.error(message);
     }
   }
 

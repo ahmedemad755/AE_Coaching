@@ -1,4 +1,5 @@
 import 'package:ae_coaching/features/workout/data/repositories/exercise_catalog_repository.dart';
+import 'package:ae_coaching/core/feedback/app_feedback.dart';
 import 'package:ae_coaching/features/workout/presentation/widgets/exercise_media_resolver.dart';
 import 'package:ae_coaching/features/workout/presentation/widgets/exercise_video_links.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
@@ -27,9 +28,7 @@ class ExerciseSourcesScreen extends StatelessWidget {
                 /* Localized launch feedback below. */
               }
               if (!opened && context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(l10n.exerciseBrowserLaunchFailed)),
-                );
+                AppFeedback.error(l10n.exerciseBrowserLaunchFailed);
               }
             },
             child: const Text('Exercise data by RepDB (repdb.co)'),

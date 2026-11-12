@@ -1,4 +1,5 @@
 import 'package:ae_coaching/core/theme/theme_cubit.dart';
+import 'package:ae_coaching/core/feedback/app_feedback.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,9 +22,7 @@ class AppearanceSettingsDialog extends StatelessWidget {
               await context.read<ThemeCubit>().setThemeMode(mode);
             } catch (_) {
               if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(l10n.themePreferenceSaveError)),
-                );
+                AppFeedback.error(l10n.themePreferenceSaveError);
               }
             }
           },

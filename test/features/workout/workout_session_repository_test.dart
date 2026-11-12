@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:ae_coaching/core/notifications/inactivity_reminder_service.dart';
 import 'package:ae_coaching/core/storage/user_storage_manager.dart';
 import 'package:ae_coaching/features/workout/data/datasources/workout_session_remote_data_source.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_session.dart';
@@ -36,31 +35,13 @@ class _FakeWorkoutSessionRemoteDataSource
   }
 }
 
-class _FakeInactivityReminderRecorder implements InactivityReminderRecorder {
-  final List<({String uid, String sessionId, DateTime completedAt})> records =
-      [];
-  bool fail = false;
-
-  @override
-  Future<void> onWorkoutCompleted({
-    required String uid,
-    required String sessionId,
-    required DateTime completedAt,
-  }) async {
-    if (fail) throw StateError('temporary local scheduling failure');
-    records.add((uid: uid, sessionId: sessionId, completedAt: completedAt));
-  }
-}
-
 class _ClosedBoxWorkoutSessionRepository extends WorkoutSessionRepository {
   _ClosedBoxWorkoutSessionRepository({
     required Box<WorkoutSession> box,
     required super.storageManager,
-    required InactivityReminderRecorder inactivityReminderRecorder,
   }) : _box = box,
        super(
          remoteDataSource: _FakeWorkoutSessionRemoteDataSource(),
-         inactivityReminderRecorder: inactivityReminderRecorder,
          uidOverride: () => _FakeWorkoutSessionRemoteDataSource.uid,
        );
 
@@ -75,7 +56,6 @@ void main() {
   late WorkoutSessionRepository repository;
   late UserStorageManager storageManager;
   late _FakeWorkoutSessionRemoteDataSource remoteDataSource;
-  late _FakeInactivityReminderRecorder inactivityReminderRecorder;
 
   const programA = 'program_A';
   const programB = 'program_B';
@@ -93,11 +73,9 @@ void main() {
     }
 
     remoteDataSource = _FakeWorkoutSessionRemoteDataSource();
-    inactivityReminderRecorder = _FakeInactivityReminderRecorder();
     storageManager = UserStorageManager();
     repository = WorkoutSessionRepository(
       remoteDataSource: remoteDataSource,
-      inactivityReminderRecorder: inactivityReminderRecorder,
       storageManager: storageManager,
       uidOverride: () => 'test-uid',
     );
@@ -311,70 +289,7 @@ void main() {
     },
   );
 
-  test(
-    'only successful completion schedules a local reminder for its owner',
-    () async {
-      final session = await repository.startWorkoutSession(
-        programId: programA,
-        workoutTemplateId: push1,
-        workoutNameSnapshot: 'Push 1',
-      );
-
-      final completed = await repository.completeWorkoutSession(
-        sessionId: session.id,
-        totalVolume: 8450,
-      );
-
-      expect(inactivityReminderRecorder.records, hasLength(1));
-      expect(inactivityReminderRecorder.records.single.uid, 'test-uid');
-      expect(inactivityReminderRecorder.records.single.sessionId, session.id);
-      expect(
-        inactivityReminderRecorder.records.single.completedAt,
-        completed.completedAt,
-      );
-    },
-  );
-
-  test(
-    'starting or cancelling a workout does not schedule a reminder',
-    () async {
-      final session = await repository.startWorkoutSession(
-        programId: programA,
-        workoutTemplateId: push1,
-        workoutNameSnapshot: 'Push 1',
-      );
-      await repository.cancelWorkoutSession(session.id);
-
-      expect(inactivityReminderRecorder.records, isEmpty);
-    },
-  );
-
-  test(
-    'cancelling a later workout leaves the previous reminder cycle intact',
-    () async {
-      final completed = await repository.startWorkoutSession(
-        programId: programA,
-        workoutTemplateId: push1,
-        workoutNameSnapshot: 'Push 1',
-      );
-      await repository.completeWorkoutSession(
-        sessionId: completed.id,
-        totalVolume: 100,
-      );
-      final existingReminder = inactivityReminderRecorder.records.single;
-
-      final abandoned = await repository.startWorkoutSession(
-        programId: programA,
-        workoutTemplateId: push1,
-        workoutNameSnapshot: 'Push 1',
-      );
-      await repository.cancelWorkoutSession(abandoned.id);
-
-      expect(inactivityReminderRecorder.records, [existingReminder]);
-    },
-  );
-
-  test('failed local session read does not schedule a reminder', () async {
+  test('failed local session read fails the completion', () async {
     final session = await repository.startWorkoutSession(
       programId: programA,
       workoutTemplateId: push1,
@@ -385,7 +300,6 @@ void main() {
     final failingRepository = _ClosedBoxWorkoutSessionRepository(
       box: box,
       storageManager: storageManager,
-      inactivityReminderRecorder: inactivityReminderRecorder,
     );
 
     await expectLater(
@@ -395,29 +309,7 @@ void main() {
       ),
       throwsA(isA<HiveError>()),
     );
-    expect(inactivityReminderRecorder.records, isEmpty);
   });
-
-  test(
-    'local notification failure does not fail or roll back completion',
-    () async {
-      inactivityReminderRecorder.fail = true;
-      final session = await repository.startWorkoutSession(
-        programId: programA,
-        workoutTemplateId: push1,
-        workoutNameSnapshot: 'Push 1',
-      );
-
-      final completed = await repository.completeWorkoutSession(
-        sessionId: session.id,
-        totalVolume: 100,
-      );
-      final box = await repository.getUserBox();
-
-      expect(completed.isCompleted, isTrue);
-      expect(box.get(session.id)!.isCompleted, isTrue);
-    },
-  );
 
   test('completing a session that is not inProgress throws', () async {
     final session = await repository.startWorkoutSession(

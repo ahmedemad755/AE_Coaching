@@ -1,4 +1,6 @@
 import 'package:ae_coaching/core/routes/app_router.dart';
+import 'package:ae_coaching/core/localization/operation_message_localizer.dart';
+import 'package:ae_coaching/core/feedback/app_feedback.dart';
 import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_program.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_session.dart';
@@ -286,11 +288,8 @@ class _WorkoutProgramDetailsScreenState
     }
 
     if (state is WorkoutSessionError) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(state.message),
-          backgroundColor: context.appColors.error,
-        ),
+      AppFeedback.error(
+        localizeOperationError(AppLocalizations.of(context)!, state.message),
       );
     }
   }
@@ -342,10 +341,10 @@ class _WorkoutProgramDetailsScreenState
                     setState(() => _box = state.box);
                   }
                   if (state is WorkoutTemplateError) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(state.message),
-                        backgroundColor: colors.error,
+                    AppFeedback.error(
+                      localizeOperationError(
+                        AppLocalizations.of(context)!,
+                        state.message,
                       ),
                     );
                   }

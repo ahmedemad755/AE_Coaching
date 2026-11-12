@@ -1,4 +1,5 @@
 import 'package:ae_coaching/core/theme/app_theme.dart';
+import 'package:ae_coaching/core/feedback/app_feedback.dart';
 import 'package:ae_coaching/features/workout/data/models/exercise_set.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -59,12 +60,7 @@ class _LogSetDialogState extends State<LogSetDialog> {
     final reps = int.tryParse(_repsController.text.trim());
 
     if (weight == null || weight < 0 || reps == null || reps <= 0) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.unableToLogSetError),
-          backgroundColor: context.appColors.error,
-        ),
-      );
+      AppFeedback.error(l10n.unableToLogSetError);
       return;
     }
     final notes = _notesController.text.trim();
@@ -122,10 +118,7 @@ class _LogSetDialogState extends State<LogSetDialog> {
                 ),
                 for (final previousSet in widget.previousSets)
                   Padding(
-                    padding: const EdgeInsetsDirectional.only(
-                      start: 8,
-                      top: 2,
-                    ),
+                    padding: const EdgeInsetsDirectional.only(start: 8, top: 2),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

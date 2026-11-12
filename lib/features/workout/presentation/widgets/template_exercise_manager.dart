@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'package:ae_coaching/core/feedback/app_feedback.dart';
 
 import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/features/workout/data/models/exercise_library_item.dart';
@@ -141,11 +142,7 @@ class _TemplateExerciseManagerState extends State<TemplateExerciseManager> {
 
   void _showSaveError() {
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(AppLocalizations.of(context)!.templateExerciseSaveError),
-      ),
-    );
+    AppFeedback.error(AppLocalizations.of(context)!.templateExerciseSaveError);
   }
 
   Future<void> _editTargets(

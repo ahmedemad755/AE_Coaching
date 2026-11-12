@@ -1,4 +1,5 @@
 import 'package:ae_coaching/auth/domain/entities/auth_user.dart';
+import 'package:ae_coaching/core/feedback/feedback_card.dart';
 import 'package:ae_coaching/auth/domain/entities/email_auth_messages.dart';
 import 'package:ae_coaching/auth/domain/entities/email_session_resolution.dart';
 import 'package:ae_coaching/auth/presentation/view/verify_email_view.dart';
@@ -108,7 +109,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(email.refreshCalls, 1);
-      expect(find.byType(SnackBar), findsNothing);
+      expect(find.byType(FeedbackCard), findsNothing);
       expect(find.byType(VerifyEmailView), findsOneWidget);
     });
 

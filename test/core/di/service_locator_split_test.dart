@@ -5,7 +5,12 @@ import 'package:ae_coaching/auth/domain/repositories/email_auth_repository.dart'
 import 'package:ae_coaching/auth/domain/usecases/email_auth_usecases.dart';
 import 'package:ae_coaching/auth/presentation/cubit/auth_cubit.dart';
 import 'package:ae_coaching/core/session/session_storage.dart';
-import 'package:ae_coaching/core/notifications/inactivity_reminder_service.dart';
+import 'package:ae_coaching/core/notifications/legacy_inactivity_reminder_cleanup.dart';
+import 'package:ae_coaching/core/notifications/local_notifications.dart';
+import 'package:ae_coaching/features/notification_settings/application/notification_preferences_sync.dart';
+import 'package:ae_coaching/features/notification_settings/data/device_time_zone.dart';
+import 'package:ae_coaching/features/notification_settings/data/verified_account.dart';
+import 'package:ae_coaching/features/notification_settings/domain/notification_preferences_repository.dart';
 import 'package:ae_coaching/core/storage/user_storage_manager.dart';
 import 'package:ae_coaching/features/measurements/data/datasources/measurement_remote_data_source.dart';
 import 'package:ae_coaching/features/measurements/data/repositories/measurement_repository.dart';
@@ -39,7 +44,7 @@ import 'package:hive/hive.dart';
 /// Stage 5 proof: splitting `service_locator.dart`'s registration code
 /// into `lib/core/di/*.dart` (re-exported by the barrel) must not
 /// change what's registered, each type's lifetime, or how dependencies
-/// resolve. This test runs the SAME 16 `init*()` functions AppBootstrap
+/// resolve. This test runs the SAME 17 `init*()` functions AppBootstrap
 /// calls, in the same order, against a real (temporary, disposable)
 /// GetIt instance and Hive directory — never the production one.
 ///
@@ -70,7 +75,7 @@ void main() {
     Hive.init(tempDir.path);
     await Hive.openBox('authBox');
 
-    // AppBootstrap._initializeDependencies()'s exact 16-call sequence.
+    // AppBootstrap._initializeDependencies()'s exact 17-call sequence.
     initCore();
     initAuth();
     initWorkout();
@@ -87,6 +92,7 @@ void main() {
     initRestTimer();
     initProgramConsistency();
     initHomeWorkoutOverview();
+    initNotificationSettings();
   });
 
   tearDown(() async {
@@ -102,7 +108,14 @@ void main() {
       // Core
       expect(sl.isRegistered<SessionStorage>(), isTrue);
       expect(sl.isRegistered<UserStorageManager>(), isTrue);
-      expect(sl.isRegistered<InactivityReminderService>(), isTrue);
+      expect(sl.isRegistered<LocalNotificationsGateway>(), isTrue);
+      expect(sl.isRegistered<LegacyInactivityReminderCleanup>(), isTrue);
+      expect(sl.isRegistered<LocalNotificationsBootstrap>(), isTrue);
+      // Notification settings (Stage 3)
+      expect(sl.isRegistered<NotificationPreferencesRepository>(), isTrue);
+      expect(sl.isRegistered<DeviceTimeZone>(), isTrue);
+      expect(sl.isRegistered<VerifiedAccount>(), isTrue);
+      expect(sl.isRegistered<NotificationPreferencesSync>(), isTrue);
       expect(sl.isRegistered<LocalProfilePhotoStore>(), isTrue);
       expect(sl.isRegistered<UserProfileRepository>(), isTrue);
       // Auth (email-first; the 15 phone-era registrations were removed
@@ -199,7 +212,7 @@ void main() {
   });
 
   test('no registration resolves a Hive/Firebase-dependent object eagerly '
-      'at registration time — registering all 16 init functions before '
+      'at registration time — registering all 17 init functions before '
       'the authBox exists must not throw (proven separately, without the '
       'setUp\'s own authBox already open)', () async {
     // setUp() already populated `sl` (a true process-wide singleton)
@@ -231,6 +244,7 @@ void main() {
       initRestTimer();
       initProgramConsistency();
       initHomeWorkoutOverview();
+      initNotificationSettings();
     }, returnsNormally);
 
     await sl.reset();
@@ -241,10 +255,10 @@ void main() {
   });
 
   test(
-    'AppBootstrap.initialize() still calls exactly these 16 functions, '
+    'AppBootstrap.initialize() still calls exactly these 17 functions, '
     'in this exact order — re-asserted here as a live import/compile '
     'check (the source-regression tier in app_bootstrap_regression_test.dart '
-    'proves the literal text; this proves the 16 names actually resolve '
+    'proves the literal text; this proves the 17 names actually resolve '
     'to callable top-level functions reachable from service_locator.dart)',
     () {
       expect(initCore, isA<Function>());
@@ -263,6 +277,7 @@ void main() {
       expect(initRestTimer, isA<Function>());
       expect(initProgramConsistency, isA<Function>());
       expect(initHomeWorkoutOverview, isA<Function>());
+      expect(initNotificationSettings, isA<Function>());
     },
   );
 }

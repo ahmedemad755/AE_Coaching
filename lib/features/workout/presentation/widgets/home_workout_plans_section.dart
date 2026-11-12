@@ -1,4 +1,6 @@
 import 'package:ae_coaching/core/routes/app_router.dart';
+import 'package:ae_coaching/core/localization/operation_message_localizer.dart';
+import 'package:ae_coaching/core/feedback/app_feedback.dart';
 import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/features/views/widgets/home_dashboard_cards.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_program.dart';
@@ -108,11 +110,8 @@ class _HomeWorkoutPlansSectionState extends State<HomeWorkoutPlansSection> {
 
   void _showError(String message) {
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: context.appColors.error,
-      ),
+    AppFeedback.error(
+      localizeOperationError(AppLocalizations.of(context)!, message),
     );
   }
 

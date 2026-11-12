@@ -1,4 +1,5 @@
 import 'package:ae_coaching/features/workout/data/models/workout_program.dart';
+import 'package:ae_coaching/core/localization/operation_message_localizer.dart';
 import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/features/workout/domain/services/program_analytics_service.dart';
 import 'package:ae_coaching/features/workout/presentation/cubit/program_analytics_cubit.dart';
@@ -60,7 +61,10 @@ class _ProgramAnalyticsScreenState extends State<ProgramAnalyticsScreen> {
         builder: (context, state) {
           if (state is ProgramAnalyticsError) {
             return Center(
-              child: Text(state.message, style: TextStyle(color: colors.error)),
+              child: Text(
+                localizeOperationError(l10n, state.message),
+                style: TextStyle(color: colors.error),
+              ),
             );
           }
           if (state is! ProgramAnalyticsLoaded) {

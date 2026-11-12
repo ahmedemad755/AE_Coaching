@@ -284,6 +284,60 @@ abstract class AppLocalizations {
   /// **'Could not save notification preference. Try again.'**
   String get inactivityReminderSaveFailed;
 
+  /// No description provided for @inactivityRemindersSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'A gentle nudge when you haven\'t logged a workout for a while.'**
+  String get inactivityRemindersSubtitle;
+
+  /// No description provided for @inactivityReminderLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading your reminder setting…'**
+  String get inactivityReminderLoading;
+
+  /// No description provided for @inactivityReminderSaving.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving reminder setting…'**
+  String get inactivityReminderSaving;
+
+  /// No description provided for @inactivityReminderSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder setting saved.'**
+  String get inactivityReminderSaved;
+
+  /// No description provided for @inactivityReminderSavedOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved on this device. It will sync when you\'re back online.'**
+  String get inactivityReminderSavedOffline;
+
+  /// No description provided for @inactivityReminderPendingSync.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting to sync. Your change isn\'t confirmed yet.'**
+  String get inactivityReminderPendingSync;
+
+  /// No description provided for @inactivityReminderOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline. Connect to load your reminder setting.'**
+  String get inactivityReminderOffline;
+
+  /// No description provided for @inactivityReminderUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify your email to manage workout reminders.'**
+  String get inactivityReminderUnavailable;
+
+  /// No description provided for @inactivityReminderLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load your reminder setting.'**
+  String get inactivityReminderLoadFailed;
+
   /// No description provided for @repdbInstructions.
   ///
   /// In en, this message translates to:
@@ -3409,6 +3463,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your account profile needs attention. Please contact support.'**
   String get authErrorProfileConflicting;
+
+  /// No description provided for @feedbackDismiss.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismiss'**
+  String get feedbackDismiss;
+
+  /// No description provided for @feedbackSuccessLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Success'**
+  String get feedbackSuccessLabel;
+
+  /// No description provided for @feedbackErrorLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get feedbackErrorLabel;
+
+  /// No description provided for @feedbackWarningLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Warning'**
+  String get feedbackWarningLabel;
+
+  /// No description provided for @feedbackInfoLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Information'**
+  String get feedbackInfoLabel;
+
+  /// No description provided for @feedbackLoadingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'In progress'**
+  String get feedbackLoadingLabel;
+
+  /// No description provided for @feedbackGenericError.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get feedbackGenericError;
+
+  /// No description provided for @feedbackSignInRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Your session has ended. Please sign in again.'**
+  String get feedbackSignInRequired;
+
+  /// No description provided for @feedbackItemUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'This item is no longer available. Refresh and try again.'**
+  String get feedbackItemUnavailable;
+
+  /// No description provided for @logoutFailedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Logout failed. Please try again.'**
+  String get logoutFailedMessage;
+
+  /// No description provided for @feedbackWorkoutNotActive.
+  ///
+  /// In en, this message translates to:
+  /// **'This workout is no longer active.'**
+  String get feedbackWorkoutNotActive;
 }
 
 class _AppLocalizationsDelegate

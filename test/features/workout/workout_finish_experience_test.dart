@@ -1,4 +1,5 @@
 import 'package:ae_coaching/core/routes/app_router.dart';
+import 'package:ae_coaching/core/feedback/feedback_host.dart';
 import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/core/storage/user_storage_manager.dart';
 import 'package:ae_coaching/features/workout/data/datasources/workout_remote_data_source.dart';
@@ -208,6 +209,7 @@ void main() {
   Widget app() => ValueListenableBuilder<ThemeMode>(
     valueListenable: themeMode,
     builder: (context, mode, _) => MaterialApp(
+      builder: AppFeedbackHost.builder,
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
       themeMode: mode,

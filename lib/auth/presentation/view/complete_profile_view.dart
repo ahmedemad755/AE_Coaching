@@ -1,4 +1,5 @@
 import 'package:ae_coaching/auth/domain/validation/auth_input_rules.dart';
+import 'package:ae_coaching/core/feedback/app_feedback.dart';
 import 'package:ae_coaching/auth/presentation/auth_flow_navigation.dart';
 import 'package:ae_coaching/auth/presentation/cubit/auth_cubit.dart';
 import 'package:ae_coaching/auth/presentation/cubit/auth_state.dart';
@@ -69,7 +70,11 @@ class _CompleteProfileViewState extends State<CompleteProfileView> {
             } else if (state is AuthSignedOut) {
               AuthFlowNavigation.toLogin(context);
             } else if (state is AuthError) {
-              showAuthSnackBar(context, state.message, isError: true);
+              showAuthFeedback(
+                context,
+                state.message,
+                type: FeedbackType.error,
+              );
             }
           },
           builder: (context, state) {

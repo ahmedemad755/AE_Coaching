@@ -111,6 +111,39 @@ class AppLocalizationsEn extends AppLocalizations {
       'Could not save notification preference. Try again.';
 
   @override
+  String get inactivityRemindersSubtitle =>
+      'A gentle nudge when you haven\'t logged a workout for a while.';
+
+  @override
+  String get inactivityReminderLoading => 'Loading your reminder setting…';
+
+  @override
+  String get inactivityReminderSaving => 'Saving reminder setting…';
+
+  @override
+  String get inactivityReminderSaved => 'Reminder setting saved.';
+
+  @override
+  String get inactivityReminderSavedOffline =>
+      'Saved on this device. It will sync when you\'re back online.';
+
+  @override
+  String get inactivityReminderPendingSync =>
+      'Waiting to sync. Your change isn\'t confirmed yet.';
+
+  @override
+  String get inactivityReminderOffline =>
+      'You\'re offline. Connect to load your reminder setting.';
+
+  @override
+  String get inactivityReminderUnavailable =>
+      'Verify your email to manage workout reminders.';
+
+  @override
+  String get inactivityReminderLoadFailed =>
+      'Couldn\'t load your reminder setting.';
+
+  @override
   String get repdbInstructions => 'Instructions';
 
   @override
@@ -1948,4 +1981,39 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get authErrorProfileConflicting =>
       'Your account profile needs attention. Please contact support.';
+
+  @override
+  String get feedbackDismiss => 'Dismiss';
+
+  @override
+  String get feedbackSuccessLabel => 'Success';
+
+  @override
+  String get feedbackErrorLabel => 'Error';
+
+  @override
+  String get feedbackWarningLabel => 'Warning';
+
+  @override
+  String get feedbackInfoLabel => 'Information';
+
+  @override
+  String get feedbackLoadingLabel => 'In progress';
+
+  @override
+  String get feedbackGenericError => 'Something went wrong. Please try again.';
+
+  @override
+  String get feedbackSignInRequired =>
+      'Your session has ended. Please sign in again.';
+
+  @override
+  String get feedbackItemUnavailable =>
+      'This item is no longer available. Refresh and try again.';
+
+  @override
+  String get logoutFailedMessage => 'Logout failed. Please try again.';
+
+  @override
+  String get feedbackWorkoutNotActive => 'This workout is no longer active.';
 }

@@ -183,4 +183,56 @@ void main() {
       expect(clearIndex, lessThan(signOutIndex));
     });
   });
+
+  // Device crash (2026-11): signing out rebuilt Hom (its auth listener and
+  // the per-user ThemeCubit) after logout had nulled/closed its exercise
+  // box but before navigating away, so `exerciseBox!` threw in
+  // _buildVolumePanel and the framework's element-tree assertion followed.
+  group('H: logout never rebuilds per-user UI over closed boxes', () {
+    late String logoutAction;
+
+    setUp(() {
+      final logoutStart = homSource.indexOf('Future<void> _logout()');
+      final onPressedStart = homSource.indexOf('onPressed: () async {', logoutStart);
+      final actionEnd = homSource.indexOf('style: ElevatedButton.styleFrom(', onPressedStart);
+      logoutAction = homSource.substring(onPressedStart, actionEnd);
+    });
+
+    test('Home switches to its placeholder BEFORE boxes close and before sign-out', () {
+      final flagIndex = logoutAction.indexOf('setState(() => _signingOut = true)');
+      expect(flagIndex, greaterThan(-1));
+      for (final step in [
+        'closeForUser(outgoingUid)',
+        'exerciseBox = null',
+        'clearSession()',
+        'FirebaseAuth.instance.signOut()',
+        'pushNamedAndRemoveUntil(',
+      ]) {
+        final stepIndex = logoutAction.indexOf(step);
+        expect(stepIndex, greaterThan(flagIndex), reason: '$step must come after the flag');
+      }
+    });
+
+    test('build shows only the placeholder while signing out or without a box', () {
+      final buildStart = homSource.indexOf('Widget build(BuildContext context) {');
+      final guard = homSource.indexOf('if (_isLoading || _signingOut || exerciseBox == null) {', buildStart);
+      final dataUi = homSource.indexOf('HomeDashboard(', buildStart);
+      final volume = homSource.indexOf('_buildVolumePanel()', buildStart);
+      expect(guard, greaterThan(buildStart));
+      expect(guard, lessThan(dataUi));
+      expect(guard, lessThan(volume));
+    });
+
+    test('a failed logout reopens the boxes before per-user UI returns', () {
+      expect(logoutAction.contains('unawaited(_restoreAfterFailedLogout())'), isTrue);
+      final restoreStart = homSource.indexOf('Future<void> _restoreAfterFailedLogout() async {');
+      final restoreEnd = homSource.indexOf('Future<void> _openPersonalHub()', restoreStart);
+      final restore = homSource.substring(restoreStart, restoreEnd);
+      final reopen = restore.indexOf('await _initUserBox()');
+      final unflag = restore.indexOf('setState(() => _signingOut = false)');
+      expect(reopen, greaterThan(-1));
+      expect(unflag, greaterThan(reopen));
+    });
+  });
+
 }

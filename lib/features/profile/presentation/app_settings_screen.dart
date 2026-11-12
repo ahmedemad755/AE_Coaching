@@ -1,8 +1,10 @@
 import 'package:ae_coaching/core/localization/locale_cubit.dart';
+import 'package:ae_coaching/core/feedback/app_feedback.dart';
 import 'package:ae_coaching/core/notifications/fcm_device_service.dart';
-import 'package:ae_coaching/core/notifications/inactivity_reminder_service.dart';
 import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/core/theme/theme_cubit.dart';
+import 'package:ae_coaching/features/notification_settings/presentation/cubit/notification_preferences_cubit.dart';
+import 'package:ae_coaching/features/notification_settings/presentation/widgets/inactivity_reminder_preference_tile.dart';
 import 'package:ae_coaching/features/workout/presentation/screens/exercise_sources_screen.dart';
 import 'package:ae_coaching/features/profile/presentation/profile_navigation.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
@@ -24,8 +26,7 @@ class AppSettingsScreen extends StatefulWidget {
 class _AppSettingsScreenState extends State<AppSettingsScreen>
     with WidgetsBindingObserver {
   late Future<AuthorizationStatus> _permissionStatus;
-  late Stream<bool> _reminderPreference;
-  bool _savingReminder = false;
+  late final NotificationPreferencesCubit _reminderPreferences;
 
   @override
   void initState() {
@@ -33,7 +34,15 @@ class _AppSettingsScreenState extends State<AppSettingsScreen>
     WidgetsBinding.instance.addObserver(this);
     _permissionStatus = sl<FcmDeviceService>()
         .notificationAuthorizationStatus();
-    _reminderPreference = sl<InactivityReminderService>().watch();
+    final locale = context.read<LocaleCubit>();
+    // Bound to the account verified now; the reminder language follows
+    // the app language (it never changes it).
+    _reminderPreferences = NotificationPreferencesCubit(
+      repository: sl(),
+      deviceTimeZone: sl(),
+      account: sl(),
+      languageCode: () => locale.state.languageCode,
+    )..start();
   }
 
   @override
@@ -49,6 +58,7 @@ class _AppSettingsScreenState extends State<AppSettingsScreen>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    _reminderPreferences.close();
     super.dispose();
   }
 
@@ -58,9 +68,7 @@ class _AppSettingsScreenState extends State<AppSettingsScreen>
       await context.read<ThemeCubit>().setThemeMode(mode);
     } catch (_) {
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(l10n.themePreferenceSaveError)));
+        AppFeedback.error(l10n.themePreferenceSaveError);
       }
     }
   }
@@ -80,26 +88,6 @@ class _AppSettingsScreenState extends State<AppSettingsScreen>
         ],
       ),
     );
-  }
-
-  Future<void> _setReminder(bool enabled) async {
-    if (_savingReminder) return;
-    setState(() => _savingReminder = true);
-    try {
-      await sl<InactivityReminderService>().setEnabled(enabled);
-    } catch (_) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              AppLocalizations.of(context)!.inactivityReminderSaveFailed,
-            ),
-          ),
-        );
-      }
-    } finally {
-      if (mounted) setState(() => _savingReminder = false);
-    }
   }
 
   @override
@@ -159,16 +147,9 @@ class _AppSettingsScreenState extends State<AppSettingsScreen>
           ),
           const SizedBox(height: 18),
           _SectionTitle(title: l10n.settingsNotifications),
-          StreamBuilder<bool>(
-            stream: _reminderPreference,
-            builder: (context, snapshot) => SwitchListTile.adaptive(
-              contentPadding: EdgeInsets.zero,
-              title: Text(l10n.inactivityRemindersTitle),
-              value: snapshot.data ?? true,
-              onChanged: _savingReminder || !snapshot.hasData
-                  ? null
-                  : _setReminder,
-            ),
+          BlocProvider.value(
+            value: _reminderPreferences,
+            child: const InactivityReminderPreferenceTile(),
           ),
           Padding(
             padding: const EdgeInsetsDirectional.only(

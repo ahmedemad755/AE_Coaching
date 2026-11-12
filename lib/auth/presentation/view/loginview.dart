@@ -1,4 +1,5 @@
 import 'package:ae_coaching/auth/domain/validation/auth_input_rules.dart';
+import 'package:ae_coaching/core/feedback/app_feedback.dart';
 import 'package:ae_coaching/auth/presentation/auth_flow_navigation.dart';
 import 'package:ae_coaching/auth/presentation/cubit/auth_cubit.dart';
 import 'package:ae_coaching/auth/presentation/cubit/auth_state.dart';
@@ -70,9 +71,17 @@ class _LoginViewState extends State<LoginView> {
               } else if (state is AuthProfileIncomplete) {
                 AuthFlowNavigation.toCompleteProfile(context, state.email);
               } else if (state is AuthLegacyAccountSignedOut) {
-                showAuthSnackBar(context, l10n.legacyAccountSignedOutMessage);
+                showAuthFeedback(
+                  context,
+                  l10n.legacyAccountSignedOutMessage,
+                  type: FeedbackType.warning,
+                );
               } else if (state is AuthError) {
-                showAuthSnackBar(context, state.message, isError: true);
+                showAuthFeedback(
+                  context,
+                  state.message,
+                  type: FeedbackType.error,
+                );
               }
             },
             builder: (context, state) {

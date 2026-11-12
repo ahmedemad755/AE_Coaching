@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:ae_coaching/core/feedback/app_feedback.dart';
 
 import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/features/workout/data/models/exercise_set.dart';
@@ -153,12 +154,7 @@ class _ActiveWorkoutSessionScreenState extends State<ActiveWorkoutSessionScreen>
     } catch (_) {
       if (!mounted) return;
       setState(() => _isFinishing = false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.unableToFinishWorkoutError),
-          backgroundColor: context.appColors.error,
-        ),
-      );
+      AppFeedback.error(l10n.unableToFinishWorkoutError);
       return;
     }
     if (!mounted) return;
@@ -207,12 +203,7 @@ class _ActiveWorkoutSessionScreenState extends State<ActiveWorkoutSessionScreen>
         Navigator.pop(context);
       } else {
         setState(() => _isFinishing = false);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n.unableToFinishWorkoutError),
-            backgroundColor: context.appColors.error,
-          ),
-        );
+        AppFeedback.error(l10n.unableToFinishWorkoutError);
       }
       return;
     }
@@ -269,23 +260,13 @@ class _ActiveWorkoutSessionScreenState extends State<ActiveWorkoutSessionScreen>
 
     if (completedSession == null) {
       setState(() => _isFinishing = false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.unableToFinishWorkoutError),
-          backgroundColor: context.appColors.error,
-        ),
-      );
+      AppFeedback.error(l10n.unableToFinishWorkoutError);
       return;
     }
 
     if (!completedSession.isCompleted) {
       setState(() => _isFinishing = false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.unableToFinishWorkoutError),
-          backgroundColor: context.appColors.error,
-        ),
-      );
+      AppFeedback.error(l10n.unableToFinishWorkoutError);
       return;
     }
 
@@ -385,12 +366,7 @@ class _ActiveWorkoutSessionScreenState extends State<ActiveWorkoutSessionScreen>
       return true;
     } catch (_) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)!.unableToLogSetError),
-            backgroundColor: context.appColors.error,
-          ),
-        );
+        AppFeedback.error(AppLocalizations.of(context)!.unableToLogSetError);
       }
       return false;
     } finally {
@@ -452,12 +428,7 @@ class _ActiveWorkoutSessionScreenState extends State<ActiveWorkoutSessionScreen>
       if (mounted) setState(() => _sessionNote = updated.workoutNote);
     } catch (_) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n.unableToSaveNoteError),
-            backgroundColor: context.appColors.error,
-          ),
-        );
+        AppFeedback.error(l10n.unableToSaveNoteError);
       }
     }
   }
@@ -699,25 +670,16 @@ class _ActiveWorkoutSessionScreenState extends State<ActiveWorkoutSessionScreen>
   void _showEditSuccess(ActiveWorkoutEditScope scope) {
     if (!mounted) return;
     final l10n = AppLocalizations.of(context)!;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          scope == ActiveWorkoutEditScope.sessionOnly
-              ? l10n.activeSessionEditSaved
-              : l10n.activeProgramEditSaved,
-        ),
-      ),
+    AppFeedback.success(
+      scope == ActiveWorkoutEditScope.sessionOnly
+          ? l10n.activeSessionEditSaved
+          : l10n.activeProgramEditSaved,
     );
   }
 
   void _showExerciseSaveError([Object? error]) {
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(_exerciseSaveErrorMessage(error)),
-        backgroundColor: context.appColors.error,
-      ),
-    );
+    AppFeedback.error(_exerciseSaveErrorMessage(error));
   }
 
   String _exerciseSaveErrorMessage(Object? error) {
@@ -839,9 +801,7 @@ class _ActiveWorkoutSessionScreenState extends State<ActiveWorkoutSessionScreen>
     final message = _requiredRestPending
         ? l10n.waitForRestTimerLabel
         : l10n.markPreviousSetDoneLabel;
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(message)));
+    AppFeedback.info(message);
   }
 
   Widget _buildExerciseRow(SessionExerciseRow row, {required int index}) {

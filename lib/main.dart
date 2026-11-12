@@ -1,10 +1,13 @@
 import 'package:ae_coaching/core/bootstrap/app_bootstrap.dart';
+import 'package:ae_coaching/core/feedback/feedback_host.dart';
 import 'package:ae_coaching/core/localization/locale_cubit.dart';
 import 'package:ae_coaching/core/routes/app_router.dart';
 import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/core/theme/theme_cubit.dart';
 import 'package:ae_coaching/core/theme/theme_preference_store.dart';
+import 'package:ae_coaching/features/notification_settings/application/notification_preferences_sync.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
+import 'package:ae_coaching/service_locator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,7 +25,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => LocaleCubit(),
+      create: (_) => LocaleCubit(
+        onLanguageChanged: (languageCode) => sl<NotificationPreferencesSync>()
+            .syncCurrentAccount(languageCode: languageCode),
+      ),
       child: BlocBuilder<LocaleCubit, Locale>(
         builder: (context, locale) {
           final auth = FirebaseAuth.instance;
@@ -53,7 +59,15 @@ class MyApp extends StatelessWidget {
                   final brightness = Theme.of(context).brightness;
                   return AnnotatedRegion<SystemUiOverlayStyle>(
                     value: AppTheme.systemUiOverlayStyle(brightness),
-                    child: child ?? const SizedBox.shrink(),
+                    // Root-level transient feedback, above the Navigator so
+                    // it survives route changes and covers every route.
+                    child: AppFeedbackHost(
+                      currentUser: () => auth.currentUser?.uid,
+                      userChanges: auth.authStateChanges().map(
+                        (user) => user?.uid,
+                      ),
+                      child: child ?? const SizedBox.shrink(),
+                    ),
                   );
                 },
               ),

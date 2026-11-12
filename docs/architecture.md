@@ -135,9 +135,12 @@ older Console rules: owner-only, with no verification or field checks.
 
 ### Firestore security rules (Stage 3D)
 
-Access inventory, taken from the code. There are no root collections, no
-FCM tokens, no settings documents, and no Firebase Storage: progress photos
-are local Hive only.
+Access inventory, taken from the code. The only root collection is the
+server-only `fcmTokenOwners`, the only settings document is
+`settings/notifications`, and there is no Firebase Storage: progress photos
+are local Hive only. Server-owned documents are written by Cloud Functions
+through the Admin SDK (which bypasses rules) and are closed to every
+client; see `functions/README.md`.
 
 | Path | Used by | Operations | Auth required |
 | --- | --- | --- | --- |
@@ -147,6 +150,10 @@ are local Hive only.
 | `users/{uid}/workout_programs/{id}` | `WorkoutProgramRemoteDataSourceImpl` | set, delete, list `orderBy(createdAt)` | verified owner |
 | `users/{uid}/workout_templates/{id}` | `WorkoutTemplateRemoteDataSourceImpl` | set, delete, list `orderBy(createdAt)` | verified owner |
 | `users/{uid}/workout_sessions/{id}` | `WorkoutSessionRemoteDataSourceImpl` | set, delete, list `orderBy(date)` | verified owner |
+| `users/{uid}/fcmTokens/{sha256}` | `FcmDeviceService` | get, set(merge), delete | owner; writes need verified |
+| `users/{uid}/settings/notifications` | the app (Stage 3); read by Cloud Functions | get, create, update (exactly `inactivityRemindersEnabled`, `language`, `timeZone`, `updatedAt = request.time`); no delete | verified owner |
+| `users/{uid}/notificationState/{id}` | Cloud Functions only | — | no client access |
+| `fcmTokenOwners/{tokenId}` | Cloud Functions only | — | no client access |
 
 Policy:
 
@@ -371,6 +378,48 @@ deliberate convention spanning **100%** of the Auth feature's operations
 — removing them would gain nothing behaviorally and would require rewriting
 `AuthCubit`'s constructor and its large existing regression test suite for
 no benefit.
+
+## Workout inactivity reminders (push)
+
+Reminders are computed and sent by Cloud Functions (`functions/README.md`)
+from the sessions and sets the app already uploads. The app only:
+
+- **Stores the preference** in `users/{uid}/settings/notifications`
+  (`lib/features/notification_settings/`). The Settings switch
+  (`NotificationPreferencesCubit` + `InactivityReminderPreferenceTile`)
+  writes the full document. It reports "saved" only after the server
+  confirmed it; a write still queued offline is shown as "waiting to sync";
+  a rejected write leaves the switch unchanged. `NotificationPreferencesSync`
+  runs at each session start (Home) and on app-language changes. Inside a
+  server transaction, it aligns `language` (the app language; the switch
+  never changes the app language) and `timeZone` (device IANA zone,
+  validated against the `timezone` database). It never changes an existing
+  on/off choice. Everything is bound to the verified uid and re-checked
+  before writing.
+- **Shows the push** in the Android channel `inactivity_reminders` (created
+  at startup; also the manifest's default FCM channel). FCM displays it in
+  the background and when the app is terminated. In the foreground nothing
+  is shown (the user is already in the app), so there are no duplicates.
+- **Routes the tap** (`data.type == inactivity_reminder`) to Home via
+  `AppRouter.openHomeFromNotification` (deferred until the navigator
+  exists; repeated delivery of one tap is ignored). Home is a guarded route:
+  signed out or unverified, the tap lands on the startup check.
+- **Registers the device token** (`FcmDeviceService`, unchanged): verified
+  users only, permission asked once, re-registered on every app start
+  (which also confirms server-side ownership), deleted on logout.
+
+### Retired on-device reminder (existing installations)
+
+Builds before Stage 3 scheduled a local notification (id 7301) 3 days after
+a completed workout. On the first launch of a newer build,
+`LegacyInactivityReminderCleanup` cancels only that id, deletes only its
+bookkeeping keys in `authBox`, then records a marker. It is idempotent and
+retried at the next launch if anything fails. The manifest no longer
+declares the plugin's scheduled/boot receivers, so an alarm armed by an
+old build can neither post after the update nor be re-armed on reboot or
+update, even before the app is opened. An account that had turned the old
+reminder off keeps it off: its stored choice seeds the server document the
+first time that account syncs, then the local copy is deleted.
 
 ## Testing strategy
 

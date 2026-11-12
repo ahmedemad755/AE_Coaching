@@ -1,4 +1,5 @@
 import 'package:ae_coaching/core/routes/app_router.dart';
+import 'package:ae_coaching/core/localization/operation_message_localizer.dart';
 import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_session.dart';
 import 'package:ae_coaching/features/workout/domain/services/home_workout_overview_service.dart';
@@ -104,7 +105,7 @@ class HomeWorkoutOverviewSection extends StatelessWidget {
                 const SizedBox(height: 10),
                 if (state is HomeWorkoutOverviewError) ...[
                   Text(
-                    state.message,
+                    localizeOperationError(l10n, state.message),
                     style: TextStyle(color: colors.textMuted),
                   ),
                   TextButton.icon(

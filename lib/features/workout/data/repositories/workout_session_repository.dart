@@ -1,5 +1,4 @@
 import 'package:ae_coaching/core/storage/user_storage_manager.dart';
-import 'package:ae_coaching/core/notifications/inactivity_reminder_service.dart';
 import 'package:ae_coaching/features/workout/data/datasources/workout_session_remote_data_source.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_session.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_template_exercise_assignment.dart';
@@ -23,7 +22,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 /// — no UI/Cubit wiring in this phase.
 class WorkoutSessionRepository {
   final WorkoutSessionRemoteDataSource remoteDataSource;
-  final InactivityReminderRecorder? inactivityReminderRecorder;
   final UserBox<WorkoutSession> _userBox;
   Future<void>? _exerciseLayoutTail;
 
@@ -32,7 +30,6 @@ class WorkoutSessionRepository {
 
   WorkoutSessionRepository({
     WorkoutSessionRemoteDataSource? remoteDataSource,
-    this.inactivityReminderRecorder,
     required UserStorageManager storageManager,
     @visibleForTesting this.uidOverride,
   }) : remoteDataSource =
@@ -142,8 +139,6 @@ class WorkoutSessionRepository {
     required String sessionId,
     required double totalVolume,
   }) async {
-    final completionUid =
-        uidOverride?.call() ?? FirebaseAuth.instance.currentUser?.uid;
     final box = await getUserBox();
     final target = box.get(sessionId);
 
@@ -177,21 +172,8 @@ class WorkoutSessionRepository {
       previousSessionId: previous?.id,
     );
     await box.put(sessionId, completed);
-    if (inactivityReminderRecorder != null &&
-        completionUid != null &&
-        completed.completedAt != null) {
-      try {
-        await inactivityReminderRecorder!.onWorkoutCompleted(
-          uid: completionUid,
-          sessionId: completed.id,
-          completedAt: completed.completedAt!,
-        );
-      } catch (error, stackTrace) {
-        debugPrint(
-          'Local inactivity reminder scheduling failed: $error\n$stackTrace',
-        );
-      }
-    }
+    // Inactivity reminders are server-driven (Cloud Functions watch
+    // session/set creation); completing a workout schedules nothing here.
     await _syncSafely(sessionId, completed);
     return completed;
   }

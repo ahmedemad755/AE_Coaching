@@ -1,10 +1,11 @@
 import 'package:ae_coaching/core/theme/app_theme.dart';
+import 'package:ae_coaching/core/feedback/app_feedback.dart';
 import 'package:flutter/material.dart';
 
 /// Generic single-text-field dialog: a title, one text field
 /// (optionally prefilled), Cancel/Save actions. Returns the trimmed
 /// name via `Navigator.pop`, or null if cancelled. [onEmptyMessage] is
-/// shown (as a SnackBar) instead of popping when the trimmed value is
+/// shown as warning feedback instead of popping when the trimmed value is
 /// empty.
 ///
 /// Shared by "Create Workout Day" and "Rename Workout Day" — both are
@@ -45,12 +46,7 @@ class _NameOnlyDialogState extends State<NameOnlyDialog> {
   void _submit() {
     final value = _controller.text.trim();
     if (value.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(widget.emptyValueMessage),
-          backgroundColor: context.appColors.error,
-        ),
-      );
+      AppFeedback.warning(widget.emptyValueMessage);
       return;
     }
     Navigator.pop(context, value);
