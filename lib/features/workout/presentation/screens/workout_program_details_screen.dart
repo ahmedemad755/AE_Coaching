@@ -25,6 +25,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ae_coaching/core/widgets/app_shimmer.dart';
 import 'package:ae_coaching/core/widgets/entrance_animation.dart';
+import 'package:ae_coaching/features/workout/presentation/widgets/day_sync_review.dart';
 
 /// Route arguments for [WorkoutProgramDetailsScreen] — same pattern as
 /// `WorkoutAnalyticsArgs`.
@@ -684,6 +685,8 @@ class _WorkoutDayCard extends StatelessWidget {
               ),
             ],
           ),
+          // Conflicts between devices / earlier exercises found in the cloud.
+          DaySyncNotice(template: template, repository: templateRepository),
           const SizedBox(height: 10),
           TemplateExerciseManager(
             key: ValueKey('exercise-manager-${template.id}'),

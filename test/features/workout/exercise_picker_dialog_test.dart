@@ -5,6 +5,7 @@ import 'package:ae_coaching/features/workout/data/models/exercise_library_item.d
 import 'package:ae_coaching/features/workout/data/repositories/custom_exercise_repository.dart';
 import 'package:ae_coaching/features/workout/data/repositories/exercise_library_catalog.dart';
 import 'package:ae_coaching/features/workout/data/repositories/exercise_name_normalizer.dart';
+import 'package:ae_coaching/features/workout/domain/activity_plans.dart';
 import 'package:ae_coaching/features/workout/presentation/widgets/exercise_picker_dialog.dart';
 import 'package:ae_coaching/features/workout/presentation/widgets/exercise_library_card.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
@@ -25,6 +26,7 @@ class _CustomRepository extends CustomExerciseRepository {
     required String name,
     String? muscleGroup,
     String? equipment,
+    ActivityType activityType = ActivityType.strength,
   }) async {
     final exercise = CustomExercise(
       id: 'custom-${exercises.length}',

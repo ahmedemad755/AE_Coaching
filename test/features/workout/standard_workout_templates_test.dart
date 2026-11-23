@@ -15,6 +15,7 @@ import 'package:ae_coaching/features/workout/presentation/cubit/workout_program_
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
 import 'support/standard_template_fixtures.dart';
+import 'package:ae_coaching/features/workout/domain/workout_limits.dart';
 
 class _FourFieldAdapter extends WorkoutTemplateExerciseAssignmentAdapter {
   @override
@@ -520,6 +521,51 @@ void main() {
         );
         expect(again.get('new')!.restSeconds, 120);
         expect(again.get('old')!.assignmentId, 'legacy');
+      },
+    );
+  });
+
+  group('activity limit in a new program', () {
+    late StandardTemplateFixture f;
+    setUp(() async {
+      f = StandardTemplateFixture();
+      await f.open();
+    });
+    tearDown(() async => f.close());
+
+    test(
+      'a draft day cannot go past the limit; the draft stays as it was',
+      () async {
+        final draft = await f.draft();
+        final day = draft.days.first;
+        final start = day.exerciseAssignments.length;
+        final cubit = WorkoutProgramDraftCubit(
+          draft: draft,
+          importer: f.importer,
+        );
+        final room = WorkoutLimits.maxActivitiesPerDay - start;
+        final many = [
+          for (var i = 0; i <= room; i++)
+            ExerciseLibraryItem(
+              id: 'custom_limit_$i',
+              nameEn: 'Limit $i',
+              source: ExerciseLibraryItemSource.custom,
+            ),
+        ];
+        cubit.addExercises(day.id, many, 'en');
+        expect(cubit.state.error, WorkoutDraftError.tooManyActivities);
+        expect(
+          cubit.state.draft.days.first.exerciseAssignments,
+          hasLength(start),
+        );
+
+        cubit.addExercises(day.id, many.take(room).toList(), 'en');
+        expect(cubit.state.error, isNull);
+        expect(
+          cubit.state.draft.days.first.exerciseAssignments,
+          hasLength(WorkoutLimits.maxActivitiesPerDay),
+        );
+        await cubit.close();
       },
     );
   });

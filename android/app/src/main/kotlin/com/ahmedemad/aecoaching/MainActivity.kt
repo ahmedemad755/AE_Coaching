@@ -2,6 +2,7 @@ package com.ahmedemad.aecoaching
 
 import android.media.AudioAttributes
 import android.media.RingtoneManager
+import android.view.WindowManager
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -13,6 +14,16 @@ class MainActivity : FlutterActivity() {
             flutterEngine.dartExecutor.binaryMessenger,
             "ae_coaching/rest_timer",
         ).setMethodCallHandler { call, result ->
+            if (call.method == "keepScreenOn") {
+                // A running cardio timer keeps the screen on (Stage 6).
+                if (call.arguments == true) {
+                    window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+                } else {
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+                }
+                result.success(null)
+                return@setMethodCallHandler
+            }
             if (call.method != "playNotificationSound") {
                 result.notImplemented()
                 return@setMethodCallHandler

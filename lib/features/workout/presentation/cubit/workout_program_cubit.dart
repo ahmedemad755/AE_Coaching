@@ -1,3 +1,4 @@
+import 'package:ae_coaching/core/utils/close_safe_emit.dart';
 import 'package:ae_coaching/core/errors/exception_message_mapper.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_program.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_cascade_deletion_service.dart';
@@ -11,7 +12,8 @@ part 'workout_program_state.dart';
 /// WorkoutCubit/MeasurementCubit/ProgressPhotoCubit. Only ever reads/
 /// writes the current user's `workout_programs_$uid` box via
 /// [WorkoutProgramRepository]. No template/session logic lives here.
-class WorkoutProgramCubit extends Cubit<WorkoutProgramState> {
+class WorkoutProgramCubit extends Cubit<WorkoutProgramState>
+    with CloseSafeEmit<WorkoutProgramState> {
   final WorkoutProgramRepository repository;
   final WorkoutCascadeDeletionService deletionService;
 

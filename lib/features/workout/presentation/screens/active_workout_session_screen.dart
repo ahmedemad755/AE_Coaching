@@ -1,3 +1,9 @@
+import 'package:ae_coaching/features/workout/presentation/widgets/cardio_config_sheet.dart';
+import 'package:ae_coaching/features/workout/domain/cardio_library.dart';
+import 'package:ae_coaching/features/workout/data/repositories/cardio_library_catalog.dart';
+import 'package:ae_coaching/features/workout/presentation/screens/my_activity_library_screen.dart';
+import 'package:ae_coaching/features/workout/presentation/screens/cardio_library_screen.dart';
+import 'package:ae_coaching/features/workout/presentation/widgets/add_activity_sheet.dart';
 import 'dart:async';
 import 'package:ae_coaching/core/feedback/app_feedback.dart';
 
@@ -14,6 +20,7 @@ import 'package:ae_coaching/features/workout/presentation/cubit/session_exercise
 import 'package:ae_coaching/features/workout/presentation/cubit/rest_timer_cubit.dart';
 import 'package:ae_coaching/features/workout/presentation/cubit/workout_session_cubit.dart';
 import 'package:ae_coaching/features/workout/presentation/screens/workout_completion_summary_screen.dart';
+import 'package:ae_coaching/features/workout/presentation/widgets/exercise_thumbnail.dart';
 import 'package:ae_coaching/features/workout/presentation/widgets/log_set_dialog.dart';
 import 'package:ae_coaching/features/workout/presentation/widgets/planned_set_row.dart';
 import 'package:ae_coaching/features/workout/presentation/screens/exercise_library_screen.dart';
@@ -24,21 +31,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ae_coaching/core/widgets/app_shimmer.dart';
 import 'package:ae_coaching/core/widgets/entrance_animation.dart';
+import 'package:ae_coaching/features/workout/data/repositories/workout_template_repository.dart';
+import 'package:ae_coaching/features/workout/domain/activity_plans.dart';
+import 'package:ae_coaching/features/workout/domain/cardio_run.dart';
+import 'package:ae_coaching/features/workout/domain/workout_features.dart';
+import 'package:ae_coaching/features/workout/presentation/screens/cardio_session_screen.dart';
+import 'package:ae_coaching/features/workout/presentation/widgets/cardio_activity_visuals.dart';
+import 'package:ae_coaching/features/workout/presentation/widgets/timer_format.dart';
 
 /// Route arguments for [ActiveWorkoutSessionScreen].
 class ActiveWorkoutSessionArgs {
   final WorkoutSession session;
 
   const ActiveWorkoutSessionArgs({required this.session});
-}
-
-String _formatElapsed(Duration d) {
-  final hours = d.inHours;
-  final minutes = d.inMinutes.remainder(60);
-  final seconds = d.inSeconds.remainder(60);
-  final mm = minutes.toString().padLeft(2, '0');
-  final ss = seconds.toString().padLeft(2, '0');
-  return hours > 0 ? '$hours:$mm:$ss' : '$mm:$ss';
 }
 
 /// Shows the currently in-progress workout session with a live elapsed
@@ -61,7 +66,10 @@ class _ActiveWorkoutSessionScreenState extends State<ActiveWorkoutSessionScreen>
   static const Color _blue = Color(0xff2f80ed);
 
   late Timer _ticker;
-  Duration _elapsed = Duration.zero;
+
+  /// Only the clock listens to this: ticking every second must not rebuild
+  /// the whole workout (every exercise, field and picture).
+  final ValueNotifier<Duration> _elapsed = ValueNotifier(Duration.zero);
   bool _isFinishing = false;
   bool _isChangingExercises = false;
   bool _isLoggingSet = false;
@@ -91,15 +99,14 @@ class _ActiveWorkoutSessionScreenState extends State<ActiveWorkoutSessionScreen>
 
   void _updateElapsed() {
     if (!mounted) return;
-    setState(
-      () => _elapsed = DateTime.now().difference(widget.session.startedAt),
-    );
+    _elapsed.value = DateTime.now().difference(widget.session.startedAt);
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _ticker.cancel();
+    _elapsed.dispose();
     super.dispose();
   }
 
@@ -158,7 +165,10 @@ class _ActiveWorkoutSessionScreenState extends State<ActiveWorkoutSessionScreen>
       return;
     }
     if (!mounted) return;
-    if (validSets.isEmpty) {
+    final cardioDone = _currentSession.activityRuns.values
+        .map(CardioRun.fromMap)
+        .any((run) => run.countsAsTraining);
+    if (validSets.isEmpty && !cardioDone) {
       final discardConfirmed = await showDialog<bool>(
         context: context,
         barrierDismissible: false,
@@ -225,7 +235,9 @@ class _ActiveWorkoutSessionScreenState extends State<ActiveWorkoutSessionScreen>
           style: const TextStyle(fontWeight: FontWeight.w900),
         ),
         content: Text(
-          l10n.finishWorkoutConfirmBody(volumeText),
+          validSets.isEmpty
+              ? l10n.finishWorkoutConfirmCardioBody
+              : l10n.finishWorkoutConfirmBody(volumeText),
           style: TextStyle(color: ctx.appColors.textMuted),
         ),
         actions: [
@@ -380,6 +392,7 @@ class _ActiveWorkoutSessionScreenState extends State<ActiveWorkoutSessionScreen>
     final newNote = await showDialog<String>(
       context: context,
       builder: (ctx) => AlertDialog(
+        scrollable: true,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         title: Text(
           l10n.editSessionNoteTitle,
@@ -499,7 +512,112 @@ class _ActiveWorkoutSessionScreenState extends State<ActiveWorkoutSessionScreen>
     );
   }
 
-  Future<void> _addNewExercise() => _pickExercise();
+  /// "Add activity" during a workout, as on the workout day: strength opens
+  /// the exercise library as before; cardio and My library add with the
+  /// same choice of this session only or session and program. With the
+  /// cardio paths off (release builds) it opens the exercise library, as it
+  /// always did.
+  Future<void> _addNewExercise() async {
+    if (_editingBlocked) return;
+    if (!WorkoutFeatures.cardioActivities) return _pickExercise();
+    final choice = await showAddActivitySheet(context);
+    if (!mounted || choice == null) return;
+    switch (choice) {
+      case AddActivityChoice.strength:
+        await _pickExercise();
+      case AddActivityChoice.cardio:
+        await _addFromLibrary(mine: false);
+      case AddActivityChoice.myLibrary:
+        await _addFromLibrary(mine: true);
+    }
+  }
+
+  /// The cardio library (or My library): the chosen activity is added once
+  /// the library has closed; cardio after its settings were saved (Cancel
+  /// adds nothing).
+  Future<void> _addFromLibrary({required bool mine}) async {
+    if (_editingBlocked) return;
+    setState(() => _isChangingExercises = true);
+    try {
+      final scope = await _chooseExerciseDestination();
+      if (scope == null || !mounted) return;
+      final cubit = context.read<SessionExerciseCubit>();
+      final state = cubit.state;
+      final rows = state is SessionExerciseLoaded
+          ? state.rows
+          : const <SessionExerciseRow>[];
+      final excludedIds = rows
+          .map((r) => r.assignment?.exerciseId)
+          .whereType<String>()
+          .toSet();
+      final excludedNames = rows.map((r) => r.exerciseName).toSet();
+      final language = Localizations.localeOf(context).languageCode;
+      final customs = sl<CustomExerciseRepository>();
+      CardioLibraryItem? cardio;
+      ExerciseLibraryItem? strength;
+      await showDialog<void>(
+        context: context,
+        builder: (_) => mine
+            ? MyActivityLibraryScreen(
+                customExercises: customs,
+                excludedIds: excludedIds,
+                excludedNames: excludedNames,
+                saveErrorMessage: _exerciseSaveErrorMessage,
+                onSelectStrength: (item) async => strength = item,
+                onSelectCardio: (item) async => cardio = item,
+              )
+            : CardioLibraryScreen(
+                library: CardioLibraryCatalog(
+                  catalog: sl<CombinedExerciseLibraryCatalog>(),
+                  customExercises: customs,
+                  appDefinedNames: appDefinedCardioNames(),
+                ),
+                customExercises: customs,
+                languageCode: language,
+                excludedIds: excludedIds,
+                excludedNames: excludedNames,
+                saveErrorMessage: _exerciseSaveErrorMessage,
+                onSelected: (item) async => cardio = item,
+              ),
+      );
+      if (!mounted) return;
+      final chosenStrength = strength;
+      if (chosenStrength != null) {
+        await cubit.editActiveExercises(
+          session: _currentSession,
+          action: ActiveWorkoutEditAction.add,
+          scope: scope,
+          exercises: [chosenStrength],
+          languageCode: language,
+        );
+        _showEditSuccess(scope);
+        return;
+      }
+      final chosen = cardio;
+      if (chosen == null) return;
+      final plan = await showCardioConfigSheet(
+        context,
+        exerciseId: chosen.exerciseId,
+        name: chosen.nameFor(language),
+        initial: CardioLibrary.defaultPlan,
+      );
+      if (plan == null || !mounted) return;
+      await cubit.editActiveExercises(
+        session: _currentSession,
+        action: ActiveWorkoutEditAction.add,
+        scope: scope,
+        exercises: [chosen.toLibraryItem()],
+        languageCode: language,
+        cardio: plan,
+      );
+      _showEditSuccess(scope);
+    } catch (error) {
+      _showExerciseSaveError(error);
+    } finally {
+      if (mounted) setState(() => _isChangingExercises = false);
+    }
+  }
+
   Future<void> _replaceExercise(SessionExerciseRow row) =>
       _pickExercise(replacing: row);
 
@@ -684,6 +802,9 @@ class _ActiveWorkoutSessionScreenState extends State<ActiveWorkoutSessionScreen>
 
   String _exerciseSaveErrorMessage(Object? error) {
     final l10n = AppLocalizations.of(context)!;
+    if (error is ActivityLimitExceededException) {
+      return l10n.activityLimitReached(error.limit);
+    }
     final reason = error is ActiveWorkoutEditException ? error.reason : null;
     return switch (reason) {
       ActiveWorkoutEditFailure.loggedSets => l10n.activeLoggedExerciseProtected,
@@ -804,7 +925,226 @@ class _ActiveWorkoutSessionScreenState extends State<ActiveWorkoutSessionScreen>
     AppFeedback.info(message);
   }
 
+  /// The cardio plan of [row], when cardio runs with its own timer here.
+  CardioPlan? _cardioPlanOf(SessionExerciseRow row) =>
+      WorkoutFeatures.cardioActivities &&
+          row.assignmentId != null &&
+          row.assignment?.type == ActivityType.cardio
+      ? row.assignment!.cardio
+      : null;
+
+  String _cardioStatus(AppLocalizations l10n, CardioRun run, CardioPlan plan) {
+    final now = DateTime.now().millisecondsSinceEpoch;
+    final shown = run.settle(now, plan);
+    return cardioRunStatusLabel(
+      l10n,
+      shown.status,
+      shown.elapsedAt(now) ~/ 1000,
+    );
+  }
+
+  /// Long-press the handle or the picture to reorder.
+  Widget _reorderHandle(int index, Widget picture) =>
+      ReorderableDelayedDragStartListener(
+        index: index,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              width: 22,
+              height: 44,
+              child: Icon(
+                Icons.drag_indicator,
+                size: 20,
+                color: context.appColors.textMuted,
+              ),
+            ),
+            const SizedBox(width: 4),
+            picture,
+          ],
+        ),
+      );
+
+  /// A row's actions. Cardio has no targets to edit and is not replaced
+  /// from the exercise library.
+  Widget _rowActions(SessionExerciseRow row, int index, {bool cardio = false}) {
+    final l10n = AppLocalizations.of(context)!;
+    return PopupMenuButton<String>(
+      key: ValueKey('session-exercise-actions-${row.exerciseName}'),
+      enabled: !_editingBlocked,
+      tooltip: l10n.edit,
+      onSelected: (action) {
+        if (action == 'replace') {
+          _replaceExercise(row);
+        } else if (action == 'remove') {
+          _removeExercise(row);
+        } else if (action == 'targets') {
+          _editTargets(row);
+        } else if (action == 'up' || action == 'down') {
+          final state = context.read<SessionExerciseCubit>().state;
+          if (state is SessionExerciseLoaded) {
+            _reorderSessionRows(
+              state.rows,
+              index,
+              action == 'up' ? index - 1 : index + 2,
+            );
+          }
+        }
+      },
+      itemBuilder: (_) {
+        final state = context.read<SessionExerciseCubit>().state;
+        final count = state is SessionExerciseLoaded ? state.rows.length : 0;
+        return [
+          if (!cardio)
+            PopupMenuItem(
+              value: 'targets',
+              child: Text(l10n.editExerciseTargets),
+            ),
+          PopupMenuItem(
+            value: 'up',
+            enabled: index > 0,
+            child: Text(l10n.moveUpTooltip),
+          ),
+          PopupMenuItem(
+            value: 'down',
+            enabled: index < count - 1,
+            child: Text(l10n.moveDownTooltip),
+          ),
+          if (!cardio)
+            PopupMenuItem(
+              value: 'replace',
+              child: Text(l10n.replaceExerciseAction),
+            ),
+          PopupMenuItem(
+            value: 'remove',
+            child: Text(l10n.removeExerciseAction),
+          ),
+        ];
+      },
+    );
+  }
+
+  /// Opens the cardio timer of [row]; the activity after it is previewed.
+  Future<void> _openCardio(
+    SessionExerciseRow row,
+    CardioPlan plan,
+    int index,
+  ) async {
+    if (_editingBlocked) return;
+    final cubit = context.read<SessionExerciseCubit>();
+    final state = cubit.state;
+    final rows = state is SessionExerciseLoaded
+        ? state.rows
+        : const <SessionExerciseRow>[];
+    final session = _currentSession;
+    final assignmentId = row.assignmentId!;
+    await Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => CardioSessionScreen(
+          workoutTitle: session.workoutNameSnapshot,
+          activityName: row.exerciseName,
+          exerciseId: row.assignment!.exerciseId,
+          plan: plan,
+          initialRun: session.runFor(assignmentId),
+          nextActivityName: index + 1 < rows.length
+              ? rows[index + 1].exerciseName
+              : null,
+          onSave: (run) => cubit.saveActivityRun(session, assignmentId, run),
+        ),
+      ),
+    );
+  }
+
+  /// A cardio activity in the workout: its plan, where its timer is, and a
+  /// button to open the timer. No sets are logged for it.
+  Widget _buildCardioRow(
+    SessionExerciseRow row,
+    CardioPlan plan, {
+    required int index,
+  }) {
+    final colors = context.appColors;
+    final l10n = AppLocalizations.of(context)!;
+    final run = _currentSession.runFor(row.assignmentId!);
+    final open = _editingBlocked ? null : () => _openCardio(row, plan, index);
+    return Card(
+      key: ValueKey('session-exercise-${row.exerciseName}'),
+      margin: const EdgeInsets.only(bottom: 10),
+      color: Theme.of(context).colorScheme.surface,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: open,
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Row(
+            children: [
+              _reorderHandle(
+                index,
+                CardioActivityAvatar(
+                  exerciseId: row.assignment!.exerciseId,
+                  size: 56,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      row.exerciseName,
+                      style: TextStyle(
+                        color: colors.textPrimary,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 15,
+                      ),
+                    ),
+                    Text(
+                      cardioPlanSummary(l10n, plan),
+                      style: TextStyle(color: colors.textMuted, fontSize: 12),
+                    ),
+                    // Live while a timer runs: rides on the screen's clock.
+                    ValueListenableBuilder<Duration>(
+                      valueListenable: _elapsed,
+                      builder: (context, _, _) => Text(
+                        _cardioStatus(l10n, run, plan),
+                        key: ValueKey('cardio-status-${row.assignmentId}'),
+                        style: TextStyle(
+                          color: run.status == CardioRunStatus.completed
+                              ? colors.success
+                              : colors.textPrimary,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              IconButton.filledTonal(
+                key: ValueKey('cardio-open-${row.assignmentId}'),
+                tooltip: run.status == CardioRunStatus.notStarted
+                    ? l10n.cardioTimerStart
+                    : l10n.cardioTimerOpen,
+                icon: Icon(
+                  run.status == CardioRunStatus.notStarted
+                      ? Icons.play_arrow_rounded
+                      : Icons.timer_outlined,
+                ),
+                onPressed: open,
+              ),
+              _rowActions(row, index, cardio: true),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildExerciseRow(SessionExerciseRow row, {required int index}) {
+    final cardioPlan = _cardioPlanOf(row);
+    if (cardioPlan != null) {
+      return _buildCardioRow(row, cardioPlan, index: index);
+    }
     final colors = context.appColors;
     return Card(
       key: ValueKey('session-exercise-${row.exerciseName}'),
@@ -825,13 +1165,20 @@ class _ActiveWorkoutSessionScreenState extends State<ActiveWorkoutSessionScreen>
           children: [
             Row(
               children: [
-                ReorderableDelayedDragStartListener(
-                  index: index,
-                  child: SizedBox.square(
-                    dimension: 44,
-                    child: Icon(Icons.drag_handle, color: colors.textMuted),
+                // Long-press the handle or the picture to reorder; tap the
+                // picture for the exercise's details and form.
+                _reorderHandle(
+                  index,
+                  ExerciseThumbnail(
+                    key: ValueKey(
+                      'session-exercise-thumbnail-${row.exerciseName}',
+                    ),
+                    name: row.exerciseName,
+                    assignment: row.assignment,
+                    size: 56,
                   ),
                 ),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -876,69 +1223,7 @@ class _ActiveWorkoutSessionScreenState extends State<ActiveWorkoutSessionScreen>
                     );
                   },
                 ),
-                PopupMenuButton<String>(
-                  key: ValueKey('session-exercise-actions-${row.exerciseName}'),
-                  enabled: !_editingBlocked,
-                  tooltip: AppLocalizations.of(context)!.edit,
-                  onSelected: (action) {
-                    if (action == 'replace') {
-                      _replaceExercise(row);
-                    } else if (action == 'remove') {
-                      _removeExercise(row);
-                    } else if (action == 'targets') {
-                      _editTargets(row);
-                    } else if (action == 'up' || action == 'down') {
-                      final state = context.read<SessionExerciseCubit>().state;
-                      if (state is SessionExerciseLoaded) {
-                        _reorderSessionRows(
-                          state.rows,
-                          index,
-                          action == 'up' ? index - 1 : index + 2,
-                        );
-                      }
-                    }
-                  },
-                  itemBuilder: (context) => [
-                    PopupMenuItem(
-                      value: 'targets',
-                      child: Text(
-                        AppLocalizations.of(context)!.editExerciseTargets,
-                      ),
-                    ),
-                    PopupMenuItem(
-                      value: 'up',
-                      enabled: index > 0,
-                      child: Text(AppLocalizations.of(context)!.moveUpTooltip),
-                    ),
-                    PopupMenuItem(
-                      value: 'down',
-                      enabled:
-                          context.read<SessionExerciseCubit>().state
-                              is SessionExerciseLoaded &&
-                          index <
-                              (context.read<SessionExerciseCubit>().state
-                                          as SessionExerciseLoaded)
-                                      .rows
-                                      .length -
-                                  1,
-                      child: Text(
-                        AppLocalizations.of(context)!.moveDownTooltip,
-                      ),
-                    ),
-                    PopupMenuItem(
-                      value: 'replace',
-                      child: Text(
-                        AppLocalizations.of(context)!.replaceExerciseAction,
-                      ),
-                    ),
-                    PopupMenuItem(
-                      value: 'remove',
-                      child: Text(
-                        AppLocalizations.of(context)!.removeExerciseAction,
-                      ),
-                    ),
-                  ],
-                ),
+                _rowActions(row, index),
               ],
             ),
             if (row.previousSets.isNotEmpty)
@@ -1134,6 +1419,26 @@ class _ActiveWorkoutSessionScreenState extends State<ActiveWorkoutSessionScreen>
     );
   }
 
+  /// The dragged copy of an exercise is built in the navigator's overlay,
+  /// above this route's providers. Without handing them over, the copy's
+  /// rest-timer button throws on every frame of the drag (and in debug the
+  /// error reports alone freeze the app until Android kills it).
+  Widget _dragProxy(Widget child, int index, Animation<double> animation) =>
+      MultiBlocProvider(
+        providers: [
+          BlocProvider<SessionExerciseCubit>.value(
+            value: context.read<SessionExerciseCubit>(),
+          ),
+          BlocProvider<RestTimerCubit>.value(
+            value: context.read<RestTimerCubit>(),
+          ),
+          BlocProvider<WorkoutSessionCubit>.value(
+            value: context.read<WorkoutSessionCubit>(),
+          ),
+        ],
+        child: entranceSafeProxyDecorator(child, index, animation),
+      );
+
   Future<void> _reorderSessionRows(
     List<SessionExerciseRow> rows,
     int oldIndex,
@@ -1168,6 +1473,23 @@ class _ActiveWorkoutSessionScreenState extends State<ActiveWorkoutSessionScreen>
     final colors = context.appColors;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final primary = Theme.of(context).colorScheme.primary;
+    // Whether a set can be logged depends on the rest timer running: refresh
+    // when it starts or stops (it used to ride on the per-second rebuild).
+    return BlocListener<RestTimerCubit, RestTimerState>(
+      listenWhen: (previous, current) =>
+          previous.isRunning != current.isRunning,
+      listener: (context, _) => setState(() {}),
+      child: _buildScaffold(context, l10n, colors, isDark, primary),
+    );
+  }
+
+  Widget _buildScaffold(
+    BuildContext context,
+    AppLocalizations l10n,
+    AppSemanticColors colors,
+    bool isDark,
+    Color primary,
+  ) {
     return Scaffold(
       backgroundColor: colors.canvas,
       appBar: AppBar(
@@ -1187,7 +1509,11 @@ class _ActiveWorkoutSessionScreenState extends State<ActiveWorkoutSessionScreen>
                     : _blue,
               ),
               icon: const Icon(Icons.add),
-              label: Text(l10n.newExerciseButton),
+              label: Text(
+                WorkoutFeatures.cardioActivities
+                    ? l10n.addActivityButton
+                    : l10n.newExerciseButton,
+              ),
             ),
           ),
           PopupMenuButton<String>(
@@ -1213,83 +1539,99 @@ class _ActiveWorkoutSessionScreenState extends State<ActiveWorkoutSessionScreen>
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              children: [
-                Text(
-                  l10n.elapsedTimeLabel,
-                  style: TextStyle(
-                    color: colors.textMuted,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 12,
+      // One scroll view for the whole screen: the elapsed time and the rest
+      // timer scroll with the exercises, so nothing can overflow on small
+      // phones, with large text, or while the keyboard is open, and the
+      // field being typed into is scrolled above the keyboard.
+      body: CustomScrollView(
+        key: const PageStorageKey('active-exercises'),
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        slivers: [
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                children: [
+                  Text(
+                    l10n.elapsedTimeLabel,
+                    style: TextStyle(
+                      color: colors.textMuted,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 12,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  _formatElapsed(_elapsed),
-                  style: TextStyle(
-                    color: colors.textPrimary,
-                    fontWeight: FontWeight.w900,
-                    fontSize: 48,
+                  const SizedBox(height: 8),
+                  ValueListenableBuilder<Duration>(
+                    valueListenable: _elapsed,
+                    builder: (context, elapsed, _) => Text(
+                      formatTimerClock(elapsed.inSeconds),
+                      style: TextStyle(
+                        color: colors.textPrimary,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 48,
+                      ),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-          RestTimerWidget(
-            lockCountdownControls: _requiredRestPending,
-            onStarted: _onRestTimerStarted,
-            onCompleted: _onRestTimerCompleted,
+          SliverToBoxAdapter(
+            child: RestTimerWidget(
+              lockCountdownControls: _requiredRestPending,
+              onStarted: _onRestTimerStarted,
+              onCompleted: _onRestTimerCompleted,
+            ),
           ),
-          Expanded(
-            child: BlocBuilder<SessionExerciseCubit, SessionExerciseState>(
-              builder: (context, state) {
-                if (state is SessionExerciseLoaded) {
-                  if (state.session?.pendingProgramExerciseEdit != null) {
-                    return SingleChildScrollView(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
-                          children: [
-                            Text(l10n.activeProgramPending),
-                            TextButton(
-                              onPressed: _isChangingExercises
-                                  ? null
-                                  : () => _resolvePending(),
-                              child: Text(l10n.activeRetryProgramEdit),
-                            ),
-                            TextButton(
-                              onPressed: _isChangingExercises
-                                  ? null
-                                  : () =>
-                                        _resolvePending(keepSessionOnly: true),
-                              child: Text(l10n.activeKeepSessionEdit),
-                            ),
-                          ],
-                        ),
+          BlocBuilder<SessionExerciseCubit, SessionExerciseState>(
+            builder: (context, state) {
+              if (state is SessionExerciseLoaded) {
+                if (state.session?.pendingProgramExerciseEdit != null) {
+                  return SliverPadding(
+                    padding: const EdgeInsets.all(16),
+                    sliver: SliverToBoxAdapter(
+                      child: Column(
+                        children: [
+                          Text(l10n.activeProgramPending),
+                          TextButton(
+                            onPressed: _isChangingExercises
+                                ? null
+                                : () => _resolvePending(),
+                            child: Text(l10n.activeRetryProgramEdit),
+                          ),
+                          TextButton(
+                            onPressed: _isChangingExercises
+                                ? null
+                                : () => _resolvePending(keepSessionOnly: true),
+                            child: Text(l10n.activeKeepSessionEdit),
+                          ),
+                        ],
                       ),
-                    );
-                  }
-                  if (state.rows.isEmpty) {
-                    return Center(
+                    ),
+                  );
+                }
+                if (state.rows.isEmpty) {
+                  return SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: Center(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 32),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 32,
+                          vertical: 24,
+                        ),
                         child: Text(
                           l10n.noExercisesLoggedYetBody,
                           textAlign: TextAlign.center,
                           style: TextStyle(color: colors.textMuted),
                         ),
                       ),
-                    );
-                  }
-                  return ReorderableListView.builder(
-                    proxyDecorator: entranceSafeProxyDecorator,
-                    key: const PageStorageKey("active-exercises"),
-                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 88),
-                    buildDefaultDragHandles: false,
+                    ),
+                  );
+                }
+                return SliverPadding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 88),
+                  sliver: SliverReorderableList(
+                    proxyDecorator: _dragProxy,
                     itemCount: state.rows.length,
                     onReorder: (oldIndex, newIndex) =>
                         _reorderSessionRows(state.rows, oldIndex, newIndex),
@@ -1297,21 +1639,28 @@ class _ActiveWorkoutSessionScreenState extends State<ActiveWorkoutSessionScreen>
                       final row = state.rows[index];
                       return _buildExerciseRow(row, index: index);
                     }),
-                  );
-                }
-                if (state is SessionExerciseError) {
-                  return Center(
-                    child: Text(
-                      state.message,
-                      style: TextStyle(color: colors.error),
-                    ),
-                  );
-                }
-                return const ShimmerList(
-                  padding: EdgeInsets.fromLTRB(16, 0, 16, 88),
+                  ),
                 );
-              },
-            ),
+              }
+              if (state is SessionExerciseError) {
+                return SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: Text(
+                        state.message,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: colors.error),
+                      ),
+                    ),
+                  ),
+                );
+              }
+              return const SliverFillRemaining(
+                child: ShimmerList(padding: EdgeInsets.fromLTRB(16, 0, 16, 88)),
+              );
+            },
           ),
         ],
       ),

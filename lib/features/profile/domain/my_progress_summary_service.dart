@@ -12,20 +12,40 @@ class WeeklyActivityPoint {
   final int completedCount;
 }
 
+/// Completed workouts on one local calendar day.
+class DailyActivityPoint {
+  const DailyActivityPoint({required this.day, required this.completedCount});
+
+  /// Local midnight of the day.
+  final DateTime day;
+  final int completedCount;
+}
+
 class MyProgressSummary {
   MyProgressSummary({
     required this.completedWorkouts,
     required this.completedThisWeek,
     required this.completedThisMonth,
     required List<WeeklyActivityPoint> weeklyActivity,
+    List<DailyActivityPoint> dailyActivity = const [],
     List<WorkoutSession> completedSessions = const [],
   }) : weeklyActivity = List.unmodifiable(weeklyActivity),
+       dailyActivity = List.unmodifiable(dailyActivity),
        completedSessions = List.unmodifiable(completedSessions);
 
   final int completedWorkouts;
   final int completedThisWeek;
   final int completedThisMonth;
+
+  /// The last [MyProgressSummaryService.displayedWeeks] Monday-based weeks,
+  /// oldest first.
   final List<WeeklyActivityPoint> weeklyActivity;
+
+  /// The last [MyProgressSummaryService.displayedDays] calendar days ending
+  /// today, oldest first.
+  final List<DailyActivityPoint> dailyActivity;
+
+  /// Every completed workout, newest first (by completion time).
   final List<WorkoutSession> completedSessions;
 }
 
@@ -35,6 +55,12 @@ class MyProgressSummaryService {
   const MyProgressSummaryService();
 
   static const int displayedWeeks = 6;
+  static const int displayedDays = 7;
+
+  /// When a workout counts: its completion time, or its date for older
+  /// sessions saved without one.
+  static DateTime completedAt(WorkoutSession session) =>
+      session.completedAt ?? session.date;
 
   MyProgressSummary summarize({
     required List<WorkoutSession> sessions,
@@ -52,9 +78,7 @@ class MyProgressSummaryService {
             set.weight >= 0 &&
             set.reps > 0,
       );
-    }).toList();
-    DateTime completedAt(WorkoutSession session) =>
-        session.completedAt ?? session.date;
+    }).toList()..sort((a, b) => completedAt(b).compareTo(completedAt(a)));
 
     final currentWeek = startOfWeek(now);
     final nextWeek = currentWeek.add(const Duration(days: 7));
@@ -73,6 +97,12 @@ class MyProgressSummaryService {
       );
     }
 
+    // Calendar days (not 24 h steps), so DST changes never shift a day.
+    final dailyActivity = <DailyActivityPoint>[
+      for (var index = displayedDays - 1; index >= 0; index--)
+        _dailyPoint(completed, DateTime(now.year, now.month, now.day - index)),
+    ];
+
     return MyProgressSummary(
       completedWorkouts: completed.length,
       completedThisWeek: completed.where((session) {
@@ -86,7 +116,17 @@ class MyProgressSummaryService {
             at.year == now.year;
       }).length,
       weeklyActivity: weeklyActivity,
+      dailyActivity: dailyActivity,
       completedSessions: completed,
     );
+  }
+
+  DailyActivityPoint _dailyPoint(List<WorkoutSession> completed, DateTime day) {
+    final next = DateTime(day.year, day.month, day.day + 1);
+    final count = completed.where((session) {
+      final at = completedAt(session);
+      return !at.isBefore(day) && at.isBefore(next);
+    }).length;
+    return DailyActivityPoint(day: day, completedCount: count);
   }
 }

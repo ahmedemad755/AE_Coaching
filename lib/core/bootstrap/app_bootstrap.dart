@@ -9,8 +9,14 @@ import 'package:ae_coaching/features/workout/data/models/workout_template.dart';
 import 'package:ae_coaching/firebase_options.dart';
 import 'package:ae_coaching/core/notifications/fcm_device_service.dart';
 import 'package:ae_coaching/core/notifications/local_notifications.dart';
+import 'package:ae_coaching/core/feedback/app_feedback.dart';
+import 'package:ae_coaching/features/account_deletion/application/account_deletion_lifecycle.dart';
+import 'package:ae_coaching/features/inactivity_reminders/application/inactivity_reminder_scheduler.dart';
+import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:ae_coaching/service_locator.dart';
+import 'package:ae_coaching/core/bootstrap/debug_firebase_emulator.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart' show kDebugMode, visibleForTesting;
 import 'package:flutter/widgets.dart';
@@ -41,16 +47,54 @@ class AppBootstrap {
     await _initializeFirebase();
     _initializeDependencies();
     await _initializeStorage();
+    // Before anything uses Firestore: completing an account deletion may
+    // need to clear Firestore's offline cache, which is only possible then.
+    await _completeAccountDeletionIfNeeded();
     // Channel + legacy cleanup before FCM, so the reminder channel exists
     // before the first push and no old local reminder can follow it.
     await sl<LocalNotificationsBootstrap>().initialize();
-    await sl<FcmDeviceService>().initialize();
+    // Reminders scheduled for an account that is no longer signed in here.
+    await sl<InactivityReminderScheduler>().reconcileAtStartup(
+      FirebaseAuth.instance.currentUser?.uid,
+    );
+    // Push registration belongs to the real project: not with the emulator.
+    if (!DebugFirebaseEmulator.enabled) {
+      await sl<FcmDeviceService>().initialize();
+    }
+  }
+
+  static Future<void> _completeAccountDeletionIfNeeded() async {
+    final result = await sl<AccountDeletionLifecycle>().completeAtStartup(
+      // Let Firebase Auth restore the persisted user before deciding.
+      waitForAuthRestore: () => FirebaseAuth.instance
+          .authStateChanges()
+          .first
+          .timeout(const Duration(seconds: 3), onTimeout: () => null),
+    );
+    final code = Hive.box('authBox').get('appLocale', defaultValue: 'ar') as String;
+    final l10n = lookupAppLocalizations(Locale(code == 'en' ? 'en' : 'ar'));
+    final notice = switch (result) {
+      DeletionCompletion.accountDeleted => l10n.accountDeletedNotice,
+      DeletionCompletion.incomplete => l10n.deleteAccountIncompleteNotice,
+      DeletionCompletion.none || DeletionCompletion.localDataRemoved => null,
+    };
+    if (notice == null) return;
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => result == DeletionCompletion.incomplete
+          ? AppFeedback.warning(notice)
+          : AppFeedback.info(notice),
+    );
   }
 
   static Future<void> _initializeFirebase() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+    if (DebugFirebaseEmulator.enabled) {
+      // Debug builds only. No App Check either: the emulator does not use it.
+      await DebugFirebaseEmulator.connect();
+      return;
+    }
 
     // App Check attests that requests come from this genuine app. It was
     // introduced for the (since retired, never deployed) SMS reset
@@ -91,6 +135,8 @@ class AppBootstrap {
     initProgramConsistency(); // Program Consistency (Phase 19) — separate from all of the above
     initHomeWorkoutOverview(); // Home Workout Overview redesign — separate from all of the above
     initNotificationSettings(); // Server-driven inactivity reminder preferences
+    initInactivityReminders(); // Local inactivity reminders (Spark plan)
+    initAccountDeletion(); // Account deletion requests (Spark plan)
   }
 
   static Future<void> _initializeStorage() async {

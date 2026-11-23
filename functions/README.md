@@ -1,5 +1,14 @@
 # AE Coaching — Firebase Functions
 
+> **Firebase Spark plan (current):** nothing in this folder is deployed.
+> Inactivity reminders are scheduled locally by the app, and the code below
+> stays intact for a future move to Blaze. Accounts are deleted by the app
+> itself; the **account deletion operator tool** (`src/account`, run locally
+> with Admin credentials) is kept for support cases and Blaze. See
+> [`docs/account-deletion.md`](../docs/account-deletion.md). Deploying the
+> reminder functions creates server-owned documents the app cannot delete,
+> so deletion must move to the server in that same release.
+
 **Status: Stages 1–2 — built and tested locally, NOT deployed.**
 `firebase.json` now has a `functions` target (Stage 2), so a bare
 `firebase deploy` WOULD deploy functions, rules and indexes. Never run it

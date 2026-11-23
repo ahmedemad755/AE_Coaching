@@ -177,7 +177,10 @@ class _ExercisePickerDialogState extends State<ExercisePickerDialog> {
     final result =
         await showDialog<({String name, String? muscle, String? equipment})>(
           context: context,
-          builder: (context) => const _CreateCustomExerciseDialog(),
+          // Starts from what was searched for (often why it was not found).
+          builder: (context) => _CreateCustomExerciseDialog(
+            initialName: _searchController.text.trim(),
+          ),
         );
     if (result == null || !mounted) return;
     try {
@@ -221,18 +224,24 @@ class _ExercisePickerDialogState extends State<ExercisePickerDialog> {
 
   Future<void> _showFilters(List<ExerciseLibraryItem> items) async {
     final l10n = AppLocalizations.of(context)!;
-    final muscles = items
-        .expand((e) => [e.muscleGroup, ...?e.catalogExercise?.primaryMuscles])
-        .whereType<String>()
-        .where((e) => e.trim().isNotEmpty)
-        .toSet()
-        .toList()..sort();
-    final equipment = items
-        .map((e) => e.equipment)
-        .whereType<String>()
-        .where((e) => e.trim().isNotEmpty)
-        .toSet()
-        .toList()..sort();
+    final muscles =
+        items
+            .expand(
+              (e) => [e.muscleGroup, ...?e.catalogExercise?.primaryMuscles],
+            )
+            .whereType<String>()
+            .where((e) => e.trim().isNotEmpty)
+            .toSet()
+            .toList()
+          ..sort();
+    final equipment =
+        items
+            .map((e) => e.equipment)
+            .whereType<String>()
+            .where((e) => e.trim().isNotEmpty)
+            .toSet()
+            .toList()
+          ..sort();
 
     await showModalBottomSheet<void>(
       context: context,
@@ -256,8 +265,10 @@ class _ExercisePickerDialogState extends State<ExercisePickerDialog> {
                   child: ListView(
                     padding: const EdgeInsets.all(16),
                     children: [
-                      Text(l10n.muscleGroupLabel,
-                          style: const TextStyle(fontWeight: FontWeight.w700)),
+                      Text(
+                        l10n.muscleGroupLabel,
+                        style: const TextStyle(fontWeight: FontWeight.w700),
+                      ),
                       const SizedBox(height: 8),
                       Wrap(
                         spacing: 6,
@@ -266,11 +277,13 @@ class _ExercisePickerDialogState extends State<ExercisePickerDialog> {
                           for (final value in muscles)
                             FilterChip(
                               key: ValueKey('muscle-filter-$value'),
-                              label: Text(ExerciseTaxonomyLabels.muscle(
-                                value,
-                                widget.languageCode,
-                                fallback: l10n.exerciseMuscleName,
-                              )),
+                              label: Text(
+                                ExerciseTaxonomyLabels.muscle(
+                                  value,
+                                  widget.languageCode,
+                                  fallback: l10n.exerciseMuscleName,
+                                ),
+                              ),
                               selected: _muscleGroups.contains(value),
                               onSelected: (selected) {
                                 updateSheet(() {
@@ -286,8 +299,10 @@ class _ExercisePickerDialogState extends State<ExercisePickerDialog> {
                         ],
                       ),
                       const SizedBox(height: 20),
-                      Text(l10n.equipmentLabel,
-                          style: const TextStyle(fontWeight: FontWeight.w700)),
+                      Text(
+                        l10n.equipmentLabel,
+                        style: const TextStyle(fontWeight: FontWeight.w700),
+                      ),
                       const SizedBox(height: 8),
                       Wrap(
                         spacing: 6,
@@ -296,11 +311,13 @@ class _ExercisePickerDialogState extends State<ExercisePickerDialog> {
                           for (final value in equipment)
                             FilterChip(
                               key: ValueKey('equipment-filter-$value'),
-                              label: Text(ExerciseTaxonomyLabels.equipment(
-                                value,
-                                widget.languageCode,
-                                fallback: l10n.exerciseEquipmentName,
-                              )),
+                              label: Text(
+                                ExerciseTaxonomyLabels.equipment(
+                                  value,
+                                  widget.languageCode,
+                                  fallback: l10n.exerciseEquipmentName,
+                                ),
+                              ),
                               selected: _equipment.contains(value),
                               onSelected: (selected) {
                                 updateSheet(() {
@@ -338,13 +355,33 @@ class _ExercisePickerDialogState extends State<ExercisePickerDialog> {
     final l10n = AppLocalizations.of(context)!;
     final colors = context.appColors;
     final size = MediaQuery.sizeOf(context);
+    final systemBars = MediaQuery.paddingOf(context);
+    // Compact while typing (and on short screens such as landscape phones):
+    // the search field, the results and the add button stay; the filters
+    // move to an icon and come back in full when there is room again.
+    final compact =
+        MediaQuery.viewInsetsOf(context).bottom > 0 || size.height < 520;
+    final filterCount = _muscleGroups.length + _equipment.length;
     final width = math.min(size.width - 24, 620.0);
     final dark = Theme.of(context).brightness == Brightness.dark;
     final scheme = Theme.of(context).colorScheme;
     return Dialog(
+      // Follow the keyboard in the same frame as the compact switch: with
+      // the default 100 ms lag, the full header would briefly overflow the
+      // still-short dialog while the keyboard closes. The keyboard's own
+      // inset animation keeps the movement smooth.
+      insetAnimationDuration: Duration.zero,
+      // Clear of the status bar and the navigation bar / gesture area (the
+      // Dialog itself only avoids the keyboard). The height below is
+      // clamped to what is left.
       insetPadding: widget.fullScreen
           ? EdgeInsets.zero
-          : const EdgeInsets.all(12),
+          : EdgeInsets.fromLTRB(
+              12 + systemBars.left,
+              12 + systemBars.top,
+              12 + systemBars.right,
+              12 + systemBars.bottom,
+            ),
       backgroundColor: dark ? const Color(0xff101521) : colors.canvas,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(widget.fullScreen ? 0 : 24),
@@ -354,190 +391,243 @@ class _ExercisePickerDialogState extends State<ExercisePickerDialog> {
       child: SizedBox(
         width: widget.fullScreen ? size.width : width,
         height: widget.fullScreen ? size.height : size.height * 0.9,
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          l10n.exercisePickerTitle,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.titleLarge
-                              ?.copyWith(fontWeight: FontWeight.w800),
-                        ),
-                        Text(
-                          l10n.exercisePickerAlternateTitle,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(color: scheme.onSurfaceVariant),
-                        ),
-                      ],
-                    ),
-                  ),
-                  IconButton(
-                    tooltip: l10n.close,
-                    onPressed: () =>
-                        Navigator.pop<List<ExerciseLibraryItem>>(context),
-                    icon: const Icon(Icons.close),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                controller: _searchController,
-                onChanged: (_) => _refreshResults(),
-                decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.search),
-                  hintText: l10n.searchExerciseLibraryHint,
-                  filled: true,
-                  fillColor: dark ? const Color(0xff1b2232) : scheme.surface,
-                  contentPadding: const EdgeInsets.symmetric(
-                    vertical: 16,
-                    horizontal: 18,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(28),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(28),
-                    borderSide: BorderSide(color: scheme.outline),
-                  ),
-                  isDense: true,
-                ),
-              ),
-              const SizedBox(height: 6),
-              FutureBuilder<List<ExerciseLibraryItem>>(
-                future: _allExercises,
-                builder: (context, snapshot) {
-                  final items = snapshot.data ?? const <ExerciseLibraryItem>[];
-                  return Align(
-                    alignment: AlignmentDirectional.centerStart,
-                    child: TextButton.icon(
-                      onPressed: _isSaving || !snapshot.hasData
-                          ? null
-                          : () => _showFilters(items),
-                      icon: const Icon(Icons.tune),
-                      label: Text(
-                        '${l10n.exerciseFiltersTitle} (${_muscleGroups.length + _equipment.length})',
+        child: SafeArea(
+          // Full screen draws behind the system bars; its content doesn't.
+          top: widget.fullScreen,
+          bottom: widget.fullScreen,
+          left: widget.fullScreen,
+          right: widget.fullScreen,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            l10n.exercisePickerTitle,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.titleLarge
+                                ?.copyWith(fontWeight: FontWeight.w800),
+                          ),
+                          if (!compact)
+                            Text(
+                              l10n.exercisePickerAlternateTitle,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(color: scheme.onSurfaceVariant),
+                            ),
+                        ],
                       ),
                     ),
-                  );
-                },
-              ),
-              Row(
-                children: [
-                  FilterChip(
-                    label: Text(l10n.exerciseAllFilter),
-                    showCheckmark: false,
-                    avatar: const Icon(Icons.grid_view_rounded, size: 18),
-                    selected:
-                        _muscleGroups.isEmpty &&
-                        _equipment.isEmpty &&
-                        _searchController.text.isEmpty,
-                    selectedColor: scheme.primaryContainer,
-                    onSelected: _isSaving
-                        ? null
-                        : (_) {
-                            _muscleGroups.clear();
-                            _equipment.clear();
-                            _searchController.clear();
-                            _refreshResults();
-                          },
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Align(
-                      alignment: AlignmentDirectional.centerEnd,
-                      child: TextButton.icon(
-                        onPressed: _isSaving ? null : _createCustomExercise,
-                        icon: const Icon(Icons.add, size: 18),
-                        label: Text(l10n.createCustomExerciseButton),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              if (_error != null)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Text(_error!, style: TextStyle(color: colors.error)),
-                ),
-              Expanded(
-                child: FutureBuilder<List<ExerciseLibraryItem>>(
-                  future: _results,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState != ConnectionState.done) {
-                      return const ShimmerList(
-                        itemHeight: 72,
-                        padding: EdgeInsets.zero,
-                      );
-                    }
-                    if (snapshot.hasError) {
-                      return Center(child: Text(l10n.exerciseLibraryLoadError));
-                    }
-                    final results =
-                        snapshot.data ?? const <ExerciseLibraryItem>[];
-                    if (results.isEmpty) {
-                      return Center(
-                        child: Text(
-                          l10n.noExerciseSearchResults,
-                          textAlign: TextAlign.center,
-                        ),
-                      );
-                    }
-                    return ListView.separated(
-                      padding: const EdgeInsets.symmetric(vertical: 6),
-                      cacheExtent: 200,
-                      itemCount: results.length,
-                      separatorBuilder: (_, _) => const SizedBox(height: 10),
-                      itemBuilder: staggeredItemBuilder((context, index) {
-                        final item = results[index];
-                        final excluded = _isExcluded(item);
-                        final selected = _selected.containsKey(item.id);
-                        return ExerciseLibraryCard(
-                          key: ValueKey('exercise-card-${item.id}'),
-                          exercise: item,
-                          illustration: ExerciseMediaResolver.resolve(
-                            item,
-                          ).thumbnail,
-                          selected: excluded || selected,
-                          onChanged: excluded
+                    if (compact)
+                      FutureBuilder<List<ExerciseLibraryItem>>(
+                        future: _allExercises,
+                        builder: (context, snapshot) => IconButton(
+                          key: const ValueKey('picker-compact-filters'),
+                          tooltip: l10n.exerciseFiltersTitle,
+                          onPressed: _isSaving || !snapshot.hasData
                               ? null
-                              : (value) => _toggleExercise(item, value),
-                        );
-                      }),
-                    );
-                  },
+                              : () => _showFilters(snapshot.data!),
+                          icon: Badge(
+                            isLabelVisible: filterCount > 0,
+                            label: Text('$filterCount'),
+                            child: const Icon(Icons.tune),
+                          ),
+                        ),
+                      ),
+                    IconButton(
+                      tooltip: l10n.close,
+                      onPressed: () =>
+                          Navigator.pop<List<ExerciseLibraryItem>>(context),
+                      icon: const Icon(Icons.close),
+                    ),
+                  ],
                 ),
-              ),
-              const SizedBox(height: 8),
-              FilledButton.icon(
-                onPressed: _selected.isEmpty || _isSaving ? null : _addSelected,
-                icon: _isSaving
-                    ? const SizedBox(
-                        width: 18,
-                        height: 18,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : const Icon(Icons.add),
-                label: Text(l10n.addSelectedExercisesButton(_selected.length)),
-                style: FilledButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  minimumSize: const Size.fromHeight(50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
+                SizedBox(height: compact ? 8 : 16),
+                TextField(
+                  controller: _searchController,
+                  onChanged: (_) => _refreshResults(),
+                  decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.search),
+                    hintText: l10n.searchExerciseLibraryHint,
+                    filled: true,
+                    fillColor: dark ? const Color(0xff1b2232) : scheme.surface,
+                    contentPadding: const EdgeInsets.symmetric(
+                      vertical: 16,
+                      horizontal: 18,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(28),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(28),
+                      borderSide: BorderSide(color: scheme.outline),
+                    ),
+                    isDense: true,
                   ),
                 ),
-              ),
-            ],
+                if (compact) const SizedBox(height: 8),
+                if (!compact) ...[
+                  const SizedBox(height: 6),
+                  FutureBuilder<List<ExerciseLibraryItem>>(
+                    future: _allExercises,
+                    builder: (context, snapshot) {
+                      final items =
+                          snapshot.data ?? const <ExerciseLibraryItem>[];
+                      return Align(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: TextButton.icon(
+                          onPressed: _isSaving || !snapshot.hasData
+                              ? null
+                              : () => _showFilters(items),
+                          icon: const Icon(Icons.tune),
+                          label: Text(
+                            '${l10n.exerciseFiltersTitle} ($filterCount)',
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  Row(
+                    children: [
+                      FilterChip(
+                        label: Text(l10n.exerciseAllFilter),
+                        showCheckmark: false,
+                        avatar: const Icon(Icons.grid_view_rounded, size: 18),
+                        selected:
+                            _muscleGroups.isEmpty &&
+                            _equipment.isEmpty &&
+                            _searchController.text.isEmpty,
+                        selectedColor: scheme.primaryContainer,
+                        onSelected: _isSaving
+                            ? null
+                            : (_) {
+                                _muscleGroups.clear();
+                                _equipment.clear();
+                                _searchController.clear();
+                                _refreshResults();
+                              },
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Align(
+                          alignment: AlignmentDirectional.centerEnd,
+                          child: TextButton.icon(
+                            onPressed: _isSaving ? null : _createCustomExercise,
+                            icon: const Icon(Icons.add, size: 18),
+                            label: Text(l10n.createCustomExerciseButton),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+                if (_error != null)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Text(_error!, style: TextStyle(color: colors.error)),
+                  ),
+                Expanded(
+                  child: FutureBuilder<List<ExerciseLibraryItem>>(
+                    future: _results,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState != ConnectionState.done) {
+                        return const ShimmerList(
+                          itemHeight: 72,
+                          padding: EdgeInsets.zero,
+                        );
+                      }
+                      if (snapshot.hasError) {
+                        return Center(
+                          child: Text(l10n.exerciseLibraryLoadError),
+                        );
+                      }
+                      final results =
+                          snapshot.data ?? const <ExerciseLibraryItem>[];
+                      if (results.isEmpty) {
+                        // Scrollable: the space left above the keyboard can
+                        // be small. Offers to create what wasn't found.
+                        return Center(
+                          child: SingleChildScrollView(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  l10n.noExerciseSearchResults,
+                                  textAlign: TextAlign.center,
+                                ),
+                                const SizedBox(height: 4),
+                                TextButton.icon(
+                                  key: const ValueKey('picker-empty-create'),
+                                  onPressed: _isSaving
+                                      ? null
+                                      : _createCustomExercise,
+                                  icon: const Icon(Icons.add, size: 18),
+                                  label: Text(l10n.createCustomExerciseButton),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }
+                      return ListView.separated(
+                        padding: const EdgeInsets.symmetric(vertical: 6),
+                        cacheExtent: 200,
+                        itemCount: results.length,
+                        separatorBuilder: (_, _) => const SizedBox(height: 10),
+                        itemBuilder: staggeredItemBuilder((context, index) {
+                          final item = results[index];
+                          final excluded = _isExcluded(item);
+                          final selected = _selected.containsKey(item.id);
+                          return ExerciseLibraryCard(
+                            key: ValueKey('exercise-card-${item.id}'),
+                            exercise: item,
+                            illustration: ExerciseMediaResolver.resolve(
+                              item,
+                            ).thumbnail,
+                            selected: excluded || selected,
+                            onChanged: excluded
+                                ? null
+                                : (value) => _toggleExercise(item, value),
+                          );
+                        }),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 8),
+                FilledButton.icon(
+                  onPressed: _selected.isEmpty || _isSaving
+                      ? null
+                      : _addSelected,
+                  icon: _isSaving
+                      ? const SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Icon(Icons.add),
+                  label: Text(
+                    l10n.addSelectedExercisesButton(_selected.length),
+                  ),
+                  style: FilledButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    minimumSize: const Size.fromHeight(50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -546,7 +636,9 @@ class _ExercisePickerDialogState extends State<ExercisePickerDialog> {
 }
 
 class _CreateCustomExerciseDialog extends StatefulWidget {
-  const _CreateCustomExerciseDialog();
+  const _CreateCustomExerciseDialog({this.initialName = ''});
+
+  final String initialName;
 
   @override
   State<_CreateCustomExerciseDialog> createState() =>
@@ -555,7 +647,7 @@ class _CreateCustomExerciseDialog extends StatefulWidget {
 
 class _CreateCustomExerciseDialogState
     extends State<_CreateCustomExerciseDialog> {
-  final _name = TextEditingController();
+  late final _name = TextEditingController(text: widget.initialName);
   final _muscle = TextEditingController();
   final _equipment = TextEditingController();
 

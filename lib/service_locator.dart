@@ -15,3 +15,5 @@ export 'core/di/measurements_dependencies.dart';
 export 'core/di/progress_photos_dependencies.dart';
 export 'core/di/workout_programs_dependencies.dart';
 export 'core/di/notification_settings_dependencies.dart';
+export 'core/di/inactivity_reminders_dependencies.dart';
+export 'core/di/account_deletion_dependencies.dart';

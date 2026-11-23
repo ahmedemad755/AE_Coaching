@@ -16,34 +16,13 @@ import 'package:ae_coaching/features/workout/data/repositories/workout_template_
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
+import 'package:ae_coaching/core/sync/sync_meta.dart';
 
-class _TemplateSnapshot implements QueryDocumentSnapshot<Map<String, dynamic>> {
-  @override
-  final String id;
-  final Map<String, dynamic> value;
+import '../../support/fake_revision_cloud.dart';
 
-  _TemplateSnapshot(this.id, this.value);
-
-  @override
-  Map<String, dynamic> data() => value;
-
-  @override
-  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
-}
-
-class _TemplateRemote implements WorkoutTemplateRemoteDataSource {
-  List<QueryDocumentSnapshot<Map<String, dynamic>>> documents = [];
-
-  @override
-  Future<void> deleteTemplate(String id) async {}
-
-  @override
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
-  fetchAllRemoteTemplates() async => documents;
-
-  @override
-  Future<void> syncTemplate(String id, WorkoutTemplate template) async {}
-}
+/// Rules-equivalent in-memory cloud (see FakeRevisionCloud).
+class _TemplateRemote extends FakeRevisionCloud
+    implements WorkoutTemplateRemoteDataSource {}
 
 class _SessionRemote implements WorkoutSessionRemoteDataSource {
   @override
@@ -167,19 +146,30 @@ void main() {
       )!;
       expect(afterCompletion.exerciseAssignments, hasLength(6));
 
-      // Older clients may have persisted a shortened assignment list remotely.
-      templateRemote.documents = [
-        _TemplateSnapshot(template.id, {
-          ...afterCompletion.toJson(),
-          'exerciseAssignments': originalAssignments
-              .take(4)
-              .map((assignment) => assignment.toJson())
-              .toList(),
-        }),
-      ];
-      await templateRepository.fetchAndSyncFromRemote(
-        await templateRepository.getUserBox(),
+      // An old-format cloud document (from before activities were synced)
+      // still holds a shortened list written by an older build, and this
+      // device has not migrated the day yet.
+      await templateRepository.syncWithCloud(); // settle background syncs
+      final templateBox = await templateRepository.getUserBox();
+      await templateBox.put(
+        template.id,
+        afterCompletion.withSyncMeta(SyncMeta.empty),
       );
+      templateRemote.docs[template.id] = {
+        ...afterCompletion.toJson(),
+        'exerciseAssignments': originalAssignments
+            .take(4)
+            .map((assignment) => assignment.toJson())
+            .toList(),
+      };
+      await templateRepository.fetchAndSyncFromRemote(templateBox);
+
+      // The local list stays authoritative and is migrated; the old list
+      // is never changed in the cloud (kept for a manual, confirmed restore).
+      final cloudDay = templateRemote.docs[template.id]!;
+      expect(cloudDay['schemaVersion'], 2);
+      expect(cloudDay['activities'], hasLength(6));
+      expect(cloudDay['exerciseAssignments'], hasLength(4));
 
       final reloadedTemplate = (await templateRepository.getUserBox()).get(
         template.id,

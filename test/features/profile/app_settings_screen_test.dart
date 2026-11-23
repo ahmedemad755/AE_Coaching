@@ -159,6 +159,38 @@ void main() {
     });
   }
 
+  testWidgets('account deletion sits in a separate Danger Zone below Logout', (tester) async {
+    final l10n = await pumpSettings(tester);
+    final logout = tester.getTopLeft(find.text(l10n.logoutTooltip));
+    final dangerZone = tester.getTopLeft(find.text(l10n.dangerZoneTitle));
+    final delete = tester.getTopLeft(find.byKey(const ValueKey('settings-delete-account')));
+    expect(find.text(l10n.deleteAccountTitle), findsOneWidget);
+    expect(dangerZone.dy, greaterThan(logout.dy));
+    expect(delete.dy, greaterThan(dangerZone.dy));
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
+  testWidgets('scrolled to the end, Delete account stays clear of the system navigation bar', (tester) async {
+    const navigationBar = 48.0;
+    await pumpSettings(tester);
+    // Short phone with a 3-button navigation bar (set after pumpSettings,
+    // which sizes the view).
+    tester.view.physicalSize = const Size(400, 640);
+    tester.view.padding = const FakeViewPadding(bottom: navigationBar);
+    tester.view.viewPadding = const FakeViewPadding(bottom: navigationBar);
+    await tester.pumpAndSettle();
+    final position = tester.state<ScrollableState>(find.byType(Scrollable).first).position;
+    // A lazy list only estimates its extent: jump until the real end.
+    for (var i = 0; i < 5 && position.pixels < position.maxScrollExtent; i++) {
+      position.jumpTo(position.maxScrollExtent);
+      await tester.pumpAndSettle();
+    }
+    expect(position.pixels, position.maxScrollExtent);
+    final tile = tester.getRect(find.byKey(const ValueKey('settings-delete-account')));
+    expect(tile.bottom, lessThanOrEqualTo(640 - navigationBar));
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
   testWidgets('shows the stored server value of the signed-in account', (tester) async {
     preferences.documents['settings-user'] = NotificationPreferences.defaults.copyWith(inactivityRemindersEnabled: false);
     preferences.documents['other-user'] = NotificationPreferences.defaults;

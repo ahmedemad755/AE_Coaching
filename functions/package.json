@@ -13,8 +13,9 @@
     "lint": "echo \"(no lint step configured)\"",
     "test:unit": "jest --config jest.config.js --selectProjects unit",
     "test:emulator": "jest --config jest.config.js --selectProjects emulator --runInBand",
-    "test:emulator:exec": "firebase emulators:exec --only firestore --project demo-ae-coaching --config ../firebase.json \"npm run test:emulator\"",
-    "migrate:token-owners": "node lib/tokens/entrypoints/tokenOwnershipMigrationCli.js"
+    "test:emulator:exec": "firebase emulators:exec --only firestore,auth --project demo-ae-coaching --config ../firebase.json \"npm run test:emulator\"",
+    "migrate:token-owners": "node lib/tokens/entrypoints/tokenOwnershipMigrationCli.js",
+    "account:process-deletions": "node lib/account/entrypoints/accountDeletionCli.js"
   },
   "dependencies": {
     "firebase-admin": "^12.7.0",

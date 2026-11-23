@@ -5,6 +5,7 @@ import 'package:ae_coaching/core/routes/app_router.dart';
 import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/core/theme/theme_cubit.dart';
 import 'package:ae_coaching/core/theme/theme_preference_store.dart';
+import 'package:ae_coaching/features/inactivity_reminders/application/inactivity_reminder_scheduler.dart';
 import 'package:ae_coaching/features/notification_settings/application/notification_preferences_sync.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:ae_coaching/service_locator.dart';
@@ -26,8 +27,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => LocaleCubit(
-        onLanguageChanged: (languageCode) => sl<NotificationPreferencesSync>()
-            .syncCurrentAccount(languageCode: languageCode),
+        onLanguageChanged: (languageCode) async {
+          await sl<NotificationPreferencesSync>().syncCurrentAccount(
+            languageCode: languageCode,
+          );
+          // Local reminders are written in the app language.
+          await sl<InactivityReminderScheduler>().refresh();
+        },
       ),
       child: BlocBuilder<LocaleCubit, Locale>(
         builder: (context, locale) {

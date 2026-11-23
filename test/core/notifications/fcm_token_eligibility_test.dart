@@ -282,18 +282,14 @@ void main() {
           'updatedAt',
           'platform',
           'createdAt',
-          'serverRemindersReadyAt',
         });
         expect(doc['token'], 'device-token-1');
         expect(doc['updatedAt'], isA<FieldValue>());
         expect(doc['createdAt'], isA<FieldValue>());
-        // Readiness for server reminders: the same server timestamp as
-        // updatedAt, written by every registration of this build.
-        expect(doc['serverRemindersReadyAt'], isA<FieldValue>());
-        expect(
-          FcmDeviceService.serverRemindersReadyField,
-          'serverRemindersReadyAt',
-        );
+        // Reminders are scheduled locally (Spark plan): this build must NOT
+        // declare itself ready for server reminders, or enabling server
+        // delivery later would send duplicates.
+        expect(doc.containsKey(FcmDeviceService.serverRemindersReadyField), isFalse);
         expect(box.get('fcmTokenOwnerUid'), 'alice');
       },
     );

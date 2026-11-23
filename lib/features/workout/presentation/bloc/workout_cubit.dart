@@ -1,3 +1,4 @@
+import 'package:ae_coaching/core/utils/close_safe_emit.dart';
 import 'package:ae_coaching/features/workout/data/models/exercise_set.dart';
 import 'package:ae_coaching/core/errors/exception_message_mapper.dart';
 import 'package:ae_coaching/core/session/session_storage.dart';
@@ -9,7 +10,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 part 'workout_state.dart';
 
-class WorkoutCubit extends Cubit<WorkoutState> {
+class WorkoutCubit extends Cubit<WorkoutState>
+    with CloseSafeEmit<WorkoutState> {
   final WorkoutRepository repository;
   final SessionStorage sessionStorage;
   final UserStorageManager storageManager;

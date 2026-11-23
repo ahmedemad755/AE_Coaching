@@ -68,6 +68,9 @@ class _CreateProgramDialogState extends State<CreateProgramDialog> {
     final colors = context.appColors;
     final primary = Theme.of(context).colorScheme.primary;
     return AlertDialog(
+      // The content scrolls when the keyboard leaves little room (three
+      // stacked actions on narrow phones).
+      scrollable: true,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       title: Text(
         l10n.createProgramTitle,

@@ -1,3 +1,4 @@
+import 'package:ae_coaching/features/workout/domain/activity_plans.dart';
 import 'dart:convert';
 
 import 'package:ae_coaching/features/workout/data/models/exercise_library_item.dart';
@@ -7,6 +8,7 @@ import 'package:ae_coaching/features/workout/data/repositories/exercise_name_nor
 import 'package:ae_coaching/features/workout/data/repositories/session_exercise_repository.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_session_repository.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_template_repository.dart';
+import 'package:ae_coaching/features/workout/domain/workout_limits.dart';
 import 'package:ae_coaching/features/workout/data/workout_id_generator.dart';
 
 enum ActiveWorkoutEditScope { sessionOnly, sessionAndProgram }
@@ -74,9 +76,9 @@ class ActiveWorkoutEditService {
           );
         }
         final actual = _encode(day.exerciseAssignments);
-        final desired = journal['after'] as String;
+        final desired = _normalize(journal['after'] as String);
         if (actual != desired) {
-          if (actual != journal['before']) {
+          if (actual != _normalize(journal['before'] as String)) {
             throw const ActiveWorkoutEditException(
               ActiveWorkoutEditFailure.conflict,
             );
@@ -108,6 +110,7 @@ class ActiveWorkoutEditService {
     String languageCode = 'en',
     List<String> orderedNames = const [],
     WorkoutTemplateExerciseAssignment? targets,
+    CardioPlan? cardio,
   }) => sessions.coordinateExerciseEdit(
     () => templates.coordinateExerciseEdit(() async {
       final sessionBox = await sessions.getUserBox();
@@ -219,7 +222,16 @@ class ActiveWorkoutEditService {
                 ? WorkoutExerciseReferenceType.builtIn.name
                 : WorkoutExerciseReferenceType.custom.name,
           );
-      final added = exercises.map(assignment).toList();
+      // Cardio added during a workout comes with its plan (Stage 6).
+      cardio?.validate();
+      final added = [
+        for (final item in exercises)
+          cardio == null
+              ? assignment(item)
+              : assignment(
+                  item,
+                ).withActivity(type: ActivityType.cardio, cardio: cardio),
+      ];
       switch (action) {
         case ActiveWorkoutEditAction.add:
           if (added.isEmpty) throw ArgumentError('Select exercises.');
@@ -301,6 +313,10 @@ class ActiveWorkoutEditService {
         final program = [...day!.exerciseAssignments];
         if (action == ActiveWorkoutEditAction.add) {
           program.addAll(added);
+          // Before anything is written: the day must stay syncable.
+          if (program.length > WorkoutLimits.maxActivitiesPerDay) {
+            throw const ActivityLimitExceededException();
+          }
         } else if (action == ActiveWorkoutEditAction.reorder) {
           final requestedIds = updatedAssignments
               .map((a) => a.assignmentId)
@@ -424,7 +440,7 @@ class ActiveWorkoutEditService {
       try {
         final latestDay = templateBox!.get(day!.id)!;
         if (_encode(latestDay.exerciseAssignments) !=
-            (jsonDecode(journal) as Map)['before']) {
+            _normalize((jsonDecode(journal) as Map)['before'] as String)) {
           throw const ActiveWorkoutEditException(
             ActiveWorkoutEditFailure.conflict,
           );
@@ -453,8 +469,17 @@ class ActiveWorkoutEditService {
     }),
   );
 
+  /// The day's activities as the journal keeps and compares them: the full
+  /// activity format (type, cardio or timed plan), so committing or
+  /// recovering an edit never turns cardio into strength or drops a plan.
   static String _encode(List<WorkoutTemplateExerciseAssignment> assignments) =>
-      jsonEncode(assignments.map((a) => a.toJson()).toList());
+      jsonEncode([for (final a in assignments) a.toActivityMap()]);
+
+  /// A journal entry, possibly written by an older build in the
+  /// strength-only format, in today's format so it compares with [_encode].
+  /// An old entry never matches a day that has cardio, so such a day is a
+  /// conflict, never overwritten.
+  static String _normalize(String value) => _encode(_decode(value));
 
   void _assertOwner(String boxName) {
     final uid = sessions.currentUserId;
@@ -463,14 +488,16 @@ class ActiveWorkoutEditService {
     }
   }
 
-  static List<WorkoutTemplateExerciseAssignment> _decode(String value) =>
-      (jsonDecode(value) as List)
-          .map(
-            (item) => WorkoutTemplateExerciseAssignment.fromJson(
-              Map<String, dynamic>.from(item as Map),
-            ),
-          )
-          .toList();
+  /// Reads both formats: [_encode]'s, and the strength-only one of journals
+  /// written by older builds (`assignmentId` instead of `id`).
+  static List<WorkoutTemplateExerciseAssignment> _decode(String value) => [
+    for (final item in jsonDecode(value) as List)
+      (item as Map).containsKey('assignmentId')
+          ? WorkoutTemplateExerciseAssignment.fromJson(
+              Map<String, dynamic>.from(item),
+            )
+          : WorkoutTemplateExerciseAssignment.fromActivityMap(item),
+  ];
   static void _sameOwner(String first, String second) {
     String owner(String name) => name.replaceFirst(
       RegExp(r'^(workout_sessions|workout_templates|sets)_'),

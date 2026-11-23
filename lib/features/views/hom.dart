@@ -3,6 +3,7 @@ import 'package:ae_coaching/core/localization/operation_message_localizer.dart';
 import 'package:ae_coaching/core/feedback/app_feedback.dart';
 import 'package:ae_coaching/core/localization/locale_cubit.dart';
 import 'package:ae_coaching/core/notifications/fcm_device_service.dart';
+import 'package:ae_coaching/features/inactivity_reminders/application/inactivity_reminder_scheduler.dart';
 import 'package:ae_coaching/features/notification_settings/application/notification_preferences_sync.dart';
 import 'package:ae_coaching/core/routes/app_router.dart';
 import 'package:ae_coaching/core/session/session_storage.dart';
@@ -142,6 +143,10 @@ class _HomState extends State<Hom> {
       uid,
     );
 
+    // Local inactivity reminders for THIS account (cancels any previous
+    // account's first). Background; never blocks Home.
+    unawaited(sl<InactivityReminderScheduler>().activate(uid));
+
     // 🔥 تلميح هندسي: هنا تقدر تعمل Trigger لـ Load Workouts من الـ Cubit بتاعك:
     if (mounted) {
       setState(() {
@@ -192,6 +197,9 @@ class _HomState extends State<Hom> {
               if (mounted) setState(() => _signingOut = true);
 
               try {
+                // The outgoing account's reminders never outlive its
+                // session (and stop watching its boxes before they close).
+                await sl<InactivityReminderScheduler>().deactivate();
                 if (outgoingUid != null && outgoingUid.isNotEmpty) {
                   await sl<FcmDeviceService>().unregisterCurrentDeviceToken(
                     expectedUid: outgoingUid,

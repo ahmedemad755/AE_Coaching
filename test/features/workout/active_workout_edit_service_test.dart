@@ -10,10 +10,13 @@ import 'package:ae_coaching/features/workout/data/repositories/session_exercise_
 import 'package:ae_coaching/features/workout/data/repositories/workout_session_repository.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_template_repository.dart';
 import 'package:ae_coaching/features/workout/presentation/cubit/session_exercise_cubit.dart';
+import 'package:ae_coaching/features/workout/domain/activity_plans.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
 
 import 'support/standard_template_fixtures.dart';
+import 'package:ae_coaching/features/workout/data/models/workout_template_exercise_assignment.dart';
+import 'package:ae_coaching/features/workout/domain/workout_limits.dart';
 
 class ActiveEditSetsRemote implements WorkoutRemoteDataSource {
   @override
@@ -650,5 +653,199 @@ void main() {
     expect((await sessions.getUserBox()).values, isEmpty);
     f.uid = 'Owner-A';
     expect(ids(current()), ids(session));
+  });
+
+  test('adding to the program day stops at the activity limit, before anything '
+      'is written; session-only adds still work', () async {
+    final full = [
+      for (var i = 0; i < WorkoutLimits.maxActivitiesPerDay; i++)
+        WorkoutTemplateExerciseAssignment(
+          assignmentId: 'full-$i',
+          exerciseId: 'repdb:full-$i',
+          exerciseNameSnapshot: 'Full $i',
+          referenceType: 'builtIn',
+        ),
+    ];
+    await (await days.getUserBox()).put(
+      day.id,
+      source().copyWith(exerciseAssignments: full),
+    );
+    final before = ids(current());
+    await expectLater(
+      service.edit(
+        sessionId: session.id,
+        action: ActiveWorkoutEditAction.add,
+        scope: ActiveWorkoutEditScope.sessionAndProgram,
+        exercises: [catalog.first],
+      ),
+      throwsA(isA<ActivityLimitExceededException>()),
+    );
+    expect(ids(current()), before);
+    expect(current().pendingProgramExerciseEdit, isNull);
+    expect(
+      source().exerciseAssignments,
+      hasLength(WorkoutLimits.maxActivitiesPerDay),
+    );
+    await service.edit(
+      sessionId: session.id,
+      action: ActiveWorkoutEditAction.add,
+      exercises: [catalog.first],
+    );
+    expect(ids(current()), hasLength(before.length + 1));
+  });
+
+  group('activities in the day and in the workout (Stage 6)', () {
+    const plan = CardioPlan(mode: CardioMode.countdown, durationSeconds: 1200);
+    final run = WorkoutTemplateExerciseAssignment(
+      assignmentId: 'run',
+      exerciseId: 'repdb:running',
+      exerciseNameSnapshot: 'Running',
+      referenceType: 'builtIn',
+    ).withActivity(type: ActivityType.cardio, cardio: plan);
+
+    test('a "session and program" edit keeps the day\'s cardio and its plan '
+        '(it used to be written back as strength, without its plan)', () async {
+      await (await days.getUserBox()).put(
+        day.id,
+        source().copyWith(
+          exerciseAssignments: [...source().exerciseAssignments, run],
+        ),
+      );
+      final names = [
+        for (final a in current().templateExerciseAssignmentsSnapshot)
+          a.exerciseNameSnapshot,
+      ];
+      await service.edit(
+        sessionId: session.id,
+        action: ActiveWorkoutEditAction.reorder,
+        scope: ActiveWorkoutEditScope.sessionAndProgram,
+        orderedNames: names.reversed.toList(),
+      );
+      final kept = source().exerciseAssignments.singleWhere(
+        (a) => a.assignmentId == 'run',
+      );
+      expect(kept.type, ActivityType.cardio);
+      expect(kept.cardio!.durationSeconds, 1200);
+      expect(current().pendingProgramExerciseEdit, isNull);
+    });
+
+    test(
+      'cardio added during a workout keeps its plan: in the session and '
+      'the day, or in the session only; an invalid plan writes nothing',
+      () async {
+        final running = ExerciseLibraryItem(
+          id: 'repdb:running',
+          nameEn: 'Running',
+          source: ExerciseLibraryItemSource.builtIn,
+        );
+        await service.edit(
+          sessionId: session.id,
+          action: ActiveWorkoutEditAction.add,
+          scope: ActiveWorkoutEditScope.sessionAndProgram,
+          exercises: [running],
+          cardio: plan,
+        );
+        final inSession = current().templateExerciseAssignmentsSnapshot.last;
+        expect(inSession.type, ActivityType.cardio);
+        expect(inSession.cardio!.durationSeconds, 1200);
+        final inDay = source().exerciseAssignments.last;
+        expect(inDay.type, ActivityType.cardio);
+        expect(inDay.cardio!.durationSeconds, 1200);
+
+        final dayBefore = source().exerciseAssignments.length;
+        await service.edit(
+          sessionId: session.id,
+          action: ActiveWorkoutEditAction.add,
+          exercises: [
+            ExerciseLibraryItem(
+              id: 'cardio:hiking',
+              nameEn: 'Hiking',
+              source: ExerciseLibraryItemSource.builtIn,
+            ),
+          ],
+          cardio: const CardioPlan(
+            mode: CardioMode.stopwatch,
+            durationSeconds: 1800,
+          ),
+        );
+        expect(
+          current().templateExerciseAssignmentsSnapshot.last.cardio!.mode,
+          CardioMode.stopwatch,
+        );
+        expect(source().exerciseAssignments, hasLength(dayBefore));
+
+        final sessionBefore = ids(current());
+        await expectLater(
+          service.edit(
+            sessionId: session.id,
+            action: ActiveWorkoutEditAction.add,
+            exercises: [
+              ExerciseLibraryItem(
+                id: 'cardio:swimming',
+                nameEn: 'Swimming',
+                source: ExerciseLibraryItemSource.builtIn,
+              ),
+            ],
+            cardio: const CardioPlan(mode: CardioMode.countdown), // no duration
+          ),
+          throwsArgumentError,
+        );
+        expect(ids(current()), sessionBefore);
+      },
+    );
+
+    String oldFormat(List<WorkoutTemplateExerciseAssignment> list) =>
+        jsonEncode([for (final a in list) a.toJson()]);
+
+    test('a pending edit written by an older build (strength-only format) is '
+        'still recovered', () async {
+      final before = source().exerciseAssignments;
+      final after = before.reversed.toList();
+      await (await sessions.getUserBox()).put(
+        session.id,
+        current().copyWith(
+          pendingProgramExerciseEdit: jsonEncode({
+            'before': oldFormat(before),
+            'after': oldFormat(after),
+          }),
+        ),
+      );
+      await service.recover(session.id);
+      expect(
+        [for (final a in source().exerciseAssignments) a.assignmentId],
+        [for (final a in after) a.assignmentId],
+      );
+      expect(current().pendingProgramExerciseEdit, isNull);
+    });
+
+    test('an old-format pending edit of a day that has cardio is a conflict: '
+        'the day is never written back without its plans', () async {
+      final withCardio = [...source().exerciseAssignments, run];
+      await (await days.getUserBox()).put(
+        day.id,
+        source().copyWith(exerciseAssignments: withCardio),
+      );
+      await (await sessions.getUserBox()).put(
+        session.id,
+        current().copyWith(
+          pendingProgramExerciseEdit: jsonEncode({
+            'before': oldFormat(withCardio),
+            'after': oldFormat(withCardio.reversed.toList()),
+          }),
+        ),
+      );
+      await expectLater(
+        service.recover(session.id),
+        throwsA(failure(ActiveWorkoutEditFailure.conflict)),
+      );
+      final kept = source().exerciseAssignments.singleWhere(
+        (a) => a.assignmentId == 'run',
+      );
+      expect(kept.cardio!.durationSeconds, 1200);
+      expect(
+        [for (final a in source().exerciseAssignments) a.assignmentId],
+        [for (final a in withCardio) a.assignmentId],
+      );
+    });
   });
 }

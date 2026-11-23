@@ -63,6 +63,11 @@ class UserStorageManager {
     'measurements': BodyMeasurement,
     'progress_photos': ProgressPhoto,
     'custom_exercises': CustomExercise,
+    // Cloud sync state (Stage 2): conflict copies kept until the user deletes
+    // them, deletions waiting for the server, the migration marker.
+    'sync_conflicts': Map,
+    'sync_tombstones': Map,
+    'sync_state': Map,
   };
 
   final Map<String, Box<dynamic>> _ownedBoxes = {};
@@ -236,6 +241,17 @@ class UserStorageManager {
 
     if (failures.isNotEmpty) {
       throw UserStorageCloseException(uid: uid, failures: failures);
+    }
+  }
+
+  /// Permanently removes every per-user box of [uid] from disk (account
+  /// deletion). Closes them first through [closeForUser], then deletes
+  /// exactly the `<prefix>_<uid>` boxes; other accounts' boxes on the same
+  /// device are never touched. Safe to repeat (missing boxes are a no-op).
+  Future<void> deleteForUser(String uid) async {
+    await closeForUser(uid);
+    for (final prefix in supportedBoxes.keys) {
+      await Hive.deleteBoxFromDisk(boxNameFor(prefix, uid));
     }
   }
 }

@@ -17,25 +17,20 @@ import 'package:ae_coaching/features/workout/data/repositories/exercise_library_
 import 'package:ae_coaching/features/workout/data/repositories/session_exercise_repository.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_session_repository.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_template_repository.dart';
+import 'package:ae_coaching/features/workout/domain/workout_features.dart';
 import 'package:ae_coaching/features/workout/presentation/cubit/session_exercise_cubit.dart';
 import 'package:ae_coaching/features/workout/presentation/widgets/template_exercise_manager.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ae_coaching/features/workout/presentation/widgets/exercise_thumbnail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
+import '../../support/fake_revision_cloud.dart';
 
-class _TemplateRemote implements WorkoutTemplateRemoteDataSource {
-  @override
-  Future<void> syncTemplate(String id, WorkoutTemplate template) async {}
-
-  @override
-  Future<void> deleteTemplate(String id) async {}
-
-  @override
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
-  fetchAllRemoteTemplates() async => [];
-}
+/// Rules-equivalent in-memory cloud (see FakeRevisionCloud).
+class _TemplateRemote extends FakeRevisionCloud
+    implements WorkoutTemplateRemoteDataSource {}
 
 class _MemoryTemplateRepository extends WorkoutTemplateRepository {
   WorkoutTemplate template;
@@ -215,6 +210,11 @@ void main() {
   late SessionExerciseRepository setRepository;
 
   setUp(() async {
+    // The strength flow as it ships while the cardio paths are off (release
+    // builds until the cardio workout is ready): "Add exercise" opens the
+    // exercise library directly. "Add activity" is covered by
+    // cardio_add_activity_flow_test.dart.
+    WorkoutFeatures.debugCardioOverride = false;
     tempDir = await Directory.systemTemp.createTemp('exercise_library_flow_');
     Hive.init(tempDir.path);
     if (!Hive.isAdapterRegistered(0)) {
@@ -243,6 +243,7 @@ void main() {
   });
 
   tearDown(() async {
+    WorkoutFeatures.debugCardioOverride = null;
     await Hive.deleteFromDisk();
     if (await tempDir.exists()) await tempDir.delete(recursive: true);
   });
@@ -295,6 +296,17 @@ void main() {
     expect(find.text('Exercises · 2'), findsOneWidget);
     expect(find.text('1'), findsOneWidget);
     expect(find.text('2'), findsOneWidget);
+    // Each exercise of the day is shown with its picture (or a monogram
+    // when the library has none), numbered by its place.
+    expect(find.byType(ExerciseThumbnail), findsNWidgets(2));
+    for (final assignment in saved.exerciseAssignments) {
+      final thumbnail = tester.widget<ExerciseThumbnail>(
+        find.byKey(
+          ValueKey('template-exercise-thumbnail-${assignment.assignmentId}'),
+        ),
+      );
+      expect(thumbnail.assignment!.exerciseId, assignment.exerciseId);
+    }
     expect(find.text('Bench Press'), findsOneWidget);
     expect(find.text('Cable Row'), findsOneWidget);
 

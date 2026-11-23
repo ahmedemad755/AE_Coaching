@@ -28,8 +28,13 @@ class FcmDeviceService {
   static const _tokenOwnerUidKey = 'fcmTokenOwnerUid';
   static const _tokenIdKey = 'fcmTokenId';
 
-  /// Token-document field confirming this build handles server reminders
-  /// (contract with firestore.rules and Cloud Functions).
+  /// Token-document field confirming a build handles SERVER reminders
+  /// (contract with firestore.rules and Cloud Functions). Deliberately NOT
+  /// written while inactivity reminders are scheduled locally (Spark plan):
+  /// the server must treat these devices as not ready, or enabling server
+  /// delivery later would duplicate the local reminders. A build that moves
+  /// reminders to the server writes it again (equal to `updatedAt`) and
+  /// stops local scheduling in the same release.
   static const serverRemindersReadyField = 'serverRemindersReadyAt';
 
   final FirebaseAuth _auth;
@@ -178,6 +183,26 @@ class FcmDeviceService {
     });
   }
 
+  /// Account deletion completed for [uid]: forget this device's local
+  /// registration for it and rotate the device token, so nothing registered
+  /// for the deleted account stays usable (its server-side token documents
+  /// were removed by the operator tool). Best effort; never throws.
+  Future<void> forgetDeletedAccount(String uid) async {
+    _blockedUids.add(uid);
+    _lastRegistration = null;
+    try {
+      await _enqueue(() async {
+        if (_box.get(_tokenOwnerUidKey) == uid) {
+          await _box.delete(_tokenOwnerUidKey);
+          await _box.delete(_tokenIdKey);
+        }
+        await _messaging.deleteToken();
+      });
+    } catch (error) {
+      debugPrint('FCM cleanup after account deletion failed: $error');
+    }
+  }
+
   Future<void> dispose() async {
     await _authSubscription?.cancel();
     await _tokenRefreshSubscription?.cancel();
@@ -228,6 +253,9 @@ class FcmDeviceService {
 
     final token = tokenOverride ?? await _messaging.getToken();
     if (token == null || token.isEmpty) return;
+    // TEMPORARY (Firebase Console test sends): debug builds only, never in
+    // release. Remove before release.
+    if (kDebugMode) debugPrint('FCM_DEBUG_TOKEN: $token');
 
     final currentUid = _auth.currentUser?.uid;
     final stillOwnsSession = sessionOwnsAuthenticatedUser(
@@ -260,12 +288,7 @@ class FcmDeviceService {
       'token': token,
       'updatedAt': FieldValue.serverTimestamp(),
       'platform': defaultTargetPlatform.name,
-      // This build receives server inactivity reminders (it no longer
-      // schedules the retired local one). Same server timestamp as
-      // `updatedAt` in this write; the server treats a token as ready only
-      // while the two are equal, so a later registration by an older build
-      // (which refreshes `updatedAt` alone) makes it ineligible again.
-      serverRemindersReadyField: FieldValue.serverTimestamp(),
+      // No serverRemindersReadyField: reminders are local (see its docs).
     };
     if (!snapshot.exists) {
       data['createdAt'] = FieldValue.serverTimestamp();

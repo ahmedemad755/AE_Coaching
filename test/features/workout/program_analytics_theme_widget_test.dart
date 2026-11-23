@@ -23,6 +23,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
+import '../../support/fake_revision_cloud.dart';
 
 class _FakeSetRemoteSource implements WorkoutRemoteDataSource {
   @override
@@ -51,17 +52,9 @@ class _FakeSessionRemoteSource implements WorkoutSessionRemoteDataSource {
   fetchAllRemoteSessions() async => const [];
 }
 
-class _FakeTemplateRemoteSource implements WorkoutTemplateRemoteDataSource {
-  @override
-  Future<void> syncTemplate(String id, WorkoutTemplate template) async {}
-
-  @override
-  Future<void> deleteTemplate(String id) async {}
-
-  @override
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
-  fetchAllRemoteTemplates() async => const [];
-}
+/// Rules-equivalent in-memory cloud (see FakeRevisionCloud).
+class _FakeTemplateRemoteSource extends FakeRevisionCloud
+    implements WorkoutTemplateRemoteDataSource {}
 
 void main() {
   for (final brightness in [Brightness.light, Brightness.dark]) {

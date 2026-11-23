@@ -1,3 +1,5 @@
+import 'package:ae_coaching/features/workout/domain/activity_plans.dart';
+import 'package:ae_coaching/features/workout/domain/cardio_run.dart';
 import 'dart:async';
 
 import 'package:ae_coaching/features/workout/data/models/exercise_set.dart';
@@ -142,6 +144,7 @@ class SessionExerciseCubit extends Cubit<SessionExerciseState> {
     String languageCode = 'en',
     List<String> orderedNames = const [],
     WorkoutTemplateExerciseAssignment? targets,
+    CardioPlan? cardio,
   }) async {
     if (_editing || editService == null) {
       throw StateError('Exercise editor unavailable or busy.');
@@ -157,6 +160,7 @@ class SessionExerciseCubit extends Cubit<SessionExerciseState> {
         languageCode: languageCode,
         orderedNames: orderedNames,
         targets: targets,
+        cardio: cardio,
       );
     } finally {
       // Read exactly what persisted, including partial-save intent. No optimistic
@@ -376,6 +380,20 @@ class SessionExerciseCubit extends Cubit<SessionExerciseState> {
         notes: notes,
       );
     });
+    await refreshForSession(session);
+  }
+
+  /// Saves a cardio activity's timer with the session (Stage 6).
+  Future<void> saveActivityRun(
+    WorkoutSession session,
+    String assignmentId,
+    CardioRun run,
+  ) async {
+    await sessionRepository.saveActivityRun(
+      sessionId: session.id,
+      assignmentId: assignmentId,
+      run: run,
+    );
     await refreshForSession(session);
   }
 

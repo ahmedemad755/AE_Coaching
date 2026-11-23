@@ -3529,6 +3529,1290 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This workout is no longer active.'**
   String get feedbackWorkoutNotActive;
+
+  /// No description provided for @dangerZoneTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Danger zone'**
+  String get dangerZoneTitle;
+
+  /// No description provided for @deleteAccountTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete account'**
+  String get deleteAccountTitle;
+
+  /// No description provided for @deleteAccountEntrySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Permanently delete your account and its data'**
+  String get deleteAccountEntrySubtitle;
+
+  /// No description provided for @deleteAccountIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleting your account permanently removes:'**
+  String get deleteAccountIntro;
+
+  /// No description provided for @deleteAccountItemWorkouts.
+  ///
+  /// In en, this message translates to:
+  /// **'Your workouts, sets, sessions and programs'**
+  String get deleteAccountItemWorkouts;
+
+  /// No description provided for @deleteAccountItemMeasurements.
+  ///
+  /// In en, this message translates to:
+  /// **'Your body measurements and progress photos'**
+  String get deleteAccountItemMeasurements;
+
+  /// No description provided for @deleteAccountItemProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile, settings and notification devices'**
+  String get deleteAccountItemProfile;
+
+  /// No description provided for @deleteAccountIrreversible.
+  ///
+  /// In en, this message translates to:
+  /// **'This can\'t be undone. Your account and all its data are deleted right away.'**
+  String get deleteAccountIrreversible;
+
+  /// No description provided for @deleteAccountPasswordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your password to confirm'**
+  String get deleteAccountPasswordLabel;
+
+  /// No description provided for @deleteAccountConfirmCheckbox.
+  ///
+  /// In en, this message translates to:
+  /// **'I understand that my account and all its data will be permanently deleted.'**
+  String get deleteAccountConfirmCheckbox;
+
+  /// No description provided for @deleteAccountSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete my account permanently'**
+  String get deleteAccountSubmit;
+
+  /// No description provided for @deleteAccountSubmitting.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleting your account…'**
+  String get deleteAccountSubmitting;
+
+  /// No description provided for @deleteAccountWrongPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect password. Try again.'**
+  String get deleteAccountWrongPassword;
+
+  /// No description provided for @deleteAccountTooManyAttempts.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many attempts. Wait a few minutes and try again.'**
+  String get deleteAccountTooManyAttempts;
+
+  /// No description provided for @deleteAccountOffline.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline. Connect to the internet to delete your account.'**
+  String get deleteAccountOffline;
+
+  /// No description provided for @deleteAccountReauthRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please sign in again, then retry.'**
+  String get deleteAccountReauthRequired;
+
+  /// No description provided for @deleteAccountUnsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'Account deletion isn\'t available for this sign-in method. Please contact support.'**
+  String get deleteAccountUnsupported;
+
+  /// No description provided for @deleteAccountFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t finish deleting your account. Try again.'**
+  String get deleteAccountFailed;
+
+  /// No description provided for @accountDeletedNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account has been deleted.'**
+  String get accountDeletedNotice;
+
+  /// No description provided for @inactivityReminderTitle1.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready for your next workout?'**
+  String get inactivityReminderTitle1;
+
+  /// No description provided for @inactivityReminderBody1.
+  ///
+  /// In en, this message translates to:
+  /// **'Your training plan is waiting whenever you are. Even a short session counts.'**
+  String get inactivityReminderBody1;
+
+  /// No description provided for @inactivityReminderTitle2.
+  ///
+  /// In en, this message translates to:
+  /// **'Small steps add up'**
+  String get inactivityReminderTitle2;
+
+  /// No description provided for @inactivityReminderBody2.
+  ///
+  /// In en, this message translates to:
+  /// **'A few sets today keep your progress moving. Start whenever it suits you.'**
+  String get inactivityReminderBody2;
+
+  /// No description provided for @inactivityReminderTitle3.
+  ///
+  /// In en, this message translates to:
+  /// **'Your workout is one tap away'**
+  String get inactivityReminderTitle3;
+
+  /// No description provided for @inactivityReminderBody3.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick up where you left off. Your programs are ready for you.'**
+  String get inactivityReminderBody3;
+
+  /// No description provided for @inactivityReminderTitle4.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s get moving again'**
+  String get inactivityReminderTitle4;
+
+  /// No description provided for @inactivityReminderBody4.
+  ///
+  /// In en, this message translates to:
+  /// **'Consistency beats perfection. A quick session is a great restart.'**
+  String get inactivityReminderBody4;
+
+  /// No description provided for @inactivityReminderTitle5.
+  ///
+  /// In en, this message translates to:
+  /// **'We saved your spot'**
+  String get inactivityReminderTitle5;
+
+  /// No description provided for @inactivityReminderBody5.
+  ///
+  /// In en, this message translates to:
+  /// **'Your workouts are right where you left them. Come back anytime.'**
+  String get inactivityReminderBody5;
+
+  /// No description provided for @inactivityReminderTitle6.
+  ///
+  /// In en, this message translates to:
+  /// **'Time for a fresh start?'**
+  String get inactivityReminderTitle6;
+
+  /// No description provided for @inactivityReminderBody6.
+  ///
+  /// In en, this message translates to:
+  /// **'Every session is a new beginning. Open AE Coaching and start yours.'**
+  String get inactivityReminderBody6;
+
+  /// No description provided for @deleteAccountIncomplete.
+  ///
+  /// In en, this message translates to:
+  /// **'An earlier deletion didn\'t finish. Enter your password to complete it.'**
+  String get deleteAccountIncomplete;
+
+  /// No description provided for @deleteAccountIncompleteNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account deletion didn\'t finish. Until you complete it in Settings → Delete account, new changes are saved on this phone only.'**
+  String get deleteAccountIncompleteNotice;
+
+  /// No description provided for @progressViewAll.
+  ///
+  /// In en, this message translates to:
+  /// **'View all'**
+  String get progressViewAll;
+
+  /// No description provided for @progressAllTimeCaption.
+  ///
+  /// In en, this message translates to:
+  /// **'Since you started'**
+  String get progressAllTimeCaption;
+
+  /// No description provided for @progressSinceCaption.
+  ///
+  /// In en, this message translates to:
+  /// **'Since {date}'**
+  String progressSinceCaption(String date);
+
+  /// No description provided for @progressMetricSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'{label}: {value}, {caption}'**
+  String progressMetricSemantics(String label, int value, String caption);
+
+  /// No description provided for @progressLatestRecords.
+  ///
+  /// In en, this message translates to:
+  /// **'Latest personal records'**
+  String get progressLatestRecords;
+
+  /// No description provided for @progressRecentWorkoutsSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent workouts'**
+  String get progressRecentWorkoutsSection;
+
+  /// No description provided for @progressRangeDays.
+  ///
+  /// In en, this message translates to:
+  /// **'7 days'**
+  String get progressRangeDays;
+
+  /// No description provided for @progressRangeWeeks.
+  ///
+  /// In en, this message translates to:
+  /// **'6 weeks'**
+  String get progressRangeWeeks;
+
+  /// No description provided for @progressDailyChartSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed workouts per day over the last 7 days'**
+  String get progressDailyChartSubtitle;
+
+  /// No description provided for @progressWeeklyChartSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed workouts per week (Monday to Sunday) over the last 6 weeks'**
+  String get progressWeeklyChartSubtitle;
+
+  /// No description provided for @progressChartInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'A workout counts when you finish it with at least one logged set. Cancelled workouts don\'t count.'**
+  String get progressChartInfo;
+
+  /// No description provided for @progressChartTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Total: {count}'**
+  String progressChartTotal(int count);
+
+  /// No description provided for @progressChartBarSemantics.
+  ///
+  /// In en, this message translates to:
+  /// **'{period}: {count, plural, =1{1 completed workout} other{{count} completed workouts}}'**
+  String progressChartBarSemantics(String period, int count);
+
+  /// No description provided for @progressWeekOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Week of {date}'**
+  String progressWeekOf(String date);
+
+  /// No description provided for @progressTodayLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get progressTodayLabel;
+
+  /// No description provided for @progressWorkoutCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 workout} other{{count} workouts}}'**
+  String progressWorkoutCount(int count);
+
+  /// No description provided for @progressExerciseCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 exercise} other{{count} exercises}}'**
+  String progressExerciseCount(int count);
+
+  /// No description provided for @progressRecordsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Your personal records will appear here once you log sets with weight.'**
+  String get progressRecordsEmpty;
+
+  /// No description provided for @progressRecordsSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by exercise name'**
+  String get progressRecordsSearchHint;
+
+  /// No description provided for @progressRecordsNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No exercise matches “{query}”.'**
+  String progressRecordsNoResults(String query);
+
+  /// No description provided for @progressBestSetVolumeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Best single set (weight × reps)'**
+  String get progressBestSetVolumeLabel;
+
+  /// No description provided for @progressRecordSetOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Set on {date}'**
+  String progressRecordSetOn(String date);
+
+  /// No description provided for @progressAllPrograms.
+  ///
+  /// In en, this message translates to:
+  /// **'All programs'**
+  String get progressAllPrograms;
+
+  /// No description provided for @progressFilterByProgram.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter by program'**
+  String get progressFilterByProgram;
+
+  /// No description provided for @progressHistoryNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No completed workouts in this program yet.'**
+  String get progressHistoryNoResults;
+
+  /// No description provided for @progressClearSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear search'**
+  String get progressClearSearch;
+
+  /// No description provided for @progressWeightTimesReps.
+  ///
+  /// In en, this message translates to:
+  /// **'{weight} kg × {reps}'**
+  String progressWeightTimesReps(String weight, int reps);
+
+  /// No description provided for @progressSetVolumeFormula.
+  ///
+  /// In en, this message translates to:
+  /// **'{weight} kg × {reps} = {volume} kg'**
+  String progressSetVolumeFormula(String weight, int reps, String volume);
+
+  /// No description provided for @syncReviewNeeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs your review'**
+  String get syncReviewNeeded;
+
+  /// No description provided for @syncReviewAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Review'**
+  String get syncReviewAction;
+
+  /// No description provided for @syncEditedElsewhereTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Changed on another device'**
+  String get syncEditedElsewhereTitle;
+
+  /// No description provided for @syncEditedElsewhereBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This day was changed here and on another device. Choose the version to keep — the other one stays saved on this phone.'**
+  String get syncEditedElsewhereBody;
+
+  /// No description provided for @syncDeletedElsewhereTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted on another device'**
+  String get syncDeletedElsewhereTitle;
+
+  /// No description provided for @syncDeletedElsewhereBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This day was deleted on another device, but you changed it here. Restore it everywhere, or delete it here too.'**
+  String get syncDeletedElsewhereBody;
+
+  /// No description provided for @syncDeletedHereTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Changed on another device after you deleted it'**
+  String get syncDeletedHereTitle;
+
+  /// No description provided for @syncDeletedHereBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You deleted this day, but it was changed on another device meanwhile. Delete it anyway, or keep it.'**
+  String get syncDeletedHereBody;
+
+  /// No description provided for @syncDiffersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Two different versions'**
+  String get syncDiffersTitle;
+
+  /// No description provided for @syncDiffersBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The version on this phone differs from the one saved in your account. Choose the version to keep — the other one stays saved on this phone.'**
+  String get syncDiffersBody;
+
+  /// No description provided for @syncOlderBuildTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Replaced by an older app version'**
+  String get syncOlderBuildTitle;
+
+  /// No description provided for @syncOlderBuildBody.
+  ///
+  /// In en, this message translates to:
+  /// **'An older version of the app replaced this day in your account. Choose the version to keep.'**
+  String get syncOlderBuildBody;
+
+  /// No description provided for @syncKeepMine.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep this phone\'s version'**
+  String get syncKeepMine;
+
+  /// No description provided for @syncKeepCloud.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the other version'**
+  String get syncKeepCloud;
+
+  /// No description provided for @syncRestoreDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore the day'**
+  String get syncRestoreDay;
+
+  /// No description provided for @syncDeleteHereToo.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete it here too'**
+  String get syncDeleteHereToo;
+
+  /// No description provided for @syncDeleteAnyway.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete anyway'**
+  String get syncDeleteAnyway;
+
+  /// No description provided for @syncKeepDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the day'**
+  String get syncKeepDay;
+
+  /// No description provided for @syncThisPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'This phone'**
+  String get syncThisPhone;
+
+  /// No description provided for @syncOtherVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Other version'**
+  String get syncOtherVersion;
+
+  /// No description provided for @syncResolved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved. The other version stays on this phone.'**
+  String get syncResolved;
+
+  /// No description provided for @syncLegacyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Earlier exercises found'**
+  String get syncLegacyTitle;
+
+  /// No description provided for @syncLegacyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 exercise was} other{{count} exercises were}} saved earlier for this day. Restore {count, plural, =1{it} other{them}}?'**
+  String syncLegacyBody(int count);
+
+  /// No description provided for @syncLegacySavedOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved on {date}'**
+  String syncLegacySavedOn(String date);
+
+  /// No description provided for @syncLegacyRestore.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore'**
+  String get syncLegacyRestore;
+
+  /// No description provided for @syncLegacyDismiss.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t restore'**
+  String get syncLegacyDismiss;
+
+  /// No description provided for @syncLegacyRestored.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercises restored.'**
+  String get syncLegacyRestored;
+
+  /// No description provided for @syncEarlierVersionAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'An earlier version of this day is available'**
+  String get syncEarlierVersionAvailable;
+
+  /// No description provided for @syncActivitiesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No activities} =1{1 activity} other{{count} activities}}'**
+  String syncActivitiesCount(int count);
+
+  /// No description provided for @activityLimitReached.
+  ///
+  /// In en, this message translates to:
+  /// **'A workout day can hold up to {limit} activities.'**
+  String activityLimitReached(int limit);
+
+  /// No description provided for @syncLegacySplitNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'A day holds up to {limit} activities. The first {limit} are restored here and the other {remaining} go into {newDays, plural, =1{a new day} other{{newDays} new days}} at the end of this program.'**
+  String syncLegacySplitNotice(int limit, int remaining, int newDays);
+
+  /// No description provided for @syncNewDayLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'New day: {name}'**
+  String syncNewDayLabel(String name);
+
+  /// No description provided for @syncLegacyRestoredSplit.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercises restored into {days} days.'**
+  String syncLegacyRestoredSplit(int days);
+
+  /// No description provided for @syncTooManyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many activities to sync'**
+  String get syncTooManyTitle;
+
+  /// No description provided for @syncTooManyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This day has {count} activities, more than the {limit} a day can sync. Until it is split, its changes stay on this phone only.'**
+  String syncTooManyBody(int count, int limit);
+
+  /// No description provided for @syncSplitDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Split day'**
+  String get syncSplitDay;
+
+  /// No description provided for @syncSplitConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Split this day?'**
+  String get syncSplitConfirmTitle;
+
+  /// No description provided for @syncSplitConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Activities after the first {limit} move, in the same order, to {newDays, plural, =1{a new day} other{{newDays} new days}} at the end of this program. Nothing is deleted.'**
+  String syncSplitConfirmBody(int limit, int newDays);
+
+  /// No description provided for @syncSplitDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Split into {days} days.'**
+  String syncSplitDone(int days);
+
+  /// No description provided for @addActivityButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Add activity'**
+  String get addActivityButton;
+
+  /// No description provided for @addActivityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add activity'**
+  String get addActivityTitle;
+
+  /// No description provided for @addActivityStrengthTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Strength exercise'**
+  String get addActivityStrengthTitle;
+
+  /// No description provided for @addActivityStrengthBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Sets and reps from the exercise library'**
+  String get addActivityStrengthBody;
+
+  /// No description provided for @addActivityCardioTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cardio'**
+  String get addActivityCardioTitle;
+
+  /// No description provided for @addActivityCardioBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Treadmill, bike, running and more'**
+  String get addActivityCardioBody;
+
+  /// No description provided for @addActivityLibraryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'My library'**
+  String get addActivityLibraryTitle;
+
+  /// No description provided for @addActivityLibraryBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercises and activities you created'**
+  String get addActivityLibraryBody;
+
+  /// No description provided for @cardioLibraryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cardio library'**
+  String get cardioLibraryTitle;
+
+  /// No description provided for @cardioSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search cardio'**
+  String get cardioSearchHint;
+
+  /// No description provided for @cardioCategoryAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get cardioCategoryAll;
+
+  /// No description provided for @cardioCategoryMachines.
+  ///
+  /// In en, this message translates to:
+  /// **'Machines & equipment'**
+  String get cardioCategoryMachines;
+
+  /// No description provided for @cardioCategoryBodyweight.
+  ///
+  /// In en, this message translates to:
+  /// **'Bodyweight'**
+  String get cardioCategoryBodyweight;
+
+  /// No description provided for @cardioCategoryOutdoor.
+  ///
+  /// In en, this message translates to:
+  /// **'Outdoor'**
+  String get cardioCategoryOutdoor;
+
+  /// No description provided for @cardioCategoryMine.
+  ///
+  /// In en, this message translates to:
+  /// **'My cardio'**
+  String get cardioCategoryMine;
+
+  /// No description provided for @cardioNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No cardio activity matches your search.'**
+  String get cardioNoResults;
+
+  /// No description provided for @cardioMineEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Cardio activities you create appear here.'**
+  String get cardioMineEmpty;
+
+  /// No description provided for @cardioCreateCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a cardio activity'**
+  String get cardioCreateCustom;
+
+  /// No description provided for @cardioCustomNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity name'**
+  String get cardioCustomNameLabel;
+
+  /// No description provided for @cardioCreateAndAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Create and add'**
+  String get cardioCreateAndAdd;
+
+  /// No description provided for @cardioAlreadyInDay.
+  ///
+  /// In en, this message translates to:
+  /// **'In this day'**
+  String get cardioAlreadyInDay;
+
+  /// No description provided for @cardioAddAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Add {name}'**
+  String cardioAddAction(String name);
+
+  /// No description provided for @cardioAddedToDay.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} added · {duration}'**
+  String cardioAddedToDay(String name, String duration);
+
+  /// No description provided for @cardioDurationMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes, plural, =1{1 min} other{{minutes} min}}'**
+  String cardioDurationMinutes(int minutes);
+
+  /// No description provided for @cardioModeCountdown.
+  ///
+  /// In en, this message translates to:
+  /// **'Countdown'**
+  String get cardioModeCountdown;
+
+  /// No description provided for @cardioModeStopwatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Stopwatch'**
+  String get cardioModeStopwatch;
+
+  /// No description provided for @cardioModeIntervals.
+  ///
+  /// In en, this message translates to:
+  /// **'Intervals'**
+  String get cardioModeIntervals;
+
+  /// No description provided for @cardioPlanSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{mode} · {duration}'**
+  String cardioPlanSummary(String mode, String duration);
+
+  /// No description provided for @cardioShadowBoxing.
+  ///
+  /// In en, this message translates to:
+  /// **'Shadow Boxing'**
+  String get cardioShadowBoxing;
+
+  /// No description provided for @cardioHiking.
+  ///
+  /// In en, this message translates to:
+  /// **'Hiking'**
+  String get cardioHiking;
+
+  /// No description provided for @cardioSwimming.
+  ///
+  /// In en, this message translates to:
+  /// **'Swimming'**
+  String get cardioSwimming;
+
+  /// No description provided for @cardioAirBikeAlsoKnown.
+  ///
+  /// In en, this message translates to:
+  /// **'Also known as Assault Bike'**
+  String get cardioAirBikeAlsoKnown;
+
+  /// No description provided for @activityTypeCardio.
+  ///
+  /// In en, this message translates to:
+  /// **'Cardio'**
+  String get activityTypeCardio;
+
+  /// No description provided for @myLibraryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'My library'**
+  String get myLibraryTitle;
+
+  /// No description provided for @myLibraryEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercises and cardio activities you create appear here.'**
+  String get myLibraryEmpty;
+
+  /// No description provided for @myLibraryStrengthSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Strength exercises'**
+  String get myLibraryStrengthSection;
+
+  /// No description provided for @myLibraryCardioSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Cardio'**
+  String get myLibraryCardioSection;
+
+  /// No description provided for @cardioSettingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cardio settings'**
+  String get cardioSettingsTitle;
+
+  /// No description provided for @cardioTimerModeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Timer mode'**
+  String get cardioTimerModeLabel;
+
+  /// No description provided for @cardioDurationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get cardioDurationLabel;
+
+  /// No description provided for @cardioTargetToggle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set a target duration'**
+  String get cardioTargetToggle;
+
+  /// No description provided for @cardioWorkLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Work'**
+  String get cardioWorkLabel;
+
+  /// No description provided for @cardioIntervalRestLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rest'**
+  String get cardioIntervalRestLabel;
+
+  /// No description provided for @cardioRoundsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rounds'**
+  String get cardioRoundsLabel;
+
+  /// No description provided for @cardioWarmupLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Warm-up'**
+  String get cardioWarmupLabel;
+
+  /// No description provided for @cardioCooldownLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cool-down'**
+  String get cardioCooldownLabel;
+
+  /// No description provided for @cardioIntensityLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Intensity (optional)'**
+  String get cardioIntensityLabel;
+
+  /// No description provided for @cardioIntensityLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get cardioIntensityLight;
+
+  /// No description provided for @cardioIntensityModerate.
+  ///
+  /// In en, this message translates to:
+  /// **'Moderate'**
+  String get cardioIntensityModerate;
+
+  /// No description provided for @cardioIntensityHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'High'**
+  String get cardioIntensityHigh;
+
+  /// No description provided for @cardioIntensityLightHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Effort (RPE) 2–4 of 10 · you can talk in full sentences.'**
+  String get cardioIntensityLightHint;
+
+  /// No description provided for @cardioIntensityModerateHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Effort (RPE) 5–6 of 10 · you can talk, but not sing.'**
+  String get cardioIntensityModerateHint;
+
+  /// No description provided for @cardioIntensityHighHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Effort (RPE) 7–8 of 10 · only a few words at a time.'**
+  String get cardioIntensityHighHint;
+
+  /// No description provided for @cardioDetailsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Details (optional)'**
+  String get cardioDetailsLabel;
+
+  /// No description provided for @cardioSpeedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed (km/h)'**
+  String get cardioSpeedLabel;
+
+  /// No description provided for @cardioInclineLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Incline (%)'**
+  String get cardioInclineLabel;
+
+  /// No description provided for @cardioResistanceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Resistance level'**
+  String get cardioResistanceLabel;
+
+  /// No description provided for @cardioDistanceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance (km)'**
+  String get cardioDistanceLabel;
+
+  /// No description provided for @cardioValueRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Between {min} and {max}'**
+  String cardioValueRange(String min, String max);
+
+  /// No description provided for @cardioPlannedTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Planned: {duration}'**
+  String cardioPlannedTotal(String duration);
+
+  /// No description provided for @cardioSecondsValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{seconds} s'**
+  String cardioSecondsValue(int seconds);
+
+  /// No description provided for @cardioNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get cardioNone;
+
+  /// No description provided for @cardioSettingsSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Cardio settings saved.'**
+  String get cardioSettingsSaved;
+
+  /// No description provided for @cardioDecrease.
+  ///
+  /// In en, this message translates to:
+  /// **'Decrease {label}'**
+  String cardioDecrease(String label);
+
+  /// No description provided for @cardioIncrease.
+  ///
+  /// In en, this message translates to:
+  /// **'Increase {label}'**
+  String cardioIncrease(String label);
+
+  /// No description provided for @estimatedDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated: {duration}'**
+  String estimatedDuration(String duration);
+
+  /// No description provided for @estimatedDurationAtLeast.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated: at least {duration}'**
+  String estimatedDurationAtLeast(String duration);
+
+  /// No description provided for @estimatedDurationNote.
+  ///
+  /// In en, this message translates to:
+  /// **'An estimate from the planned sets, reps, rest and cardio time, not the time a workout took.'**
+  String get estimatedDurationNote;
+
+  /// No description provided for @undoAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get undoAction;
+
+  /// No description provided for @activityRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} removed'**
+  String activityRemoved(String name);
+
+  /// No description provided for @cardioJustAddedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Added to the day with these settings. Save to change them, or Cancel to keep them.'**
+  String get cardioJustAddedHint;
+
+  /// No description provided for @cardioTimerStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get cardioTimerStart;
+
+  /// No description provided for @cardioTimerPause.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause'**
+  String get cardioTimerPause;
+
+  /// No description provided for @cardioTimerResume.
+  ///
+  /// In en, this message translates to:
+  /// **'Resume'**
+  String get cardioTimerResume;
+
+  /// No description provided for @cardioTimerFinish.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish'**
+  String get cardioTimerFinish;
+
+  /// No description provided for @cardioTimerSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get cardioTimerSkip;
+
+  /// No description provided for @cardioTimerOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open timer'**
+  String get cardioTimerOpen;
+
+  /// No description provided for @cardioTimerView.
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get cardioTimerView;
+
+  /// No description provided for @cardioTimerStartAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Do it anyway'**
+  String get cardioTimerStartAgain;
+
+  /// No description provided for @cardioRemainingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining'**
+  String get cardioRemainingLabel;
+
+  /// No description provided for @cardioElapsedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Elapsed'**
+  String get cardioElapsedLabel;
+
+  /// No description provided for @cardioPlannedValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Planned: {duration}'**
+  String cardioPlannedValue(String duration);
+
+  /// No description provided for @cardioTargetValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Target: {duration}'**
+  String cardioTargetValue(String duration);
+
+  /// No description provided for @cardioNoTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'No target: finish when you are done'**
+  String get cardioNoTarget;
+
+  /// No description provided for @cardioNextActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Next: {name}'**
+  String cardioNextActivity(String name);
+
+  /// No description provided for @cardioLastActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Last activity of this workout'**
+  String get cardioLastActivity;
+
+  /// No description provided for @cardioStatusNotStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Not started'**
+  String get cardioStatusNotStarted;
+
+  /// No description provided for @cardioStatusRunning.
+  ///
+  /// In en, this message translates to:
+  /// **'In progress · {time}'**
+  String cardioStatusRunning(String time);
+
+  /// No description provided for @cardioStatusPaused.
+  ///
+  /// In en, this message translates to:
+  /// **'Paused · {time}'**
+  String cardioStatusPaused(String time);
+
+  /// No description provided for @cardioStatusCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Done · {time}'**
+  String cardioStatusCompleted(String time);
+
+  /// No description provided for @cardioStatusEndedEarly.
+  ///
+  /// In en, this message translates to:
+  /// **'Ended early · {time}'**
+  String cardioStatusEndedEarly(String time);
+
+  /// No description provided for @cardioStatusSkipped.
+  ///
+  /// In en, this message translates to:
+  /// **'Skipped'**
+  String get cardioStatusSkipped;
+
+  /// No description provided for @intervalPhaseWarmup.
+  ///
+  /// In en, this message translates to:
+  /// **'Warm-up'**
+  String get intervalPhaseWarmup;
+
+  /// No description provided for @intervalPhaseWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Work'**
+  String get intervalPhaseWork;
+
+  /// No description provided for @intervalPhaseRest.
+  ///
+  /// In en, this message translates to:
+  /// **'Rest'**
+  String get intervalPhaseRest;
+
+  /// No description provided for @intervalPhaseCooldown.
+  ///
+  /// In en, this message translates to:
+  /// **'Cool-down'**
+  String get intervalPhaseCooldown;
+
+  /// No description provided for @intervalRoundOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Round {current} of {total}'**
+  String intervalRoundOf(int current, int total);
+
+  /// No description provided for @intervalNextPhase.
+  ///
+  /// In en, this message translates to:
+  /// **'Next: {phase} · {duration}'**
+  String intervalNextPhase(String phase, String duration);
+
+  /// No description provided for @intervalLastPhase.
+  ///
+  /// In en, this message translates to:
+  /// **'Last phase'**
+  String get intervalLastPhase;
+
+  /// No description provided for @cardioSkipConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip {name}?'**
+  String cardioSkipConfirmTitle(String name);
+
+  /// No description provided for @cardioSkipConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'It will be saved as skipped, not as done.'**
+  String get cardioSkipConfirmBody;
+
+  /// No description provided for @cardioFinishEarlyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish now?'**
+  String get cardioFinishEarlyTitle;
+
+  /// No description provided for @cardioFinishEarlyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{actual} of {planned} done. It will be saved as ended early.'**
+  String cardioFinishEarlyBody(String actual, String planned);
+
+  /// No description provided for @cardioSoundOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sounds and vibration on'**
+  String get cardioSoundOn;
+
+  /// No description provided for @cardioSoundOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Sounds and vibration off'**
+  String get cardioSoundOff;
+
+  /// No description provided for @cardioTargetReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Target reached. Keep going or finish.'**
+  String get cardioTargetReached;
+
+  /// No description provided for @cardioDoneMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} done: {time}'**
+  String cardioDoneMessage(String name, String time);
+
+  /// No description provided for @cardioSkippedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} skipped'**
+  String cardioSkippedMessage(String name);
+
+  /// No description provided for @cardioBackgroundNote.
+  ///
+  /// In en, this message translates to:
+  /// **'The timer keeps counting if you leave the app or lock the phone. Sounds play only while this screen is open.'**
+  String get cardioBackgroundNote;
+
+  /// No description provided for @cardioTimerSaveError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save the timer. Try again.'**
+  String get cardioTimerSaveError;
+
+  /// No description provided for @cardioTimerProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Timer progress'**
+  String get cardioTimerProgress;
+
+  /// No description provided for @finishWorkoutConfirmCardioBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your cardio will be saved with this workout in your history.'**
+  String get finishWorkoutConfirmCardioBody;
+
+  /// No description provided for @completionCardioTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cardio'**
+  String get completionCardioTitle;
+
+  /// No description provided for @cardioBackToWorkout.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to workout'**
+  String get cardioBackToWorkout;
 }
 
 class _AppLocalizationsDelegate

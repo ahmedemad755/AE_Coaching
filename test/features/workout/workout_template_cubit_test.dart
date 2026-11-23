@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:ae_coaching/features/workout/data/models/exercise_set.dart';
 import 'package:ae_coaching/core/storage/user_storage_manager.dart';
+import 'package:ae_coaching/core/sync/revision_cloud.dart';
 import 'package:ae_coaching/features/workout/data/datasources/workout_program_remote_data_source.dart';
 import 'package:ae_coaching/features/workout/data/datasources/workout_remote_data_source.dart';
 import 'package:ae_coaching/features/workout/data/datasources/workout_session_remote_data_source.dart';
@@ -18,27 +20,21 @@ import 'package:ae_coaching/features/workout/presentation/cubit/workout_template
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
+import '../../support/fake_revision_cloud.dart';
 
-class _FakeWorkoutTemplateRemoteDataSource
+/// The rules refuse reading (e.g. not deployed yet, or an unverified email).
+class _DeniedTemplateRemote extends FakeRevisionCloud
     implements WorkoutTemplateRemoteDataSource {
-  final Map<String, Map<String, dynamic>> store = {};
-
   @override
-  Future<void> syncTemplate(String id, WorkoutTemplate template) async {
-    store[id] = template.toJson();
-  }
-
+  Future<List<CloudDoc>> fetchAll() async => throw const CloudReadDenied();
   @override
-  Future<void> deleteTemplate(String id) async {
-    store.remove(id);
-  }
-
-  @override
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
-  fetchAllRemoteTemplates() async {
-    return <QueryDocumentSnapshot<Map<String, dynamic>>>[];
-  }
+  Future<List<CloudDoc>> fetchChangedSince(DateTime since) async =>
+      throw const CloudReadDenied();
 }
+
+/// Rules-equivalent in-memory cloud (see FakeRevisionCloud).
+class _FakeWorkoutTemplateRemoteDataSource extends FakeRevisionCloud
+    implements WorkoutTemplateRemoteDataSource {}
 
 class _FakeWorkoutProgramRemoteDataSource
     implements WorkoutProgramRemoteDataSource {
@@ -318,4 +314,49 @@ void main() {
       );
     },
   );
+
+  test(
+    'a refused or failing sync never turns the loaded days into an error',
+    () async {
+      final repository = WorkoutTemplateRepository(
+        remoteDataSource: _DeniedTemplateRemote(),
+        storageManager: UserStorageManager(),
+        uidOverride: () => 'denied-uid',
+      );
+      final local = await repository.createTemplate(
+        programId: programA,
+        name: 'Local day',
+      );
+      for (final failure in <Object>[
+        const CloudReadDenied(),
+        StateError('custom exercises failed'),
+      ]) {
+        final denied = WorkoutTemplateCubit(
+          repository: repository,
+          deletionService: cubit.deletionService,
+          syncRelated: () async => throw failure,
+        );
+        await denied.loadTemplates();
+        expect(denied.state, isA<WorkoutTemplateLoaded>(), reason: '$failure');
+        final box = (denied.state as WorkoutTemplateLoaded).box;
+        expect(box.get(local.id)!.name, 'Local day');
+        await denied.close();
+      }
+    },
+  );
+
+  test('leaving the screen while its sync is still running: the late result '
+      'is dropped, no "Cannot emit after close" error', () async {
+    final release = Completer<void>();
+    final slow = WorkoutTemplateCubit(
+      repository: templateRepository,
+      deletionService: cubit.deletionService,
+      syncRelated: () => release.future,
+    );
+    final loading = slow.loadTemplates();
+    await slow.stream.firstWhere((state) => state is WorkoutTemplateLoaded);
+    await slow.close(); // the user left the screen
+    release.complete(); // the slow sync finishes afterwards
+    await expectLater(loading, completes);
+  });
 }

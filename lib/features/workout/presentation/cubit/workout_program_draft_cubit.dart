@@ -4,10 +4,18 @@ import 'package:ae_coaching/features/workout/data/models/workout_template.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_template_exercise_assignment.dart';
 import 'package:ae_coaching/features/workout/data/repositories/exercise_name_normalizer.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_template_import_service.dart';
+import 'package:ae_coaching/features/workout/data/repositories/workout_template_repository.dart';
+import 'package:ae_coaching/features/workout/domain/workout_limits.dart';
 import 'package:ae_coaching/features/workout/data/workout_id_generator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-enum WorkoutDraftError { invalid, saveFailed, accountChanged, legacyResolution }
+enum WorkoutDraftError {
+  invalid,
+  saveFailed,
+  accountChanged,
+  legacyResolution,
+  tooManyActivities,
+}
 
 class WorkoutProgramDraftState {
   final WorkoutProgramDraft draft;
@@ -43,6 +51,13 @@ class WorkoutProgramDraftCubit extends Cubit<WorkoutProgramDraftState> {
     }
     try {
       emit(WorkoutProgramDraftState(edit(state.draft)));
+    } on ActivityLimitExceededException {
+      emit(
+        WorkoutProgramDraftState(
+          state.draft,
+          error: WorkoutDraftError.tooManyActivities,
+        ),
+      );
     } catch (_) {
       emit(
         WorkoutProgramDraftState(state.draft, error: WorkoutDraftError.invalid),
@@ -77,6 +92,9 @@ class WorkoutProgramDraftCubit extends Cubit<WorkoutProgramDraftState> {
                 .length !=
             assignments.length) {
       throw ArgumentError('Duplicate exercise.');
+    }
+    if (assignments.length > WorkoutLimits.maxActivitiesPerDay) {
+      throw const ActivityLimitExceededException();
     }
     return day.copyWith(exerciseAssignments: assignments);
   });

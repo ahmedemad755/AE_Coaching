@@ -2016,4 +2016,833 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get feedbackWorkoutNotActive => 'This workout is no longer active.';
+
+  @override
+  String get dangerZoneTitle => 'Danger zone';
+
+  @override
+  String get deleteAccountTitle => 'Delete account';
+
+  @override
+  String get deleteAccountEntrySubtitle =>
+      'Permanently delete your account and its data';
+
+  @override
+  String get deleteAccountIntro => 'Deleting your account permanently removes:';
+
+  @override
+  String get deleteAccountItemWorkouts =>
+      'Your workouts, sets, sessions and programs';
+
+  @override
+  String get deleteAccountItemMeasurements =>
+      'Your body measurements and progress photos';
+
+  @override
+  String get deleteAccountItemProfile =>
+      'Your profile, settings and notification devices';
+
+  @override
+  String get deleteAccountIrreversible =>
+      'This can\'t be undone. Your account and all its data are deleted right away.';
+
+  @override
+  String get deleteAccountPasswordLabel => 'Enter your password to confirm';
+
+  @override
+  String get deleteAccountConfirmCheckbox =>
+      'I understand that my account and all its data will be permanently deleted.';
+
+  @override
+  String get deleteAccountSubmit => 'Delete my account permanently';
+
+  @override
+  String get deleteAccountSubmitting => 'Deleting your account…';
+
+  @override
+  String get deleteAccountWrongPassword => 'Incorrect password. Try again.';
+
+  @override
+  String get deleteAccountTooManyAttempts =>
+      'Too many attempts. Wait a few minutes and try again.';
+
+  @override
+  String get deleteAccountOffline =>
+      'You\'re offline. Connect to the internet to delete your account.';
+
+  @override
+  String get deleteAccountReauthRequired => 'Please sign in again, then retry.';
+
+  @override
+  String get deleteAccountUnsupported =>
+      'Account deletion isn\'t available for this sign-in method. Please contact support.';
+
+  @override
+  String get deleteAccountFailed =>
+      'Couldn\'t finish deleting your account. Try again.';
+
+  @override
+  String get accountDeletedNotice => 'Your account has been deleted.';
+
+  @override
+  String get inactivityReminderTitle1 => 'Ready for your next workout?';
+
+  @override
+  String get inactivityReminderBody1 =>
+      'Your training plan is waiting whenever you are. Even a short session counts.';
+
+  @override
+  String get inactivityReminderTitle2 => 'Small steps add up';
+
+  @override
+  String get inactivityReminderBody2 =>
+      'A few sets today keep your progress moving. Start whenever it suits you.';
+
+  @override
+  String get inactivityReminderTitle3 => 'Your workout is one tap away';
+
+  @override
+  String get inactivityReminderBody3 =>
+      'Pick up where you left off. Your programs are ready for you.';
+
+  @override
+  String get inactivityReminderTitle4 => 'Let\'s get moving again';
+
+  @override
+  String get inactivityReminderBody4 =>
+      'Consistency beats perfection. A quick session is a great restart.';
+
+  @override
+  String get inactivityReminderTitle5 => 'We saved your spot';
+
+  @override
+  String get inactivityReminderBody5 =>
+      'Your workouts are right where you left them. Come back anytime.';
+
+  @override
+  String get inactivityReminderTitle6 => 'Time for a fresh start?';
+
+  @override
+  String get inactivityReminderBody6 =>
+      'Every session is a new beginning. Open AE Coaching and start yours.';
+
+  @override
+  String get deleteAccountIncomplete =>
+      'An earlier deletion didn\'t finish. Enter your password to complete it.';
+
+  @override
+  String get deleteAccountIncompleteNotice =>
+      'Your account deletion didn\'t finish. Until you complete it in Settings → Delete account, new changes are saved on this phone only.';
+
+  @override
+  String get progressViewAll => 'View all';
+
+  @override
+  String get progressAllTimeCaption => 'Since you started';
+
+  @override
+  String progressSinceCaption(String date) {
+    return 'Since $date';
+  }
+
+  @override
+  String progressMetricSemantics(String label, int value, String caption) {
+    return '$label: $value, $caption';
+  }
+
+  @override
+  String get progressLatestRecords => 'Latest personal records';
+
+  @override
+  String get progressRecentWorkoutsSection => 'Recent workouts';
+
+  @override
+  String get progressRangeDays => '7 days';
+
+  @override
+  String get progressRangeWeeks => '6 weeks';
+
+  @override
+  String get progressDailyChartSubtitle =>
+      'Completed workouts per day over the last 7 days';
+
+  @override
+  String get progressWeeklyChartSubtitle =>
+      'Completed workouts per week (Monday to Sunday) over the last 6 weeks';
+
+  @override
+  String get progressChartInfo =>
+      'A workout counts when you finish it with at least one logged set. Cancelled workouts don\'t count.';
+
+  @override
+  String progressChartTotal(int count) {
+    return 'Total: $count';
+  }
+
+  @override
+  String progressChartBarSemantics(String period, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count completed workouts',
+      one: '1 completed workout',
+    );
+    return '$period: $_temp0';
+  }
+
+  @override
+  String progressWeekOf(String date) {
+    return 'Week of $date';
+  }
+
+  @override
+  String get progressTodayLabel => 'Today';
+
+  @override
+  String progressWorkoutCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count workouts',
+      one: '1 workout',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String progressExerciseCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count exercises',
+      one: '1 exercise',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get progressRecordsEmpty =>
+      'Your personal records will appear here once you log sets with weight.';
+
+  @override
+  String get progressRecordsSearchHint => 'Search by exercise name';
+
+  @override
+  String progressRecordsNoResults(String query) {
+    return 'No exercise matches “$query”.';
+  }
+
+  @override
+  String get progressBestSetVolumeLabel => 'Best single set (weight × reps)';
+
+  @override
+  String progressRecordSetOn(String date) {
+    return 'Set on $date';
+  }
+
+  @override
+  String get progressAllPrograms => 'All programs';
+
+  @override
+  String get progressFilterByProgram => 'Filter by program';
+
+  @override
+  String get progressHistoryNoResults =>
+      'No completed workouts in this program yet.';
+
+  @override
+  String get progressClearSearch => 'Clear search';
+
+  @override
+  String progressWeightTimesReps(String weight, int reps) {
+    return '$weight kg × $reps';
+  }
+
+  @override
+  String progressSetVolumeFormula(String weight, int reps, String volume) {
+    return '$weight kg × $reps = $volume kg';
+  }
+
+  @override
+  String get syncReviewNeeded => 'Needs your review';
+
+  @override
+  String get syncReviewAction => 'Review';
+
+  @override
+  String get syncEditedElsewhereTitle => 'Changed on another device';
+
+  @override
+  String get syncEditedElsewhereBody =>
+      'This day was changed here and on another device. Choose the version to keep — the other one stays saved on this phone.';
+
+  @override
+  String get syncDeletedElsewhereTitle => 'Deleted on another device';
+
+  @override
+  String get syncDeletedElsewhereBody =>
+      'This day was deleted on another device, but you changed it here. Restore it everywhere, or delete it here too.';
+
+  @override
+  String get syncDeletedHereTitle =>
+      'Changed on another device after you deleted it';
+
+  @override
+  String get syncDeletedHereBody =>
+      'You deleted this day, but it was changed on another device meanwhile. Delete it anyway, or keep it.';
+
+  @override
+  String get syncDiffersTitle => 'Two different versions';
+
+  @override
+  String get syncDiffersBody =>
+      'The version on this phone differs from the one saved in your account. Choose the version to keep — the other one stays saved on this phone.';
+
+  @override
+  String get syncOlderBuildTitle => 'Replaced by an older app version';
+
+  @override
+  String get syncOlderBuildBody =>
+      'An older version of the app replaced this day in your account. Choose the version to keep.';
+
+  @override
+  String get syncKeepMine => 'Keep this phone\'s version';
+
+  @override
+  String get syncKeepCloud => 'Keep the other version';
+
+  @override
+  String get syncRestoreDay => 'Restore the day';
+
+  @override
+  String get syncDeleteHereToo => 'Delete it here too';
+
+  @override
+  String get syncDeleteAnyway => 'Delete anyway';
+
+  @override
+  String get syncKeepDay => 'Keep the day';
+
+  @override
+  String get syncThisPhone => 'This phone';
+
+  @override
+  String get syncOtherVersion => 'Other version';
+
+  @override
+  String get syncResolved => 'Saved. The other version stays on this phone.';
+
+  @override
+  String get syncLegacyTitle => 'Earlier exercises found';
+
+  @override
+  String syncLegacyBody(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count exercises were',
+      one: '1 exercise was',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'them',
+      one: 'it',
+    );
+    return '$_temp0 saved earlier for this day. Restore $_temp1?';
+  }
+
+  @override
+  String syncLegacySavedOn(String date) {
+    return 'Saved on $date';
+  }
+
+  @override
+  String get syncLegacyRestore => 'Restore';
+
+  @override
+  String get syncLegacyDismiss => 'Don\'t restore';
+
+  @override
+  String get syncLegacyRestored => 'Exercises restored.';
+
+  @override
+  String get syncEarlierVersionAvailable =>
+      'An earlier version of this day is available';
+
+  @override
+  String syncActivitiesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count activities',
+      one: '1 activity',
+      zero: 'No activities',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String activityLimitReached(int limit) {
+    return 'A workout day can hold up to $limit activities.';
+  }
+
+  @override
+  String syncLegacySplitNotice(int limit, int remaining, int newDays) {
+    String _temp0 = intl.Intl.pluralLogic(
+      newDays,
+      locale: localeName,
+      other: '$newDays new days',
+      one: 'a new day',
+    );
+    return 'A day holds up to $limit activities. The first $limit are restored here and the other $remaining go into $_temp0 at the end of this program.';
+  }
+
+  @override
+  String syncNewDayLabel(String name) {
+    return 'New day: $name';
+  }
+
+  @override
+  String syncLegacyRestoredSplit(int days) {
+    return 'Exercises restored into $days days.';
+  }
+
+  @override
+  String get syncTooManyTitle => 'Too many activities to sync';
+
+  @override
+  String syncTooManyBody(int count, int limit) {
+    return 'This day has $count activities, more than the $limit a day can sync. Until it is split, its changes stay on this phone only.';
+  }
+
+  @override
+  String get syncSplitDay => 'Split day';
+
+  @override
+  String get syncSplitConfirmTitle => 'Split this day?';
+
+  @override
+  String syncSplitConfirmBody(int limit, int newDays) {
+    String _temp0 = intl.Intl.pluralLogic(
+      newDays,
+      locale: localeName,
+      other: '$newDays new days',
+      one: 'a new day',
+    );
+    return 'Activities after the first $limit move, in the same order, to $_temp0 at the end of this program. Nothing is deleted.';
+  }
+
+  @override
+  String syncSplitDone(int days) {
+    return 'Split into $days days.';
+  }
+
+  @override
+  String get addActivityButton => 'Add activity';
+
+  @override
+  String get addActivityTitle => 'Add activity';
+
+  @override
+  String get addActivityStrengthTitle => 'Strength exercise';
+
+  @override
+  String get addActivityStrengthBody =>
+      'Sets and reps from the exercise library';
+
+  @override
+  String get addActivityCardioTitle => 'Cardio';
+
+  @override
+  String get addActivityCardioBody => 'Treadmill, bike, running and more';
+
+  @override
+  String get addActivityLibraryTitle => 'My library';
+
+  @override
+  String get addActivityLibraryBody => 'Exercises and activities you created';
+
+  @override
+  String get cardioLibraryTitle => 'Cardio library';
+
+  @override
+  String get cardioSearchHint => 'Search cardio';
+
+  @override
+  String get cardioCategoryAll => 'All';
+
+  @override
+  String get cardioCategoryMachines => 'Machines & equipment';
+
+  @override
+  String get cardioCategoryBodyweight => 'Bodyweight';
+
+  @override
+  String get cardioCategoryOutdoor => 'Outdoor';
+
+  @override
+  String get cardioCategoryMine => 'My cardio';
+
+  @override
+  String get cardioNoResults => 'No cardio activity matches your search.';
+
+  @override
+  String get cardioMineEmpty => 'Cardio activities you create appear here.';
+
+  @override
+  String get cardioCreateCustom => 'Create a cardio activity';
+
+  @override
+  String get cardioCustomNameLabel => 'Activity name';
+
+  @override
+  String get cardioCreateAndAdd => 'Create and add';
+
+  @override
+  String get cardioAlreadyInDay => 'In this day';
+
+  @override
+  String cardioAddAction(String name) {
+    return 'Add $name';
+  }
+
+  @override
+  String cardioAddedToDay(String name, String duration) {
+    return '$name added · $duration';
+  }
+
+  @override
+  String cardioDurationMinutes(int minutes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutes,
+      locale: localeName,
+      other: '$minutes min',
+      one: '1 min',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get cardioModeCountdown => 'Countdown';
+
+  @override
+  String get cardioModeStopwatch => 'Stopwatch';
+
+  @override
+  String get cardioModeIntervals => 'Intervals';
+
+  @override
+  String cardioPlanSummary(String mode, String duration) {
+    return '$mode · $duration';
+  }
+
+  @override
+  String get cardioShadowBoxing => 'Shadow Boxing';
+
+  @override
+  String get cardioHiking => 'Hiking';
+
+  @override
+  String get cardioSwimming => 'Swimming';
+
+  @override
+  String get cardioAirBikeAlsoKnown => 'Also known as Assault Bike';
+
+  @override
+  String get activityTypeCardio => 'Cardio';
+
+  @override
+  String get myLibraryTitle => 'My library';
+
+  @override
+  String get myLibraryEmpty =>
+      'Exercises and cardio activities you create appear here.';
+
+  @override
+  String get myLibraryStrengthSection => 'Strength exercises';
+
+  @override
+  String get myLibraryCardioSection => 'Cardio';
+
+  @override
+  String get cardioSettingsTitle => 'Cardio settings';
+
+  @override
+  String get cardioTimerModeLabel => 'Timer mode';
+
+  @override
+  String get cardioDurationLabel => 'Duration';
+
+  @override
+  String get cardioTargetToggle => 'Set a target duration';
+
+  @override
+  String get cardioWorkLabel => 'Work';
+
+  @override
+  String get cardioIntervalRestLabel => 'Rest';
+
+  @override
+  String get cardioRoundsLabel => 'Rounds';
+
+  @override
+  String get cardioWarmupLabel => 'Warm-up';
+
+  @override
+  String get cardioCooldownLabel => 'Cool-down';
+
+  @override
+  String get cardioIntensityLabel => 'Intensity (optional)';
+
+  @override
+  String get cardioIntensityLight => 'Light';
+
+  @override
+  String get cardioIntensityModerate => 'Moderate';
+
+  @override
+  String get cardioIntensityHigh => 'High';
+
+  @override
+  String get cardioIntensityLightHint =>
+      'Effort (RPE) 2–4 of 10 · you can talk in full sentences.';
+
+  @override
+  String get cardioIntensityModerateHint =>
+      'Effort (RPE) 5–6 of 10 · you can talk, but not sing.';
+
+  @override
+  String get cardioIntensityHighHint =>
+      'Effort (RPE) 7–8 of 10 · only a few words at a time.';
+
+  @override
+  String get cardioDetailsLabel => 'Details (optional)';
+
+  @override
+  String get cardioSpeedLabel => 'Speed (km/h)';
+
+  @override
+  String get cardioInclineLabel => 'Incline (%)';
+
+  @override
+  String get cardioResistanceLabel => 'Resistance level';
+
+  @override
+  String get cardioDistanceLabel => 'Distance (km)';
+
+  @override
+  String cardioValueRange(String min, String max) {
+    return 'Between $min and $max';
+  }
+
+  @override
+  String cardioPlannedTotal(String duration) {
+    return 'Planned: $duration';
+  }
+
+  @override
+  String cardioSecondsValue(int seconds) {
+    return '$seconds s';
+  }
+
+  @override
+  String get cardioNone => 'None';
+
+  @override
+  String get cardioSettingsSaved => 'Cardio settings saved.';
+
+  @override
+  String cardioDecrease(String label) {
+    return 'Decrease $label';
+  }
+
+  @override
+  String cardioIncrease(String label) {
+    return 'Increase $label';
+  }
+
+  @override
+  String estimatedDuration(String duration) {
+    return 'Estimated: $duration';
+  }
+
+  @override
+  String estimatedDurationAtLeast(String duration) {
+    return 'Estimated: at least $duration';
+  }
+
+  @override
+  String get estimatedDurationNote =>
+      'An estimate from the planned sets, reps, rest and cardio time, not the time a workout took.';
+
+  @override
+  String get undoAction => 'Undo';
+
+  @override
+  String activityRemoved(String name) {
+    return '$name removed';
+  }
+
+  @override
+  String get cardioJustAddedHint =>
+      'Added to the day with these settings. Save to change them, or Cancel to keep them.';
+
+  @override
+  String get cardioTimerStart => 'Start';
+
+  @override
+  String get cardioTimerPause => 'Pause';
+
+  @override
+  String get cardioTimerResume => 'Resume';
+
+  @override
+  String get cardioTimerFinish => 'Finish';
+
+  @override
+  String get cardioTimerSkip => 'Skip';
+
+  @override
+  String get cardioTimerOpen => 'Open timer';
+
+  @override
+  String get cardioTimerView => 'View';
+
+  @override
+  String get cardioTimerStartAgain => 'Do it anyway';
+
+  @override
+  String get cardioRemainingLabel => 'Remaining';
+
+  @override
+  String get cardioElapsedLabel => 'Elapsed';
+
+  @override
+  String cardioPlannedValue(String duration) {
+    return 'Planned: $duration';
+  }
+
+  @override
+  String cardioTargetValue(String duration) {
+    return 'Target: $duration';
+  }
+
+  @override
+  String get cardioNoTarget => 'No target: finish when you are done';
+
+  @override
+  String cardioNextActivity(String name) {
+    return 'Next: $name';
+  }
+
+  @override
+  String get cardioLastActivity => 'Last activity of this workout';
+
+  @override
+  String get cardioStatusNotStarted => 'Not started';
+
+  @override
+  String cardioStatusRunning(String time) {
+    return 'In progress · $time';
+  }
+
+  @override
+  String cardioStatusPaused(String time) {
+    return 'Paused · $time';
+  }
+
+  @override
+  String cardioStatusCompleted(String time) {
+    return 'Done · $time';
+  }
+
+  @override
+  String cardioStatusEndedEarly(String time) {
+    return 'Ended early · $time';
+  }
+
+  @override
+  String get cardioStatusSkipped => 'Skipped';
+
+  @override
+  String get intervalPhaseWarmup => 'Warm-up';
+
+  @override
+  String get intervalPhaseWork => 'Work';
+
+  @override
+  String get intervalPhaseRest => 'Rest';
+
+  @override
+  String get intervalPhaseCooldown => 'Cool-down';
+
+  @override
+  String intervalRoundOf(int current, int total) {
+    return 'Round $current of $total';
+  }
+
+  @override
+  String intervalNextPhase(String phase, String duration) {
+    return 'Next: $phase · $duration';
+  }
+
+  @override
+  String get intervalLastPhase => 'Last phase';
+
+  @override
+  String cardioSkipConfirmTitle(String name) {
+    return 'Skip $name?';
+  }
+
+  @override
+  String get cardioSkipConfirmBody =>
+      'It will be saved as skipped, not as done.';
+
+  @override
+  String get cardioFinishEarlyTitle => 'Finish now?';
+
+  @override
+  String cardioFinishEarlyBody(String actual, String planned) {
+    return '$actual of $planned done. It will be saved as ended early.';
+  }
+
+  @override
+  String get cardioSoundOn => 'Sounds and vibration on';
+
+  @override
+  String get cardioSoundOff => 'Sounds and vibration off';
+
+  @override
+  String get cardioTargetReached => 'Target reached. Keep going or finish.';
+
+  @override
+  String cardioDoneMessage(String name, String time) {
+    return '$name done: $time';
+  }
+
+  @override
+  String cardioSkippedMessage(String name) {
+    return '$name skipped';
+  }
+
+  @override
+  String get cardioBackgroundNote =>
+      'The timer keeps counting if you leave the app or lock the phone. Sounds play only while this screen is open.';
+
+  @override
+  String get cardioTimerSaveError => 'Could not save the timer. Try again.';
+
+  @override
+  String get cardioTimerProgress => 'Timer progress';
+
+  @override
+  String get finishWorkoutConfirmCardioBody =>
+      'Your cardio will be saved with this workout in your history.';
+
+  @override
+  String get completionCardioTitle => 'Cardio';
+
+  @override
+  String get cardioBackToWorkout => 'Back to workout';
 }

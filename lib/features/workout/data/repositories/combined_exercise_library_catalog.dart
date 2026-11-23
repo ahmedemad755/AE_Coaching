@@ -4,6 +4,7 @@ import 'package:ae_coaching/features/workout/data/repositories/custom_exercise_r
 import 'package:ae_coaching/features/workout/data/repositories/exercise_catalog_repository.dart';
 import 'package:ae_coaching/features/workout/data/repositories/exercise_library_catalog.dart';
 import 'package:ae_coaching/features/workout/data/repositories/exercise_name_normalizer.dart';
+import 'package:ae_coaching/features/workout/domain/activity_plans.dart';
 import 'package:flutter/foundation.dart';
 
 class CombinedExerciseLibraryCatalog implements ExerciseLibraryCatalog {
@@ -45,6 +46,10 @@ class CombinedExerciseLibraryCatalog implements ExerciseLibraryCatalog {
     final selectedMuscles = muscleGroups.map(normalizeExerciseName).toSet();
     final selectedEquipment = equipment.map(normalizeExerciseName).toSet();
     final customMatches = custom.where((exercise) {
+      // The strength picker: the user's own cardio is in the cardio library.
+      if (ActivityType.parse(exercise.activityType) != ActivityType.strength) {
+        return false;
+      }
       final normalizedName = normalizeExerciseName(exercise.name);
       if (!tokens.every(normalizedName.contains)) return false;
       if (selectedMuscles.isNotEmpty &&

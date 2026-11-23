@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:isolate';
 
 import 'package:ae_coaching/features/workout/data/models/exercise_catalog_item.dart';
 import 'package:ae_coaching/features/workout/data/repositories/exercise_name_normalizer.dart';
@@ -16,12 +17,19 @@ class ExerciseCatalogRepository {
   static const int supportedSchemaVersion = 3;
 
   final Future<String> Function(String path) _loadAsset;
+
+  /// Decode the catalog on a background isolate (the app). Tests keep it
+  /// inline: isolates don't run inside widget tests' fake time.
+  final bool _parseInBackground;
   Future<List<ExerciseCatalogItem>>? _catalogFuture;
   Future<List<ExerciseCatalogItem>>? _legacyFuture;
   Future<Map<String, String>>? _mappingFuture;
 
-  ExerciseCatalogRepository({Future<String> Function(String path)? loadAsset})
-    : _loadAsset = loadAsset ?? rootBundle.loadString;
+  ExerciseCatalogRepository({
+    Future<String> Function(String path)? loadAsset,
+    bool parseInBackground = false,
+  }) : _loadAsset = loadAsset ?? rootBundle.loadString,
+       _parseInBackground = parseInBackground;
 
   Future<List<ExerciseCatalogItem>> loadCatalog() {
     return _catalogFuture ??= _loadWithDiagnostics();
@@ -160,6 +168,30 @@ class ExerciseCatalogRepository {
       rethrow;
     }
 
+    if (_parseInBackground) {
+      // ~2.7 MB of JSON and 700+ entries: decoded and validated on a
+      // background isolate. Since Flutter 3.29 the UI runs on Android's main
+      // thread, so doing this inline froze touch input (and could end in an
+      // "app not responding" kill when the user tapped meanwhile).
+      final arabicSource = await _loadAsset(arabicAssetPath);
+      final parsed = await Isolate.run(
+        () => _buildCatalog(_decodeRoot(source), arabicSource),
+        debugName: 'exercise-catalog',
+      );
+      return List.unmodifiable(parsed);
+    }
+    final root = _decodeRoot(source);
+    final arabicSource = root.legacy ? null : await _loadAsset(arabicAssetPath);
+    return List.unmodifiable(_buildCatalog(root, arabicSource));
+  }
+
+  /// Decodes and checks the catalog root. Pure: runs on any isolate.
+  static ({
+    Map<String, dynamic> decoded,
+    bool legacy,
+    List<dynamic> rawExercises,
+  })
+  _decodeRoot(String source) {
     dynamic decoded;
     try {
       decoded = jsonDecode(source);
@@ -198,11 +230,27 @@ class ExerciseCatalogRepository {
       );
     }
 
+    return (decoded: decoded, legacy: legacy, rawExercises: rawExercises);
+  }
+
+  /// Builds and validates every entry (with the Arabic overlay for RepDB).
+  /// Pure: runs on any isolate. Returns a plain growable list (sendable).
+  static List<ExerciseCatalogItem> _buildCatalog(
+    ({Map<String, dynamic> decoded, bool legacy, List<dynamic> rawExercises})
+    root,
+    String? arabicSource,
+  ) {
+    final decoded = root.decoded;
+    final legacy = root.legacy;
+    final rawExercises = root.rawExercises;
     final ids = <String>{};
     final exercises = <ExerciseCatalogItem>[];
     var arabic = <String, dynamic>{};
     if (!legacy) {
-      final overlay = jsonDecode(await _loadAsset(arabicAssetPath));
+      if (arabicSource == null) {
+        throw const FormatException('Arabic overlay is missing.');
+      }
+      final overlay = jsonDecode(arabicSource);
       if (overlay is! Map<String, dynamic> ||
           overlay['schema_version'] != 1 ||
           overlay['dataset_commit'] != datasetCommit ||
@@ -271,6 +319,6 @@ class ExerciseCatalogRepository {
         '[ExerciseCatalog] Successfully parsed ${exercises.length} entries',
       );
     }
-    return List.unmodifiable(exercises);
+    return exercises;
   }
 }

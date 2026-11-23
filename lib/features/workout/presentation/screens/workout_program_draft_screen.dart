@@ -9,8 +9,10 @@ import 'package:ae_coaching/features/workout/data/repositories/workout_template_
 import 'package:ae_coaching/features/workout/presentation/cubit/workout_program_draft_cubit.dart';
 import 'package:ae_coaching/features/workout/presentation/screens/exercise_library_screen.dart';
 import 'package:ae_coaching/features/workout/presentation/widgets/workout_exercise_targets_dialog.dart';
+import 'package:ae_coaching/features/workout/presentation/widgets/exercise_thumbnail.dart';
 import 'package:ae_coaching/features/workout/presentation/widgets/workout_template_layout.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
+import 'package:ae_coaching/features/workout/domain/workout_limits.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -137,6 +139,9 @@ class _WorkoutProgramDraftScreenState extends State<WorkoutProgramDraftScreen> {
             WorkoutDraftError.saveFailed => l10n.standardDraftSaveError,
             WorkoutDraftError.accountChanged =>
               l10n.standardDraftAccountChanged,
+            WorkoutDraftError.tooManyActivities => l10n.activityLimitReached(
+              WorkoutLimits.maxActivitiesPerDay,
+            ),
           };
           AppFeedback.show(
             state.error == WorkoutDraftError.saveFailed
@@ -256,12 +261,20 @@ class _WorkoutProgramDraftScreenState extends State<WorkoutProgramDraftScreen> {
                   'draft-assignment-${day.exerciseAssignments[i].assignmentId}',
                 ),
                 contentPadding: EdgeInsets.zero,
-                minTileHeight: WorkoutTemplateSpacing.tapTarget,
+                minTileHeight: 56,
                 minVerticalPadding: 0,
-                minLeadingWidth: 20,
+                minLeadingWidth: 48,
                 horizontalTitleGap: WorkoutTemplateSpacing.heading,
                 titleAlignment: ListTileTitleAlignment.top,
-                leading: Text('${i + 1}'),
+                leading: ExerciseThumbnail(
+                  key: ValueKey(
+                    'draft-thumbnail-${day.exerciseAssignments[i].assignmentId}',
+                  ),
+                  name: day.exerciseAssignments[i].exerciseNameSnapshot,
+                  assignment: day.exerciseAssignments[i],
+                  index: i + 1,
+                  size: 48,
+                ),
                 title: WorkoutTemplateExerciseContent(
                   assignment: day.exerciseAssignments[i],
                 ),

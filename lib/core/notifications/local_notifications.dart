@@ -3,6 +3,7 @@ import 'package:ae_coaching/core/notifications/legacy_inactivity_reminder_cleanu
 import 'package:ae_coaching/core/routes/app_router.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 /// An Android notification channel the app owns.
 class AppNotificationChannel {
@@ -32,6 +33,17 @@ abstract interface class LocalNotificationsGateway {
   /// the one that launched the app.
   Future<void> initialize({required void Function(String? payload) onTap});
   Future<void> ensureAndroidChannel(AppNotificationChannel channel);
+
+  /// One local notification at [at] (an absolute instant; inexact on
+  /// Android, so no exact-alarm permission is needed), in [channel].
+  Future<void> schedule({
+    required int id,
+    required String title,
+    required String body,
+    required tz.TZDateTime at,
+    required AppNotificationChannel channel,
+    required String payload,
+  });
   Future<void> cancel(int id);
 }
 
@@ -79,6 +91,35 @@ class FlutterLocalNotificationsGateway implements LocalNotificationsGateway {
           ),
         );
   }
+
+  @override
+  Future<void> schedule({
+    required int id,
+    required String title,
+    required String body,
+    required tz.TZDateTime at,
+    required AppNotificationChannel channel,
+    required String payload,
+  }) => _plugin.zonedSchedule(
+    id,
+    title,
+    body,
+    at,
+    NotificationDetails(
+      android: AndroidNotificationDetails(
+        channel.id,
+        channel.name,
+        channelDescription: channel.description,
+        importance: Importance.defaultImportance,
+        priority: Priority.defaultPriority,
+      ),
+      iOS: const DarwinNotificationDetails(),
+    ),
+    // Inexact: may arrive a few minutes late under Doze, but needs no
+    // SCHEDULE_EXACT_ALARM permission (a reminder does not need the minute).
+    androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+    payload: payload,
+  );
 
   @override
   Future<void> cancel(int id) => _plugin.cancel(id);

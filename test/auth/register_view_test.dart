@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../core/layout/keyboard_phone.dart';
 import 'support/auth_test_app.dart';
 import 'support/auth_cubit_builder.dart';
 
@@ -320,4 +321,39 @@ void main() {
     );
     expect(emailField.textDirection, TextDirection.ltr);
   });
+
+  for (final language in ['en', 'ar']) {
+    for (final scale in [1.0, 1.3]) {
+      testWidgets(
+        '$language · text ×$scale: small phone, keyboard open on the last field',
+        (tester) async {
+          await open(tester, locale: Locale(language));
+          useSmallPhone(tester, textScale: scale);
+          await tester.pumpAndSettle();
+          expectNoOverflow(tester);
+          await tester.ensureVisible(find.byKey(_confirm));
+          await tester.showKeyboard(
+            find.descendant(
+              of: find.byKey(_confirm),
+              matching: find.byType(EditableText),
+            ),
+          );
+          await setKeyboard(tester, open: true);
+          expectNoOverflow(tester);
+          expect(
+            tester.getRect(find.byKey(_confirm)).bottom,
+            lessThanOrEqualTo(smallPhone.height - keyboardHeight),
+          );
+          await tester.ensureVisible(find.byKey(_submit));
+          await tester.pumpAndSettle();
+          expect(
+            tester.getRect(find.byKey(_submit)).bottom,
+            lessThanOrEqualTo(smallPhone.height - keyboardHeight),
+          );
+          await setKeyboard(tester, open: false);
+          expectNoOverflow(tester);
+        },
+      );
+    }
+  }
 }

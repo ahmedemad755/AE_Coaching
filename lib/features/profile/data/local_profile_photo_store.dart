@@ -107,4 +107,13 @@ class LocalProfilePhotoStore {
       throw StateError('An authenticated user is required.');
     }
   }
+
+  /// Removes [uid]'s profile photo directory and reference (account
+  /// deletion). Other accounts' photos are never touched. Safe to repeat.
+  Future<void> deleteForUser(String uid) async {
+    final documents = await _documentsDirectory();
+    final directory = Directory(_uidDirectory(uid, documents.path));
+    if (await directory.exists()) await directory.delete(recursive: true);
+    await _box.delete(_key(uid));
+  }
 }

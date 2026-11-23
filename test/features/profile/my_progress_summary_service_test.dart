@@ -104,4 +104,102 @@ void main() {
       expect(result.completedSessions, isEmpty);
     },
   );
+
+  group('daily activity (last 7 calendar days)', () {
+    // now = Sunday 25 Oct 2026, 12:00.
+    test('seven days ending today, oldest first, zero days kept', () {
+      final result = service.summarize(
+        sessions: const [],
+        sets: const [],
+        now: now,
+      );
+      expect(result.dailyActivity, hasLength(7));
+      expect(result.dailyActivity.first.day, DateTime(2026, 10, 19));
+      expect(result.dailyActivity.last.day, DateTime(2026, 10, 25));
+      for (var i = 1; i < 7; i++) {
+        expect(
+          result.dailyActivity[i].day
+              .difference(result.dailyActivity[i - 1].day)
+              .inHours,
+          inInclusiveRange(23, 25), // calendar days, DST-safe
+        );
+      }
+      expect(result.dailyActivity.every((p) => p.completedCount == 0), isTrue);
+    });
+
+    test(
+      'counts completed workouts per local calendar day by completion time',
+      () {
+        final sessions = [
+          _session(id: 'today-1', completedAt: DateTime(2026, 10, 25, 7)),
+          _session(id: 'today-2', completedAt: DateTime(2026, 10, 25, 11, 59)),
+          // Midnight belongs to the new day; 23:59 to the old one.
+          _session(id: 'mon-start', completedAt: DateTime(2026, 10, 19)),
+          _session(id: 'sat-end', completedAt: DateTime(2026, 10, 24, 23, 59)),
+          // Outside the window.
+          _session(id: 'too-old', completedAt: DateTime(2026, 10, 18, 23, 59)),
+          // Not counted: cancelled / in progress / no logged set.
+          _session(id: 'cancelled', completedAt: now, status: 'cancelled'),
+          _session(id: 'in-progress', completedAt: now, status: 'inProgress'),
+          _session(id: 'no-sets', completedAt: now),
+        ];
+        final sets = sessions
+            .where((s) => s.id != 'no-sets')
+            .map(_validSet)
+            .toList();
+
+        final daily = service
+            .summarize(sessions: sessions, sets: sets, now: now)
+            .dailyActivity;
+
+        expect(daily.map((p) => p.completedCount).toList(), [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          2,
+        ]);
+        final total = daily.fold<int>(0, (sum, p) => sum + p.completedCount);
+        expect(total, 4); // the same definition as the summary numbers
+      },
+    );
+
+    test('a session saved without a completion time counts on its date', () {
+      final legacy = WorkoutSession(
+        id: 'legacy',
+        programId: 'program-a',
+        workoutTemplateId: 'template-a',
+        workoutNameSnapshot: 'Push A',
+        date: DateTime(2026, 10, 23, 18),
+        startedAt: DateTime(2026, 10, 23, 17),
+        status: 'completed',
+        totalVolume: 0,
+      );
+      final daily = service
+          .summarize(sessions: [legacy], sets: [_validSet(legacy)], now: now)
+          .dailyActivity;
+      expect(daily[4].day, DateTime(2026, 10, 23));
+      expect(daily[4].completedCount, 1);
+    });
+  });
+
+  test('completed sessions are listed newest first', () {
+    final sessions = [
+      _session(id: 'middle', completedAt: DateTime(2026, 10, 20)),
+      _session(id: 'newest', completedAt: DateTime(2026, 10, 24)),
+      _session(id: 'oldest', completedAt: DateTime(2026, 9, 1)),
+    ];
+    final result = service.summarize(
+      sessions: sessions,
+      sets: sessions.map(_validSet).toList(),
+      now: now,
+    );
+    expect(result.completedSessions.map((s) => s.id), [
+      'newest',
+      'middle',
+      'oldest',
+    ]);
+  });
 }

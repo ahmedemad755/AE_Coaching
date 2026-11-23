@@ -140,13 +140,11 @@ class WorkoutTemplateImportService {
         await programs.remoteDataSource
             .syncProgram(program.id, program)
             .timeout(programTimeout);
-        for (final day in draft.days) {
-          _checkOwner(draft.ownerUid);
-          final dayTimeout = remainingSyncTime();
-          await templates.remoteDataSource
-              .syncTemplate(day.id, day)
-              .timeout(dayTimeout);
-        }
+        // Days (with their activities) go through the revision-protected
+        // sync engine; incomplete unless each one is confirmed by the server.
+        _checkOwner(draft.ownerUid);
+        await templates.syncWithCloud().timeout(remainingSyncTime());
+        syncIncomplete = !await templates.isConfirmedInCloud(dayIds);
       } catch (_) {
         syncIncomplete = true;
       }

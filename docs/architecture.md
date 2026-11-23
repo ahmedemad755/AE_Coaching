@@ -148,7 +148,8 @@ client; see `functions/README.md`.
 | `users/{uid}/exercise_sets/{id}` | `WorkoutRemoteDataSourceImpl` | set, delete, batch delete, list `orderBy(date)` | verified owner |
 | `users/{uid}/body_measurements/{id}` | `MeasurementRemoteDataSourceImpl` | set, delete, list `orderBy(date)` | verified owner |
 | `users/{uid}/workout_programs/{id}` | `WorkoutProgramRemoteDataSourceImpl` | set, delete, list `orderBy(createdAt)` | verified owner |
-| `users/{uid}/workout_templates/{id}` | `WorkoutTemplateRemoteDataSourceImpl` | set, delete, list `orderBy(createdAt)` | verified owner |
+| `users/{uid}/workout_templates/{id}` | `RevisionSyncEngine` via `WorkoutTemplateRemoteDataSourceImpl` (schema 2); builds before Stage 2 (schema 1) | schema 2: revision-checked set(merge), tombstones, get/list from the server. Schema 1: set and delete, only while the stored day is schema 1 | verified owner |
+| `users/{uid}/custom_exercises/{id}` | `RevisionSyncEngine` via `CustomExerciseRemoteDataSourceImpl` | revision-checked set(merge), tombstones, get/list from the server | verified owner |
 | `users/{uid}/workout_sessions/{id}` | `WorkoutSessionRemoteDataSourceImpl` | set, delete, list `orderBy(date)` | verified owner |
 | `users/{uid}/fcmTokens/{sha256}` | `FcmDeviceService` | get, set(merge), delete | owner; writes need verified |
 | `users/{uid}/settings/notifications` | the app (Stage 3); read by Cloud Functions | get, create, update (exactly `inactivityRemindersEnabled`, `language`, `timeZone`, `updatedAt = request.time`); no delete | verified owner |
@@ -172,12 +173,37 @@ Policy:
 - **Workout and progress data:** verified owner only. Writes must contain
   exactly the keys their model's `toJson()` writes, with matching types,
   and the query's ordering field is required.
+- **Synced workout days and custom exercises (schema 2, Stage 2):**
+  optimistic concurrency without Cloud Functions. A write states the
+  revision it was based on (`baseRevision`) and is accepted only if that is
+  still the stored revision (0 for a schema 1 or missing document), with
+  `revision = baseRevision + 1`, a new `writeId`, a SHA-256 `contentHash`
+  and `serverUpdatedAt = request.time`. A write queued offline is checked
+  on arrival, so an outdated one is rejected rather than applied. A day
+  holds at most 40 activities (`WorkoutLimits.maxActivitiesPerDay`; a test
+  keeps the two equal). A schema 2 write can't add or change the old
+  `exerciseAssignments` list. Deletions are revision-checked tombstones
+  (`deleted: true`); only a tombstone (or a schema 1 day) can be deleted,
+  so neither an old build nor a stray delete can bypass the revision check.
+  Account deletion tombstones live documents first, in a separate commit,
+  then deletes.
+- **Account deletion lock (Stage 2.2):** creating any document under
+  `users/{uid}` requires the profile to exist without `deletionStartedAt`
+  (`canCreateIn`: one extra read per create). A deletion stamps it first, so
+  another device with a still-valid ID token can't recreate data; reads,
+  updates and deletes are unaffected, so the deletion can always finish.
 
-Tests: `firestore-tests/` (49 emulator tests: `npm test`, which needs Java
+Tests: `firestore-tests/` (98 emulator tests: `npm test`, which needs Java
 21+). Rules are mutation-checked: removing the verification requirement,
-the `createdAt` immutability or the `uid` check each makes tests fail.
+the `createdAt` immutability or the `uid` check each makes tests fail, and
+so does weakening any schema 2 check (base revision, revision step,
+`writeId` reuse, the activity limit, server time, the old-build guard, the
+tombstone-only delete, the immutable old list).
 `test/core/firestore_rules_source_test.dart` keeps the file wired into
 `firebase.json` and free of recursive wildcards and blanket allows.
+`test/core/firestore_rules_consistency_test.dart` keeps the activity limit
+equal to `WorkoutLimits` and every collection under `users/{uid}` covered
+by account deletion.
 
 **Deploying** (manual, never done by the app or its tooling):
 
@@ -194,6 +220,15 @@ the `createdAt` immutability or the `uid` check each makes tests fail.
 6. Smoke test on a device: register, verify, log a set, add a measurement,
    restart offline.
 7. Rollback: republish the backed-up rules from Console history.
+
+**Stage 2 (schema 2 sync) deployment order:** deploy these rules **before**
+releasing the build with `RevisionSyncEngine`. Older builds keep working
+with them (schema 1 days), and the new build's writes are rejected by the
+older rules (the engine marks those days as blocked and retries later; no
+data is lost). Once any device has migrated days to schema 2, do **not**
+roll the rules back to a version without the schema 2 checks: older rules
+would let an old build overwrite or delete migrated days. A rollback needs
+its own plan.
 
 ### Registration input rules (Stage 2)
 
@@ -379,47 +414,53 @@ deliberate convention spanning **100%** of the Auth feature's operations
 `AuthCubit`'s constructor and its large existing regression test suite for
 no benefit.
 
-## Workout inactivity reminders (push)
+## Workout inactivity reminders (local, Spark plan)
 
-Reminders are computed and sent by Cloud Functions (`functions/README.md`)
-from the sessions and sets the app already uploads. The app only:
+The app runs on the Firebase Spark plan, so reminders are **local
+notifications** scheduled on the device. The server implementation in
+`functions/` stays intact but undeployed, and its delivery gate is off.
 
-- **Stores the preference** in `users/{uid}/settings/notifications`
-  (`lib/features/notification_settings/`). The Settings switch
-  (`NotificationPreferencesCubit` + `InactivityReminderPreferenceTile`)
-  writes the full document. It reports "saved" only after the server
-  confirmed it; a write still queued offline is shown as "waiting to sync";
-  a rejected write leaves the switch unchanged. `NotificationPreferencesSync`
-  runs at each session start (Home) and on app-language changes. Inside a
-  server transaction, it aligns `language` (the app language; the switch
-  never changes the app language) and `timeZone` (device IANA zone,
-  validated against the `timezone` database). It never changes an existing
-  on/off choice. Everything is bound to the verified uid and re-checked
-  before writing.
-- **Shows the push** in the Android channel `inactivity_reminders` (created
-  at startup; also the manifest's default FCM channel). FCM displays it in
-  the background and when the app is terminated. In the foreground nothing
-  is shown (the user is already in the app), so there are no duplicates.
-- **Routes the tap** (`data.type == inactivity_reminder`) to Home via
-  `AppRouter.openHomeFromNotification` (deferred until the navigator
-  exists; repeated delivery of one tap is ignored). Home is a guarded route:
-  signed out or unverified, the tap lands on the startup check.
-- **Registers the device token** (`FcmDeviceService`, unchanged): verified
-  users only, permission asked once, re-registered on every app start
-  (which also confirms server-side ownership), deleted on logout.
+- **Policy** (`lib/features/inactivity_reminders/domain`): reminder 1 at 48 h
+  after the latest workout activity (a logged set or a started session),
+  then 4 reminders every 72 h, then weekly. Only between 10:00 and 21:00 in
+  the device's time zone (otherwise the next 10:00). Same rules as the
+  server policy.
+- **Scheduler** (`InactivityReminderScheduler`): "cancel everything, then
+  schedule the plan" over the fixed ids 7401–7406, serialized, so there are
+  no duplicates and a previous account's reminders never survive. Only the
+  next 6 are scheduled (iOS keeps at most 64 pending), and the plan is
+  recomputed at session start, app start and resume (time-zone and
+  permission changes), and whenever the account's sets or sessions change
+  (added, edited or deleted), the reminder toggle changes, or the app
+  language changes. Nothing is scheduled without notification permission,
+  workout history, the toggle on, or while an account deletion is in progress.
+  Logout and account deletion cancel everything; at start, reminders of an
+  account that is no longer signed in are cancelled.
+- **Android:** channel `inactivity_reminders`; inexact scheduling (no
+  exact-alarm permission, so reminders may arrive a few minutes late under
+  Doze); the plugin's receivers re-arm reminders after reboot or update.
+- **Tap:** payload `inactivity_reminder` → Home through the existing routing
+  (deferred until the navigator exists; guarded route).
+- **Toggle:** the existing preference (`users/{uid}/settings/notifications`,
+  `NotificationPreferencesCubit`). The scheduler watches it.
+- **Device token:** still registered for future server use, but **without**
+  `serverRemindersReadyAt`. These devices must not get server reminders on
+  top of local ones. A build that moves reminders to the server writes it
+  again and stops local scheduling in the same release.
 
-### Retired on-device reminder (existing installations)
+### Retired 3-day reminder (existing installations)
 
-Builds before Stage 3 scheduled a local notification (id 7301) 3 days after
-a completed workout. On the first launch of a newer build,
-`LegacyInactivityReminderCleanup` cancels only that id, deletes only its
-bookkeeping keys in `authBox`, then records a marker. It is idempotent and
-retried at the next launch if anything fails. The manifest no longer
-declares the plugin's scheduled/boot receivers, so an alarm armed by an
-old build can neither post after the update nor be re-armed on reboot or
-update, even before the app is opened. An account that had turned the old
-reminder off keeps it off: its stored choice seeds the server document the
-first time that account syncs, then the local copy is deleted.
+The pre-Stage-3 reminder (id 7301) is still cancelled once by
+`LegacyInactivityReminderCleanup`. The new reminders use different ids.
+
+## Account deletion (Spark plan)
+
+Immediate, in the app (Settings → Danger zone), after re-authentication:
+the account's Firestore data first, the Auth account last, then this
+device's data; interrupted deletions are resumable. Feature:
+`lib/features/account_deletion/` (repository → `AccountDeletionLifecycle` →
+`AccountDeletionCubit`). An operator Admin SDK tool remains for support and
+Blaze. See [`account-deletion.md`](account-deletion.md).
 
 ## Testing strategy
 

@@ -10,7 +10,6 @@ import 'package:ae_coaching/features/workout/data/datasources/workout_template_r
 import 'package:ae_coaching/features/workout/data/models/exercise_set.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_program.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_session.dart';
-import 'package:ae_coaching/features/workout/data/models/workout_template.dart';
 import 'package:ae_coaching/features/workout/data/repositories/session_exercise_repository.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_cascade_deletion_service.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_program_repository.dart';
@@ -28,6 +27,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
+import '../../support/fake_revision_cloud.dart';
 
 class _FakeWorkoutProgramRemoteDataSource
     implements WorkoutProgramRemoteDataSource {
@@ -53,20 +53,9 @@ class _FakeWorkoutProgramRemoteDataSource
 // FirebaseAuth.instance when no remoteDataSource is injected), which
 // requires Firebase.initializeApp() — unavailable in this test
 // environment, and the root cause of this file's 3 known failures.
-class _FakeWorkoutTemplateRemoteDataSource
-    implements WorkoutTemplateRemoteDataSource {
-  @override
-  Future<void> syncTemplate(String id, WorkoutTemplate template) async {}
-
-  @override
-  Future<void> deleteTemplate(String id) async {}
-
-  @override
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
-  fetchAllRemoteTemplates() async {
-    return <QueryDocumentSnapshot<Map<String, dynamic>>>[];
-  }
-}
+/// Rules-equivalent in-memory cloud (see FakeRevisionCloud).
+class _FakeWorkoutTemplateRemoteDataSource extends FakeRevisionCloud
+    implements WorkoutTemplateRemoteDataSource {}
 
 class _FakeWorkoutSessionRemoteDataSource
     implements WorkoutSessionRemoteDataSource {

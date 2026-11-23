@@ -7,6 +7,8 @@ import 'package:ae_coaching/features/workout/data/repositories/exercise_library_
 import 'package:ae_coaching/features/workout/data/repositories/standard_workout_template_repository.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_template_import_service.dart';
 import 'package:ae_coaching/features/workout/presentation/cubit/standard_workout_templates_cubit.dart';
+import 'package:ae_coaching/features/workout/data/models/exercise_library_item.dart';
+import 'package:ae_coaching/features/workout/presentation/widgets/exercise_thumbnail.dart';
 import 'package:ae_coaching/features/workout/presentation/widgets/workout_template_layout.dart';
 import 'package:ae_coaching/features/workout/presentation/screens/workout_program_draft_screen.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
@@ -259,12 +261,22 @@ class StandardWorkoutTemplatePreviewScreen extends StatelessWidget {
                         child: ListTile(
                           key: ValueKey('preview-exercise-${day.id}-$i'),
                           contentPadding: EdgeInsets.zero,
-                          minTileHeight: WorkoutTemplateSpacing.tapTarget,
+                          minTileHeight: 56,
                           minVerticalPadding: 0,
-                          minLeadingWidth: 20,
+                          minLeadingWidth: 48,
                           horizontalTitleGap: WorkoutTemplateSpacing.heading,
                           titleAlignment: ListTileTitleAlignment.top,
-                          leading: Text('${i + 1}'),
+                          leading: ExerciseThumbnail(
+                            key: ValueKey('preview-thumbnail-${day.id}-$i'),
+                            name: day.exercises[i].exercise.nameForLanguage(
+                              lang,
+                            ),
+                            item: ExerciseLibraryItem.fromBuiltIn(
+                              day.exercises[i].exercise,
+                            ),
+                            index: i + 1,
+                            size: 48,
+                          ),
                           title: WorkoutTemplateExerciseContent(
                             assignment: WorkoutTemplateExerciseAssignment(
                               assignmentId: 'preview',

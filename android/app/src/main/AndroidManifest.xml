@@ -6,6 +6,9 @@
     <!-- Android 13+: workout reminders are push notifications. Requested
          once, after sign-in, by FcmDeviceService (never re-prompted). -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <!-- Local inactivity reminders (Spark plan): re-arm scheduled reminders
+         after a reboot. No SCHEDULE_EXACT_ALARM: reminders are inexact. -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <application
         android:label="AE Coaching"
         android:name="${applicationName}"
@@ -43,11 +46,22 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="inactivity_reminders" />
-        <!-- The flutter_local_notifications scheduled/boot receivers were
-             removed with the retired on-device inactivity reminder: an
-             alarm scheduled by an older build can no longer post, and
-             nothing is re-armed on reboot or app update. The app schedules
-             no local notifications any more. -->
+        <!-- flutter_local_notifications: deliver scheduled local reminders
+             and re-arm them after reboot or app update (Spark plan: the
+             inactivity reminders are scheduled on the device). -->
+        <receiver
+            android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver"
+            android:exported="false" />
+        <receiver
+            android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and

@@ -214,6 +214,9 @@ void main() {
         await manager.getUserBox<BodyMeasurement>('measurements', uid);
         await manager.getUserBox<ProgressPhoto>('progress_photos', uid);
         await manager.getUserBox<CustomExercise>('custom_exercises', uid);
+        await manager.getUserBox<Map>('sync_conflicts', uid);
+        await manager.getUserBox<Map>('sync_tombstones', uid);
+        await manager.getUserBox<Map>('sync_state', uid);
       }
 
       await openAllFor('uid-close-A');

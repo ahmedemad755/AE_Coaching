@@ -7,32 +7,15 @@ import 'package:ae_coaching/features/workout/data/datasources/workout_template_r
 import 'package:ae_coaching/features/workout/data/models/workout_template.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_template_exercise_assignment.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_template_repository.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
+import '../../support/fake_revision_cloud.dart';
 
 /// Hand-rolled in-memory fake — no mocking package, same pattern as
 /// workout_program_repository_test.dart.
-class _FakeWorkoutTemplateRemoteDataSource
-    implements WorkoutTemplateRemoteDataSource {
-  final Map<String, Map<String, dynamic>> store = {};
-
-  @override
-  Future<void> syncTemplate(String id, WorkoutTemplate template) async {
-    store[id] = template.toJson();
-  }
-
-  @override
-  Future<void> deleteTemplate(String id) async {
-    store.remove(id);
-  }
-
-  @override
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
-  fetchAllRemoteTemplates() async {
-    return <QueryDocumentSnapshot<Map<String, dynamic>>>[];
-  }
-}
+/// Rules-equivalent in-memory cloud (see FakeRevisionCloud).
+class _FakeWorkoutTemplateRemoteDataSource extends FakeRevisionCloud
+    implements WorkoutTemplateRemoteDataSource {}
 
 void main() {
   late Directory tempDir;

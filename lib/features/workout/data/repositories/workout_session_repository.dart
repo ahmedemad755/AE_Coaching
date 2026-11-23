@@ -5,6 +5,8 @@ import 'package:ae_coaching/features/workout/data/models/workout_template_exerci
 import 'package:ae_coaching/features/workout/data/repositories/exercise_name_normalizer.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_session_exceptions.dart';
 import 'package:ae_coaching/features/workout/data/workout_id_generator.dart';
+import 'package:ae_coaching/features/workout/domain/activity_plans.dart';
+import 'package:ae_coaching/features/workout/domain/cardio_run.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -165,17 +167,40 @@ class WorkoutSessionRepository {
       excludeSessionId: sessionId,
     );
 
+    final now = DateTime.now();
     final completed = target.copyWith(
       status: WorkoutSessionStatus.completed.value,
-      completedAt: DateTime.now(),
+      completedAt: now,
       totalVolume: totalVolume,
       previousSessionId: previous?.id,
+      activityRuns: _closeOpenRuns(target, now.millisecondsSinceEpoch),
     );
     await box.put(sessionId, completed);
     // Inactivity reminders are server-driven (Cloud Functions watch
     // session/set creation); completing a workout schedules nothing here.
     await _syncSafely(sessionId, completed);
     return completed;
+  }
+
+  /// A cardio timer still running or paused when the workout is finished is
+  /// recorded with the time it had: completed only if its plan was reached.
+  static Map<String, Map<String, Object?>> _closeOpenRuns(
+    WorkoutSession session,
+    int nowMs,
+  ) {
+    if (session.activityRuns.isEmpty) return session.activityRuns;
+    final plans = <String, CardioPlan?>{
+      for (final a in session.templateExerciseAssignmentsSnapshot)
+        a.assignmentId: a.cardio,
+    };
+    return {
+      for (final entry in session.activityRuns.entries)
+        entry.key: CardioRun.fromMap(entry.value).status.isOpen
+            ? CardioRun.fromMap(
+                entry.value,
+              ).close(nowMs, plans[entry.key]).toMap()
+            : entry.value,
+    };
   }
 
   /// Cancels an inProgress session. Throws
@@ -279,11 +304,32 @@ class WorkoutSessionRepository {
       hiddenExerciseNames: target.hiddenExerciseNames,
       exerciseOrder: target.exerciseOrder,
       pendingProgramExerciseEdit: target.pendingProgramExerciseEdit,
+      activityRuns: target.activityRuns,
     );
     await box.put(sessionId, updated);
     await _syncSafely(sessionId, updated);
     return updated;
   }
+
+  /// Saves where a cardio activity of an active session is (Stage 6). Local
+  /// only, like the session's layout fields: no cloud write, so starting or
+  /// pausing a timer works offline and costs nothing.
+  Future<WorkoutSession> saveActivityRun({
+    required String sessionId,
+    required String assignmentId,
+    required CardioRun run,
+  }) => coordinateExerciseEdit(() async {
+    final box = await getUserBox();
+    final target = box.get(sessionId);
+    if (target == null || !target.isInProgress) {
+      throw Exception('Active workout session not found.');
+    }
+    final updated = target.copyWith(
+      activityRuns: {...target.activityRuns, assignmentId: run.toMap()},
+    );
+    await box.put(sessionId, updated);
+    return updated;
+  });
 
   Future<WorkoutSession> addSessionExerciseName({
     required String sessionId,
@@ -535,6 +581,11 @@ class WorkoutSessionRepository {
             localSession != null &&
             localSession.exerciseOrder.isNotEmpty) {
           session = session.copyWith(exerciseOrder: localSession.exerciseOrder);
+        }
+        if (session.activityRuns.isEmpty &&
+            localSession != null &&
+            localSession.activityRuns.isNotEmpty) {
+          session = session.copyWith(activityRuns: localSession.activityRuns);
         }
         await box.put(doc.id, session);
       }

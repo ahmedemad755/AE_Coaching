@@ -35,18 +35,32 @@ void main() {
       'body_measurements',
       'workout_programs',
       'workout_templates',
+      'custom_exercises',
       'workout_sessions',
     ]) {
       final start = code.indexOf('match /$c/');
       expect(start, greaterThan(-1), reason: c);
       // Up to the block's closing brace (not the `}` of `{docId}`).
       final block = code.substring(start, code.indexOf('\n      }', start));
+      // Every allow statement starts with the verified-owner check, and
+      // together they cover reading, creating, updating and deleting.
+      final allows = RegExp(r'allow ([a-z, ]+):').allMatches(block).toList();
+      expect(allows.length, greaterThanOrEqualTo(2), reason: c);
       expect(
         RegExp(
           r'allow [a-z, ]+: if isVerifiedOwner\(userId\)',
         ).allMatches(block).length,
-        2,
-        reason: '$c: read/delete and create/update both verified-owner',
+        allows.length,
+        reason: '$c: every allow requires a verified owner',
+      );
+      final operations = {
+        for (final allow in allows)
+          for (final operation in allow.group(1)!.split(',')) operation.trim(),
+      };
+      expect(
+        operations,
+        containsAll(['read', 'create', 'update', 'delete']),
+        reason: c,
       );
     }
   });
@@ -55,9 +69,12 @@ void main() {
     final used = <String>{};
     for (final f in Directory('lib').listSync(recursive: true)) {
       if (f is! File || !f.path.endsWith('.dart')) continue;
-      for (final m in RegExp(
-        r"\.collection\('([^']+)'\)",
-      ).allMatches(f.readAsStringSync())) {
+      final source = f.readAsStringSync();
+      for (final m in RegExp(r"\.collection\('([^']+)'\)").allMatches(source)) {
+        used.add(m.group(1)!);
+      }
+      // Synced collections are named through FirestoreRevisionCloud.
+      for (final m in RegExp(r"collection: '([^']+)'").allMatches(source)) {
         used.add(m.group(1)!);
       }
     }

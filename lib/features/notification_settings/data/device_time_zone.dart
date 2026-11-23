@@ -28,13 +28,24 @@ class DeviceTimeZone {
 
   static Future<String> _platformZone() async => (await FlutterTimezone.getLocalTimezone()).identifier;
 
+  /// The device's zone as a `package:timezone` location, for scheduling;
+  /// the app's default zone when the platform reports nothing usable.
+  Future<tz.Location> currentLocation() async {
+    ensureDatabaseLoaded();
+    return tz.getLocation(await current() ?? IanaTimeZoneName.fallback);
+  }
+
   static bool _databaseLoaded = false;
 
+  /// Loads the bundled IANA database once.
+  static void ensureDatabaseLoaded() {
+    if (_databaseLoaded) return;
+    tz_data.initializeTimeZones();
+    _databaseLoaded = true;
+  }
+
   static bool _inIanaDatabase(String name) {
-    if (!_databaseLoaded) {
-      tz_data.initializeTimeZones();
-      _databaseLoaded = true;
-    }
+    ensureDatabaseLoaded();
     return tz.timeZoneDatabase.locations.containsKey(name);
   }
 }

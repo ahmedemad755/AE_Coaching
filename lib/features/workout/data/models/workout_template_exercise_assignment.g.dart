@@ -22,13 +22,17 @@ class WorkoutTemplateExerciseAssignmentAdapter
       targetRepsMin: fields[5] as int?,
       targetRepsMax: fields[6] as int?,
       restSeconds: fields[7] as int?,
+      activityType: fields[8] as String?,
+      schemaVersion: fields[9] as int?,
+      cardioData: (fields[10] as Map?)?.cast<String, dynamic>(),
+      timedData: (fields[11] as Map?)?.cast<String, dynamic>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, WorkoutTemplateExerciseAssignment obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.assignmentId)
       ..writeByte(1)
@@ -44,7 +48,15 @@ class WorkoutTemplateExerciseAssignmentAdapter
       ..writeByte(6)
       ..write(obj.targetRepsMax)
       ..writeByte(7)
-      ..write(obj.restSeconds);
+      ..write(obj.restSeconds)
+      ..writeByte(8)
+      ..write(obj.activityType)
+      ..writeByte(9)
+      ..write(obj.schemaVersion)
+      ..writeByte(10)
+      ..write(obj.cardioData)
+      ..writeByte(11)
+      ..write(obj.timedData);
   }
 
   @override

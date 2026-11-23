@@ -12,7 +12,7 @@ import 'package:flutter_test/flutter_test.dart';
 /// This proves the ordering: `main.dart` awaits
 /// `AppBootstrap.initialize()` before `runApp`, and `initialize()`
 /// itself calls `WidgetsFlutterBinding.ensureInitialized()` first, then
-/// Firebase → App Check, then the 17 DI registrations, then Hive
+/// Firebase → App Check, then the 19 DI registrations, then Hive
 /// init/adapters/authBox — preserving the exact sequence that was
 /// previously inlined in `main()`.
 void main() {
@@ -101,10 +101,10 @@ void main() {
       expect(appCheckIndex, greaterThan(firebaseInitIndex));
     });
 
-    test('_initializeDependencies calls exactly these 17 init '
-        'functions, in this order (Stage 3 notifications appended '
-        'initNotificationSettings) — nothing else added, removed or '
-        'reordered', () {
+    test('_initializeDependencies calls exactly these 19 init '
+        'functions, in this order (notification settings, then the Spark '
+        'plan local reminders and account deletion appended) — nothing '
+        'else added, removed or reordered', () {
       final start = bootstrapSource.indexOf(
         'static void _initializeDependencies()',
       );
@@ -131,9 +131,11 @@ void main() {
         'initProgramConsistency()',
         'initHomeWorkoutOverview()',
         'initNotificationSettings()',
+        'initInactivityReminders()',
+        'initAccountDeletion()',
       ];
 
-      // Exactly 17 calls, confirmed by an exact-count assertion — not
+      // Exactly 19 calls, confirmed by an exact-count assertion — not
       // just "at least these" — so a silently added/removed call fails
       // this test.
       final totalCallCount = RegExp(

@@ -20,6 +20,9 @@ import 'package:ae_coaching/features/progress_photos/presentation/screens/progre
 import 'package:ae_coaching/features/views/hom.dart';
 import 'package:ae_coaching/features/profile/presentation/app_settings_screen.dart';
 import 'package:ae_coaching/features/profile/presentation/my_progress_screen.dart';
+import 'package:ae_coaching/features/profile/presentation/progress/personal_records_screen.dart';
+import 'package:ae_coaching/features/profile/presentation/progress/progress_programs_screen.dart';
+import 'package:ae_coaching/features/profile/presentation/progress/workout_history_screen.dart';
 import 'package:ae_coaching/features/profile/presentation/personal_hub_screen.dart';
 import 'package:ae_coaching/features/profile/presentation/profile_navigation.dart';
 import 'package:ae_coaching/features/workout/presentation/bloc/workout_cubit.dart';
@@ -34,6 +37,8 @@ import 'package:ae_coaching/features/workout/presentation/cubit/rest_timer_cubit
 import 'package:ae_coaching/features/workout/presentation/cubit/program_consistency_cubit.dart';
 import 'package:ae_coaching/features/workout/presentation/cubit/home_workout_overview_cubit.dart';
 import 'package:ae_coaching/features/workout/presentation/screens/workout_template_history_screen.dart';
+import 'package:ae_coaching/features/account_deletion/presentation/cubit/account_deletion_cubit.dart';
+import 'package:ae_coaching/features/account_deletion/presentation/delete_account_screen.dart';
 import 'package:ae_coaching/features/workout/presentation/screens/program_analytics_screen.dart';
 import 'package:ae_coaching/features/workout/presentation/screens/archived_workout_days_screen.dart';
 import 'package:ae_coaching/features/workout/presentation/screens/active_workout_session_screen.dart';
@@ -54,7 +59,12 @@ class AppNavigator {
   static const String home = 'home';
   static const String personalHub = 'personal-hub';
   static const String appSettings = 'app-settings';
+  static const String deleteAccount = 'delete-account';
   static const String myProgress = 'my-progress';
+  // Progress detail screens, opened from the progress dashboard.
+  static const String personalRecords = 'personal-records';
+  static const String workoutHistory = 'workout-history';
+  static const String progressPrograms = 'progress-programs';
 
   // Stage 3B: email-first verification gate and missing-profile recovery.
   static const String verifyEmail = 'verify-email';
@@ -274,8 +284,52 @@ class AppRouter {
           builder: (_) => AppSettingsScreen(onLogout: args.onLogout),
         );
 
+      case AppNavigator.deleteAccount:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => sl<AccountDeletionCubit>()..load(),
+            child: const DeleteAccountScreen(),
+          ),
+        );
+
       case AppNavigator.myProgress:
         return MaterialPageRoute(builder: (_) => const MyProgressScreen());
+
+      case AppNavigator.personalRecords:
+        final args = settings.arguments;
+        if (args is! PersonalRecordsArgs) {
+          return MaterialPageRoute(
+            builder: (_) => const _InvalidPersonalRecordsRoute(),
+          );
+        }
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => PersonalRecordsScreen(records: args.records),
+        );
+
+      case AppNavigator.workoutHistory:
+        final args = settings.arguments;
+        if (args is! WorkoutHistoryArgs) {
+          return MaterialPageRoute(
+            builder: (_) => const _InvalidWorkoutHistoryRoute(),
+          );
+        }
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => WorkoutHistoryScreen(data: args.data),
+        );
+
+      case AppNavigator.progressPrograms:
+        final args = settings.arguments;
+        if (args is! ProgressProgramsArgs) {
+          return MaterialPageRoute(
+            builder: (_) => const _InvalidProgressProgramsRoute(),
+          );
+        }
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => ProgressProgramsScreen(programs: args.programs),
+        );
 
       case AppNavigator.workoutAnalytics:
         final args = settings.arguments;
@@ -515,4 +569,19 @@ class _InvalidWorkoutCompletionSummaryRoute extends _InvalidRouteScreen {
 class _InvalidActiveWorkoutSessionRoute extends _InvalidRouteScreen {
   const _InvalidActiveWorkoutSessionRoute()
     : super('Active workout session route requires ActiveWorkoutSessionArgs.');
+}
+
+class _InvalidPersonalRecordsRoute extends _InvalidRouteScreen {
+  const _InvalidPersonalRecordsRoute()
+    : super('Personal records route requires PersonalRecordsArgs.');
+}
+
+class _InvalidWorkoutHistoryRoute extends _InvalidRouteScreen {
+  const _InvalidWorkoutHistoryRoute()
+    : super('Workout history route requires WorkoutHistoryArgs.');
+}
+
+class _InvalidProgressProgramsRoute extends _InvalidRouteScreen {
+  const _InvalidProgressProgramsRoute()
+    : super('Progress programs route requires ProgressProgramsArgs.');
 }

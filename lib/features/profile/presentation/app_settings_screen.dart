@@ -1,5 +1,6 @@
 import 'package:ae_coaching/core/localization/locale_cubit.dart';
 import 'package:ae_coaching/core/feedback/app_feedback.dart';
+import 'package:ae_coaching/core/routes/app_router.dart';
 import 'package:ae_coaching/core/notifications/fcm_device_service.dart';
 import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/core/theme/theme_cubit.dart';
@@ -94,11 +95,19 @@ class _AppSettingsScreenState extends State<AppSettingsScreen>
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final colors = context.appColors;
+    // Edge-to-edge: keep the last item (the Danger Zone) clear of the
+    // system navigation bar / gesture area and of landscape cut-outs.
+    final insets = MediaQuery.paddingOf(context);
     return Scaffold(
       backgroundColor: colors.canvas,
       appBar: AppBar(title: Text(l10n.appSettingsTitle)),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(18, 8, 18, 28),
+        padding: EdgeInsets.fromLTRB(
+          18 + insets.left,
+          8,
+          18 + insets.right,
+          32 + insets.bottom,
+        ),
         children: [
           _SectionTitle(title: l10n.settingsLanguage),
           BlocBuilder<LocaleCubit, Locale>(
@@ -231,6 +240,58 @@ class _AppSettingsScreenState extends State<AppSettingsScreen>
             subtitle: Text(l10n.settingsLogoutDescription),
             onTap: widget.onLogout,
           ),
+          const SizedBox(height: 24),
+          _DangerZone(
+            title: l10n.dangerZoneTitle,
+            child: ListTile(
+              key: const ValueKey('settings-delete-account'),
+              contentPadding: EdgeInsets.zero,
+              leading: Icon(
+                Icons.delete_forever_outlined,
+                color: Theme.of(context).colorScheme.error,
+              ),
+              title: Text(
+                l10n.deleteAccountTitle,
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
+              subtitle: Text(l10n.deleteAccountEntrySubtitle),
+              onTap: () =>
+                  Navigator.pushNamed(context, AppNavigator.deleteAccount),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Destructive actions, visually separated from everything else.
+class _DangerZone extends StatelessWidget {
+  const _DangerZone({required this.title, required this.child});
+
+  final String title;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final error = Theme.of(context).colorScheme.error;
+    return Container(
+      padding: const EdgeInsets.fromLTRB(14, 10, 14, 6),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: error.withValues(alpha: 0.5)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              color: error,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          child,
         ],
       ),
     );

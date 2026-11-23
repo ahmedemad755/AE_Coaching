@@ -1,6 +1,9 @@
 import 'package:ae_coaching/core/routes/app_router.dart';
 import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_session.dart';
+import 'package:ae_coaching/features/workout/domain/cardio_run.dart';
+import 'package:ae_coaching/features/workout/presentation/widgets/cardio_activity_visuals.dart';
+import 'package:ae_coaching/features/workout/presentation/widgets/timer_format.dart';
 import 'package:ae_coaching/features/workout/domain/services/personal_record_detection_service.dart';
 import 'package:ae_coaching/features/workout/domain/services/workout_progress_comparison_service.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
@@ -38,6 +41,11 @@ class WorkoutCompletionSummaryScreen extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final colors = context.appColors;
     final summary = args.progressSummary;
+    // Cardio done, ended early or skipped in this workout (Stage 6).
+    final cardioRuns = [
+      for (final stored in args.session.activityRuns.values)
+        CardioRun.fromMap(stored),
+    ].where((run) => run.status != CardioRunStatus.notStarted).toList();
     final completedAt = args.session.completedAt;
     final elapsed = args.session.isCompleted && completedAt != null
         ? completedAt.difference(args.session.startedAt)
@@ -147,6 +155,20 @@ class WorkoutCompletionSummaryScreen extends StatelessWidget {
                   child: ListView(
                     padding: EdgeInsets.zero,
                     children: [
+                      if (cardioRuns.isNotEmpty) ...[
+                        Text(
+                          l10n.completionCardioTitle,
+                          style: TextStyle(
+                            color: colors.textPrimary,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 16,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        for (final run in cardioRuns)
+                          _CardioResultTile(run: run),
+                        const SizedBox(height: 12),
+                      ],
                       if (args.personalRecords.isNotEmpty) ...[
                         Text(
                           l10n.newPersonalRecordsLabel,
@@ -408,6 +430,57 @@ class _ExerciseComparisonTile extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// One cardio activity's result: done, ended early (with the time it had)
+/// or skipped. A skipped activity is never shown as done.
+class _CardioResultTile extends StatelessWidget {
+  const _CardioResultTile({required this.run});
+
+  final CardioRun run;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final colors = context.appColors;
+    final status = cardioRunStatusLabel(l10n, run.status, run.actualSeconds);
+    final (icon, color) = switch (run.status) {
+      CardioRunStatus.completed => (Icons.check_circle_outline, colors.success),
+      CardioRunStatus.skipped => (Icons.skip_next, colors.textMuted),
+      _ => (Icons.timelapse, colors.warning),
+    };
+    final planned = run.plannedSeconds;
+    return Padding(
+      key: ValueKey('completion-cardio-${run.name}'),
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: [
+          Icon(icon, color: color),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  run.name ?? '',
+                  style: TextStyle(
+                    color: colors.textPrimary,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                Text(status, style: TextStyle(color: color, fontSize: 12)),
+                if (planned != null)
+                  Text(
+                    l10n.cardioPlannedValue(formatTimerClock(planned)),
+                    style: TextStyle(color: colors.textMuted, fontSize: 12),
+                  ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

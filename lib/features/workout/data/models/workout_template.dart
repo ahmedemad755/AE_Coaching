@@ -1,3 +1,5 @@
+import 'package:ae_coaching/core/sync/canonical_hash.dart';
+import 'package:ae_coaching/core/sync/sync_meta.dart';
 import 'package:hive/hive.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_template_exercise_assignment.dart';
 
@@ -38,8 +40,14 @@ class WorkoutTemplate extends HiveObject {
   @HiveField(6)
   final int? orderIndex;
 
+  /// The day's activities (strength, cardio, timed) in their saved order.
   @HiveField(7)
   final List<WorkoutTemplateExerciseAssignment> exerciseAssignments;
+
+  /// Cloud sync state ([SyncMeta]) kept in the same record as the content,
+  /// so one `put` writes both. A plain map: older builds ignore it.
+  @HiveField(8)
+  final Map<String, dynamic>? syncData;
 
   WorkoutTemplate({
     required this.id,
@@ -50,7 +58,78 @@ class WorkoutTemplate extends HiveObject {
     this.isArchived = false,
     this.orderIndex,
     List<WorkoutTemplateExerciseAssignment> exerciseAssignments = const [],
+    this.syncData,
   }) : exerciseAssignments = List.unmodifiable(exerciseAssignments);
+
+  SyncMeta get syncMeta => SyncMeta.fromMap(syncData);
+
+  WorkoutTemplate withSyncMeta(SyncMeta meta) => WorkoutTemplate(
+    id: id,
+    programId: programId,
+    name: name,
+    createdAt: createdAt,
+    updatedAt: updatedAt,
+    isArchived: isArchived,
+    orderIndex: orderIndex,
+    exerciseAssignments: exerciseAssignments,
+    syncData: meta.toMap(),
+  );
+
+  /// What the cloud copy must match: everything the user can change, in
+  /// order. Device timestamps are excluded (they are not content).
+  Map<String, dynamic> syncContent() => {
+    'programId': programId,
+    'name': name,
+    'isArchived': isArchived,
+    'orderIndex': orderIndex,
+    'activities': [
+      for (final assignment in exerciseAssignments) assignment.toActivityMap(),
+    ],
+  };
+
+  String get contentFingerprint => contentHash(syncContent());
+
+  /// The document body in the cloud format (schema 2), without the sync
+  /// fields (revision, writeId...), which the sync engine adds.
+  Map<String, dynamic> toCloudContent() => {
+    'id': id,
+    'programId': programId,
+    'name': name,
+    'createdAt': createdAt.toIso8601String(),
+    'updatedAt': updatedAt?.toIso8601String(),
+    'isArchived': isArchived,
+    'orderIndex': orderIndex,
+    'activities': [
+      for (final assignment in exerciseAssignments) assignment.toActivityMap(),
+    ],
+  };
+
+  /// Reads a schema-2 cloud document. [syncData] is set by the caller.
+  factory WorkoutTemplate.fromCloudContent(
+    Map<String, dynamic> data, {
+    Map<String, dynamic>? syncData,
+  }) {
+    final activities = data['activities'];
+    return WorkoutTemplate(
+      id: data['id'] as String,
+      programId: data['programId'] as String,
+      name: data['name'] as String,
+      createdAt: DateTime.parse(data['createdAt'] as String),
+      updatedAt: data['updatedAt'] is String
+          ? DateTime.parse(data['updatedAt'] as String)
+          : null,
+      isArchived: data['isArchived'] as bool? ?? false,
+      orderIndex: (data['orderIndex'] as num?)?.toInt(),
+      exerciseAssignments: activities is List
+          ? [
+              for (final item in activities)
+                if (item is Map)
+                  WorkoutTemplateExerciseAssignment.fromActivityMap(item),
+            ]
+          : const [],
+      syncData: syncData,
+    );
+  }
 
   /// Intentionally has no way to change [programId] or [id] — every
   /// field that must never drift after creation is hard-copied from
@@ -71,13 +150,13 @@ class WorkoutTemplate extends HiveObject {
       isArchived: isArchived ?? this.isArchived,
       orderIndex: orderIndex ?? this.orderIndex,
       exerciseAssignments: exerciseAssignments ?? this.exerciseAssignments,
+      syncData: syncData,
     );
   }
 
-  // Cloud sync (Firestore) — same shape as the other models in this
-  // app. programId is always included so Firestore documents carry
-  // their program ownership too. Exercise assignments stay local in
-  // this stage and are intentionally excluded from the cloud payload.
+  // The pre-schema-2 (legacy) document shape: still what older app builds
+  // write, and what old cloud documents contain. Schema 2 uses
+  // [toCloudContent] (with activities) through the sync engine.
   Map<String, dynamic> toJson() {
     return {
       'id': id,

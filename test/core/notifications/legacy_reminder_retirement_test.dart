@@ -4,6 +4,7 @@ import 'package:ae_coaching/core/notifications/legacy_inactivity_reminder_cleanu
 import 'package:ae_coaching/core/notifications/local_notifications.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class _FakeNotifications implements LocalNotificationsGateway {
   final List<int> cancelled = [];
@@ -22,6 +23,16 @@ class _FakeNotifications implements LocalNotificationsGateway {
 
   @override
   Future<void> ensureAndroidChannel(AppNotificationChannel channel) async => channels.add(channel.id);
+
+  @override
+  Future<void> schedule({
+    required int id,
+    required String title,
+    required String body,
+    required tz.TZDateTime at,
+    required AppNotificationChannel channel,
+    required String payload,
+  }) async {}
 
   @override
   Future<void> cancel(int id) async {
@@ -147,9 +158,13 @@ void main() {
         isTrue,
       );
       expect(manifest, contains('android.permission.POST_NOTIFICATIONS'));
-      // Retired with the local reminder: nothing can post or re-arm it.
-      expect(manifest, isNot(contains('ScheduledNotificationReceiver')));
-      expect(manifest, isNot(contains('ScheduledNotificationBootReceiver')));
+      // Spark plan: inactivity reminders are scheduled locally again, so
+      // the plugin's receivers deliver them and re-arm them after reboot.
+      // No exact-alarm permission (reminders are inexact).
+      expect(manifest, contains('ScheduledNotificationReceiver'));
+      expect(manifest, contains('ScheduledNotificationBootReceiver'));
+      expect(manifest, contains('android.permission.RECEIVE_BOOT_COMPLETED'));
+      expect(RegExp(r'<uses-permission[^>]*(SCHEDULE_EXACT_ALARM|USE_EXACT_ALARM)').hasMatch(manifest), isFalse);
     });
 
     test('the default notification icon names a resource that exists', () {

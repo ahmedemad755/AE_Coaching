@@ -18,13 +18,15 @@ class CustomExerciseAdapter extends TypeAdapter<CustomExercise> {
       muscleGroup: fields[2] as String?,
       equipment: fields[3] as String?,
       createdAt: fields[4] as DateTime,
+      activityType: fields[5] as String?,
+      syncData: (fields[6] as Map?)?.cast<String, dynamic>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, CustomExercise obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -34,7 +36,11 @@ class CustomExerciseAdapter extends TypeAdapter<CustomExercise> {
       ..writeByte(3)
       ..write(obj.equipment)
       ..writeByte(4)
-      ..write(obj.createdAt);
+      ..write(obj.createdAt)
+      ..writeByte(5)
+      ..write(obj.activityType)
+      ..writeByte(6)
+      ..write(obj.syncData);
   }
 
   @override

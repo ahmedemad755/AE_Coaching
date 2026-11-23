@@ -37,13 +37,14 @@ class WorkoutSessionAdapter extends TypeAdapter<WorkoutSession> {
           (fields[13] as List?)?.cast<String>() ?? const <String>[],
       exerciseOrder: (fields[14] as List?)?.cast<String>() ?? const <String>[],
       pendingProgramExerciseEdit: fields[15] as String?,
+      activityRuns: readActivityRuns(fields[16]),
     );
   }
 
   @override
   void write(BinaryWriter writer, WorkoutSession obj) {
     writer
-      ..writeByte(16)
+      ..writeByte(17)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -75,7 +76,9 @@ class WorkoutSessionAdapter extends TypeAdapter<WorkoutSession> {
       ..writeByte(14)
       ..write(obj.exerciseOrder)
       ..writeByte(15)
-      ..write(obj.pendingProgramExerciseEdit);
+      ..write(obj.pendingProgramExerciseEdit)
+      ..writeByte(16)
+      ..write(obj.activityRuns);
   }
 
   @override

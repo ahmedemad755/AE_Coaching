@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_template_exercise_assignment.dart';
+import 'package:ae_coaching/features/workout/domain/cardio_run.dart';
 
 part 'workout_session.g.dart';
 
@@ -78,6 +79,12 @@ class WorkoutSession extends HiveObject {
   @HiveField(15)
   final String? pendingProgramExerciseEdit;
 
+  /// Stage 6: each cardio activity's timer and result, by assignment id
+  /// ([CardioRun.toMap]). Local only, like the layout fields above: not part
+  /// of the cloud payload. Older records read empty.
+  @HiveField(16)
+  final Map<String, Map<String, Object?>> activityRuns;
+
   WorkoutSession({
     required this.id,
     required this.programId,
@@ -97,7 +104,9 @@ class WorkoutSession extends HiveObject {
     List<String> hiddenExerciseNames = const [],
     List<String> exerciseOrder = const [],
     this.pendingProgramExerciseEdit,
-  }) : templateExerciseAssignmentsSnapshot = List.unmodifiable(
+    Map<String, Map<String, Object?>> activityRuns = const {},
+  }) : activityRuns = Map.unmodifiable(activityRuns),
+       templateExerciseAssignmentsSnapshot = List.unmodifiable(
          templateExerciseAssignmentsSnapshot,
        ),
        sessionExerciseNames = List.unmodifiable(sessionExerciseNames),
@@ -109,6 +118,10 @@ class WorkoutSession extends HiveObject {
   bool get isInProgress => statusValue == WorkoutSessionStatus.inProgress;
   bool get isCompleted => statusValue == WorkoutSessionStatus.completed;
   bool get isCancelled => statusValue == WorkoutSessionStatus.cancelled;
+
+  /// The cardio timer of [assignmentId] (not started when there is none).
+  CardioRun runFor(String assignmentId) =>
+      CardioRun.fromMap(activityRuns[assignmentId]);
 
   /// [id], [programId], [workoutTemplateId], [workoutNameSnapshot],
   /// [date], and [startedAt] are hard-copied from `this` — a session's
@@ -126,6 +139,7 @@ class WorkoutSession extends HiveObject {
     List<String>? exerciseOrder,
     String? pendingProgramExerciseEdit,
     bool clearPendingProgramExerciseEdit = false,
+    Map<String, Map<String, Object?>>? activityRuns,
   }) {
     return WorkoutSession(
       id: id,
@@ -148,6 +162,7 @@ class WorkoutSession extends HiveObject {
       pendingProgramExerciseEdit: clearPendingProgramExerciseEdit
           ? null
           : pendingProgramExerciseEdit ?? this.pendingProgramExerciseEdit,
+      activityRuns: activityRuns ?? this.activityRuns,
     );
   }
 
@@ -210,4 +225,18 @@ extension WorkoutSessionStatusX on WorkoutSessionStatus {
       orElse: () => WorkoutSessionStatus.inProgress,
     );
   }
+}
+
+/// Reads [WorkoutSession.activityRuns] from storage. Never throws: entries
+/// that are not a map under a text key are left out.
+Map<String, Map<String, Object?>> readActivityRuns(Object? raw) {
+  if (raw is! Map) return const {};
+  return {
+    for (final entry in raw.entries)
+      if (entry.key is String && entry.value is Map)
+        entry.key as String: {
+          for (final field in (entry.value as Map).entries)
+            '${field.key}': field.value,
+        },
+  };
 }

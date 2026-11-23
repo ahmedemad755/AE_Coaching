@@ -13,15 +13,20 @@ import {
   Timestamp,
   collection,
   deleteDoc,
+  deleteField,
+  disableNetwork,
   doc,
+  enableNetwork,
   getDoc,
   getDocs,
+  limit,
   orderBy,
   query,
   runTransaction,
   serverTimestamp,
   setDoc,
   updateDoc,
+  where,
   writeBatch,
 } from 'firebase/firestore';
 
@@ -43,6 +48,18 @@ async function seed(path, data) {
     await setDoc(doc(ctx.firestore(), path), data);
   });
 }
+/** Every signed-in app user has a profile: the app confirms (or recovers)
+ *  it at each sign-in and app start. Creating documents requires it
+ *  (firestore.rules: canCreateIn). */
+async function seedProfiles() {
+  for (const user of [ALICE, BOB]) {
+    await seed(`users/${user.uid}`, {
+      uid: user.uid, name: 'Test', email: user.email,
+      createdAt: Timestamp.fromMillis(1), updatedAt: Timestamp.fromMillis(1),
+    });
+  }
+}
+
 async function readRaw(path) {
   let data;
   await env.withSecurityRulesDisabled(async (ctx) => {
@@ -336,6 +353,7 @@ describe('Profile recovery and updates (verified)', () => {
 // ─────────────────────────────────────────────────────────────────────────
 for (const [name, sample] of Object.entries(SAMPLES)) {
   describe(`users/{uid}/${name}`, () => {
+    beforeEach(async () => seedProfiles());
     const path = `users/alice/${name}/doc_1`;
 
     it('a verified owner can create, read, replace and delete', async () => {
@@ -432,6 +450,7 @@ const firstTokenWrite = (t = TOKEN) => ({
 });
 
 describe('users/{uid}/fcmTokens (push tokens)', () => {
+  beforeEach(async () => seedProfiles());
   it('a verified owner registers, reads back, refreshes and deletes their '
     + 'token exactly as the app does', async () => {
     const f = db(ALICE);
@@ -498,7 +517,7 @@ describe('users/{uid}/fcmTokens (push tokens)', () => {
       }
     });
 
-  it('tokens can never be listed (no device enumeration)', async () => {
+  it('tokens cannot be listed without a fresh sign-in (no device enumeration)', async () => {
     await assertFails(getDocs(collection(db(ALICE), 'users/alice/fcmTokens')));
   });
 
@@ -626,6 +645,7 @@ describe('Server-owned inactivity reminder documents (Cloud Functions only)', ()
 });
 
 describe('users/{uid}/settings/notifications (reminder preferences)', () => {
+  beforeEach(async () => seedProfiles());
   const PATH = 'users/alice/settings/notifications';
   /** The full document the app will write (Stage 3). */
   const prefs = (extra = {}) => ({
@@ -688,7 +708,7 @@ describe('users/{uid}/settings/notifications (reminder preferences)', () => {
     await assertFails(updateDoc(doc(f, PATH), { secret: true, updatedAt: serverTimestamp() }));
   });
 
-  it('preferences cannot be deleted or listed', async () => {
+  it('preferences cannot be listed, nor deleted without a fresh sign-in', async () => {
     await seed(PATH, { inactivityRemindersEnabled: true, language: 'ar', timeZone: 'Africa/Cairo', updatedAt: Timestamp.fromMillis(1000) });
     await assertFails(deleteDoc(doc(db(ALICE), PATH)));
     await assertFails(getDocs(collection(db(ALICE), 'users/alice/settings')));
@@ -696,6 +716,7 @@ describe('users/{uid}/settings/notifications (reminder preferences)', () => {
 });
 
 describe('fcmTokens: per-device server-reminder readiness', () => {
+  beforeEach(async () => seedProfiles());
   /** What a build that receives server reminders writes. */
   const readyWrite = (t = TOKEN) => ({ ...firstTokenWrite(t), serverRemindersReadyAt: serverTimestamp() });
   /** What an older build writes on re-registration (set with merge). */
@@ -731,5 +752,552 @@ describe('fcmTokens: per-device server-reminder readiness', () => {
     await assertSucceeds(setDoc(ref, readyWrite(), { merge: true }));
     await assertFails(setDoc(ref, { ...oldBuildRefresh(), serverRemindersReadyAt: Timestamp.fromMillis(5) }, { merge: true }));
     await assertFails(setDoc(doc(db(BOB), tokenPath('alice', 'bob-token')), readyWrite('bob-token'), { merge: true }));
+  });
+});
+
+describe('in-app account deletion (Spark plan)', () => {
+  const nowSeconds = () => Math.floor(Date.now() / 1000);
+  /** A client that re-authenticated [authAgeSeconds] ago. */
+  const client = (user, authAgeSeconds = 5) =>
+    env.authenticatedContext(user.uid, {
+      email: user.email,
+      email_verified: true,
+      auth_time: nowSeconds() - authAgeSeconds,
+    }).firestore();
+
+  async function seedAccount(uid) {
+    await seed(`users/${uid}`, { uid, name: 'Test', email: `${uid}@example.com` });
+    await seed(`users/${uid}/exercise_sets/s1`, SAMPLES.exercise_sets);
+    await seed(`users/${uid}/workout_sessions/w1`, SAMPLES.workout_sessions);
+    await seed(`users/${uid}/fcmTokens/${tokenId(`token-${uid}`)}`, { token: `token-${uid}`, platform: 'android' });
+    await seed(`users/${uid}/settings/notifications`, {
+      inactivityRemindersEnabled: true, language: 'ar', timeZone: 'Africa/Cairo', updatedAt: Timestamp.fromMillis(1),
+    });
+  }
+
+  it('right after re-authenticating, the owner can remove all of their own data', async () => {
+    await seedAccount('alice');
+    const f = client(ALICE);
+    await assertSucceeds(getDocs(collection(f, 'users/alice/fcmTokens'))); // every device
+    await assertSucceeds(deleteDoc(doc(f, 'users/alice/exercise_sets/s1')));
+    await assertSucceeds(deleteDoc(doc(f, 'users/alice/workout_sessions/w1')));
+    await assertSucceeds(deleteDoc(doc(f, `users/alice/fcmTokens/${tokenId('token-alice')}`)));
+    await assertSucceeds(deleteDoc(doc(f, 'users/alice/settings/notifications')));
+    await assertSucceeds(deleteDoc(doc(f, 'users/alice')));
+  });
+
+  it('a stale sign-in cannot delete the profile or settings, nor list devices', async () => {
+    await seedAccount('alice');
+    const stale = client(ALICE, 60 * 60);
+    await assertFails(deleteDoc(doc(stale, 'users/alice')));
+    await assertFails(deleteDoc(doc(stale, 'users/alice/settings/notifications')));
+    await assertFails(getDocs(collection(stale, 'users/alice/fcmTokens')));
+  });
+
+  it("nobody can delete another account's data, even freshly signed in", async () => {
+    await seedAccount('alice');
+    const bob = client(BOB);
+    await assertFails(deleteDoc(doc(bob, 'users/alice')));
+    await assertFails(deleteDoc(doc(bob, 'users/alice/exercise_sets/s1')));
+    await assertFails(deleteDoc(doc(bob, 'users/alice/settings/notifications')));
+    await assertFails(getDocs(collection(bob, 'users/alice/fcmTokens')));
+    await assertFails(deleteDoc(doc(anon(), 'users/alice')));
+  });
+
+  it('server-owned documents stay closed, deletion or not', async () => {
+    await seed('users/alice/notificationState/inactivity', { nextReminderAt: null });
+    await seed('fcmTokenOwners/abc', { uid: 'alice', registeredAt: Timestamp.fromMillis(1) });
+    const f = client(ALICE);
+    await assertFails(deleteDoc(doc(f, 'users/alice/notificationState/inactivity')));
+    await assertFails(deleteDoc(doc(f, 'fcmTokenOwners/abc')));
+  });
+
+  it('deletion requests are operator-only (support cases)', async () => {
+    const PATH = 'accountDeletionRequests/alice';
+    const request = { uid: 'alice', status: 'pending', requestedAt: serverTimestamp() };
+    await assertFails(setDoc(doc(client(ALICE), PATH), request));
+    await seed(PATH, { uid: 'alice', status: 'pending', requestedAt: Timestamp.fromMillis(1) });
+    await assertFails(getDoc(doc(client(ALICE), PATH)));
+    await assertFails(deleteDoc(doc(client(ALICE), PATH)));
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────
+// Stage 2: revision-checked sync of workout days and custom exercises
+// (lib/core/sync/revision_sync_engine.dart, schema 2).
+// ─────────────────────────────────────────────────────────────────────────
+const sha = (text) => createHash('sha256').update(text).digest('hex');
+let writeCount = 0;
+const nextWriteId = () => `install-a-${(++writeCount).toString(36)}`;
+const DAY = 'users/alice/workout_templates/day_1';
+const EXERCISE = 'users/alice/custom_exercises/custom_1';
+const DELETED_AT = '2026-11-17T10:00:00.000Z';
+
+const strengthActivity = (id) => ({
+  id, type: 'strength', exerciseId: `repdb:${id}`, referenceType: 'builtIn',
+  name: `Exercise ${id}`, strength: { sets: 3, repsMin: 8, repsMax: 12, restSeconds: 90 },
+});
+const cardioActivity = (id) => ({
+  id, type: 'cardio', exerciseId: 'cardio:treadmill', referenceType: 'builtIn',
+  name: 'Treadmill', cardio: { mode: 'countdown', durationSeconds: 1200, intensity: 'moderate' },
+});
+const activities = (n) => Array.from({ length: n }, (_, i) => strengthActivity(`a${i}`));
+
+/** WorkoutTemplate.toCloudContent(). */
+const dayContent = () => ({
+  id: 'day_1', programId: 'program_1', name: 'Push Day',
+  createdAt: '2026-11-07T10:00:00.000', updatedAt: null, isArchived: false,
+  orderIndex: 0, activities: [strengthActivity('a1'), cardioActivity('a2')],
+});
+/** CustomExercise.toCloudContent(). */
+const exerciseContent = () => ({
+  id: 'custom_1', name: 'Sled push', muscleGroup: 'Legs', equipment: null,
+  activityType: 'strength', createdAt: '2026-11-07T10:00:00.000',
+});
+/** The fields RevisionSyncEngine adds (+ serverUpdatedAt from FirestoreRevisionCloud). */
+const revisionFields = (base) => ({
+  schemaVersion: 2, baseRevision: base, revision: base + 1,
+  writeId: nextWriteId(), contentHash: sha(`content-${base}-${writeCount}`),
+  deleted: false, serverUpdatedAt: serverTimestamp(),
+});
+const dayWrite = (base, extra = {}) => ({ ...dayContent(), ...revisionFields(base), ...extra });
+const exerciseWrite = (base, extra = {}) => ({ ...exerciseContent(), ...revisionFields(base), ...extra });
+/** A schema 2 document as stored at [revision]. */
+const stored = (content, revision, extra = {}) => ({
+  ...content, schemaVersion: 2, baseRevision: revision - 1, revision,
+  writeId: `stored-${revision}`, contentHash: sha(`stored-${revision}`),
+  deleted: false, serverUpdatedAt: Timestamp.fromMillis(1), ...extra,
+});
+/** Exactly what builds before Stage 2 store: WorkoutTemplate.toJson(). */
+const oldDay = (extra = {}) => ({ ...SAMPLES.workout_templates, id: 'day_1', ...extra });
+/** Every schema 2 write is a set with merge. */
+const write = (f, path, data) => setDoc(doc(f, path), data, { merge: true });
+
+describe('workout days: schema 2 (revision-checked sync)', () => {
+  beforeEach(async () => seedProfiles());
+  it('migrating an old day: revision 0 → 1; its old exercise list stays untouched', async () => {
+    const oldList = [{ assignmentId: 'sq', exerciseId: 'repdb:squat',
+      exerciseNameSnapshot: 'Squat', referenceType: 'builtIn' }];
+    await seed(DAY, oldDay({ exerciseAssignments: oldList }));
+    await assertSucceeds(write(db(ALICE), DAY, dayWrite(0, { legacyDecision: 'restored' })));
+    const day = await readRaw(DAY);
+    assert(day.schemaVersion === 2 && day.revision === 1, 'migrated at revision 1');
+    assert(day.activities.length === 2 && day.activities[1].cardio.durationSeconds === 1200,
+      'activities stored with their plans');
+    assert(JSON.stringify(day.exerciseAssignments) === JSON.stringify(oldList), 'old list kept');
+    // A brand-new day starts at revision 1 too.
+    await assertSucceeds(write(db(ALICE), 'users/alice/workout_templates/day_2',
+      dayWrite(0, { id: 'day_2' })));
+  });
+
+  it('a schema 2 write can neither add nor change the old exercise list', async () => {
+    await seed(DAY, oldDay({ exerciseAssignments: [{ assignmentId: 'sq' }] }));
+    const f = db(ALICE);
+    await assertFails(write(f, DAY, dayWrite(0, { exerciseAssignments: [] })));
+    await assertFails(write(f, DAY, dayWrite(0, { exerciseAssignments: [{ assignmentId: 'x' }] })));
+    await assertFails(write(f, 'users/alice/workout_templates/day_2',
+      dayWrite(0, { id: 'day_2', exerciseAssignments: [] })));
+  });
+
+  it('only the next revision, based on the stored one, with a new write id', async () => {
+    await seed(DAY, stored(dayContent(), 3));
+    const f = db(ALICE);
+    await assertFails(write(f, DAY, dayWrite(2))); // outdated base
+    await assertFails(write(f, DAY, dayWrite(0))); // as if never synced
+    await assertFails(write(f, DAY, dayWrite(3, { revision: 5 }))); // jump
+    await assertFails(write(f, DAY, dayWrite(3, { revision: 3 }))); // no increase
+    await assertFails(write(f, DAY, dayWrite(3, { writeId: 'stored-3' }))); // reused id
+    const noBase = dayWrite(3);
+    delete noBase.baseRevision;
+    await assertFails(write(f, DAY, noBase));
+    await assertSucceeds(write(f, DAY, dayWrite(3, { name: 'Renamed' })));
+    const day = await readRaw(DAY);
+    assert(day.revision === 4 && day.name === 'Renamed', 'revision 4 stored');
+    // A missing document is revision 0.
+    await assertFails(write(f, 'users/alice/workout_templates/day_9', dayWrite(1, { id: 'day_9' })));
+  });
+
+  it('two phones writing from the same revision: exactly one wins', async () => {
+    await seed(DAY, stored(dayContent(), 1));
+    const results = await Promise.allSettled([
+      write(db(ALICE), DAY, dayWrite(1, { name: 'From A' })),
+      write(db(ALICE), DAY, dayWrite(1, { name: 'From B' })),
+    ]);
+    const won = results.filter((r) => r.status === 'fulfilled');
+    assert(won.length === 1, `exactly one write accepted (got ${won.length})`);
+    const day = await readRaw(DAY);
+    assert(day.revision === 2, 'revision 2');
+    // The other phone rebases on revision 2 (after the user's choice).
+    await assertSucceeds(write(db(ALICE), DAY, dayWrite(2, { name: 'Chosen' })));
+  });
+
+  it('a write queued offline is checked on arrival: an outdated one is rejected', async () => {
+    await seed(DAY, stored(dayContent(), 1));
+    const offline = db(ALICE);
+    await disableNetwork(offline);
+    const queued = write(offline, DAY, dayWrite(1, { name: 'Edited offline' }));
+    await assertSucceeds(write(db(ALICE), DAY, dayWrite(1, { name: 'Edited online' })));
+    await enableNetwork(offline);
+    await assertFails(queued);
+    const day = await readRaw(DAY);
+    assert(day.name === 'Edited online' && day.revision === 2, 'the newer write is kept');
+  });
+
+  it('old builds: full writes and deletes work on old days, never on a schema 2 day', async () => {
+    const f = db(ALICE);
+    // What builds before Stage 2 send: set(toJson()) and delete().
+    await assertSucceeds(setDoc(doc(f, DAY), oldDay()));
+    await assertSucceeds(setDoc(doc(f, DAY), oldDay({ name: 'Renamed by an old build' })));
+    await assertSucceeds(deleteDoc(doc(f, DAY)));
+
+    await seed(DAY, stored(dayContent(), 2));
+    await assertFails(setDoc(doc(f, DAY), oldDay()));
+    await assertFails(setDoc(doc(f, DAY), oldDay(), { merge: true }));
+    await assertFails(updateDoc(doc(f, DAY), { name: 'Renamed by an old build' }));
+    await assertFails(deleteDoc(doc(f, DAY)));
+    const day = await readRaw(DAY);
+    assert(day.revision === 2 && day.activities.length === 2, 'the schema 2 day is intact');
+  });
+
+  it('a deletion is a revision-checked tombstone; only a tombstone can be removed', async () => {
+    await seed(DAY, stored(dayContent(), 1));
+    const f = db(ALICE);
+    await assertFails(deleteDoc(doc(f, DAY)));
+    await assertFails(write(f, DAY, dayWrite(1, { deleted: true }))); // no deletedAt
+    await assertFails(write(f, DAY, dayWrite(0, { deleted: true, deletedAt: DELETED_AT })));
+    await assertSucceeds(write(f, DAY, dayWrite(1, { deleted: true, deletedAt: DELETED_AT })));
+    // Another phone keeps the day ("Restore the day"), then it is deleted again.
+    await assertSucceeds(write(f, DAY, dayWrite(2, { deleted: false })));
+    await assertFails(deleteDoc(doc(f, DAY)));
+    await assertSucceeds(write(f, DAY, dayWrite(3, { deleted: true, deletedAt: DELETED_AT })));
+    await assertSucceeds(deleteDoc(doc(f, DAY)));
+  });
+
+  it('a day holds at most 40 activities (WorkoutLimits.maxActivitiesPerDay)', async () => {
+    const f = db(ALICE);
+    await assertFails(write(f, DAY, dayWrite(0, { activities: activities(41) })));
+    await assertSucceeds(write(f, DAY, dayWrite(0, { activities: activities(40) })));
+    await assertFails(write(f, DAY, dayWrite(1, { activities: activities(41) })));
+    await assertSucceeds(write(f, DAY, dayWrite(1, { activities: [] })));
+  });
+
+  it('shape: the path id, required fields, types, decisions, hash and server time', async () => {
+    const f = db(ALICE);
+    const missing = (key) => {
+      const data = dayWrite(0);
+      delete data[key];
+      return data;
+    };
+    for (const bad of [
+      dayWrite(0, { id: 'another_day' }),
+      dayWrite(0, { injected: true }),
+      missing('activities'),
+      missing('programId'),
+      missing('contentHash'),
+      missing('serverUpdatedAt'),
+      dayWrite(0, { activities: 'none' }),
+      dayWrite(0, { isArchived: 0 }),
+      dayWrite(0, { orderIndex: 1.5 }),
+      dayWrite(0, { legacyDecision: 'maybe' }),
+      dayWrite(0, { schemaVersion: 3 }),
+      dayWrite(0, { revision: '1' }),
+      dayWrite(0, { contentHash: 'abc' }),
+      dayWrite(0, { contentHash: sha('x').toUpperCase() }),
+      dayWrite(0, { writeId: '' }),
+      dayWrite(0, { writeId: 'x'.repeat(65) }),
+      dayWrite(0, { deleted: 'no' }),
+      dayWrite(0, { serverUpdatedAt: Timestamp.fromMillis(1) }),
+    ]) {
+      await assertFails(write(f, DAY, bad));
+    }
+    await assertSucceeds(write(f, DAY, dayWrite(0, { legacyDecision: 'dismissed' })));
+  });
+
+  it('the "changed since" pull query works for the verified owner only', async () => {
+    const at = (iso) => Timestamp.fromMillis(Date.parse(iso));
+    await seed(DAY, stored(dayContent(), 1, { serverUpdatedAt: at('2026-11-17T10:00:00Z') }));
+    await seed(EXERCISE, stored(exerciseContent(), 1, { serverUpdatedAt: at('2026-11-17T10:00:00Z') }));
+    // RevisionSyncEngine via FirestoreRevisionCloud.fetchChangedSince.
+    const changes = (f, name) => getDocs(query(
+      collection(f, `users/alice/${name}`),
+      where('serverUpdatedAt', '>=', at('2026-11-01T00:00:00Z'))));
+    for (const name of ['workout_templates', 'custom_exercises']) {
+      const page = await assertSucceeds(changes(db(ALICE), name));
+      assert(page.size === 1, `${name}: the changed document is returned`);
+      await assertFails(changes(db(BOB), name));
+      await assertFails(changes(db(ALICE, { verified: false }), name));
+      await assertFails(changes(anon(), name));
+    }
+  });
+
+  it('unverified owners and other users are denied', async () => {
+    await seed(DAY, stored(dayContent(), 1));
+    const unverified = db(ALICE, { verified: false });
+    await assertFails(getDoc(doc(unverified, DAY)));
+    await assertFails(write(unverified, DAY, dayWrite(1)));
+    const bob = db(BOB);
+    await assertFails(getDoc(doc(bob, DAY)));
+    await assertFails(write(bob, DAY, dayWrite(1)));
+    await assertFails(getDocs(collection(bob, 'users/alice/workout_templates')));
+    await seed(DAY, stored(dayContent(), 2, { deleted: true, deletedAt: DELETED_AT }));
+    await assertFails(deleteDoc(doc(bob, DAY)));
+  });
+});
+
+describe('users/{uid}/custom_exercises (schema 2 only)', () => {
+  beforeEach(async () => seedProfiles());
+  it('the owner creates, reads, lists and re-syncs', async () => {
+    const f = db(ALICE);
+    await assertSucceeds(write(f, EXERCISE, exerciseWrite(0)));
+    await assertSucceeds(getDoc(doc(f, EXERCISE)));
+    await assertSucceeds(getDocs(collection(f, 'users/alice/custom_exercises')));
+    await assertSucceeds(write(f, EXERCISE, exerciseWrite(1, { activityType: 'cardio' })));
+  });
+
+  it('only revision-checked writes: no plain writes, no outdated revisions', async () => {
+    const f = db(ALICE);
+    await assertFails(setDoc(doc(f, EXERCISE), exerciseContent()));
+    await assertSucceeds(write(f, EXERCISE, exerciseWrite(0)));
+    await assertFails(write(f, EXERCISE, exerciseWrite(0))); // outdated
+    await assertFails(write(f, EXERCISE, exerciseWrite(1, { revision: 3 })));
+  });
+
+  it('shape: the path id, a name, a known activity type', async () => {
+    const f = db(ALICE);
+    for (const bad of [
+      exerciseWrite(0, { id: 'other' }),
+      exerciseWrite(0, { name: '' }),
+      exerciseWrite(0, { activityType: 'yoga' }),
+      exerciseWrite(0, { muscleGroup: 5 }),
+      exerciseWrite(0, { injected: true }),
+    ]) {
+      await assertFails(write(f, EXERCISE, bad));
+    }
+    await assertSucceeds(write(f, EXERCISE, exerciseWrite(0, { activityType: 'timed' })));
+  });
+
+  it('removed only as a tombstone', async () => {
+    await seed(EXERCISE, stored(exerciseContent(), 1));
+    const f = db(ALICE);
+    await assertFails(deleteDoc(doc(f, EXERCISE)));
+    await assertSucceeds(write(f, EXERCISE, exerciseWrite(1, { deleted: true, deletedAt: DELETED_AT })));
+    await assertSucceeds(deleteDoc(doc(f, EXERCISE)));
+  });
+
+  it('unverified owners and other users are denied', async () => {
+    await seed(EXERCISE, stored(exerciseContent(), 1));
+    for (const f of [db(ALICE, { verified: false }), db(BOB)]) {
+      await assertFails(getDoc(doc(f, EXERCISE)));
+      await assertFails(write(f, EXERCISE, exerciseWrite(1)));
+      await assertFails(getDocs(collection(f, 'users/alice/custom_exercises')));
+    }
+    await assertFails(write(anon(), EXERCISE, exerciseWrite(1)));
+  });
+});
+
+describe('in-app account deletion with synced (schema 2) documents', () => {
+  const nowSeconds = () => Math.floor(Date.now() / 1000);
+  const client = (user, authAgeSeconds = 5) =>
+    env.authenticatedContext(user.uid, {
+      email: user.email, email_verified: true, auth_time: nowSeconds() - authAgeSeconds,
+    }).firestore();
+
+  async function seedSynced(uid) {
+    const days = `users/${uid}/workout_templates`;
+    await seed(`${days}/old`, oldDay({ id: 'old' }));
+    await seed(`${days}/live`, stored({ ...dayContent(), id: 'live' }, 3));
+    await seed(`${days}/gone`, stored({ ...dayContent(), id: 'gone' }, 2,
+      { deleted: true, deletedAt: DELETED_AT }));
+    await seed(`users/${uid}/custom_exercises/custom_1`, stored(exerciseContent(), 1));
+  }
+
+  /** FirebaseAccountDeletionRepository._deleteAll, step by step. */
+  async function deleteAllLikeTheApp(f, path) {
+    for (let round = 0; round < 10; round++) {
+      const page = await getDocs(query(collection(f, path), limit(400)));
+      if (page.empty) return;
+      const live = page.docs.filter((d) => d.data().schemaVersion === 2 && d.data().deleted !== true);
+      const batch = writeBatch(f);
+      if (live.length > 0) {
+        // tombstoneBeforeDelete(): a revision-checked tombstone, its own commit.
+        for (const d of live) {
+          const { revision, contentHash } = d.data();
+          batch.set(d.ref, {
+            schemaVersion: 2, baseRevision: revision, revision: revision + 1,
+            writeId: `account-deletion-${round}-${d.id}`, contentHash,
+            deleted: true, deletedAt: new Date().toISOString(),
+            serverUpdatedAt: serverTimestamp(),
+          }, { merge: true });
+        }
+      } else {
+        for (const d of page.docs) batch.delete(d.ref);
+      }
+      await batch.commit();
+    }
+    throw new Error(`${path} was not emptied`);
+  }
+
+  it('live synced days and exercises are tombstoned first, then everything is deleted', async () => {
+    await seedSynced('alice');
+    const f = client(ALICE);
+    await assertFails(deleteDoc(doc(f, 'users/alice/workout_templates/live')));
+    await assertFails(deleteDoc(doc(f, 'users/alice/custom_exercises/custom_1')));
+    await deleteAllLikeTheApp(f, 'users/alice/workout_templates');
+    await deleteAllLikeTheApp(f, 'users/alice/custom_exercises');
+    for (const path of ['workout_templates/old', 'workout_templates/live',
+      'workout_templates/gone', 'custom_exercises/custom_1']) {
+      assert((await readRaw(`users/alice/${path}`)) === undefined, `${path} deleted`);
+    }
+  });
+
+  it('a tombstone and the delete in ONE batch are denied (rules see the state before the batch)', async () => {
+    await seedSynced('alice');
+    const f = client(ALICE);
+    const ref = doc(f, 'users/alice/workout_templates/live');
+    const batch = writeBatch(f);
+    batch.set(ref, { ...revisionFields(3), deleted: true, deletedAt: DELETED_AT }, { merge: true });
+    batch.delete(ref);
+    await assertFails(batch.commit());
+  });
+
+  it('a tombstone based on an outdated revision is rejected (the app reads the page again)', async () => {
+    await seedSynced('alice');
+    const f = client(ALICE);
+    await assertFails(write(f, 'users/alice/workout_templates/live',
+      { ...revisionFields(2), deleted: true, deletedAt: DELETED_AT }));
+    await assertSucceeds(write(f, 'users/alice/workout_templates/live',
+      { ...revisionFields(3), deleted: true, deletedAt: DELETED_AT }));
+  });
+
+  it("nobody can tombstone or delete another account's synced data", async () => {
+    await seedSynced('alice');
+    const bob = client(BOB);
+    await assertFails(write(bob, 'users/alice/workout_templates/live',
+      { ...revisionFields(3), deleted: true, deletedAt: DELETED_AT }));
+    await assertFails(deleteDoc(doc(bob, 'users/alice/workout_templates/gone')));
+    await assertFails(deleteDoc(doc(bob, 'users/alice/workout_templates/old')));
+    await assertFails(getDocs(collection(bob, 'users/alice/custom_exercises')));
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────
+// Stage 2.2: nothing new can be created for an account once its deletion
+// has started (another device may still hold a valid ID token for up to an
+// hour). Cleanup (reads, updates of existing documents, deletes) still works.
+// ─────────────────────────────────────────────────────────────────────────
+describe('account deletion lock: nothing new after a deletion starts', () => {
+  const nowSeconds = () => Math.floor(Date.now() / 1000);
+  /** Re-authenticated [authAgeSeconds] ago (the deleting device). */
+  const fresh = (user, authAgeSeconds = 5) =>
+    env.authenticatedContext(user.uid, {
+      email: user.email, email_verified: true, auth_time: nowSeconds() - authAgeSeconds,
+    }).firestore();
+  const lock = (f) => updateDoc(doc(f, 'users/alice'), { deletionStartedAt: serverTimestamp() });
+
+  /** One NEW document per collection (ids tagged [tag]), as the app creates them. */
+  const creations = (f, tag) => ({
+    exercise_sets: () => setDoc(doc(f, `users/alice/exercise_sets/${tag}`), SAMPLES.exercise_sets),
+    body_measurements: () => setDoc(doc(f, `users/alice/body_measurements/${tag}`), SAMPLES.body_measurements),
+    workout_programs: () => setDoc(doc(f, `users/alice/workout_programs/${tag}`), SAMPLES.workout_programs),
+    workout_sessions: () => setDoc(doc(f, `users/alice/workout_sessions/${tag}`), SAMPLES.workout_sessions),
+    'workout_templates (older builds)': () => setDoc(doc(f, `users/alice/workout_templates/${tag}`),
+      { ...SAMPLES.workout_templates, id: tag }),
+    'workout_templates (schema 2)': () => write(f, `users/alice/workout_templates/${tag}-v2`,
+      dayWrite(0, { id: `${tag}-v2` })),
+    custom_exercises: () => write(f, `users/alice/custom_exercises/${tag}`, exerciseWrite(0, { id: tag })),
+    fcmTokens: () => setDoc(doc(f, tokenPath('alice', `token-${tag}`)), firstTokenWrite(`token-${tag}`), { merge: true }),
+  });
+  let round = 0;
+
+  /** Settings is a single document: created only if it does not exist yet. */
+  const createSettings = (f) => setDoc(doc(f, 'users/alice/settings/notifications'), {
+    inactivityRemindersEnabled: true, language: 'en', timeZone: 'UTC', updatedAt: serverTimestamp(),
+  });
+
+  async function expectCreates(f, allowed) {
+    const all = { ...creations(f, `new${++round}`) };
+    if (!(await readRaw('users/alice/settings/notifications'))) {
+      all['settings/notifications'] = () => createSettings(f);
+    }
+    for (const [name, create] of Object.entries(all)) {
+      try {
+        await (allowed ? assertSucceeds(create()) : assertFails(create()));
+      } catch (error) {
+        throw new Error(`${name}: ${error.message}`);
+      }
+    }
+  }
+
+  it('creating needs the account profile (every signed-in user has one)', async () => {
+    await expectCreates(db(ALICE), false); // no profile
+    await seedProfiles();
+    await expectCreates(db(ALICE), true);
+  });
+
+  it('once deletion starts, another device creates nothing in any collection; '
+    + 'reads, updates and deletes still work so the deletion can finish', async () => {
+    await seedProfiles();
+    await seed('users/alice/exercise_sets/old', SAMPLES.exercise_sets);
+    await seed('users/alice/workout_templates/live', stored({ ...dayContent(), id: 'live' }, 3));
+    await assertSucceeds(lock(fresh(ALICE)));
+
+    const otherDevice = db(ALICE); // valid token, signed in long ago
+    await expectCreates(otherDevice, false);
+    await expectCreates(fresh(ALICE), false); // not even the deleting device
+    // Existing documents: still readable, updatable, deletable.
+    await assertSucceeds(getDocs(collection(otherDevice, 'users/alice/exercise_sets')));
+    await assertSucceeds(setDoc(doc(otherDevice, 'users/alice/exercise_sets/old'), SAMPLES.exercise_sets));
+    await assertSucceeds(write(otherDevice, 'users/alice/workout_templates/live',
+      { ...revisionFields(3), deleted: true, deletedAt: DELETED_AT })); // tombstone
+    const deleting = fresh(ALICE);
+    await assertSucceeds(deleteDoc(doc(deleting, 'users/alice/exercise_sets/old')));
+    await assertSucceeds(deleteDoc(doc(deleting, 'users/alice/workout_templates/live')));
+    await assertSucceeds(deleteDoc(doc(deleting, 'users/alice/settings/notifications')));
+    await assertSucceeds(deleteDoc(doc(deleting, 'users/alice')));
+    // After the profile is gone (end of the deletion): still nothing.
+    await expectCreates(otherDevice, false);
+  });
+
+  it('a retried deletion: the lock can be stamped again; a deletion whose '
+    + 'profile is already gone has nothing to lock', async () => {
+    await seedProfiles();
+    await assertSucceeds(lock(fresh(ALICE)));
+    await assertSucceeds(lock(fresh(ALICE)));
+    await env.withSecurityRulesDisabled(async (ctx) => deleteDoc(doc(ctx.firestore(), 'users/alice')));
+    await assertFails(lock(fresh(ALICE))); // not-found: the app moves on
+  });
+
+  it('only the owner, right after re-authenticating, sets the lock: server time, '
+    + 'nothing else; it can never be removed or changed afterwards', async () => {
+    await seedProfiles();
+    await assertFails(lock(db(ALICE))); // stale sign-in
+    await assertFails(lock(fresh(BOB))); // another account
+    await assertFails(lock(anon()));
+    await assertFails(updateDoc(doc(fresh(ALICE), 'users/alice'),
+      { deletionStartedAt: Timestamp.fromMillis(5) })); // not the server time
+    await assertFails(updateDoc(doc(fresh(ALICE), 'users/alice'),
+      { deletionStartedAt: serverTimestamp(), name: 'Renamed' })); // nothing else
+    await assertSucceeds(lock(fresh(ALICE)));
+    const stored1 = await readRaw('users/alice');
+    assert(stored1.deletionStartedAt instanceof Timestamp, 'lock stored');
+
+    await assertFails(updateDoc(doc(fresh(ALICE), 'users/alice'), { deletionStartedAt: deleteField() }));
+    await assertFails(setDoc(doc(fresh(ALICE), 'users/alice'), {
+      uid: 'alice', name: 'Test', email: ALICE.email,
+      createdAt: Timestamp.fromMillis(1), updatedAt: serverTimestamp(),
+    })); // a full replace would drop it
+    // The app's normal profile updates (name edit, email sync) keep it.
+    await assertSucceeds(updateDoc(doc(db(ALICE), 'users/alice'),
+      { name: 'Alice B', updatedAt: serverTimestamp() }));
+    const stored2 = await readRaw('users/alice');
+    assert(stored2.deletionStartedAt instanceof Timestamp, 'lock kept');
+    await expectCreates(db(ALICE), false);
+  });
+
+  it('historical profiles (phone-era fields, no createdAt) can be locked too', async () => {
+    await seed('users/alice', { uid: 'alice', name: 'Alice', phoneNumber: '+201000000000', authEmail: 'x@y.z' });
+    await expectCreates(db(ALICE), true);
+    await assertSucceeds(lock(fresh(ALICE)));
+    await expectCreates(db(ALICE), false);
   });
 });

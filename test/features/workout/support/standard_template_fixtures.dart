@@ -17,6 +17,7 @@ import 'package:ae_coaching/features/workout/data/repositories/workout_template_
 import 'package:ae_coaching/features/workout/data/repositories/workout_template_import_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hive/hive.dart';
+import '../../../support/fake_revision_cloud.dart';
 
 class TemplateProgramRemote implements WorkoutProgramRemoteDataSource {
   bool fail = false;
@@ -38,20 +39,14 @@ class TemplateProgramRemote implements WorkoutProgramRemoteDataSource {
   fetchAllRemotePrograms() async => [];
 }
 
-class TemplateDayRemote implements WorkoutTemplateRemoteDataSource {
-  bool fail = false;
-  final Map<String, Map<String, dynamic>> documents = {};
-  @override
-  Future<void> syncTemplate(String id, WorkoutTemplate template) async {
-    if (fail) throw const SocketException('Offline');
-    documents[id] = template.toJson();
-  }
+class TemplateDayRemote extends FakeRevisionCloud
+    implements WorkoutTemplateRemoteDataSource {
+  /// The cloud documents (schema 2 after a sync).
+  Map<String, Map<String, dynamic>> get documents => docs;
 
-  @override
-  Future<void> deleteTemplate(String id) async => documents.remove(id);
-  @override
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
-  fetchAllRemoteTemplates() async => [];
+  /// The cloud cannot be reached.
+  bool get fail => offline;
+  set fail(bool value) => offline = value;
 }
 
 class TemplateSessionRemote implements WorkoutSessionRemoteDataSource {
