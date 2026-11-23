@@ -8,28 +8,33 @@ import 'package:firebase_auth/firebase_auth.dart';
 abstract class WorkoutSessionRemoteDataSource {
   Future<void> syncSession(String id, WorkoutSession session);
   Future<void> deleteSession(String id);
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> fetchAllRemoteSessions();
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
+  fetchAllRemoteSessions();
 }
 
-class WorkoutSessionRemoteDataSourceImpl implements WorkoutSessionRemoteDataSource {
+class WorkoutSessionRemoteDataSourceImpl
+    implements WorkoutSessionRemoteDataSource {
   final FirebaseFirestore _firestore;
   final FirebaseAuth _auth;
 
   WorkoutSessionRemoteDataSourceImpl({
     FirebaseFirestore? firestore,
     FirebaseAuth? auth,
-  })  : _firestore = firestore ?? FirebaseFirestore.instance,
-        _auth = auth ?? FirebaseAuth.instance;
+  }) : _firestore = firestore ?? FirebaseFirestore.instance,
+       _auth = auth ?? FirebaseAuth.instance;
 
-  CollectionReference<Map<String, dynamic>> _getUserCollection() {
+  DocumentReference<Map<String, dynamic>> _getUserDocument() {
     final uid = _auth.currentUser?.uid;
 
     if (uid == null || uid.isEmpty) {
       throw Exception('User not authenticated');
     }
 
-    return _firestore.collection('users').doc(uid).collection('workout_sessions');
+    return _firestore.collection('users').doc(uid);
   }
+
+  CollectionReference<Map<String, dynamic>> _getUserCollection() =>
+      _getUserDocument().collection('workout_sessions');
 
   @override
   Future<void> syncSession(String id, WorkoutSession session) async {
@@ -42,8 +47,11 @@ class WorkoutSessionRemoteDataSourceImpl implements WorkoutSessionRemoteDataSour
   }
 
   @override
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> fetchAllRemoteSessions() async {
-    final snapshot = await _getUserCollection().orderBy('date', descending: true).get();
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
+  fetchAllRemoteSessions() async {
+    final snapshot = await _getUserCollection()
+        .orderBy('date', descending: true)
+        .get();
     return snapshot.docs;
   }
 }

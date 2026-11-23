@@ -1,3 +1,4 @@
+import 'package:ae_coaching/core/utils/close_safe_emit.dart';
 import 'package:ae_coaching/auth/data/models/body_measurement.dart';
 import 'package:ae_coaching/core/errors/exception_message_mapper.dart';
 import 'package:ae_coaching/features/measurements/data/repositories/measurement_repository.dart';
@@ -11,7 +12,8 @@ part 'measurement_state.dart';
 /// Kept completely separate from [WorkoutCubit] / workout Hive boxes:
 /// this Cubit only ever reads/writes the current user's
 /// `measurements_$uid` box via [MeasurementRepository].
-class MeasurementCubit extends Cubit<MeasurementState> {
+class MeasurementCubit extends Cubit<MeasurementState>
+    with CloseSafeEmit<MeasurementState> {
   final MeasurementRepository repository;
 
   // Stage 3: the zero-arg fallback (`MeasurementRepository()`) is dead

@@ -1,44 +1,571 @@
 rules_version = '2';
 
-// ============================================================================
-// ⚠️  NOT YET DEPLOYED — LOCAL/EMULATOR USE ONLY. READ BEFORE DEPLOYING. ⚠️
+// =============================================================================
+// AE Coaching — Firestore security rules (Stage 3D).
 //
-// This file currently defines rules ONLY for the two new Phase 5B
-// password-reset collections. It is intentionally incomplete: it does
-// NOT include rules for any of the app's existing collections
-// (users/{uid}, workout data, measurements, photos, etc.), because
-// this repository does not have a tracked firestore.rules file today —
-// those collections' real production rules exist only in the Firebase
-// Console (or wherever they are currently managed) and are NOT visible
-// from this repo.
+// NOT DEPLOYED. Review, then deploy manually (see docs/architecture.md,
+// "Firestore security rules"). Tested against the local emulator only:
+//   firestore-tests/  →  npm test
 //
-// Firestore security rules are deny-by-default per collection: running
-// `firebase deploy` (unscoped, or with --only firestore:rules) using
-// THIS file as-is would DELETE every existing rule for every other
-// collection, breaking read/write access for the entire rest of the
-// app. Before this file is ever deployed, it MUST be merged with the
-// project's actual, complete existing ruleset by someone with access
-// to review what's currently configured. This stage never runs
-// `firebase deploy` of any kind — this file is used only by the local
-// Firestore Emulator for Phase 5B's own automated tests.
-// ============================================================================
+// Model (from the app code, not assumed):
+//   users/{uid}                          profile (email-first)
+//   users/{uid}/exercise_sets/{id}       logged sets
+//   users/{uid}/body_measurements/{id}   measurements
+//   users/{uid}/workout_programs/{id}    programs
+//   users/{uid}/workout_templates/{id}   workout days (schema 1 or 2)
+//   users/{uid}/custom_exercises/{id}    the user's own exercises (schema 2)
+//   users/{uid}/workout_sessions/{id}    sessions / history
+//   users/{uid}/fcmTokens/{id}           this device's FCM push token
+//   users/{uid}/settings/notifications   reminder preferences (app writes)
+// Server-owned (Cloud Functions via the Admin SDK; no client access at all):
+//   users/{uid}/notificationState/{id}   inactivity reminder state
+//   fcmTokenOwners/{tokenId}             push token ownership registry
+//   serverConfig/{docId}                 operator switches (reminder delivery gate)
+//   accountDeletionRequests/{uid}        support-case deletion requests (operator only)
+// Nothing else is used: no other root collections or settings documents,
+// no Storage-backed photos (progress photos are local Hive only).
+//
+// Principles:
+//   * Deny by default. Every allowed path is matched explicitly; there is
+//     NO recursive wildcard, so an unknown path or subcollection is denied.
+//   * Owner only: request.auth.uid must equal the {userId} in the path.
+//   * Workout and progress data require a verified email
+//     (request.auth.token.email_verified). The app force-refreshes the ID
+//     token after verification, so the claim is current.
+//   * Before verification, a user may only create and read their own
+//     profile (registration and onboarding). Nothing else.
+//   * Each match block fully defines its document's access. Allow
+//     statements are OR-composed, so no broader rule can widen these.
+// =============================================================================
 
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Server-owned password-reset challenge state. Written and read
-    // exclusively by Cloud Functions via the Admin SDK, which bypasses
-    // these rules entirely — this rule exists solely to guarantee no
-    // CLIENT (however authenticated, or not) can ever read or write
-    // this collection directly.
-    match /passwordResetChallenges/{challengeId} {
+    // ── Shared helpers ────────────────────────────────────────────────────
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function hasVerifiedEmail() {
+      return request.auth.token.email_verified == true;
+    }
+
+    function isVerifiedOwner(userId) {
+      return isOwner(userId) && hasVerifiedEmail();
+    }
+
+    // Signed in (or re-authenticated) within the last 10 minutes.
+    function hasRecentSignIn() {
+      return request.auth.token.auth_time is int
+        && request.time.toMillis() - request.auth.token.auth_time * 1000 <= 600000;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    // Creating a NEW document under users/{userId} (any subcollection)
+    // requires the account's profile, without a deletion in progress. An
+    // in-app account deletion first stamps `deletionStartedAt` on the
+    // profile and deletes the profile itself near the end, so from the
+    // start of a deletion on, another device still holding a valid ID token
+    // (up to an hour) can't create anything for the account. Reads, updates
+    // of existing documents and deletes are not affected: the deletion can
+    // always finish. Every signed-in user has a profile (the app confirms
+    // or recovers it at each sign-in and app start). Costs one document read
+    // per create.
+    function canCreateIn(userId) {
+      return exists(/databases/$(database)/documents/users/$(userId))
+        && !('deletionStartedAt'
+          in get(/databases/$(database)/documents/users/$(userId)).data);
+    }
+
+    // Fields this write adds, changes or removes (update only).
+    function changedKeys() {
+      return incoming().diff(resource.data).affectedKeys();
+    }
+
+    function optionalString(data, key) {
+      return !(key in data) || data[key] == null || data[key] is string;
+    }
+
+    function optionalNumber(data, key) {
+      return !(key in data) || data[key] == null || data[key] is number;
+    }
+
+    function optionalInt(data, key) {
+      return !(key in data) || data[key] == null || data[key] is int;
+    }
+
+    // ── users/{userId}: profile ───────────────────────────────────────────
+    //
+    // Written by FirestoreUserProfileStore (lib/auth/data/datasources/
+    // user_profile_store.dart) with exactly: uid, name, email, createdAt,
+    // updatedAt (server timestamps). Phone-era profiles may also carry
+    // legacy fields (phoneNumber, authEmail). They are left untouched and
+    // can't be changed by the client.
+
+    function profileFields() {
+      return ['uid', 'name', 'email', 'createdAt', 'updatedAt'];
+    }
+
+    // Mirrors AuthInputRules.validateName on the normalized name: 1–60
+    // chars, no edge whitespace, at least one letter in any script.
+    function isValidName(name) {
+      return name is string
+        && name.size() > 0
+        && name.size() <= 60
+        && name.trim() == name
+        && name.matches('.*\\p{L}.*');
+    }
+
+    // The profile email is a display copy of the Auth email (lower-cased
+    // by the app). It may only ever be the caller's own current email.
+    function isOwnEmail(email) {
+      return email is string
+        && 'email' in request.auth.token
+        && email == request.auth.token.email.lower();
+    }
+
+    match /users/{userId} {
+      // Own profile only. Allowed before verification: the registration
+      // transaction reads the document before creating it.
+      allow get: if isOwner(userId);
+      allow list: if false;
+
+      // Registration and missing-profile recovery: a complete, owned,
+      // freshly-stamped profile. Allowed before verification.
+      allow create: if isOwner(userId)
+        && incoming().keys().hasAll(profileFields())
+        && incoming().keys().hasOnly(profileFields())
+        && incoming().uid == userId
+        && isValidName(incoming().name)
+        && isOwnEmail(incoming().email)
+        && incoming().createdAt == request.time
+        && incoming().updatedAt == request.time;
+
+      // Repair (fill missing uid/name/email/createdAt), Complete Profile and
+      // the email sync. Verified owners only, and only profile fields.
+      // uid can only ever be the owner (so a conflicting document can't be
+      // taken over). createdAt is immutable once set. Other fields are
+      // validated only when they change, so a valid historical profile
+      // isn't rejected over fields this write doesn't touch.
+      allow update: if isVerifiedOwner(userId)
+        && changedKeys().hasOnly(profileFields())
+        && incoming().uid == userId
+        && ('createdAt' in resource.data
+              ? incoming().createdAt == resource.data.createdAt
+              : (!('createdAt' in incoming())
+                  || incoming().createdAt == request.time))
+        && (!changedKeys().hasAny(['name']) || isValidName(incoming().name))
+        && (!changedKeys().hasAny(['email']) || isOwnEmail(incoming().email))
+        && incoming().updatedAt == request.time;
+
+      // Account deletion starts (FirebaseAccountDeletionRepository): the
+      // owner, right after re-authenticating, stamps `deletionStartedAt`
+      // with the server time, and nothing else. From then on nothing new can
+      // be created for the account (see canCreateIn). It can be stamped
+      // again (a retried deletion) but never removed: no rule allows a
+      // write without it once it is there.
+      allow update: if isOwner(userId)
+        && hasRecentSignIn()
+        && changedKeys().hasOnly(['deletionStartedAt'])
+        && incoming().deletionStartedAt == request.time;
+
+      // Account deletion (in-app, Spark plan): only the owner, right after
+      // re-authenticating, and only after the app removed the subcollections
+      // (a deleted parent does not delete them).
+      allow delete: if isOwner(userId) && hasRecentSignIn();
+
+      // ── users/{userId}/exercise_sets/{setId} ────────────────────────────
+      // WorkoutRemoteDataSourceImpl: set (full replace), delete, batch
+      // delete, and list ordered by `date`.
+      match /exercise_sets/{setId} {
+        allow read, delete: if isVerifiedOwner(userId);
+        allow create: if isVerifiedOwner(userId)
+          && isValidExerciseSet(incoming())
+          && canCreateIn(userId);
+        allow update: if isVerifiedOwner(userId)
+          && isValidExerciseSet(incoming());
+      }
+
+      // ── users/{userId}/body_measurements/{measurementId} ────────────────
+      // MeasurementRemoteDataSourceImpl: set, delete, list ordered by date.
+      match /body_measurements/{measurementId} {
+        allow read, delete: if isVerifiedOwner(userId);
+        allow create: if isVerifiedOwner(userId)
+          && isValidMeasurement(incoming())
+          && canCreateIn(userId);
+        allow update: if isVerifiedOwner(userId)
+          && isValidMeasurement(incoming());
+      }
+
+      // ── users/{userId}/workout_programs/{programId} ─────────────────────
+      // WorkoutProgramRemoteDataSourceImpl: set, delete, list by createdAt.
+      match /workout_programs/{programId} {
+        allow read, delete: if isVerifiedOwner(userId);
+        allow create: if isVerifiedOwner(userId)
+          && isValidProgram(incoming())
+          && canCreateIn(userId);
+        allow update: if isVerifiedOwner(userId)
+          && isValidProgram(incoming());
+      }
+
+      // ── users/{userId}/workout_templates/{templateId} ───────────────────
+      // Workout days, in two schemas:
+      //   schema 1 — builds before Stage 2: a full-document set (no
+      //     activities) and a plain delete. Still accepted, but only while
+      //     the stored document is schema 1 (or doesn't exist), so an old
+      //     build can never overwrite or remove a migrated day.
+      //   schema 2 — RevisionSyncEngine (lib/core/sync): set(merge) with the
+      //     activities and a revision check (see isRevisionedWrite).
+      //     Never hard-deleted by the app: a deletion is a revision-checked
+      //     tombstone (deleted: true). Only a tombstone can be deleted
+      //     (account deletion tombstones first, then deletes).
+      // `exerciseAssignments` (written by very old builds) is kept as it is:
+      // a schema 2 write can neither add nor change it.
+      match /workout_templates/{templateId} {
+        allow read: if isVerifiedOwner(userId);
+        allow create: if isVerifiedOwner(userId)
+          && (isValidTemplate(incoming())
+            || isValidTemplateV2(templateId, incoming()))
+          && canCreateIn(userId);
+        allow update: if isVerifiedOwner(userId)
+          && ((storedSchema() < 2 && isValidTemplate(incoming()))
+            || isValidTemplateV2(templateId, incoming()));
+        allow delete: if isVerifiedOwner(userId)
+          && (storedSchema() < 2 || isStoredTombstone());
+      }
+
+      // ── users/{userId}/custom_exercises/{exerciseId} ────────────────────
+      // CustomExerciseRemoteDataSourceImpl (RevisionSyncEngine): schema 2
+      // only (this collection is new in Stage 2), the same revision check
+      // and tombstones as workout days.
+      match /custom_exercises/{exerciseId} {
+        allow read: if isVerifiedOwner(userId);
+        allow create: if isVerifiedOwner(userId)
+          && isValidCustomExercise(exerciseId, incoming())
+          && canCreateIn(userId);
+        allow update: if isVerifiedOwner(userId)
+          && isValidCustomExercise(exerciseId, incoming());
+        allow delete: if isVerifiedOwner(userId) && isStoredTombstone();
+      }
+
+      // ── users/{userId}/workout_sessions/{sessionId} ─────────────────────
+      // WorkoutSessionRemoteDataSourceImpl: set, delete, list by date.
+      match /workout_sessions/{sessionId} {
+        allow read, delete: if isVerifiedOwner(userId);
+        allow create: if isVerifiedOwner(userId)
+          && isValidSession(incoming())
+          && canCreateIn(userId);
+        allow update: if isVerifiedOwner(userId)
+          && isValidSession(incoming());
+      }
+
+      // ── users/{userId}/fcmTokens/{tokenId} ──────────────────────────────
+      // FcmDeviceService (lib/core/notifications/fcm_device_service.dart):
+      // get, then set(merge) of exactly token/platform/updatedAt (+ createdAt
+      // on first write); delete on logout and when the token rotates. The
+      // document id is the SHA-256 hex of the token. Writing requires a
+      // verified email (the app only registers verified, non-legacy
+      // users). Reading back and deleting your own token only requires
+      // ownership, so logout cleanup can never be blocked. Listable only by
+      // the owner right after re-authenticating (account deletion removes
+      // every device's token); never otherwise.
+      match /fcmTokens/{tokenId} {
+        allow get, delete: if isOwner(userId);
+        allow list: if isOwner(userId) && hasRecentSignIn();
+        allow create: if isVerifiedOwner(userId)
+          && isValidFcmToken(tokenId, incoming())
+          && incoming().createdAt == request.time
+          && canCreateIn(userId);
+        allow update: if isVerifiedOwner(userId)
+          && isValidFcmToken(tokenId, incoming())
+          && incoming().createdAt == resource.data.createdAt;
+      }
+
+      // ── users/{userId}/settings/notifications ───────────────────────────
+      // Inactivity reminder preferences: written by the app, mirrored into
+      // the server's reminder state by onReminderPreferencesWritten. Only
+      // the `notifications` settings document exists. The stored document
+      // always holds exactly the four approved fields, so a partial update
+      // keeps it complete. "Off" is an explicit `false`; deletion is only for
+      // account deletion (owner, right after re-authenticating).
+      match /settings/{settingId} {
+        allow get: if isVerifiedOwner(userId) && settingId == 'notifications';
+        allow list: if false;
+        allow create: if isVerifiedOwner(userId)
+          && settingId == 'notifications'
+          && isValidNotificationSettings(incoming())
+          && canCreateIn(userId);
+        allow update: if isVerifiedOwner(userId)
+          && settingId == 'notifications'
+          && isValidNotificationSettings(incoming());
+        allow delete: if isOwner(userId)
+          && settingId == 'notifications'
+          && hasRecentSignIn();
+      }
+
+      // ── users/{userId}/notificationState/{docId} (server-owned) ─────────
+      // Reminder schedule, leases and send attempts. Written only by Cloud
+      // Functions through the Admin SDK (which bypasses these rules). A
+      // client must not read it (it reveals activity times) or write it
+      // (it would steer the scheduler).
+      match /notificationState/{docId} {
+        allow read, write: if false;
+      }
+    }
+
+    // ── fcmTokenOwners/{tokenId} (server-owned) ───────────────────────────
+    // Which account owns each push token id. Admin SDK only; a client
+    // writing it could redirect another account's notifications.
+    match /fcmTokenOwners/{tokenId} {
       allow read, write: if false;
     }
 
-    // Server-owned per-phone rate-limit counters for
-    // requestPasswordReset. Same reasoning as above.
-    match /passwordResetRateLimits/{phone} {
+    // ── serverConfig/{docId} (server-owned) ───────────────────────────────
+    // Operator switches such as the reminder delivery gate
+    // (serverConfig/inactivityReminders). Admin SDK / Console only; a
+    // client that could write it would bypass the rollout gate.
+    match /serverConfig/{docId} {
       allow read, write: if false;
     }
+
+    // ── accountDeletionRequests/{userId} (operator-only) ──────────────────
+    // The app deletes accounts itself. Requests exist only for support cases
+    // (e.g. a deletion asked for outside the app) and are created and
+    // processed by an operator with the local Admin SDK tool
+    // (functions/src/account). No client access.
+    match /accountDeletionRequests/{userId} {
+      allow read, write: if false;
+    }
+
+    // ── Document shapes ───────────────────────────────────────────────────
+    // Exactly the keys each model's toJson() writes, with their types.
+    // Dates are ISO-8601 strings in these collections. The ordering field
+    // of each query (date / createdAt) is required, so every stored
+    // document stays visible to the app's orderBy queries.
+
+    function isValidExerciseSet(d) {
+      return d.keys().hasOnly(['exerciseName', 'weight', 'reps', 'date',
+          'notes', 'programId', 'workoutTemplateId', 'workoutSessionId'])
+        && d.keys().hasAll(['exerciseName', 'weight', 'reps', 'date'])
+        && d.exerciseName is string
+        && d.weight is number
+        && d.reps is int
+        && d.date is string
+        && optionalString(d, 'notes')
+        && optionalString(d, 'programId')
+        && optionalString(d, 'workoutTemplateId')
+        && optionalString(d, 'workoutSessionId');
+    }
+
+    function isValidMeasurement(d) {
+      return d.keys().hasOnly(['date', 'chest', 'waist', 'hips', 'rightArm',
+          'leftArm', 'rightThigh', 'leftThigh', 'rightCalf', 'leftCalf',
+          'shoulders', 'neck'])
+        && d.keys().hasAll(['date'])
+        && d.date is string
+        && optionalNumber(d, 'chest')
+        && optionalNumber(d, 'waist')
+        && optionalNumber(d, 'hips')
+        && optionalNumber(d, 'rightArm')
+        && optionalNumber(d, 'leftArm')
+        && optionalNumber(d, 'rightThigh')
+        && optionalNumber(d, 'leftThigh')
+        && optionalNumber(d, 'rightCalf')
+        && optionalNumber(d, 'leftCalf')
+        && optionalNumber(d, 'shoulders')
+        && optionalNumber(d, 'neck');
+    }
+
+    function isValidProgram(d) {
+      return d.keys().hasOnly(['id', 'name', 'description', 'createdAt',
+          'startedAt', 'endedAt', 'isActive'])
+        && d.keys().hasAll(['id', 'name', 'createdAt', 'isActive'])
+        && d.id is string
+        && d.name is string
+        && d.createdAt is string
+        && d.isActive is bool
+        && optionalString(d, 'description')
+        && optionalString(d, 'startedAt')
+        && optionalString(d, 'endedAt');
+    }
+
+    function isValidTemplate(d) {
+      return d.keys().hasOnly(['id', 'programId', 'name', 'createdAt',
+          'updatedAt', 'isArchived', 'orderIndex'])
+        && d.keys().hasAll(['id', 'programId', 'name', 'createdAt',
+          'isArchived'])
+        && d.id is string
+        && d.programId is string
+        && d.name is string
+        && d.createdAt is string
+        && d.isArchived is bool
+        && optionalString(d, 'updatedAt')
+        && optionalInt(d, 'orderIndex');
+    }
+
+    // ── Revision-checked documents (schema 2) ──────────────────────────────
+    // Optimistic concurrency without Cloud Functions. Each write states the
+    // revision it was based on; it is accepted only if that is still the
+    // stored revision, and it must store exactly the next one. A write
+    // queued offline is checked when it reaches the server, so a write
+    // based on an outdated revision is rejected, never applied over newer
+    // data. A schema 1 or missing document counts as revision 0.
+
+    function storedSchema() {
+      return resource == null ? 0 : resource.data.get('schemaVersion', 1);
+    }
+
+    function storedRevision() {
+      return storedSchema() == 2 ? resource.data.get('revision', 0) : 0;
+    }
+
+    function isStoredTombstone() {
+      return storedSchema() == 2 && resource.data.get('deleted', false) == true;
+    }
+
+    // Keys every schema 2 write sends (RevisionSyncEngine._push and
+    // _pushTombstone; FirestoreRevisionCloud adds serverUpdatedAt).
+    function revisionKeys() {
+      return ['schemaVersion', 'baseRevision', 'revision', 'writeId',
+        'contentHash', 'deleted', 'deletedAt', 'serverUpdatedAt'];
+    }
+
+    // [keys]: the document's own fields (besides revisionKeys()).
+    // [required]: the ones that must be present.
+    // A create may hold only those keys. An update may only add or change
+    // them; any other field already stored (from an older build) must stay
+    // exactly as it is.
+    function hasRevisionedShape(d, keys, required) {
+      return (resource == null
+          ? d.keys().hasOnly(keys.concat(revisionKeys()))
+          : d.diff(resource.data).affectedKeys().hasOnly(keys.concat(revisionKeys())))
+        && d.keys().hasAll(required.concat(['schemaVersion', 'baseRevision',
+          'revision', 'writeId', 'contentHash', 'deleted', 'serverUpdatedAt']));
+    }
+
+    function isRevisionedWrite(d) {
+      return d.schemaVersion == 2
+        && d.baseRevision is int
+        && d.baseRevision == storedRevision()
+        && d.revision is int
+        && d.revision == storedRevision() + 1
+        // A new id for every write: the app recognises its own writes by it.
+        && d.writeId is string
+        && d.writeId.size() > 0
+        && d.writeId.size() <= 64
+        && (resource == null || d.writeId != resource.data.get('writeId', null))
+        // SHA-256 (hex) of the canonical content (lib/core/sync/canonical_hash.dart).
+        && d.contentHash is string
+        && d.contentHash.matches('^[0-9a-f]{64}$')
+        && d.deleted is bool
+        && optionalString(d, 'deletedAt')
+        && (d.deleted == false || d.deletedAt is string)
+        && d.serverUpdatedAt == request.time;
+    }
+
+    // WorkoutTemplate.toCloudContent() + legacyDecision. `activities` holds
+    // at most WorkoutLimits.maxActivitiesPerDay (40) entries
+    // (lib/features/workout/domain/workout_limits.dart; a test keeps the
+    // two equal). Entries are parsed defensively by the app.
+    function isValidTemplateV2(templateId, d) {
+      return hasRevisionedShape(d,
+          ['id', 'programId', 'name', 'createdAt', 'updatedAt', 'isArchived',
+            'orderIndex', 'activities', 'legacyDecision'],
+          ['id', 'programId', 'name', 'createdAt', 'isArchived', 'activities'])
+        && isRevisionedWrite(d)
+        && d.id == templateId
+        && d.programId is string
+        && d.name is string
+        && d.createdAt is string
+        && d.isArchived is bool
+        && optionalString(d, 'updatedAt')
+        && optionalInt(d, 'orderIndex')
+        && d.activities is list
+        && d.activities.size() <= 40
+        && (!('legacyDecision' in d)
+          || d.legacyDecision in ['restored', 'dismissed']);
+    }
+
+    // CustomExercise.toCloudContent().
+    function isValidCustomExercise(exerciseId, d) {
+      return hasRevisionedShape(d,
+          ['id', 'name', 'muscleGroup', 'equipment', 'activityType', 'createdAt'],
+          ['id', 'name', 'activityType', 'createdAt'])
+        && isRevisionedWrite(d)
+        && d.id == exerciseId
+        && d.name is string
+        && d.name.size() > 0
+        && optionalString(d, 'muscleGroup')
+        && optionalString(d, 'equipment')
+        && d.activityType in ['strength', 'cardio', 'timed']
+        && d.createdAt is string;
+    }
+
+    function isValidSession(d) {
+      return d.keys().hasOnly(['id', 'programId', 'workoutTemplateId',
+          'workoutNameSnapshot', 'date', 'startedAt', 'completedAt', 'status',
+          'totalVolume', 'previousSessionId', 'workoutNote'])
+        && d.keys().hasAll(['id', 'programId', 'workoutTemplateId',
+          'workoutNameSnapshot', 'date', 'startedAt', 'status', 'totalVolume'])
+        && d.id is string
+        && d.programId is string
+        && d.workoutTemplateId is string
+        && d.workoutNameSnapshot is string
+        && d.date is string
+        && d.startedAt is string
+        && d.status is string
+        && d.totalVolume is number
+        && optionalString(d, 'completedAt')
+        && optionalString(d, 'previousSessionId')
+        && optionalString(d, 'workoutNote');
+    }
+    // defaultTargetPlatform.name values ("iOS"/"macOS" are camel-cased).
+    // `serverRemindersReadyAt` (optional): builds that receive server
+    // reminders set it to this write's server time, equal to `updatedAt`.
+    // Older builds don't send it. Their merge-writes carry an existing value
+    // unchanged, which the server then treats as stale (≠ updatedAt). It is
+    // a device capability, never authorization.
+    function isValidFcmToken(tokenId, d) {
+      return tokenId.matches('^[0-9a-f]{64}$')
+        && d.keys().hasOnly(['token', 'createdAt', 'updatedAt', 'platform', 'serverRemindersReadyAt'])
+        && d.keys().hasAll(['token', 'createdAt', 'updatedAt', 'platform'])
+        && (!('serverRemindersReadyAt' in d)
+          || d.serverRemindersReadyAt == request.time
+          || (resource != null
+            && 'serverRemindersReadyAt' in resource.data
+            && d.serverRemindersReadyAt == resource.data.serverRemindersReadyAt))
+        && d.token is string
+        && d.token.size() > 0
+        && d.token.size() <= 4096
+        && d.createdAt is timestamp
+        && d.updatedAt == request.time
+        && d.platform in ['android', 'iOS', 'macOS'];
+    }
+
+    // Reminder preferences: exactly the fields the server reads
+    // (RawReminderPreferences). `timeZone` is an IANA-style name such as
+    // "Africa/Cairo", "America/Argentina/Buenos_Aires", "UTC" or
+    // "Etc/GMT+2"; the server re-validates it against its time-zone
+    // database and falls back to the default for unknown zones.
+    function isValidNotificationSettings(d) {
+      return d.keys().hasOnly(['inactivityRemindersEnabled', 'language', 'timeZone', 'updatedAt'])
+        && d.keys().hasAll(['inactivityRemindersEnabled', 'language', 'timeZone', 'updatedAt'])
+        && d.inactivityRemindersEnabled is bool
+        && d.language in ['ar', 'en']
+        && d.timeZone is string
+        && d.timeZone.size() > 0
+        && d.timeZone.size() <= 64
+        && d.timeZone.matches('^[A-Za-z][A-Za-z0-9_+-]*(/[A-Za-z0-9_+-]+){0,2}$')
+        && d.updatedAt == request.time;
+    }
+
   }
 }

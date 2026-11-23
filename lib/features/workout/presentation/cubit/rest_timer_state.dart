@@ -1,17 +1,30 @@
 part of 'rest_timer_cubit.dart';
 
-/// A rest timer is deliberately just one plain state, not a
-/// loading/loaded/error hierarchy — it holds nothing but an in-memory
-/// stopwatch value, never touches storage, and never fails.
 class RestTimerState {
-  final Duration elapsed;
+  final Duration configuredDuration;
+  final Duration remaining;
   final bool isRunning;
 
-  const RestTimerState({required this.elapsed, required this.isRunning});
+  const RestTimerState({
+    required this.configuredDuration,
+    required this.remaining,
+    required this.isRunning,
+  });
 
-  RestTimerState copyWith({Duration? elapsed, bool? isRunning}) {
+  double get progress {
+    final total = configuredDuration.inMilliseconds;
+    if (total <= 0) return 0;
+    return (remaining.inMilliseconds / total).clamp(0, 1).toDouble();
+  }
+
+  RestTimerState copyWith({
+    Duration? configuredDuration,
+    Duration? remaining,
+    bool? isRunning,
+  }) {
     return RestTimerState(
-      elapsed: elapsed ?? this.elapsed,
+      configuredDuration: configuredDuration ?? this.configuredDuration,
+      remaining: remaining ?? this.remaining,
       isRunning: isRunning ?? this.isRunning,
     );
   }

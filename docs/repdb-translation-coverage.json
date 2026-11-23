@@ -1,0 +1,4677 @@
+{
+  "dataset_commit": "66c4298af8d99b9dc397dad6699e508fb871d249",
+  "total_exercises": 701,
+  "english_instruction_steps": 3684,
+  "arabic_names_authored": 701,
+  "arabic_names_context_reviewed": 701,
+  "arabic_instructions_complete": 35,
+  "arabic_instructions_reviewed": 35,
+  "arabic_instruction_steps_reviewed": 174,
+  "arabic_tip_translation_exercises": 0,
+  "instruction_gaps": [
+    {
+      "exercise_id": "repdb:90-90-hold",
+      "name_en": "90/90 Hold",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:90-90-switch",
+      "name_en": "90/90 Switch",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:ab-wheel-rollout",
+      "name_en": "Ab Wheel Rollout",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:air-bike",
+      "name_en": "Air Bike",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:archer-pull-ups",
+      "name_en": "Archer Pull Ups",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:archer-push-ups",
+      "name_en": "Archer Push Ups",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:arnold-press",
+      "name_en": "Arnold Press",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:assisted-dips",
+      "name_en": "Machine Assisted Dips",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:assisted-pull-ups",
+      "name_en": "Assisted Pull Ups",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:back-extension",
+      "name_en": "Back Extension",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:back-lever",
+      "name_en": "Back Lever",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:balance-dome-crunch",
+      "name_en": "Balance Dome Crunch",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:balance-dome-glute-bridge",
+      "name_en": "Balance Dome Glute Bridge",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:balance-dome-plank",
+      "name_en": "Balance Dome Plank",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:balance-dome-push-up",
+      "name_en": "Balance Dome Push-Up",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:balance-dome-single-leg-stand",
+      "name_en": "Balance Dome Single-Leg Stand",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:balance-dome-squat",
+      "name_en": "Balance Dome Squat",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:balance-dome-squat-hold",
+      "name_en": "Balance Dome Squat Hold",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:balance-dome-stand",
+      "name_en": "Balance Dome Stand",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:balance-dome-step-up",
+      "name_en": "Balance Dome Step-Up",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:ball-leg-curl",
+      "name_en": "Stability Ball Leg Curl",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:ball-pike",
+      "name_en": "Ball Pike",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:band-assisted-pull-ups",
+      "name_en": "Band Assisted Pull Ups",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:band-pull-apart",
+      "name_en": "Band Pull Apart",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:banded-adductor-stretch",
+      "name_en": "Banded Adductor Stretch",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:banded-ankle-stretch",
+      "name_en": "Banded Ankle Stretch",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:banded-calf-stretch",
+      "name_en": "Banded Calf Stretch",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:banded-chest-stretch",
+      "name_en": "Banded Chest Stretch",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:banded-clamshell",
+      "name_en": "Banded Clamshell",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:banded-figure-4-stretch",
+      "name_en": "Banded Figure-4 Stretch",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:banded-fire-hydrant",
+      "name_en": "Banded Fire Hydrant",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:banded-glute-bridge",
+      "name_en": "Banded Glute Bridge",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:banded-good-morning",
+      "name_en": "Banded Good Morning",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:banded-hamstring-stretch",
+      "name_en": "Banded Hamstring Stretch",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:banded-hip-thrust",
+      "name_en": "Banded Hip Thrust",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:banded-it-band-stretch",
+      "name_en": "Banded IT-Band Stretch",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:banded-kneeling-hip-thrust",
+      "name_en": "Banded Kneeling Hip Thrust",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:banded-lat-stretch",
+      "name_en": "Banded Lat Stretch",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:banded-lateral-walk",
+      "name_en": "Banded Lateral Walk",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:banded-rear-delt-stretch",
+      "name_en": "Banded Rear Delt Stretch",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:banded-romanian-deadlift",
+      "name_en": "Banded Romanian Deadlift",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:banded-seated-hip-abduction",
+      "name_en": "Banded Seated Hip Abduction",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:banded-shoulder-stretch",
+      "name_en": "Banded Shoulder Stretch",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:banded-squat",
+      "name_en": "Banded Squat",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:banded-standing-curl",
+      "name_en": "Banded Standing Leg Curl",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:banded-standing-hip-abduction",
+      "name_en": "Banded Standing Hip Abduction",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:banded-standing-hip-adduction",
+      "name_en": "Banded Standing Hip Adduction",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:banded-sumo-walk",
+      "name_en": "Banded Sumo Walk",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:banded-terminal-knee-extension",
+      "name_en": "Banded Terminal Knee Extension",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:banded-triceps-stretch",
+      "name_en": "Banded Triceps Stretch",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:barbell-ab-rollout",
+      "name_en": "Barbell Ab Rollout",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:barbell-box-squat",
+      "name_en": "Barbell Box Squat",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:barbell-bulgarian-split-squat",
+      "name_en": "Barbell Bulgarian Split Squat",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:barbell-calf-raise",
+      "name_en": "Barbell Calf Raise",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:barbell-curl",
+      "name_en": "Barbell Curl",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:barbell-front-raise",
+      "name_en": "Barbell Front Raise",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:barbell-glute-bridge",
+      "name_en": "Barbell Glute Bridge",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:barbell-isometric-squat-hold",
+      "name_en": "Barbell Isometric Squat Hold",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:barbell-lunge",
+      "name_en": "Barbell Lunge",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:barbell-overhead-extension",
+      "name_en": "Barbell Overhead Extension",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:barbell-preacher-curl",
+      "name_en": "Barbell Preacher Curl",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:barbell-pullover",
+      "name_en": "Barbell Pullover",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:barbell-rear-delt-row",
+      "name_en": "Barbell Rear Delt Row",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:barbell-reverse-lunge",
+      "name_en": "Barbell Reverse Lunge",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:barbell-row",
+      "name_en": "Bent-Over Barbell Row",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:barbell-wrist-curl",
+      "name_en": "Barbell Wrist Curl",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:barbell-zercher-hold",
+      "name_en": "Barbell Zercher Hold",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:barbell-zercher-squat-hold",
+      "name_en": "Barbell Zercher Squat Hold",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:battle-rope-double-slam",
+      "name_en": "Battle Rope Double Slam",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:battle-ropes",
+      "name_en": "Battle Ropes",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bear-crawl",
+      "name_en": "Bear Crawl",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bear-plank-hold",
+      "name_en": "Bear Plank Hold",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:behind-the-back-barbell-shrug",
+      "name_en": "Behind the Back Barbell Shrug",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:behind-the-neck-lat-pulldown",
+      "name_en": "Behind-the-Neck Lat Pulldown",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:behind-the-neck-press",
+      "name_en": "Behind the Neck Press",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:behind-the-neck-pull-ups",
+      "name_en": "Behind-the-Neck Pull-Up",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bench-adductor-stretch",
+      "name_en": "Bench Adductor Stretch",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bench-ankle-stretch",
+      "name_en": "Bench Ankle Stretch",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bench-bulgarian-split-stretch",
+      "name_en": "Bench Bulgarian Split Stretch",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bench-calf-stretch",
+      "name_en": "Bench Calf Stretch",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bench-chest-stretch",
+      "name_en": "Bench Chest Stretch",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bench-childs-pose",
+      "name_en": "Bench Child's Pose",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bench-couch-stretch",
+      "name_en": "Bench Couch Stretch",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bench-decline-plank-hold",
+      "name_en": "Bench Decline Plank Hold",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bench-dips",
+      "name_en": "Bench Dips",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bench-figure-4-glute-stretch",
+      "name_en": "Bench Figure-4 Glute Stretch",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bench-hamstring-stretch",
+      "name_en": "Bench Hamstring Stretch",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bench-hollow-hold",
+      "name_en": "Bench Hollow Hold",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bench-lat-stretch",
+      "name_en": "Bench Lat Stretch",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bench-leg-pull-in",
+      "name_en": "Bench Leg Pull-In",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bench-pull",
+      "name_en": "Bench Pull",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bent-arm-barbell-pullover",
+      "name_en": "Bent Arm Barbell Pullover",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bent-arm-ez-bar-pullover",
+      "name_en": "Bent-Arm EZ-Bar Pullover",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bent-knee-copenhagen-raises",
+      "name_en": "Bent-Knee Copenhagen Raises",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bent-over-db-row",
+      "name_en": "Bent-Over Dumbbell Row",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bent-over-ez-bar-row",
+      "name_en": "Bent-Over EZ-Bar Row",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bicep-curl",
+      "name_en": "Dumbbell Bicep Curl",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bicycle-crunch",
+      "name_en": "Bicycle Crunch",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bird-dog",
+      "name_en": "Bird-Dog",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bird-dog-hold",
+      "name_en": "Bird Dog Hold",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:boat-pose",
+      "name_en": "Boat Pose",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bodyweight-calf-raise",
+      "name_en": "Bodyweight Calf Raise",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bodyweight-good-morning",
+      "name_en": "Bodyweight Good Morning",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bodyweight-lateral-raise",
+      "name_en": "Bodyweight Lateral Raise",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bodyweight-overhead-press",
+      "name_en": "Bodyweight Overhead Press",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bodyweight-reverse-lunge",
+      "name_en": "Bodyweight Reverse Lunge",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bodyweight-squat",
+      "name_en": "Bodyweight Squat",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:bow-pose",
+      "name_en": "Bow Pose",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:box-jump",
+      "name_en": "Box Jump",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:box-squat",
+      "name_en": "Box Squat",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:burpees",
+      "name_en": "Burpees",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:butterfly-stretch",
+      "name_en": "Butterfly Stretch",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:cable-bent-over-row",
+      "name_en": "Cable Bent-Over Row",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:cable-chest-press",
+      "name_en": "Cable Chest Press",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:cable-curl",
+      "name_en": "Cable Curl",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:cable-external-rotation",
+      "name_en": "Cable External Rotation",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:cable-front-raise",
+      "name_en": "Cable Front Raise",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:cable-hammer-curl",
+      "name_en": "Cable Hammer Curl",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:cable-kickback",
+      "name_en": "Cable Glute Kickback",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:cable-pallof-press",
+      "name_en": "Cable Pallof Press",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:cable-pull-through",
+      "name_en": "Cable Pull-Through",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:cable-tricep-kickback",
+      "name_en": "Cable Tricep Kickback",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:cable-upright-row",
+      "name_en": "Cable Upright Row",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:cable-wrist-curl",
+      "name_en": "Cable Wrist Curl",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:calf-raise-hold",
+      "name_en": "Calf Raise Hold",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:camel-pose",
+      "name_en": "Camel Pose",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:captains-chair-knee-raise",
+      "name_en": "Captain's Chair Knee Raise",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:captains-chair-leg-raise",
+      "name_en": "Captain's Chair Leg Raise",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:cat-cow",
+      "name_en": "Cat-Cow",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:cat-stretch",
+      "name_en": "Cat Stretch",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:chair-pose",
+      "name_en": "Chair Pose",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:cheat-curl",
+      "name_en": "Cheat Curl",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:chest-supported-dumbbell-shrug",
+      "name_en": "Chest Supported Dumbbell Shrug",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:chest-supported-kettlebell-row",
+      "name_en": "Chest-Supported Kettlebell Row",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:chest-supported-machine-row",
+      "name_en": "Chest-Supported Machine Row",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:chest-supported-smith-machine-row",
+      "name_en": "Chest-Supported Smith Machine Row",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:childs-pose",
+      "name_en": "Child's Pose",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:chin-tuck-hold",
+      "name_en": "Chin Tuck Hold",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:chin-ups",
+      "name_en": "Chin-Ups",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:clamshells",
+      "name_en": "Clamshells",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:clamshells-hold",
+      "name_en": "Clamshell Hold",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:clap-push-ups",
+      "name_en": "Clap Push-Ups",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:clean",
+      "name_en": "Clean",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:clean-and-jerk",
+      "name_en": "Clean and Jerk",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:close-grip-barbell-curl",
+      "name_en": "Close-Grip Barbell Curl",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:close-grip-db-bench-press",
+      "name_en": "Close-Grip Dumbbell Bench Press",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:close-grip-ez-bar-bench-press",
+      "name_en": "Close-Grip EZ-Bar Bench Press",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:close-grip-ez-bar-curl",
+      "name_en": "Close-Grip EZ-Bar Curl",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:close-grip-incline-bench",
+      "name_en": "Close-Grip Incline Bench Press",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:close-grip-lat-pulldown",
+      "name_en": "Close Grip Lat Pulldown",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:close-grip-pull-ups",
+      "name_en": "Close-Grip Pull-Ups",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:close-grip-push-ups",
+      "name_en": "Close Grip Push Ups",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:close-stance-leg-press",
+      "name_en": "Close-Stance Leg Press",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:cobra-stretch",
+      "name_en": "Cobra Stretch",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:cocoons",
+      "name_en": "Cocoons",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:commando-pull-up",
+      "name_en": "Commando Pull-Up",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:concentration-curl",
+      "name_en": "Concentration Curl",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:copenhagen-plank",
+      "name_en": "Copenhagen Plank",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:copenhagen-plank-raises",
+      "name_en": "Copenhagen Plank Raises",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:cossack-squat",
+      "name_en": "Cossack Squat",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:cow-face-pose",
+      "name_en": "Cow Face Pose",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:crab-dips",
+      "name_en": "Crab Dips",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:crescent-lunge",
+      "name_en": "Crescent Lunge",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:cross-body-crunch",
+      "name_en": "Cross-Body Crunch",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:cross-body-hammer-curl",
+      "name_en": "Cross Body Hammer Curl",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:cross-body-shoulder-stretch",
+      "name_en": "Cross-Body Shoulder Stretch",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:crow-pose",
+      "name_en": "Crow Pose",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:crunches",
+      "name_en": "Crunches",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:cycling",
+      "name_en": "Cycling",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:dancer-pose",
+      "name_en": "Dancer Pose",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:db-goblet-squat",
+      "name_en": "Dumbbell Goblet Squat",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:db-kickstand-deadlift",
+      "name_en": "Dumbbell Kickstand Deadlift",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:db-lunge",
+      "name_en": "Dumbbell Lunge",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:db-overhead-carry",
+      "name_en": "Dumbbell Overhead Carry",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:db-preacher-curl",
+      "name_en": "Dumbbell Preacher Curl",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:db-pullover",
+      "name_en": "Dumbbell Pullover",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:db-reverse-curl",
+      "name_en": "Dumbbell Reverse Curl",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:db-reverse-wrist-curl",
+      "name_en": "Dumbbell Reverse Wrist Curl",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:db-shrug",
+      "name_en": "Dumbbell Shrug",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:db-skull-crusher",
+      "name_en": "Dumbbell Skull Crusher",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:db-somersault-squat",
+      "name_en": "Dumbbell Somersault Squat",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:db-squat",
+      "name_en": "Dumbbell Squat",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:db-step-up-to-balance",
+      "name_en": "Dumbbell Step-Up to Balance",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:db-sumo-squat",
+      "name_en": "Dumbbell Sumo Squat",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:db-svend-press",
+      "name_en": "Dumbbell Svend Press",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:dead-bug",
+      "name_en": "Dead Bug",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:dead-bug-hold",
+      "name_en": "Dead Bug Hold",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:dead-hang",
+      "name_en": "Dead Hang",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:deadlift",
+      "name_en": "Barbell Deadlift",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:decline-bench-press",
+      "name_en": "Decline Bench Press",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:decline-bench-press-barbell",
+      "name_en": "Decline Barbell Bench Press",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:decline-bench-press-ez-bar",
+      "name_en": "Decline EZ-Bar Bench Press",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:decline-crunch",
+      "name_en": "Decline Crunch",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:decline-db-fly",
+      "name_en": "Decline Dumbbell Fly",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:decline-push-up",
+      "name_en": "Decline Push-Up",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:deep-squat-hold",
+      "name_en": "Deep Squat Hold",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:deficit-deadlift",
+      "name_en": "Deficit Deadlift",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:deficit-push-ups",
+      "name_en": "Deficit Push Ups",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:diamond-push-ups",
+      "name_en": "Diamond Push Ups",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:dips",
+      "name_en": "Chest Dips",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:dolphin-pose",
+      "name_en": "Dolphin Pose",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:donkey-calf-raise",
+      "name_en": "Donkey Calf Raise",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:doorway-chest-stretch",
+      "name_en": "Doorway Chest Stretch",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:double-db-kickstand-deadlift",
+      "name_en": "Double Dumbbell Kickstand Deadlift",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:double-db-overhead-carry",
+      "name_en": "Double Dumbbell Overhead Carry",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:double-kettlebell-bicep-curl",
+      "name_en": "Double Kettlebell Bicep Curl",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:double-kettlebell-clean",
+      "name_en": "Double Kettlebell Clean",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:double-kettlebell-clean-and-press",
+      "name_en": "Double Kettlebell Clean and Press",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:double-kettlebell-dead-clean",
+      "name_en": "Double Kettlebell Dead Clean",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:double-kettlebell-dead-split-snatch",
+      "name_en": "Double Kettlebell Dead Split Snatch",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:double-kettlebell-jerk",
+      "name_en": "Double Kettlebell Jerk",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:double-kettlebell-overhead-carry",
+      "name_en": "Double Kettlebell Overhead Carry",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:double-kettlebell-overhead-press",
+      "name_en": "Double Kettlebell Overhead Press",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:double-kettlebell-push-press",
+      "name_en": "Double Kettlebell Push Press",
+      "english_steps": 7,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:double-kettlebell-rear-delt-row",
+      "name_en": "Double Kettlebell Rear Delt Row",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:double-kettlebell-row",
+      "name_en": "Double Kettlebell Row",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:double-kettlebell-split-jerk",
+      "name_en": "Double Kettlebell Split Jerk",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:double-kettlebell-swing-snatch",
+      "name_en": "Double Kettlebell Swing Snatch",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:downward-dog",
+      "name_en": "Downward-Facing Dog",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:downward-dog-knee-tuck",
+      "name_en": "Downward Dog Knee Tuck",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:downward-dog-pedal",
+      "name_en": "Downward Dog Pedal",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:downward-dog-to-knee-drive",
+      "name_en": "Downward Dog to Knee Drive",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:downward-dog-to-low-lunge",
+      "name_en": "Downward Dog to Low Lunge",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:downward-dog-to-plank",
+      "name_en": "Downward Dog to Plank",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:downward-dog-to-upward-dog",
+      "name_en": "Downward Dog to Upward Dog",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:drag-curl",
+      "name_en": "Drag Curl",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:dragon-flag",
+      "name_en": "Dragon Flag",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:dumbbell-bench-pull",
+      "name_en": "Dumbbell Bench Pull",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:dumbbell-calf-raise",
+      "name_en": "Dumbbell Calf Raise",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:dumbbell-clean-and-press",
+      "name_en": "Dumbbell Clean and Press",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:dumbbell-curl-and-press",
+      "name_en": "Dumbbell Curl and Press",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:dumbbell-deadlift",
+      "name_en": "Dumbbell Deadlift",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:dumbbell-face-pull",
+      "name_en": "Dumbbell Face Pull",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:dumbbell-farmers-walk",
+      "name_en": "Dumbbell Farmer's Walk",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:dumbbell-floor-press",
+      "name_en": "Dumbbell Floor Press",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:dumbbell-front-raise",
+      "name_en": "Dumbbell Front Raise",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:dumbbell-front-squat",
+      "name_en": "Dumbbell Front Squat",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:dumbbell-hip-thrust",
+      "name_en": "Dumbbell Hip Thrust",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:dumbbell-pistol-squat",
+      "name_en": "Dumbbell Pistol Squat",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:dumbbell-push-press",
+      "name_en": "Dumbbell Push Press",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:dumbbell-reverse-fly",
+      "name_en": "Dumbbell Reverse Fly",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:dumbbell-romanian-deadlift",
+      "name_en": "Dumbbell Romanian Deadlift",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:dumbbell-side-bend",
+      "name_en": "Dumbbell Side Bend",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:dumbbell-snatch",
+      "name_en": "Dumbbell Snatch",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:dumbbell-split-squat",
+      "name_en": "Dumbbell Split Squat",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:dumbbell-tricep-extension",
+      "name_en": "Dumbbell Tricep Extension",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:dumbbell-upright-row",
+      "name_en": "Dumbbell Upright Row",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:dumbbell-windmill",
+      "name_en": "Dumbbell Windmill",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:dumbbell-wrist-curl",
+      "name_en": "Dumbbell Wrist Curl",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:eagle-pose",
+      "name_en": "Eagle Pose",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:easy-pose",
+      "name_en": "Easy Pose",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:elliptical-trainer",
+      "name_en": "Elliptical Trainer",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:extended-side-angle",
+      "name_en": "Extended Side Angle Pose",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:ez-bar-bench-press",
+      "name_en": "EZ-Bar Bench Press",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:ez-bar-front-raise",
+      "name_en": "EZ-Bar Front Raise",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:ez-bar-lying-tricep-extension",
+      "name_en": "EZ-Bar Lying Triceps Extension",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:ez-bar-overhead-extension",
+      "name_en": "EZ-Bar Overhead Tricep Extension",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:ez-bar-pullover",
+      "name_en": "EZ Bar Pullover",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:ez-bar-reverse-curl",
+      "name_en": "EZ-Bar Reverse Curl",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:ez-bar-reverse-grip-row",
+      "name_en": "EZ Bar Reverse Grip Row",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:ez-bar-romanian-deadlift",
+      "name_en": "EZ-Bar Romanian Deadlift",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:ez-bar-shrug",
+      "name_en": "EZ-Bar Shrug",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:ez-bar-spider-curl",
+      "name_en": "EZ Bar Spider Curl",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:ez-bar-upright-row",
+      "name_en": "EZ-Bar Upright Row",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:ez-bar-wrist-curl",
+      "name_en": "EZ-Bar Wrist Curl",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:face-pull",
+      "name_en": "Cable Face Pull",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:fire-hydrant",
+      "name_en": "Fire Hydrant",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:fish-pose",
+      "name_en": "Fish Pose",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:flexed-arm-hang",
+      "name_en": "Flexed Arm Hang",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:floor-ez-bar-press",
+      "name_en": "Floor EZ-Bar Press",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:floor-kettlebell-pullover",
+      "name_en": "Floor Kettlebell Pullover",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:floor-press",
+      "name_en": "Floor Press",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:flutter-kicks",
+      "name_en": "Flutter Kicks",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:frog-stretch",
+      "name_en": "Frog Stretch",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:front-lever",
+      "name_en": "Front Lever",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:front-squat",
+      "name_en": "Front Squat",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:garland-pose",
+      "name_en": "Garland Pose",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:glute-bridge",
+      "name_en": "Glute Bridge",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:glute-bridge-hold",
+      "name_en": "Glute Bridge Hold",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:glute-kickback",
+      "name_en": "Glute Kickback",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:glute-kickback-hold",
+      "name_en": "Glute Kickback Hold",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:goblet-squat",
+      "name_en": "Goblet Squat",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:good-morning",
+      "name_en": "Good Morning",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:hack-squat",
+      "name_en": "Hack Squat",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:hack-squat-calf-raise",
+      "name_en": "Hack Squat Calf Raise",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:half-kneeling-hip-flexor-rock",
+      "name_en": "Half-Kneeling Hip Flexor Rock",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:half-moon-pose",
+      "name_en": "Half Moon Pose",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:handstand-hold",
+      "name_en": "Handstand Hold",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:handstand-push-ups",
+      "name_en": "Handstand Push Ups",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:hang-clean",
+      "name_en": "Hang Clean",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:hang-power-clean",
+      "name_en": "Hang Power Clean",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:hang-snatch",
+      "name_en": "Hang Snatch",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:hanging-l-sit",
+      "name_en": "Hanging L-Sit",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:hanging-leg-raise",
+      "name_en": "Hanging Leg Raise",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:hanging-pike",
+      "name_en": "Hanging Pike",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:hanging-tuck-hold",
+      "name_en": "Hanging Tuck Hold",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:happy-baby",
+      "name_en": "Happy Baby Pose",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:head-to-knee-pose",
+      "name_en": "Head-to-Knee Pose",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:heel-elevated-squat",
+      "name_en": "Heel-Elevated Squat",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:heel-flicks",
+      "name_en": "Heel Flicks",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:heel-to-toe-walk",
+      "name_en": "Heel-to-Toe Walk",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:heel-touches",
+      "name_en": "Heel Touches",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:hero-pose",
+      "name_en": "Hero Pose",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:hex-bar-deadlift",
+      "name_en": "Hex Bar Deadlift",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:high-foot-leg-press",
+      "name_en": "High-Foot Leg Press",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:high-knees",
+      "name_en": "High Knees",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:high-plank",
+      "name_en": "High Plank",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:hip-abduction",
+      "name_en": "Machine Hip Abduction",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:hip-adduction",
+      "name_en": "Hip Adduction",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:hollow-body-hold",
+      "name_en": "Hollow Body Hold",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:horizontal-leg-press",
+      "name_en": "Horizontal Leg Press",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:human-flag",
+      "name_en": "Human Flag",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:hyperextension-hold-bench",
+      "name_en": "Hyperextension Bench Hold",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:inchworm",
+      "name_en": "Inchworm",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:incline-bench-ez-bar-press",
+      "name_en": "Incline EZ-Bar Bench Press",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:incline-dumbbell-fly",
+      "name_en": "Incline Dumbbell Fly",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:incline-hammer-curl",
+      "name_en": "Incline Hammer Curl",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:incline-plank-hold",
+      "name_en": "Incline Plank Hold",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:incline-push-ups",
+      "name_en": "Incline Push-Up",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:incline-treadmill-walk",
+      "name_en": "Incline Treadmill Walk",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:inverted-row",
+      "name_en": "Inverted Row",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:isometric-neck-side",
+      "name_en": "Isometric Neck Lateral Flexion",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:isometric-split-squat",
+      "name_en": "Isometric Split Squat",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:jackknife-sit-up",
+      "name_en": "Jackknife Sit-Up",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:jefferson-curl",
+      "name_en": "Jefferson Curl",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:jump-rope",
+      "name_en": "Jump Rope",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:jump-squat",
+      "name_en": "Jump Squat",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:jumping-jacks",
+      "name_en": "Jumping Jacks",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kb-step-up-to-balance",
+      "name_en": "Kettlebell Step-Up to Balance",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-bottoms-up-hold",
+      "name_en": "Kettlebell Bottoms-Up Hold",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-bulgarian-split-squat",
+      "name_en": "Kettlebell Bulgarian Split Squat",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-close-grip-floor-press",
+      "name_en": "Kettlebell Close-Grip Floor Press",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-concentration-curl",
+      "name_en": "Kettlebell Concentration Curl",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-curl",
+      "name_en": "Kettlebell Curl",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-curl-iso-hold",
+      "name_en": "Kettlebell Curl Iso Hold",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-deadlift",
+      "name_en": "Kettlebell Deadlift",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-farmers-walk",
+      "name_en": "Kettlebell Farmer's Walk",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-floor-press",
+      "name_en": "Kettlebell Floor Press",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-goblet-lunge",
+      "name_en": "Kettlebell Goblet Lunge",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-halo",
+      "name_en": "Kettlebell Halo",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-hammer-curl",
+      "name_en": "Kettlebell Hammer Curl",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-hip-thrust",
+      "name_en": "Kettlebell Hip Thrust",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-kickstand-deadlift",
+      "name_en": "Kettlebell Kickstand Deadlift",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-lunge-press",
+      "name_en": "Kettlebell Lunge Press",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-offset-reverse-lunge-and-press",
+      "name_en": "Kettlebell Offset Reverse Lunge and Press",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-overhead-carry",
+      "name_en": "Kettlebell Overhead Carry",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-overhead-hold",
+      "name_en": "Kettlebell Overhead Hold",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-overhead-tricep-extension",
+      "name_en": "Kettlebell Overhead Tricep Extension",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-pistol-squat",
+      "name_en": "Kettlebell Pistol Squat",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-pullover",
+      "name_en": "Kettlebell Pullover",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-rack-hold",
+      "name_en": "Kettlebell Rack Hold",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-reverse-lunge",
+      "name_en": "Kettlebell Reverse Lunge",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-reverse-wrist-curl",
+      "name_en": "Kettlebell Reverse Wrist Curl",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-rotational-lunge",
+      "name_en": "Kettlebell Rotational Lunge",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-russian-twist",
+      "name_en": "Kettlebell Russian Twist",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-shrug",
+      "name_en": "Kettlebell Shrug",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-single-leg-deadlift",
+      "name_en": "Kettlebell Single Leg Deadlift",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-skull-crusher",
+      "name_en": "Kettlebell Skull Crusher",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-squat",
+      "name_en": "Kettlebell Squat",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-sumo-deadlift",
+      "name_en": "Kettlebell Sumo Deadlift",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-sumo-high-pull",
+      "name_en": "Kettlebell Sumo High Pull",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-svend-press",
+      "name_en": "Kettlebell Svend Press",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-swing",
+      "name_en": "Kettlebell Swing",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-swing-clean",
+      "name_en": "Kettlebell Swing Clean",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-tibialis-raise",
+      "name_en": "Kettlebell Tibialis Raise",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-turkish-get-ups",
+      "name_en": "Kettlebell Turkish Get Ups",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-windmills",
+      "name_en": "Kettlebell Windmills",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kettlebell-wrist-curl",
+      "name_en": "Kettlebell Wrist Curl",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:knee-push-ups",
+      "name_en": "Knee Push Ups",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:knee-to-chest-stretch",
+      "name_en": "Knee-to-Chest Stretch",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kneeling-cable-row",
+      "name_en": "Kneeling Cable Row",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kneeling-hip-flexor-stretch",
+      "name_en": "Kneeling Hip Flexor Stretch",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:kneeling-wrist-stretch",
+      "name_en": "Kneeling Wrist Stretch",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:l-sit",
+      "name_en": "L Sit",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:landmine-press",
+      "name_en": "Landmine Press",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:landmine-single-arm-overhead-hold",
+      "name_en": "Landmine Single-Arm Overhead Hold",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:lateral-leg-swing",
+      "name_en": "Lateral Leg Swing",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:lean-back-90-90-hold",
+      "name_en": "Lean-Back 90/90 Hold",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:leg-press",
+      "name_en": "Leg Press",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:leg-swing-front-to-back",
+      "name_en": "Front-to-Back Leg Swing",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:legs-up-the-wall",
+      "name_en": "Legs-Up-the-Wall Pose",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:lizard-stretch",
+      "name_en": "Lizard Stretch",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:locust-pose",
+      "name_en": "Locust Pose",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:low-lunge",
+      "name_en": "Low Lunge",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:low-lunge-to-half-split",
+      "name_en": "Low Lunge to Half Split",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:lunge",
+      "name_en": "Lunge",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:lying-leg-raise",
+      "name_en": "Lying Leg Raise",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:lying-quad-stretch",
+      "name_en": "Lying Quad Stretch",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:lying-tricep-extension",
+      "name_en": "Lying Tricep Extension",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:machine-back-extension",
+      "name_en": "Machine Back Extension",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:machine-bicep-curl",
+      "name_en": "Machine Bicep Curl",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:machine-calf-raise",
+      "name_en": "Machine Calf Raise",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:machine-chest-fly",
+      "name_en": "Machine Chest Fly",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:machine-preacher-curl",
+      "name_en": "Machine Preacher Curl",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:machine-seated-crunch",
+      "name_en": "Machine Seated Crunch",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:machine-triceps-extension",
+      "name_en": "Machine Triceps Extension",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:medicine-ball-side-throw",
+      "name_en": "Medicine Ball Side Throw",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:medicine-ball-slam",
+      "name_en": "Medicine Ball Slam",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:mountain-climbers",
+      "name_en": "Mountain Climbers",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:mountain-pose",
+      "name_en": "Mountain Pose",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:muscle-snatch",
+      "name_en": "Muscle Snatch",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:muscle-ups",
+      "name_en": "Muscle Ups",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:neck-side-stretch",
+      "name_en": "Neck Side Stretch",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:negative-pull-ups",
+      "name_en": "Negative Pull Ups",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:neutral-grip-pull-ups",
+      "name_en": "Neutral Grip Pull Ups",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:nordic-hamstring-curl",
+      "name_en": "Nordic Hamstring Curl",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:ohp",
+      "name_en": "Barbell Overhead Press",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:one-arm-dumbbell-preacher-curl",
+      "name_en": "One Arm Dumbbell Preacher Curl",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:one-arm-dumbbell-push-press",
+      "name_en": "One-Arm Dumbbell Push Press",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:one-arm-dumbbell-shoulder-press",
+      "name_en": "One Arm Dumbbell Shoulder Press",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:one-arm-dumbbell-swing",
+      "name_en": "One-Arm Dumbbell Swing",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:one-arm-kettlebell-bicep-curl",
+      "name_en": "One Arm Kettlebell Bicep Curl",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:one-arm-kettlebell-bottoms-up-press",
+      "name_en": "One-Arm Kettlebell Bottoms-Up Press",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:one-arm-kettlebell-floor-glute-bridge-press",
+      "name_en": "One Arm Kettlebell Floor Glute Bridge Press",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:one-arm-kettlebell-floor-press",
+      "name_en": "One Arm Kettlebell Floor Press",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:one-arm-kettlebell-front-squat",
+      "name_en": "One Arm Kettlebell Front Squat",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:one-arm-kettlebell-push-press",
+      "name_en": "One Arm Kettlebell Push Press",
+      "english_steps": 7,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:one-arm-kettlebell-row",
+      "name_en": "One Arm Kettlebell Row",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:one-arm-kettlebell-shoulder-press",
+      "name_en": "One Arm Kettlebell Shoulder Press",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:one-arm-kettlebell-swing",
+      "name_en": "One Arm Kettlebell Swing",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:one-arm-kettlebell-tricep-kickback",
+      "name_en": "One-Arm Kettlebell Tricep Kickback",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:one-arm-landmine-press",
+      "name_en": "One-Arm Landmine Press",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:one-arm-lat-pulldown",
+      "name_en": "One-Arm Lat Pulldown",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:one-arm-seated-cable-row",
+      "name_en": "One-Arm Seated Cable Row",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:one-arm-single-leg-dumbbell-romanian-deadlift",
+      "name_en": "One-Arm Single-Leg Dumbbell Romanian Deadlift",
+      "english_steps": 7,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:one-arm-single-leg-kettlebell-romanian-deadlift",
+      "name_en": "One-Arm Single-Leg Kettlebell Romanian Deadlift",
+      "english_steps": 7,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:overhead-squat",
+      "name_en": "Overhead Squat",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:overhead-tricep-extension",
+      "name_en": "Overhead Tricep Extension",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:overhead-triceps-stretch",
+      "name_en": "Overhead Triceps Stretch",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:pause-deadlift",
+      "name_en": "Pause Deadlift",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:pause-pull-up",
+      "name_en": "Pause Pull-Up",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:pause-squat",
+      "name_en": "Pause Squat",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:paused-bench-press",
+      "name_en": "Paused Bench Press",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:paused-incline-bench-press",
+      "name_en": "Paused Incline Bench Press",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:paused-ohp",
+      "name_en": "Paused Overhead Press",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:pendlay-row",
+      "name_en": "Pendlay Row",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:pigeon-stretch",
+      "name_en": "Pigeon Stretch",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:pike-push-ups",
+      "name_en": "Pike Push Ups",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:pilates-kneeling-side-kick",
+      "name_en": "Pilates Kneeling Side Kick",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:pilates-leg-pull-back",
+      "name_en": "Pilates Leg Pull Back",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:pilates-leg-pull-front",
+      "name_en": "Pilates Leg Pull Front",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:pilates-roll-down",
+      "name_en": "Pilates Roll Down",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:pilates-roll-over",
+      "name_en": "Pilates Roll Over",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:pilates-saw",
+      "name_en": "Pilates Saw",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:pilates-side-bend",
+      "name_en": "Pilates Side Bend",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:pilates-spine-stretch-forward",
+      "name_en": "Pilates Spine Stretch Forward",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:pilates-spine-twist",
+      "name_en": "Pilates Spine Twist",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:pistol-squat",
+      "name_en": "Pistol Squat",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:planche",
+      "name_en": "Planche",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:planche-lean-floor",
+      "name_en": "Planche Lean",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:plank",
+      "name_en": "Plank",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:plank-knee-tuck",
+      "name_en": "Plank Knee Tuck",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:plate-loaded-donkey-calf-raise",
+      "name_en": "Plate-Loaded Donkey Calf Raise",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:plate-loaded-glute-drive",
+      "name_en": "Plate-Loaded Glute Drive",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:plate-loaded-lateral-raise",
+      "name_en": "Plate-Loaded Lateral Raise",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:plate-loaded-seated-dip-machine",
+      "name_en": "Plate-Loaded Seated Dip Machine",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:plate-loaded-shrug",
+      "name_en": "Plate-Loaded Shrug",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:plate-pinch",
+      "name_en": "Plate Pinch",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:plate-pullover",
+      "name_en": "Plate Pullover",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:plow-pose",
+      "name_en": "Plow Pose",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:plyo-lunge",
+      "name_en": "Plyo Lunge",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:plyo-push-up",
+      "name_en": "Plyo Push-Up",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:preacher-curl",
+      "name_en": "Preacher Curl",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:preacher-hammer-curl",
+      "name_en": "Preacher Hammer Curl",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:pseudo-planche-push-ups",
+      "name_en": "Pseudo Planche Push Ups",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:pull-up",
+      "name_en": "Pull-Up",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:puppy-pose",
+      "name_en": "Puppy Pose",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:push-jerk",
+      "name_en": "Push Jerk",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:push-press",
+      "name_en": "Push Press",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:push-up",
+      "name_en": "Push-Up",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:pyramid-pose",
+      "name_en": "Pyramid Pose",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:rack-pull",
+      "name_en": "Rack Pull",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:rear-delt-fly",
+      "name_en": "Rear Delt Fly",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:reclined-butterfly",
+      "name_en": "Reclined Butterfly",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:renegade-row",
+      "name_en": "Renegade Row",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:reverse-curl",
+      "name_en": "Reverse Curl",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:reverse-grip-bent-over-row",
+      "name_en": "Reverse Grip Bent Over Row",
+      "english_steps": 7,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:reverse-grip-lat-pulldown",
+      "name_en": "Reverse Grip Lat Pulldown",
+      "english_steps": 7,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:reverse-lunge",
+      "name_en": "Reverse Lunge",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:reverse-nordic-curl",
+      "name_en": "Reverse Nordic Curl",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:reverse-plank",
+      "name_en": "Reverse Plank",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:reverse-plank-dips",
+      "name_en": "Reverse Plank Dips",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:reverse-tabletop-hip-pulses",
+      "name_en": "Reverse Tabletop Hip Pulses",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:reverse-tabletop-hold",
+      "name_en": "Reverse Tabletop Hold",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:revolved-chair-pose",
+      "name_en": "Revolved Chair Pose",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:revolved-crescent-lunge",
+      "name_en": "Revolved Crescent Lunge",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:ring-dead-hang",
+      "name_en": "Ring Dead Hang",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:ring-dips",
+      "name_en": "Ring Dips",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:ring-face-pull",
+      "name_en": "Ring Face Pull",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:ring-l-sit",
+      "name_en": "Ring L-Sit",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:ring-muscle-up",
+      "name_en": "Ring Muscle-Up",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:ring-plank",
+      "name_en": "Ring Plank",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:ring-push-up",
+      "name_en": "Ring Push-Up",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:ring-row",
+      "name_en": "Ring Row",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:ring-support-hold",
+      "name_en": "Ring Support Hold",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:rings-inverted-row",
+      "name_en": "Rings Inverted Row",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:rope-climb",
+      "name_en": "Rope Climb",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:rowing-machine",
+      "name_en": "Rowing Machine",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:running",
+      "name_en": "Running",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:russian-twist",
+      "name_en": "Russian Twist",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:sandbag-carry",
+      "name_en": "Sandbag Carry",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:savasana",
+      "name_en": "Corpse Pose",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:scapular-pull-ups",
+      "name_en": "Scapular Pull Ups",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:scissor-kicks",
+      "name_en": "Scissor Kicks",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:seated-barbell-overhead-press",
+      "name_en": "Seated Barbell Overhead Press",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:seated-db-press",
+      "name_en": "Seated Dumbbell Shoulder Press",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:seated-dip-machine",
+      "name_en": "Seated Dip Machine",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:seated-dumbbell-curl",
+      "name_en": "Seated Dumbbell Curl",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:seated-dumbbell-lateral-raise",
+      "name_en": "Seated Dumbbell Lateral Raise",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:seated-dumbbell-tricep-extension",
+      "name_en": "Seated Dumbbell Tricep Extension",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:seated-forward-fold",
+      "name_en": "Seated Forward Fold",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:seated-smith-machine-shoulder-press",
+      "name_en": "Seated Smith Machine Shoulder Press",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:seated-spinal-twist",
+      "name_en": "Seated Spinal Twist",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:seated-straddle-stretch",
+      "name_en": "Seated Straddle Stretch",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:shrimp-squat",
+      "name_en": "Shrimp Squat",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:shrug",
+      "name_en": "Barbell Shrug",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:side-lunge",
+      "name_en": "Side Lunge",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:side-lying-hip-abduction",
+      "name_en": "Side-Lying Hip Abduction",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:side-lying-hip-abduction-hold",
+      "name_en": "Side-Lying Hip Abduction Hold",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:side-lying-hip-adduction",
+      "name_en": "Side Lying Hip Adduction",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:side-lying-hip-adduction-hold",
+      "name_en": "Side-Lying Hip Adduction Hold",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:side-lying-lateral-raise",
+      "name_en": "Side-Lying Lateral Raise",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:side-plank",
+      "name_en": "Side Plank",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:side-plank-leg-lift",
+      "name_en": "Side Plank with Leg Lift",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:side-plank-leg-lift-hold",
+      "name_en": "Side Plank Leg Lift Hold",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:single-arm-chest-supported-dumbbell-row",
+      "name_en": "Single-Arm Chest-Supported Dumbbell Row",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:single-arm-db-row",
+      "name_en": "Single-Arm Dumbbell Row",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:single-arm-dumbbell-bench-press",
+      "name_en": "Single Arm Dumbbell Bench Press",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:single-arm-dumbbell-overhead-tricep-extension",
+      "name_en": "Single-Arm Dumbbell Overhead Tricep Extension",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:single-arm-hammer-curl",
+      "name_en": "Single-Arm Hammer Curl",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:single-arm-machine-shoulder-press",
+      "name_en": "Single-Arm Machine Shoulder Press",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:single-arm-plank",
+      "name_en": "Single-Arm Plank",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:single-arm-plate-loaded-lateral-raise",
+      "name_en": "Single-Arm Plate-Loaded Lateral Raise",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:single-arm-tricep-pushdown",
+      "name_en": "Single Arm Tricep Pushdown",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:single-db-svend-press",
+      "name_en": "Single Dumbbell Svend Press",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:single-leg-box-squat",
+      "name_en": "Single-Leg Box Squat",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:single-leg-calf-raise",
+      "name_en": "Single Leg Calf Raise",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:single-leg-extension",
+      "name_en": "Single Leg Extension",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:single-leg-glute-bridge",
+      "name_en": "Single Leg Glute Bridge",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:single-leg-glute-bridge-hold",
+      "name_en": "Single-Leg Glute Bridge Hold",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:single-leg-hip-thrust",
+      "name_en": "Single-Leg Hip Thrust",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:single-leg-hip-thrust-hold",
+      "name_en": "Single-Leg Hip Thrust Hold",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:single-leg-lying-leg-curl",
+      "name_en": "Single Leg Lying Leg Curl",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:single-leg-press",
+      "name_en": "Single Leg Press",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:single-leg-rdl-hold",
+      "name_en": "Single Leg RDL Hold",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:single-leg-romanian-deadlift",
+      "name_en": "Single Leg Romanian Deadlift",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:sit-ups",
+      "name_en": "Sit-Ups",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:six-inch-hold",
+      "name_en": "Six Inch Hold",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:ski-erg",
+      "name_en": "SkiErg",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:skull-crusher",
+      "name_en": "Skull Crusher",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:sled-push",
+      "name_en": "Sled Push",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:sled-row",
+      "name_en": "Sled Row",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:smith-machine-bench-press",
+      "name_en": "Smith Machine Bench Press",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:smith-machine-bent-over-row",
+      "name_en": "Smith Machine Bent Over Row",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:smith-machine-bulgarian-split",
+      "name_en": "Smith Machine Bulgarian Split Squat",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:smith-machine-calf-raise",
+      "name_en": "Smith Machine Calf Raise",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:smith-machine-decline-bench-press",
+      "name_en": "Smith Machine Decline Bench Press",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:smith-machine-front-squat",
+      "name_en": "Smith Machine Front Squat",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:smith-machine-good-morning",
+      "name_en": "Smith Machine Good Morning",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:smith-machine-hip-thrust",
+      "name_en": "Smith Machine Hip Thrust",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:smith-machine-incline-bench-press",
+      "name_en": "Smith Machine Incline Bench Press",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:smith-machine-rdl",
+      "name_en": "Smith Machine Romanian Deadlift",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:smith-machine-reverse-grip-bent-over-row",
+      "name_en": "Smith Machine Reverse Grip Bent Over Row",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:smith-machine-reverse-lunge",
+      "name_en": "Smith Machine Reverse Lunge",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:smith-machine-shoulder-press",
+      "name_en": "Smith Machine Shoulder Press",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:smith-machine-shrug",
+      "name_en": "Smith Machine Shrug",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:smith-machine-split-squat",
+      "name_en": "Smith Machine Split Squat",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:smith-machine-squat",
+      "name_en": "Smith Machine Squat",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:smith-machine-upright-row",
+      "name_en": "Smith Machine Upright Row",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:snatch",
+      "name_en": "Snatch",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:sphinx-pose",
+      "name_en": "Sphinx Pose",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:spider-curl",
+      "name_en": "Spider Curl",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:spiderman-push-up",
+      "name_en": "Spiderman Push-Up",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:split-jerk",
+      "name_en": "Split Jerk",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:split-squat",
+      "name_en": "Split Squat",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:spoto-press",
+      "name_en": "Spoto Press",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:squat-hold",
+      "name_en": "Squat Hold",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:squat-pulse",
+      "name_en": "Squat Pulse",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:stability-ball-hip-bridge",
+      "name_en": "Stability Ball Hip Bridge",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:stability-ball-knee-tuck",
+      "name_en": "Stability Ball Knee Tuck",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:stability-ball-push-up",
+      "name_en": "Stability Ball Push-Up",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:stability-ball-push-up-hands-on-ball",
+      "name_en": "Stability Ball Push-Up (Hands on Ball)",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:stability-ball-wall-squat",
+      "name_en": "Stability Ball Wall Squat",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:stair-climber",
+      "name_en": "Stair Climber",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:standing-adductor-stretch",
+      "name_en": "Standing Adductor Stretch",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:standing-calf-stretch",
+      "name_en": "Standing Calf Stretch",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:standing-forward-fold",
+      "name_en": "Standing Forward Fold",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:standing-forward-fold-to-half-lift",
+      "name_en": "Standing Forward Fold to Half Lift",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:standing-hip-abduction",
+      "name_en": "Standing Hip Abduction",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:standing-quad-stretch",
+      "name_en": "Standing Quad Stretch",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:standing-side-bend",
+      "name_en": "Standing Side Bend",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:standing-side-bend-flow",
+      "name_en": "Standing Side Bend Flow",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:standing-split",
+      "name_en": "Standing Split",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:stationary-bike",
+      "name_en": "Stationary Bike",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:step-up-to-balance",
+      "name_en": "Step-Up to Balance",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:step-ups",
+      "name_en": "Step Ups",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:stiff-leg-deadlift",
+      "name_en": "Stiff Leg Deadlift",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:straight-bar-cable-front-raise",
+      "name_en": "Straight-Bar Cable Front Raise",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:straight-bar-dips",
+      "name_en": "Straight Bar Dips",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:strict-curl",
+      "name_en": "Strict Curl",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:suitcase-carry",
+      "name_en": "Suitcase Carry",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:sumo-deadlift",
+      "name_en": "Sumo Deadlift",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:sumo-squat",
+      "name_en": "Sumo Squat",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:superman",
+      "name_en": "Superman",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:supine-spinal-twist",
+      "name_en": "Supine Spinal Twist",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:supine-windshield-wipers",
+      "name_en": "Supine Windshield Wipers",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:supported-shoulderstand",
+      "name_en": "Supported Shoulderstand",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:supported-single-leg-stand",
+      "name_en": "Supported Single-Leg Stand",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:svend-press",
+      "name_en": "Svend Press",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:t-bar-row",
+      "name_en": "T-Bar Row",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:tandem-stance",
+      "name_en": "Tandem Stance",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:thoracic-bridge",
+      "name_en": "Thoracic Bridge",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:thread-the-needle",
+      "name_en": "Thread the Needle",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:thread-the-needle-flow",
+      "name_en": "Thread the Needle Flow",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:three-legged-dog",
+      "name_en": "Three-Legged Downward Dog",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:thruster",
+      "name_en": "Thruster",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:toes-to-bar",
+      "name_en": "Toes to Bar",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:torso-twists",
+      "name_en": "Torso Twists",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:treadmill-running",
+      "name_en": "Treadmill Running",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:tree-pose",
+      "name_en": "Tree Pose",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:triangle-pose",
+      "name_en": "Triangle Pose",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:tricep-kickback",
+      "name_en": "Dumbbell Tricep Kickback",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:tricep-pushdown",
+      "name_en": "Cable Tricep Pushdown",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:triceps-dip-hold-bars",
+      "name_en": "Triceps Dip Hold on Dip Bars",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:triceps-dip-hold-bench",
+      "name_en": "Triceps Dip Hold on Bench",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:trx-bicep-curl",
+      "name_en": "TRX Bicep Curl",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:trx-chest-press",
+      "name_en": "TRX Chest Press",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:trx-face-pull",
+      "name_en": "TRX Face Pull",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:trx-hamstring-curl",
+      "name_en": "TRX Hamstring Curl",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:trx-lunge",
+      "name_en": "TRX Lunge",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:trx-pistol-squat",
+      "name_en": "TRX Pistol Squat",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:trx-plank",
+      "name_en": "TRX Plank",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:trx-row",
+      "name_en": "TRX Row",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:trx-side-plank",
+      "name_en": "TRX Side Plank",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:trx-squat",
+      "name_en": "TRX Squat",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:trx-tricep-extension",
+      "name_en": "TRX Triceps Extension",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:trx-y-fly",
+      "name_en": "TRX Y-Fly",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:upright-row",
+      "name_en": "Barbell Upright Row",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:upward-dog",
+      "name_en": "Upward-Facing Dog",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:v-bar-lat-pulldown",
+      "name_en": "V-Bar Lat Pulldown",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:v-bar-tricep-pushdown",
+      "name_en": "V-Bar Tricep Pushdown",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:v-sit",
+      "name_en": "V-Sit",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:v-ups",
+      "name_en": "V Ups",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:walking",
+      "name_en": "Walking",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:walking-lunge",
+      "name_en": "Walking Lunge",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:wall-ball",
+      "name_en": "Wall Ball",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:wall-hamstring-stretch",
+      "name_en": "Wall Hamstring Stretch",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:wall-push-ups",
+      "name_en": "Wall Push Ups",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:wall-sit",
+      "name_en": "Wall Sit",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:warrior-one",
+      "name_en": "Warrior I",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:warrior-three",
+      "name_en": "Warrior III",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:warrior-two",
+      "name_en": "Warrior II",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:weighted-dips",
+      "name_en": "Weighted Dips",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:weighted-pull-up",
+      "name_en": "Weighted Pull-Up",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:weighted-wall-crunch",
+      "name_en": "Weighted Wall Crunch",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:wide-grip-bench-press",
+      "name_en": "Wide-Grip Bench Press",
+      "english_steps": 4,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:wide-grip-pull-ups",
+      "name_en": "Wide Grip Pull Ups",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:wide-grip-push-ups",
+      "name_en": "Wide Grip Push Ups",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:wide-grip-seated-cable-row",
+      "name_en": "Wide Grip Seated Cable Row",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:wide-legged-forward-fold",
+      "name_en": "Wide-Legged Forward Fold",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:wide-stance-leg-press",
+      "name_en": "Wide-Stance Leg Press",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:worlds-greatest-stretch",
+      "name_en": "World's Greatest Stretch",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:wrist-curl",
+      "name_en": "Bilateral Dumbbell Wrist Curl",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:wrist-roller",
+      "name_en": "Wrist Roller",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:zercher-squat",
+      "name_en": "Zercher Squat",
+      "english_steps": 6,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    },
+    {
+      "exercise_id": "repdb:zottman-curl",
+      "name_en": "Zottman Curl",
+      "english_steps": 5,
+      "arabic_steps": 0,
+      "status": "instructions_pending_review"
+    }
+  ],
+  "duplicate_arabic_names": {},
+  "complete": false
+}

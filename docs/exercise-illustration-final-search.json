@@ -1,0 +1,882 @@
+{
+  "reviewedOn": "2026-11-02",
+  "scope": "One final bounded public search per remaining image gap (36 queries), plus movement-reference and promising-result inspection. Search results are discovery evidence, not reuse permission.",
+  "additionalAssetsApproved": 0,
+  "outcomes": [
+    {
+      "url": "https://commons.wikimedia.org/wiki/File:Power_Clean_Ico.png",
+      "decision": "Rejected: CC BY-SA 4.0, but description identifies an Android cleaner app icon, not a weightlifting exercise. No download."
+    },
+    {
+      "url": "https://doi.org/10.3389/fphys.2026.1750722",
+      "decision": "Movement reference only: licensed research figure combines experimental positions/annotations, not a clean isolated exercise thumbnail; not imported. Use behind-body shoulder position as an authoring reference, not a copied figure."
+    },
+    {
+      "url": "https://www.nsca.com/education/articles/kinetic-select/power-clean-from-hang/",
+      "decision": "Text movement reference only; page credits Human Kinetics for text/images. No reusable image grant established; no image copied."
+    },
+    {
+      "url": "https://www.catalystathletics.com/exercise/481/Turkish-Get-up/",
+      "decision": "Text movement reference only; page reserves content copyright. No image/video copied."
+    }
+  ],
+  "rounds": [
+    {
+      "group": 1,
+      "queries": [
+        "\"High-to-Low Cable Fly\" \"illustration\" \"license\"",
+        "\"Low-to-High Cable Fly\" \"illustration\" \"license\"",
+        "\"Single Arm Cable Chest Fly\" \"illustration\" \"Creative Commons\"",
+        "\"Single Arm Lat Pulldown\" \"illustration\" \"Creative Commons\""
+      ],
+      "pages": [
+        {
+          "title": "Workout Explorer: Weights, Cables & Calisthenics | Club 1000 Plus",
+          "url": "https://club1000plus.com/workout-explorer.html"
+        },
+        {
+          "title": "Cable Exercises for Back Workouts | PDF | Anatomical Terms Of Motion | Weight Training",
+          "url": "https://www.scribd.com/document/954331593/Exercises"
+        },
+        {
+          "title": "Frontiers | Aging strong: an N = 1 mixed-methods study of long-term supervised high-intensity resistance training in a 71-year-old woman",
+          "url": "https://www.frontiersin.org/journals/aging/articles/10.3389/fragi.2026.1844227/full"
+        },
+        {
+          "title": "(PDF) Growth, Somatic Maturation and Their Impact on Physical Health and Sports Performance",
+          "url": "https://www.researchgate.net/publication/358190219_Growth_Somatic_Maturation_and_Their_Impact_on_Physical_Health_and_Sports_Performance"
+        },
+        {
+          "title": "(PDF) Fish ecological studies in assessing ecological integrity of rivers: Application in rivers of Nepal.",
+          "url": "https://www.researchgate.net/publication/369717768_Fish_ecological_studies_in_assessing_ecological_integrity_of_rivers_Application_in_rivers_of_Nepal"
+        }
+      ]
+    },
+    {
+      "group": 2,
+      "queries": [
+        "\"Wide Grip Seated Cable Row\" \"illustration\" \"license\"",
+        "\"Pendlay Row\" \"illustration\" \"CC BY\"",
+        "\"Single Arm Machine Row\" \"illustration\" \"license\"",
+        "\"Machine Pullover\" \"illustration\" \"Creative Commons\""
+      ],
+      "pages": [
+        {
+          "title": "Pendlay Row frames — Workout Guide",
+          "url": "https://bryllim.github.io/workout-guide/exercises/pendlay-row/"
+        },
+        {
+          "title": "Workout Explorer: Weights, Cables & Calisthenics | Club 1000 Plus",
+          "url": "https://club1000plus.com/workout-explorer.html"
+        },
+        {
+          "title": "Pendlay Row: How to Do It, Muscles Worked & Mistakes",
+          "url": "https://backmaxx.app/exercises/pendlay-row/"
+        },
+        {
+          "title": "Pendlay Row: muscles worked & 12 alternatives · Overachiever",
+          "url": "https://overachiever.eu/exercises/pendlay-row/"
+        },
+        {
+          "title": "Terminology - University of Fashion",
+          "url": "https://www.universityoffashion.com/resources/terminology/"
+        },
+        {
+          "title": "Inverted Row: muscles worked & 12 alternatives · Overachiever",
+          "url": "https://overachiever.eu/exercises/inverted-row/"
+        },
+        {
+          "title": "Chest-Supported Dumbbell Row: muscles worked & 12 alternatives · Overachiever",
+          "url": "https://overachiever.eu/exercises/chest-supported-dumbbell-row/"
+        },
+        {
+          "title": "Band Bent-Over Row: muscles worked & 12 alternatives · Overachiever",
+          "url": "https://overachiever.eu/exercises/band-bent-over-row/"
+        },
+        {
+          "title": "Barbell Row: Form, Muscles Worked & Common Mistakes",
+          "url": "https://backmaxx.app/exercises/barbell-row/"
+        },
+        {
+          "title": "The Implementation of Velocity-Based Training Paradigm for Team Sports: Framework, Technologies, Practical Recommendations and Challenges - PMC",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8066834/"
+        },
+        {
+          "title": "T-Bar Row: How to Do It, Muscles Worked & Mistakes",
+          "url": "https://backmaxx.app/exercises/t-bar-row/"
+        },
+        {
+          "title": "Barbell Upright Row — exercise · Overachiever",
+          "url": "https://overachiever.eu/exercises/barbell-upright-row/"
+        }
+      ]
+    },
+    {
+      "group": 3,
+      "queries": [
+        "\"Cable Pullover\" \"illustration\" \"CC BY\"",
+        "\"Seated Dumbbell Lateral Raise\" \"illustration\" \"license\"",
+        "\"Bayesian Cable Curl\" \"illustration\" \"license\"",
+        "\"Spider Curl\" \"dumbbell\" \"illustration\" \"license\""
+      ],
+      "pages": [
+        {
+          "title": "Seated Dumbbell Lateral Raise — muscles worked | RepDB",
+          "url": "https://exercise-dataset.com/exercise/seated-dumbbell-lateral-raise/"
+        },
+        {
+          "title": "Workout Explorer: Weights, Cables & Calisthenics | Club 1000 Plus",
+          "url": "https://club1000plus.com/workout-explorer.html"
+        },
+        {
+          "title": "Incline Straight-Arm Cable Pullover: how to do it, muscles worked and form tips | TVIKY",
+          "url": "https://tviky.com/en/exercises/incline-straight-arm-cable-pullover/"
+        },
+        {
+          "title": "Podnoszenia hantle Vector Images | DepositPhotos",
+          "url": "https://depositphotos.com/vectors/podnoszenia-hantle.html"
+        },
+        {
+          "title": "Encyclopedia of Bodybuilding the complete A-Z book on muscule building - Morley W. - 2008",
+          "url": "https://djvu.online/file/bkCYTQy60BAzx"
+        },
+        {
+          "title": "Burn fat Vector Images | DepositPhotos",
+          "url": "https://depositphotos.com/vectors/burn-fat.html"
+        },
+        {
+          "title": "Shoulder stretch Vector Images | DepositPhotos",
+          "url": "https://depositphotos.com/vectors/shoulder-stretch.html"
+        },
+        {
+          "title": "Stuart McRobert - Build Muscle, Lose Fat, Look Great, 2nd Edition (2013, CS Publishing LTD) | PDF",
+          "url": "https://www.scribd.com/document/559061625/Stuart-McRobert-Build-Muscle-Lose-Fat-Look-Great-2nd-Edition-2013-CS-Publishing-Ltd-Libgen-lc-1"
+        },
+        {
+          "title": "Trapezius muscle Vector Images | DepositPhotos",
+          "url": "https://depositphotos.com/vectors/trapezius-muscle.html"
+        },
+        {
+          "title": "12-week Fat Loss Ebook: Women's Fitness & Gym Guide (canva Template) - Etsy",
+          "url": "https://www.etsy.com/listing/1792518438/12-week-fat-loss-ebook-womens-fitness"
+        },
+        {
+          "title": "Quadriceps muscle Vector Images | DepositPhotos",
+          "url": "https://depositphotos.com/vectors/quadriceps-muscle.html"
+        },
+        {
+          "title": "Frontiers | The effects of shoulder extension angle on elbow flexor hypertrophy in the cable curl exercise",
+          "url": "https://doi.org/10.3389/fphys.2026.1750722"
+        }
+      ]
+    },
+    {
+      "group": 4,
+      "queries": [
+        "\"Horizontal Leg Press\" illustration \"license\"",
+        "\"Single Leg Press\" illustration \"Creative Commons\"",
+        "\"Single Leg Extension\" illustration \"Creative Commons\"",
+        "\"Reverse Lunge\" bodyweight illustration \"CC BY\""
+      ],
+      "pages": [
+        {
+          "title": "Bodyweight Reverse Lunge in 3D: muscles worked and how it moves | CrossFitOS",
+          "url": "https://crossfitos.com/exercises/bodyweight-reverse-lunge"
+        },
+        {
+          "title": "Martjn/calisthenics_exercises · Datasets at Hugging Face",
+          "url": "https://huggingface.co/datasets/Martjn/calisthenics_exercises"
+        },
+        {
+          "title": "Bodyweight Reverse Lunge: muscles worked & 12 alternatives · Overachiever",
+          "url": "https://overachiever.eu/exercises/bodyweight-reverse-lunge/"
+        },
+        {
+          "title": "RP-1897: Reverse Lunge: Rear-Foot Cross-Over and a Narrowed Base — Open Reference Plate",
+          "url": "https://mmsxauthority.org/plates/rp-1897/"
+        },
+        {
+          "title": "Kettlebell suitcase reverse lunge – technique and muscles worked | Arnoldek",
+          "url": "https://arnoldek.com/en/exercises/kb_reverse_lunge"
+        },
+        {
+          "title": "Animated Flat Design Leg Press Machine for Fitness Content, Elements Motion Graphics ft. fitness & exercise - Envato",
+          "url": "https://elements.envato.com/leg-press-machine-in-action-line-2d-object-animati-QJVKVHX"
+        },
+        {
+          "title": "Exercise Technique: Reverse Lunge Into a Step-Up",
+          "url": "https://openalex.org/W2016523486"
+        },
+        {
+          "title": "The Reverse Lunge: A Descriptive Electromyographic Study",
+          "url": "https://www.mdpi.com/2076-3417/14/24/11480"
+        },
+        {
+          "title": "Horizontal Leg Press Female | Exercise Animatic",
+          "url": "https://www.exerciseanimatic.com/product-page/horizontal-leg-press-female"
+        },
+        {
+          "title": "Single Leg Press",
+          "url": "https://www.med.umich.edu/1libr/PMR/ACLReconstruction/SingleLegPress.pdf"
+        },
+        {
+          "title": "Inter-Device Reliability of a Three-Dimensional Markerless Motion Capture System Quantifying Elementary Movement Patterns in Humans - PMC",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10204374/"
+        },
+        {
+          "title": "Man Doing Sled Horizontal Leg Press Exercise For Legs Animation - Download GIF, Lottie JSON for Gym Equipment | IconScout",
+          "url": "https://iconscout.com/lottie-animation/man-doing-sled-horizontal-leg-press-exercise-for-legs-animation_9729961"
+        },
+        {
+          "title": "Machine Horizontal Leg Press 3D Animation | MoveKit",
+          "url": "https://movekit.com/exercises/machine-horizontal-leg-press"
+        },
+        {
+          "title": "Course Overview",
+          "url": "https://cheapceus.nyc3.digitaloceanspaces.com/production/uploads/course_documents/387/29dcb3967429118b1aa7d16e20f2fb18.pdf"
+        },
+        {
+          "title": "# INDICATORS OF NEUROMUSCULAR FATIGUE IN LEG PRESS EXERCISE IN MEN AND WOMEN",
+          "url": "https://www.scielo.br/pdf/rbme/v26n3/1806-9940-rbme-26-03-0243.pdf"
+        },
+        {
+          "title": "Original Article",
+          "url": "https://pdfs.semanticscholar.org/2937/e9f3fcab630c4c451f5213898e4251754ba8.pdf"
+        },
+        {
+          "title": "Effect of a Mult",
+          "url": "https://www.preprints.org/frontend/manuscript/2f31a11ef08ccd198b2c8e7cf8845720/download_pub"
+        },
+        {
+          "title": "International  Journal  of",
+          "url": "https://pdfs.semanticscholar.org/2015/fcb4f4af8b73eba1b59ab2cf74c68f6e7664.pdf"
+        }
+      ]
+    },
+    {
+      "group": 5,
+      "queries": [
+        "\"Step Up\" bodyweight illustration \"CC BY\"",
+        "\"Cyclist Squat\" bodyweight illustration \"license\"",
+        "\"Stiff Leg Deadlift\" illustration \"CC BY\"",
+        "\"Glute Ham Raise\" GHD illustration \"CC BY\""
+      ],
+      "pages": [
+        {
+          "title": "International Journal of Strength and Conditioning. 2024",
+          "url": "https://journal.iusca.org/index.php/Journal/article/download/284/409"
+        },
+        {
+          "title": "Step-Up frames — Workout Guide",
+          "url": "https://bryllim.github.io/workout-guide/exercises/step-up/"
+        },
+        {
+          "title": "PUBLICATION DATE: FIRST EDITION JUNE 2020",
+          "url": "https://higherlogicdownload.s3.amazonaws.com/APS/2c0c9f07-6428-4f8e-b9aa-a76098a80cd0/UploadedImages/StepUp-EverdayActionsGuide-final.pdf"
+        },
+        {
+          "title": "参考资料与动作图源｜科学跑步 · 重庆邮电大学跑步爱好者协会",
+          "url": "https://cqupt.yhan.fun/science/references.html"
+        },
+        {
+          "title": "Strengthening Your Posterior Chain",
+          "url": "https://boxlifemagazine.com/strengthening-your-posterior-chain/"
+        },
+        {
+          "title": "Step Up! Tackling the Burden of Insufficient Physical Activity in Europe (EN)",
+          "url": "https://www.oecd.org/content/dam/oecd/en/publications/reports/2023/02/step-up-tackling-the-burden-of-insufficient-physical-activity-in-europe_20fba4c9/500a9601-en.pdf"
+        },
+        {
+          "title": "Lower Limb Muscles’ Activation during Ascending and Descending a Single Step-Up Movement: Comparison between In water and On land Exercise at Different Step Cadences in Young Injury-Free Adults",
+          "url": "https://www.mdpi.com/2227-9032/11/3/441/pdf?version=1675433780"
+        },
+        {
+          "title": "RP-1068: Climbing stairs: single-leg strength in daily life — Open Reference plate",
+          "url": "https://mmsxauthority.org/plates/rp-1068/"
+        },
+        {
+          "title": "Glute Ham Raise: Functional Fitness Movement | WodWiz",
+          "url": "https://www.wodwiz.com/movements/glute-ham-raise"
+        },
+        {
+          "title": "STEP UP STEP DOWN STEP ALL AROUND IDK WHAT THIS MEANS",
+          "url": "https://www.colourlovers.com/pattern/6058184/STEP-UP-STEP-DOWN-STEP-ALL-AROUND-IDK-WHAT-THIS-MEANS"
+        },
+        {
+          "title": "File:Step up single leg balance with bicep curl using dumbbells 3.svg - Wikimedia Commons",
+          "url": "https://commons.wikimedia.org/wiki/File%3AStep_up_single_leg_balance_with_bicep_curl_using_dumbbells_3.svg"
+        },
+        {
+          "title": "Exercise Technique: Reverse Lunge Into a Step-Up",
+          "url": "https://openalex.org/W2016523486"
+        },
+        {
+          "title": "Semaglutide from Bench to Bedside: The Experimental Journey Towards a Transformative Therapy for Diabetes, Obesity and Metabolic Liver Disorders",
+          "url": "https://www.mdpi.com/2076-3271/13/4/265/pdf"
+        },
+        {
+          "title": "GHR Gazis-Herman-Rothery",
+          "url": "https://www.allacronyms.com/GHR/Gazis-Herman-Rothery"
+        },
+        {
+          "title": "Deadlift – Everything You Need to Know About Deadlifting",
+          "url": "https://isports.ch/magazin/en/deadlift-everything-you-need-to-know-about-deadlifting/"
+        },
+        {
+          "title": "Kreuzheben mit gestreckten Beinen: trainierte Muskeln & 12 Alternativen · Overachiever",
+          "url": "https://overachiever.eu/de/exercises/stiff-leg-deadlift/"
+        },
+        {
+          "title": "An Electromyographic Analysis of Romanian, Step-Romanian, and Stiff-Leg Deadlift: Implication for Resistance Training",
+          "url": "https://www.wisdomlib.org/uploads/journals/mdpi-ijerph/2022-volume-19-issue-3--1660-4601-19-3-1903-.pdf"
+        },
+        {
+          "title": "Resistance Training Practices of Brazilian Olympic Sprint and Jump Coaches: Toward a Deeper Understanding of Their Choices and Insights (Part III) - PMC",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10875694/"
+        }
+      ]
+    },
+    {
+      "group": 6,
+      "queries": [
+        "\"Glute Kickback Machine\" footplate illustration \"license\"",
+        "\"Reverse Hyperextension\" machine illustration \"CC BY\"",
+        "\"Smith Machine Calf Raise\" illustration \"CC BY\"",
+        "\"Dumbbell Standing Calf Raise\" illustration \"CC BY\""
+      ],
+      "pages": [
+        {
+          "title": "Smith Machine Calf Raise — Form & Variations · MuscleBuddy",
+          "url": "https://musclebuddy.net/exercises/smith-machine-calf-raise"
+        },
+        {
+          "title": "Pinned Standing Glute Kickback Machine | Gyms models | Blendkit",
+          "url": "https://www.blendkit.com/asset-gallery-detail/e5d02799-c462-4d60-a0b8-a2e69ce0363c/"
+        },
+        {
+          "title": "Glute Kickback Machine 3D Exercise Animation | MoveKit",
+          "url": "https://movekit.com/exercises/glute-kickback-machine"
+        },
+        {
+          "title": "Free Royalty-Free Exercise Videos - Download HD Gym Exercise Demonstrations | YMove",
+          "url": "https://ymove.app/free-exercise-videos"
+        },
+        {
+          "title": "Standing Machine Calf Raise: how to do it, muscles worked and common mistakes | TVIKY",
+          "url": "https://tviky.com/en/exercises/standing-machine-calf-raise/"
+        },
+        {
+          "title": "Personal Trainer Assisting Woman During Glute Kickback Machine Exercise In Gym Setting High-Res Stock Photo - Getty Images",
+          "url": "https://www.gettyimages.no/detail/photo/personal-trainer-assisting-woman-during-glute-royalty-free-image/2215294613"
+        },
+        {
+          "title": "Workout Library: Every Rep, Done Right | TrainWithSam",
+          "url": "https://trainwithsam.com/workouts.html"
+        },
+        {
+          "title": "824 Isquiotibiales Stock Videos, 4K & HD Footage | DepositPhotos",
+          "url": "https://depositphotos.com/videos/isquiotibiales.html"
+        },
+        {
+          "title": "Exercise Library · Spinn Fitness | Spinn Radio",
+          "url": "https://spinnradio.com/fitness/exercises"
+        },
+        {
+          "title": "Frontiers | Resistance training volume for major depressive disorder: the MoveMind randomized controlled trial protocol",
+          "url": "https://www.frontiersin.org/journals/physiology/articles/10.3389/fphys.2026.1943543/full"
+        },
+        {
+          "title": "Cable Glute Kickback — muscles worked | RepDB",
+          "url": "https://exercise-dataset.com/exercise/cable-kickback/"
+        },
+        {
+          "title": "(PDF) Biomechanical Comparison of the Reverse Hyperextension Machine and the Hyperextension Exercise",
+          "url": "https://www.researchgate.net/publication/332236695_Biomechanical_Comparison_of_the_Reverse_Hyperextension_Machine_and_the_Hyperextension_Exercise"
+        },
+        {
+          "title": "Case Reports in Emergency Surgery and Trauma 2025; volume 3:36",
+          "url": "https://www.crest-journal.net/site/article/download/36/17/398"
+        },
+        {
+          "title": "Global Glute Kickback Machine Market Research Report 2026(Status and Outlook)",
+          "url": "https://pdf.marketpublishers.com/bosson_research/global-glute-kickback-machine-market-bosson.pdf"
+        },
+        {
+          "title": "Analysis of a Motocross Knee Brace: From the Real Model to the Numerical Finite Element Model via 3D Scanning and Reverse Engineering",
+          "url": "https://iris.polito.it/retrieve/59189267-c7b3-4940-b730-4ef9ff7322b6/applsci-13-05186-compressed.pdf"
+        },
+        {
+          "title": "Successful Early Non-Operative Management of Congenital Knee Dislocation: Demonstration via a Case Report",
+          "url": "https://d-nb.info/1241244332/34"
+        },
+        {
+          "title": "Share — copy and redistribute the material in any medium or format for any purpose, even commercially. Adapt — remix, transform, and build upon the material for any purpose, even commercially. The licensor cannot revoke these freedoms as long as you follow the license terms. Attribution — You must give appropriate credit , provide a link to the",
+          "url": "https://bluetact.com/locktactyuma/userfiles/file/5d858a90-45b0-439f-ac4a-4ef1ef129d94.pdf"
+        },
+        {
+          "title": "Acta Orthopaedica et Traumatologica Turcica 52 (2018) 32e36",
+          "url": "https://www.aott.org.tr/Content/files/sayilar/375/375-3524.pdf"
+        }
+      ]
+    },
+    {
+      "group": 7,
+      "queries": [
+        "\"Donkey Calf Raise\" machine illustration \"CC BY\"",
+        "\"Machine Ab Crunch\" illustration \"Creative Commons\"",
+        "\"Captain chair\" \"leg raise\" illustration \"CC BY\"",
+        "\"Dumbbell Thruster\" illustration \"CC BY\""
+      ],
+      "pages": [
+        {
+          "title": "Credits · HybFit",
+          "url": "https://hybfitapp.com/credits"
+        },
+        {
+          "title": "Dumbbell Thruster in 3D: muscles worked and how it moves | CrossFitOS",
+          "url": "https://crossfitos.com/exercises/dumbbell-thruster"
+        },
+        {
+          "title": "Donkey Calf Raise in 3D: muscles worked and how it moves | CrossFitOS",
+          "url": "https://crossfitos.com/exercises/donkey-calf-raise"
+        },
+        {
+          "title": "Donkey Calf Raise: Form & Variations · MuscleBuddy",
+          "url": "https://musclebuddy.net/exercises/donkey-calf-raise"
+        },
+        {
+          "title": "Donkey Calf Raise — muscles worked and how to | Forma",
+          "url": "https://bodyform.ir/en/exercises/donkey-calf-raise"
+        },
+        {
+          "title": "Smith Machine Calf Raise — Form & Variations · MuscleBuddy",
+          "url": "https://musclebuddy.net/exercises/smith-machine-calf-raise"
+        },
+        {
+          "title": "Donkey Calf Raise: how to do it, muscles worked and common mistakes | TVIKY",
+          "url": "https://tviky.com/en/exercises/donkey-calf-raise-partner/"
+        },
+        {
+          "title": "Leg Press Calf Raise — Form & Variations · MuscleBuddy",
+          "url": "https://musclebuddy.net/exercises/leg-press-calf-raise"
+        },
+        {
+          "title": "Seated Calf Raise — muscles worked and how to | Forma",
+          "url": "https://bodyform.ir/en/exercises/seated-calf-raise"
+        },
+        {
+          "title": "Barbell Standing Calf Raise: how to do it, muscles worked and common mistakes | TVIKY",
+          "url": "https://tviky.com/en/exercises/standing-calf-raise-barbell/"
+        },
+        {
+          "title": "动作库 · FastFit",
+          "url": "https://fastfit.buildbytoey.com/library?category=power"
+        }
+      ]
+    },
+    {
+      "group": 8,
+      "queries": [
+        "\"Barbell Thruster\" illustration \"Creative Commons\"",
+        "\"Dumbbell Clean and Press\" illustration \"CC BY\"",
+        "\"Barbell Clean and Press\" illustration \"CC BY\"",
+        "\"Power Clean\" barbell illustration \"CC BY\""
+      ],
+      "pages": [
+        {
+          "title": "International Journal of Strength and Conditioning. 2021  Exploring the Power Clean",
+          "url": "https://www.pescholar.com/wp-content/uploads/2022/01/Exploring-The-Power-Clean.pdf"
+        },
+        {
+          "title": "Huyghe, T., Goriss, B., DeLosAngeles, E., Bird, S. P. (2021).Exploring The Power Clean.",
+          "url": "https://pdfs.semanticscholar.org/f732/a104cca72a584254d7173dd68200b32d6a4f.pdf"
+        },
+        {
+          "title": "Power Clean: muscles worked & 6 alternatives · Overachiever",
+          "url": "https://overachiever.eu/exercises/power-clean/"
+        },
+        {
+          "title": "(PDF) Exploring The Power Clean",
+          "url": "https://www.researchgate.net/publication/356180751_Exploring_The_Power_Clean"
+        },
+        {
+          "title": "Functional data analysis of vertical barbell acceleration during the pull of the power clean",
+          "url": "https://openalex.org/W7117366155"
+        },
+        {
+          "title": "Cargada y press con barra: cómo hacerlo y músculos | Calix",
+          "url": "https://calix.gr/exercises/es/cargada-y-press-con-barra"
+        },
+        {
+          "title": "File:Power Clean Ico.png - Wikimedia Commons",
+          "url": "https://commons.wikimedia.org/wiki/File%3APower_Clean_Ico.png"
+        },
+        {
+          "title": "Clean: spieren en alternatieven",
+          "url": "https://overachiever.eu/nl/exercises/barbell-clean/"
+        },
+        {
+          "title": "‘Starting Strength: Basic Barbell Training’",
+          "url": "https://cmsapi.theepochtimes.com/bright/starting-strength-basic-barbell-training-5484196"
+        },
+        {
+          "title": "Workout Duration Alters the Importance of Predictive Traits on High-Intensity Functional Training Workout Performance - PMC",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12196719/"
+        },
+        {
+          "title": "动作库 · FastFit",
+          "url": "https://fastfit.buildbytoey.com/library?category=power"
+        },
+        {
+          "title": "The Reliability and Validity of Current Technologies for Measuring Barbell Velocity in the Free-Weight Back Squat and Power Clean",
+          "url": "https://openalex.org/W3038726822"
+        },
+        {
+          "title": "Épaulé : muscles et alternatives",
+          "url": "https://overachiever.eu/fr/exercises/barbell-clean/"
+        },
+        {
+          "title": "An Examination of Loading Profiles for Youth Athletes Performing the Hang Power Clean",
+          "url": "https://openalex.org/W3184763045"
+        }
+      ]
+    },
+    {
+      "group": 9,
+      "queries": [
+        "\"Hang Clean\" illustration \"Creative Commons\"",
+        "\"Dumbbell Snatch\" illustration \"CC BY\"",
+        "\"Kettlebell Turkish Get Up\" illustration \"Creative Commons\"",
+        "\"Man Maker\" dumbbells illustration \"CC BY\""
+      ],
+      "pages": [
+        {
+          "title": "Dumbbell Snatch — exercise · Overachiever",
+          "url": "https://overachiever.eu/exercises/dumbbell-snatch/"
+        },
+        {
+          "title": "MANMAKER Meaning & Definition | Word.ws",
+          "url": "https://word.ws/manmaker"
+        },
+        {
+          "title": "Enhancing Athletic Performance: A Comprehensive Review on Kettlebell Training - PMC",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10910645/"
+        },
+        {
+          "title": "ExerciseDB Alternatives 2026: 8 APIs and Datasets — RepDB",
+          "url": "https://repdb.co/blog/exercisedb-alternatives-2026/"
+        },
+        {
+          "title": "壶铃土耳其起立的训练目的及训练策略研究",
+          "url": "https://pdf.hanspub.org/aps20220300000_56553511.pdf"
+        },
+        {
+          "title": "Effects of a Low-Volume Kettlebell Strength Program on Vertical Jump and Isometric Strength in Dancers: A Pilot Study - PMC",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12015777/"
+        },
+        {
+          "title": "Arrancada con mancuerna — ejercicio · Overachiever",
+          "url": "https://overachiever.eu/es/exercises/dumbbell-snatch/"
+        },
+        {
+          "title": "Dumbbell Power Snatch — CrossFit Movement | WodWiz",
+          "url": "https://www.wodwiz.com/movements/dumbbell-power-snatch"
+        },
+        {
+          "title": "(PDF) Older adults experiences of supervised hardstyle kettlebell training: A qualitative study from the BELL pragmatic controlled trial",
+          "url": "https://www.researchgate.net/publication/353365045_Older_adults_experiences_of_supervised_hardstyle_kettlebell_training_A_qualitative_study_from_the_BELL_pragmatic_controlled_trial"
+        },
+        {
+          "title": "International Journal of Strength and Conditioning. 2021",
+          "url": "https://www.pescholar.com/wp-content/uploads/2022/01/Exploring-The-Power-Clean.pdf"
+        },
+        {
+          "title": "The Fitzwilliam Museum - The Seven Ages of Man by Leopoldo Maccari",
+          "url": "https://data.fitzmuseum.cam.ac.uk/id/image/media-16900"
+        },
+        {
+          "title": "Reißen mit Kurzhantel – Übung · Overachiever",
+          "url": "https://overachiever.eu/de/exercises/dumbbell-snatch/"
+        },
+        {
+          "title": "www.mjssm.me",
+          "url": "https://www.mjssm.me/clanci/full_issues/MJSSM_March_2022.pdf"
+        },
+        {
+          "title": "Huyghe, T., Goriss, B., DeLosAngeles, E., Bird, S. P. (2021).Exploring The Power Clean.",
+          "url": "https://research.usq.edu.au/download/0be2c29153ece88bb7960410e3222397fdb40a345fb3f0d4622ec2059258c509/825574/Huyghe%202021%20IJSC%201%281%29%20e1-10.pdf"
+        },
+        {
+          "title": "动作库 · FastFit",
+          "url": "https://fastfit.buildbytoey.com/library?category=power"
+        },
+        {
+          "title": "Übungen - Fitness-Planer",
+          "url": "https://fitnessplan.cressibase.synology.me/uebungen?geraet=dumbbell"
+        },
+        {
+          "title": "A peer-reviewed version of this preprint was published in PeerJ",
+          "url": "https://peerj.com/preprints/2582.pdf"
+        },
+        {
+          "title": "# ORIGINAL SCIENTIFIC PAPER",
+          "url": "https://www.mjssm.me/clanci/MJSSM_March_2022_Mehls.pdf"
+        }
+      ]
+    }
+  ],
+  "exerciseSearches": [
+    {
+      "exerciseId": "ex_high_to_low_cable_fly",
+      "query": "\"High-to-Low Cable Fly\" \"illustration\" \"license\"",
+      "equipment": "cable",
+      "variationRequirements": "high pulleys; downward inward path",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_low_to_high_cable_fly",
+      "query": "\"Low-to-High Cable Fly\" \"illustration\" \"license\"",
+      "equipment": "cable",
+      "variationRequirements": "low pulleys; upward inward path",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_single_arm_cable_chest_fly",
+      "query": "\"Single Arm Cable Chest Fly\" \"illustration\" \"Creative Commons\"",
+      "equipment": "cable",
+      "variationRequirements": "one arm; chest-height cable; no pressing",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_single_arm_lat_pulldown",
+      "query": "\"Single Arm Lat Pulldown\" \"illustration\" \"Creative Commons\"",
+      "equipment": "cable",
+      "variationRequirements": "one arm; overhead cable",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_wide_grip_seated_cable_row",
+      "query": "\"Wide Grip Seated Cable Row\" \"illustration\" \"license\"",
+      "equipment": "cable",
+      "variationRequirements": "seated; wide overhand bar",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_pendlay_row",
+      "query": "\"Pendlay Row\" \"illustration\" \"CC BY\"",
+      "equipment": "barbell",
+      "variationRequirements": "bar starts on floor; torso near horizontal",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_single_arm_machine_row",
+      "query": "\"Single Arm Machine Row\" \"illustration\" \"license\"",
+      "equipment": "machine",
+      "variationRequirements": "unilateral lever/selectorized row; not cable",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_machine_pullover",
+      "query": "\"Machine Pullover\" \"illustration\" \"Creative Commons\"",
+      "equipment": "machine",
+      "variationRequirements": "pullover machine; not lat-pulldown",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_cable_pullover",
+      "query": "\"Cable Pullover\" \"illustration\" \"CC BY\"",
+      "equipment": "cable",
+      "variationRequirements": "cable resistance; pullover path distinct from elbow-flexion pull",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_seated_dumbbell_lateral_raise",
+      "query": "\"Seated Dumbbell Lateral Raise\" \"illustration\" \"license\"",
+      "equipment": "dumbbell",
+      "variationRequirements": "seated; two dumbbells; not reverse fly",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_bayesian_cable_curl",
+      "query": "\"Bayesian Cable Curl\" \"illustration\" \"license\"",
+      "equipment": "cable",
+      "variationRequirements": "cable from behind; shoulder extended",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_spider_curl",
+      "query": "\"Spider Curl\" \"dumbbell\" \"illustration\" \"license\"",
+      "equipment": "dumbbell",
+      "variationRequirements": "prone incline bench; dumbbells",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_horizontal_leg_press",
+      "query": "\"Horizontal Leg Press\" illustration \"license\"",
+      "equipment": "machine",
+      "variationRequirements": "horizontal machine track; not 45-degree sled",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_single_leg_press",
+      "query": "\"Single Leg Press\" illustration \"Creative Commons\"",
+      "equipment": "machine",
+      "variationRequirements": "one working leg; machine",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_single_leg_extension",
+      "query": "\"Single Leg Extension\" illustration \"Creative Commons\"",
+      "equipment": "machine",
+      "variationRequirements": "seated machine; one working leg",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_reverse_lunge",
+      "query": "\"Reverse Lunge\" bodyweight illustration \"CC BY\"",
+      "equipment": "bodyweight",
+      "variationRequirements": "bodyweight; step backward",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_step_up",
+      "query": "\"Step Up\" bodyweight illustration \"CC BY\"",
+      "equipment": "bodyweight",
+      "variationRequirements": "bodyweight; box/bench; no dumbbells/bar",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_cyclist_squat",
+      "query": "\"Cyclist Squat\" bodyweight illustration \"license\"",
+      "equipment": "bodyweight",
+      "variationRequirements": "bodyweight; heels elevated; narrow stance; not goblet",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_stiff_leg_deadlift",
+      "query": "\"Stiff Leg Deadlift\" illustration \"CC BY\"",
+      "equipment": "barbell",
+      "variationRequirements": "barbell; straighter knees; distinct from RDL",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_glute_ham_raise",
+      "query": "\"Glute Ham Raise\" GHD illustration \"CC BY\"",
+      "equipment": "machine",
+      "variationRequirements": "GHD machine; not Nordic floor curl",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_glute_kickback_machine",
+      "query": "\"Glute Kickback Machine\" footplate illustration \"license\"",
+      "equipment": "machine",
+      "variationRequirements": "dedicated machine; foot pad; not cable",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_reverse_hyperextension",
+      "query": "\"Reverse Hyperextension\" machine illustration \"CC BY\"",
+      "equipment": "machine",
+      "variationRequirements": "prone elevated support; legs move; dedicated machine",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_smith_machine_calf_raise",
+      "query": "\"Smith Machine Calf Raise\" illustration \"CC BY\"",
+      "equipment": "smith_machine",
+      "variationRequirements": "Smith bar; straight knees; not reverse dorsiflexion",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_dumbbell_standing_calf_raise",
+      "query": "\"Dumbbell Standing Calf Raise\" illustration \"CC BY\"",
+      "equipment": "dumbbell",
+      "variationRequirements": "standing; dumbbell resistance",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_donkey_calf_raise",
+      "query": "\"Donkey Calf Raise\" machine illustration \"CC BY\"",
+      "equipment": "machine",
+      "variationRequirements": "donkey calf machine; hinged torso; not partner/bodyweight",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_machine_ab_crunch",
+      "query": "\"Machine Ab Crunch\" illustration \"Creative Commons\"",
+      "equipment": "machine",
+      "variationRequirements": "seated dedicated abdominal machine",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_captain_s_chair_leg_raise",
+      "query": "\"Captain chair\" \"leg raise\" illustration \"CC BY\"",
+      "equipment": "machine",
+      "variationRequirements": "forearms/back supported; captain chair; leg raise not knee-only",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_dumbbell_thruster",
+      "query": "\"Dumbbell Thruster\" illustration \"CC BY\"",
+      "equipment": "dumbbell",
+      "variationRequirements": "two dumbbells; continuous leg-driven press",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_barbell_thruster",
+      "query": "\"Barbell Thruster\" illustration \"Creative Commons\"",
+      "equipment": "barbell",
+      "variationRequirements": "barbell front rack; continuous leg-driven press",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_dumbbell_clean_and_press",
+      "query": "\"Dumbbell Clean and Press\" illustration \"CC BY\"",
+      "equipment": "dumbbell",
+      "variationRequirements": "dumbbell resistance; clean then press",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_barbell_clean_and_press",
+      "query": "\"Barbell Clean and Press\" illustration \"CC BY\"",
+      "equipment": "barbell",
+      "variationRequirements": "barbell resistance; clean then press",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_power_clean",
+      "query": "\"Power Clean\" barbell illustration \"CC BY\"",
+      "equipment": "barbell",
+      "variationRequirements": "barbell from floor; catch above parallel",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_hang_clean",
+      "query": "\"Hang Clean\" illustration \"Creative Commons\"",
+      "equipment": "barbell",
+      "variationRequirements": "barbell from hang; not floor power clean",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_dumbbell_snatch",
+      "query": "\"Dumbbell Snatch\" illustration \"CC BY\"",
+      "equipment": "dumbbell",
+      "variationRequirements": "one dumbbell; continuous overhead catch",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_kettlebell_turkish_get_up",
+      "query": "\"Kettlebell Turkish Get Up\" illustration \"Creative Commons\"",
+      "equipment": "kettlebell",
+      "variationRequirements": "kettlebell held overhead; staged get-up",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    },
+    {
+      "exerciseId": "ex_man_maker",
+      "query": "\"Man Maker\" dumbbells illustration \"CC BY\"",
+      "equipment": "dumbbell",
+      "variationRequirements": "dumbbells; plank row/push-up to clean/thruster",
+      "outcome": "No additional asset approved; retain original-generation requirement."
+    }
+  ]
+}

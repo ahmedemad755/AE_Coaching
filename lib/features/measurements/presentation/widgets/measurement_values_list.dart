@@ -1,6 +1,7 @@
 import 'package:ae_coaching/auth/data/models/body_measurement.dart';
 import 'package:ae_coaching/features/measurements/presentation/widgets/measurement_avatar.dart';
 import 'package:ae_coaching/features/measurements/presentation/widgets/measurement_field_defs.dart';
+import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
@@ -9,19 +10,20 @@ import 'package:flutter/material.dart';
 /// the history list so both stay visually consistent.
 class MeasurementValuesList extends StatelessWidget {
   final BodyMeasurement measurement;
-  final Color labelColor;
-  final Color valueColor;
+  final Color? labelColor;
+  final Color? valueColor;
 
   const MeasurementValuesList({
     super.key,
     required this.measurement,
-    this.labelColor = const Color(0xff7d8792),
-    this.valueColor = const Color(0xff202936),
+    this.labelColor,
+    this.valueColor,
   });
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final colors = context.appColors;
     final entries = measurementFieldDefs
         .where((def) => def.getValue(measurement) != null)
         .toList();
@@ -29,7 +31,7 @@ class MeasurementValuesList extends StatelessWidget {
     if (entries.isEmpty) {
       return Text(
         l10n.noMeasurementsRecordedCheckIn,
-        style: const TextStyle(color: Color(0xff7d8792)),
+        style: TextStyle(color: colors.textMuted),
       );
     }
 
@@ -47,7 +49,7 @@ class MeasurementValuesList extends StatelessWidget {
                     child: Text(
                       def.localizedLabel(l10n),
                       style: TextStyle(
-                        color: labelColor,
+                        color: labelColor ?? colors.textMuted,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -55,7 +57,7 @@ class MeasurementValuesList extends StatelessWidget {
                   Text(
                     '${def.getValue(measurement)!.toStringAsFixed(1)} ${l10n.cmUnit}',
                     style: TextStyle(
-                      color: valueColor,
+                      color: valueColor ?? colors.textPrimary,
                       fontWeight: FontWeight.w800,
                     ),
                   ),

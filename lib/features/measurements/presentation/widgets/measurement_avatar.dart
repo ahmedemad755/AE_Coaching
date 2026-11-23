@@ -8,27 +8,22 @@ class MeasurementAvatar extends StatelessWidget {
   final String imagePath;
   final double size;
 
-  const MeasurementAvatar({
-    super.key,
-    required this.imagePath,
-    this.size = 28,
-  });
-
-  static const Color _blue = Color(0xff2f80ed);
+  const MeasurementAvatar({super.key, required this.imagePath, this.size = 28});
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     return ClipRRect(
       borderRadius: BorderRadius.circular(size / 4),
       child: Container(
         width: size,
         height: size,
-        color: const Color(0xffeaf2fc),
+        color: scheme.surfaceContainerHighest,
         child: Image.asset(
           imagePath,
           fit: BoxFit.cover,
           errorBuilder: (context, error, stackTrace) {
-            return const Icon(Icons.fitness_center, color: _blue, size: 16);
+            return Icon(Icons.fitness_center, color: scheme.primary, size: 16);
           },
         ),
       ),

@@ -1,6 +1,11 @@
 import 'package:ae_coaching/core/di/sl_instance.dart';
 import 'package:ae_coaching/core/session/session_storage.dart';
+import 'package:ae_coaching/core/notifications/fcm_device_service.dart';
+import 'package:ae_coaching/core/notifications/legacy_inactivity_reminder_cleanup.dart';
+import 'package:ae_coaching/core/notifications/local_notifications.dart';
 import 'package:ae_coaching/core/storage/user_storage_manager.dart';
+import 'package:ae_coaching/features/profile/data/local_profile_photo_store.dart';
+import 'package:ae_coaching/features/profile/data/user_profile_repository.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 // Cross-cutting, not tied to any one feature — SessionStorage wraps the
@@ -18,4 +23,21 @@ import 'package:hive_flutter/hive_flutter.dart';
 void initCore() {
   sl.registerLazySingleton(() => SessionStorage(Hive.box('authBox')));
   sl.registerLazySingleton(() => UserStorageManager());
+  sl.registerLazySingleton(() => FcmDeviceService());
+  // Local notifications: the FCM reminder channel, taps on reminders
+  // already in the tray, and retiring the old on-device reminder.
+  sl.registerLazySingleton<LocalNotificationsGateway>(
+    () => FlutterLocalNotificationsGateway(),
+  );
+  sl.registerLazySingleton(
+    () => LegacyInactivityReminderCleanup(notifications: sl()),
+  );
+  sl.registerLazySingleton(
+    () => LocalNotificationsBootstrap(
+      notifications: sl(),
+      legacyCleanup: sl(),
+    ),
+  );
+  sl.registerLazySingleton(() => LocalProfilePhotoStore(Hive.box('authBox')));
+  sl.registerLazySingleton(() => UserProfileRepository());
 }

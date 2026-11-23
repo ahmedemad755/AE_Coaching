@@ -18,6 +18,7 @@ import 'package:ae_coaching/features/workout/presentation/cubit/workout_program_
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
+import '../../support/fake_revision_cloud.dart';
 
 class _FakeWorkoutProgramRemoteDataSource
     implements WorkoutProgramRemoteDataSource {
@@ -40,16 +41,9 @@ class _FakeWorkoutProgramRemoteDataSource
   }
 }
 
-class _FakeWorkoutTemplateRemoteDataSource
-    implements WorkoutTemplateRemoteDataSource {
-  @override
-  Future<void> syncTemplate(String id, WorkoutTemplate template) async {}
-  @override
-  Future<void> deleteTemplate(String id) async {}
-  @override
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
-  fetchAllRemoteTemplates() async => const [];
-}
+/// Rules-equivalent in-memory cloud (see FakeRevisionCloud).
+class _FakeWorkoutTemplateRemoteDataSource extends FakeRevisionCloud
+    implements WorkoutTemplateRemoteDataSource {}
 
 class _FakeWorkoutSessionRemoteDataSource
     implements WorkoutSessionRemoteDataSource {

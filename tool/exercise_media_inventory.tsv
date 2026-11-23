@@ -1,0 +1,181 @@
+id	movement_pattern	variation_requirements	candidate
+ex_barbell_bench_press	horizontal press	flat bench; bilateral barbell; overhand	ever:bench-press
+ex_incline_barbell_bench_press	incline press	incline bench; bilateral barbell	ever:incline-bench-press
+ex_decline_barbell_bench_press	decline press	decline bench; bilateral barbell	art:decline-bench-press
+ex_dumbbell_bench_press	horizontal press	flat bench; two dumbbells; palms forward	ever:bench-press-dumbbell
+ex_incline_dumbbell_press	incline press	incline bench; two dumbbells; standard grip	art:incline-dumbbell-press
+ex_decline_dumbbell_press	decline press	decline bench; two dumbbells	art:decline-dumbbell-press
+ex_dumbbell_fly	horizontal adduction	flat bench; two dumbbells; fixed soft elbows	art:dumbbell-fly
+ex_incline_dumbbell_fly	incline horizontal adduction	incline bench; two dumbbells	art:incline-dumbbell-fly
+ex_machine_chest_press	horizontal press	seated chest-press machine; bilateral	art:machine-chest-press
+ex_incline_chest_press_machine	incline press	machine incline pressing path	ever:incline-chest-press
+ex_decline_chest_press_machine	decline press	machine decline pressing path	art:decline-chest-press
+ex_pec_deck_fly	horizontal adduction	seated pec-deck machine; bilateral	art:pec-deck
+ex_cable_chest_fly	horizontal adduction	standing bilateral cables; chest-height path	art:cable-fly
+ex_high_to_low_cable_fly	diagonal adduction	high pulleys; downward inward path	
+ex_low_to_high_cable_fly	diagonal adduction	low pulleys; upward inward path	
+ex_smith_machine_bench_press	horizontal press	flat bench; guided Smith bar	art:smith-machine-bench-press
+ex_smith_machine_incline_press	incline press	incline bench; guided Smith bar	art:smith-machine-incline-bench-press
+ex_push_up	horizontal bodyweight press	standard hands; toes supported	art:push-up
+ex_wide_grip_push_up	horizontal bodyweight press	hands wider than shoulders	art:wide-push-up
+ex_diamond_push_up	horizontal bodyweight press	thumbs/index fingers together; narrow hands	art:diamond-push-up
+ex_chest_dip	bodyweight dip	parallel bars; forward torso lean; chest emphasis	art:chest-dip
+ex_single_arm_cable_chest_fly	horizontal adduction	one arm; chest-height cable; no pressing	
+ex_pull_up	vertical bodyweight pull	overhand grip; standard width	art:pull-up
+ex_chin_up	vertical bodyweight pull	supinated grip	art:chin-up
+ex_wide_grip_pull_up	vertical bodyweight pull	wide overhand grip; not supinated chin-up or side-to-side pull	ever:pull-ups
+ex_assisted_pull_up	vertical assisted pull	counterweighted machine; knee/foot support	art:assisted-pull-up
+ex_lat_pulldown	vertical cable pull	wide front overhand pulldown per Arabic name	ever:wide-grip-lat-pull-down
+ex_close_grip_lat_pulldown	vertical cable pull	close hand spacing; no wide bar substitute	art:close-grip-lat-pulldown
+ex_reverse_grip_lat_pulldown	vertical cable pull	supinated underhand bar	ever:underhand-pull-down
+ex_neutral_grip_lat_pulldown	vertical cable pull	palms facing each other; parallel handle	ever:v-bar-pull-down
+ex_single_arm_lat_pulldown	vertical cable pull	one arm; overhead cable	
+ex_seated_cable_row	horizontal cable pull	seated; bilateral; catalog does not specify grip	art:seated-cable-row
+ex_close_grip_seated_cable_row	horizontal cable pull	seated; narrow neutral handle	art:seated-cable-row
+ex_wide_grip_seated_cable_row	horizontal cable pull	seated; wide overhand bar	
+ex_barbell_bent_over_row	horizontal free-weight pull	hinged standing torso; bilateral overhand bar	art:barbell-row
+ex_underhand_barbell_row	horizontal free-weight pull	hinged standing torso; supinated bar grip	ever:reverse-grips-bent-over-barbell-rows
+ex_pendlay_row	horizontal free-weight pull	bar starts on floor; torso near horizontal	art:pendlay-row
+ex_one_arm_dumbbell_row	horizontal free-weight pull	unilateral dumbbell; support on bench	art:dumbbell-row
+ex_chest_supported_dumbbell_row	horizontal free-weight pull	prone on incline bench; two dumbbells	art:chest-supported-row
+ex_t_bar_row	horizontal machine pull	T-bar lever/landmine; bilateral	art:t-bar-row
+ex_chest_supported_machine_row	horizontal machine pull	machine chest pad; bilateral; not dumbbells	guide:chest-supported-row
+ex_single_arm_machine_row	horizontal machine pull	unilateral lever/selectorized row; not cable	
+ex_straight_arm_cable_pulldown	shoulder extension	standing high cable; arms nearly straight	art:straight-arm-pulldown
+ex_dumbbell_pullover	shoulder extension	supine bench; single dumbbell held both hands	art:dumbbell-pullover
+ex_machine_pullover	shoulder extension	pullover machine; not lat-pulldown	
+ex_inverted_row	horizontal bodyweight pull	body suspended below fixed bar	art:inverted-row
+ex_back_extension	hip/back extension	bodyweight hyperextension bench	art:back-extension
+ex_cable_pullover	shoulder extension	cable resistance; pullover path distinct from elbow-flexion pull	
+ex_barbell_overhead_press	vertical press	standing; barbell; strict without leg drive	art:overhead-press
+ex_seated_barbell_shoulder_press	vertical press	seated; barbell; strict	art:seated-military-press
+ex_dumbbell_shoulder_press	vertical press	bilateral dumbbells; conventional grip	art:dumbbell-shoulder-press
+ex_arnold_press	rotating vertical press	dumbbells; palms rotate through press	ever:arnold-press
+ex_machine_shoulder_press	vertical press	seated shoulder-press machine	art:machine-shoulder-press
+ex_smith_machine_shoulder_press	vertical press	guided Smith bar; shoulder press	art:smith-machine-overhead-press
+ex_dumbbell_lateral_raise	shoulder abduction	standing; two dumbbells	art:lateral-raise
+ex_seated_dumbbell_lateral_raise	shoulder abduction	seated; two dumbbells; not reverse fly	
+ex_cable_lateral_raise	shoulder abduction	low cable; lateral arm path	art:cable-lateral-raise
+ex_machine_lateral_raise	shoulder abduction	seated lateral-raise machine	art:machine-lateral-raise
+ex_dumbbell_front_raise	shoulder flexion	dumbbells lifted forward	art:front-raise
+ex_cable_front_raise	shoulder flexion	low cable lifted forward	art:cable-front-raise
+ex_plate_front_raise	shoulder flexion	single plate held with both hands	art:plate-front-raise
+ex_reverse_pec_deck	horizontal abduction	facing pec-deck back pad; rear deltoids	art:reverse-pec-deck
+ex_bent_over_dumbbell_reverse_fly	horizontal abduction	hinged standing; two dumbbells; not prone bench	art:bent-over-rear-delt-raise
+ex_cable_rear_delt_fly	horizontal abduction	cables; arms move outward/back	art:cable-rear-delt-fly
+ex_face_pull	horizontal high cable pull	rope toward face; external rotation	art:face-pull
+ex_barbell_upright_row	shoulder elevation/abduction	standing; barbell; high elbows	art:barbell-upright-row
+ex_dumbbell_shrug	scapular elevation	two dumbbells; arms down	art:dumbbell-shrug
+ex_barbell_shrug	scapular elevation	barbell in front; arms down	art:barbell-shrug
+ex_barbell_curl	elbow flexion	straight barbell; supinated	art:barbell-curl
+ex_ez_bar_curl	elbow flexion	EZ bar; angled semi-supinated grip	art:ez-bar-curl
+ex_dumbbell_curl	elbow flexion	two dumbbells; supinated; bilateral	art:bicep-curl
+ex_alternating_dumbbell_curl	elbow flexion	dumbbells; alternating arms	art:alternating-dumbbell-curl
+ex_hammer_curl	elbow flexion	dumbbells; neutral grip	art:hammer-curl
+ex_cross_body_hammer_curl	elbow flexion	dumbbell; neutral grip across torso	art:hammer-curl-across-body
+ex_incline_dumbbell_curl	elbow flexion	supine incline bench; dumbbells; arms behind torso	art:incline-dumbbell-curl
+ex_preacher_curl	elbow flexion	preacher pad; EZ bar; not straight bar	art:preacher-curl
+ex_machine_preacher_curl	elbow flexion	preacher machine lever; not free bar	ever:preacher-curl-with-machine
+ex_concentration_curl	elbow flexion	seated; dumbbell; upper arm supported on inner thigh	art:concentration-curl
+ex_cable_biceps_curl	elbow flexion	standing; low cable; supinated	art:cable-curl
+ex_rope_hammer_curl	elbow flexion	low cable rope; neutral grip	art:rope-hammer-curl
+ex_bayesian_cable_curl	elbow flexion	cable from behind; shoulder extended	
+ex_spider_curl	elbow flexion	prone incline bench; dumbbells	art:spider-curl
+ex_cable_triceps_pushdown	elbow extension	standing high cable bar; overhand	art:triceps-pushdown
+ex_rope_triceps_pushdown	elbow extension	standing high cable rope	art:rope-triceps-pushdown
+ex_reverse_grip_triceps_pushdown	elbow extension	standing high cable bar; supinated	art:reverse-grip-triceps-pushdown
+ex_overhead_cable_triceps_extension	elbow extension	cable overhead; bilateral	art:overhead-cable-extension
+ex_single_arm_cable_triceps_extension	elbow extension	unilateral cable; no bilateral substitute	art:one-arm-cable-triceps-extension
+ex_dumbbell_overhead_triceps_extension	elbow extension	single dumbbell held by both hands overhead	art:dumbbell-overhead-triceps-extension
+ex_single_arm_overhead_dumbbell_extension	elbow extension	one dumbbell; one arm overhead	art:one-arm-dumbbell-triceps-extension
+ex_lying_ez_bar_triceps_extension	elbow extension	flat bench; EZ bar; skull crusher	art:skull-crusher
+ex_dumbbell_skull_crusher	elbow extension	flat bench; two dumbbells; not single-arm	art:two-dumbbell-skullcrusher
+ex_close_grip_bench_press	horizontal press	flat bench; narrow barbell grip	art:close-grip-bench-press
+ex_parallel_bar_triceps_dip	bodyweight dip	parallel bars; upright torso; triceps emphasis	ever:tricep-dips-using-body-weight
+ex_bench_dip	bodyweight elbow extension	hands supported behind on bench	art:bench-dip
+ex_triceps_extension_machine	elbow extension	seated dedicated triceps machine	art:machine-triceps-extension
+ex_dumbbell_triceps_kickback	elbow extension	hinged torso; dumbbell; upper arm held back	art:triceps-kickback
+ex_barbell_back_squat	squat	bar on upper back; bilateral stance	ever:barbell-squat
+ex_barbell_front_squat	squat	barbell in front rack	art:front-squat
+ex_smith_machine_squat	squat	guided Smith bar	art:smith-machine-squat
+ex_goblet_squat	squat	single dumbbell held vertically at chest	art:goblet-squat
+ex_hack_squat	squat	inclined hack-squat sled machine	art:hack-squat
+ex_leg_press_45	leg press	45-degree inclined sled	art:leg-press
+ex_horizontal_leg_press	leg press	horizontal machine track; not 45-degree sled	
+ex_single_leg_press	leg press	one working leg; machine	
+ex_leg_extension	knee extension	seated machine; bilateral	art:leg-extension
+ex_single_leg_extension	knee extension	seated machine; one working leg	
+ex_bulgarian_split_squat	rear-foot elevated split squat	dumbbells; rear foot on bench	guide:bulgarian-split-squat@1
+ex_dumbbell_walking_lunge	walking lunge	advancing steps; dumbbells; not static split squat	art:walking-lunge
+ex_reverse_lunge	lunge	bodyweight; step backward	art:reverse-lunge
+ex_forward_lunge	lunge	bodyweight; step forward	art:forward-lunge
+ex_step_up	step-up	bodyweight; box/bench; no dumbbells/bar	
+ex_sissy_squat	knee-dominant squat	bodyweight; torso/thigh line leaning back	art:sissy-squat
+ex_belt_squat	squat	load attached at waist; dedicated machine	art:belt-squat
+ex_cyclist_squat	squat	bodyweight; heels elevated; narrow stance; not goblet	
+ex_romanian_deadlift	hip hinge	barbell; soft knees; top-down RDL; not floor deadlift	art:romanian-deadlift
+ex_dumbbell_romanian_deadlift	hip hinge	two dumbbells; soft knees; top-down RDL	art:dumbbell-romanian-deadlift
+ex_stiff_leg_deadlift	hip hinge	barbell; straighter knees; distinct from RDL	
+ex_seated_leg_curl	knee flexion	seated machine; bilateral	art:seated-leg-curl
+ex_lying_leg_curl	knee flexion	prone machine; bilateral	art:lying-leg-curl
+ex_standing_single_leg_curl	knee flexion	standing machine; one working leg	ever:standing-leg-curls
+ex_nordic_hamstring_curl	knee flexion control	kneeling bodyweight; ankles anchored; straight hip line	art:nordic-curl
+ex_glute_ham_raise	knee flexion/hip extension	GHD machine; not Nordic floor curl	
+ex_barbell_hip_thrust	hip extension	upper back on bench; barbell on hips	art:hip-thrust
+ex_smith_machine_hip_thrust	hip extension	upper back on bench; guided Smith bar	art:smith-machine-hip-thrust
+ex_dumbbell_hip_thrust	hip extension	upper back on bench; dumbbell on hips	art:dumbbell-hip-thrust
+ex_glute_bridge	hip extension	floor shoulders; bilateral; bodyweight	art:glute-bridge
+ex_single_leg_glute_bridge	hip extension	floor shoulders; one working leg; bodyweight	art:single-leg-glute-bridge
+ex_cable_glute_kickback	hip extension	standing; cable ankle cuff	art:cable-kickback
+ex_glute_kickback_machine	hip extension	dedicated machine; foot pad; not cable	art:machine-glute-kickback
+ex_hip_abduction_machine	hip abduction	seated machine; knees press outward	art:hip-abduction
+ex_hip_adduction_machine	hip adduction	seated machine; knees move inward	art:hip-adduction
+ex_cable_hip_abduction	hip abduction	standing cable ankle cuff; lateral leg path	art:cable-standing-hip-abduction
+ex_cable_pull_through	hip hinge	low cable rope passes between legs	art:cable-pull-through
+ex_sumo_squat	squat	wide toes-out stance; dumbbell held low	art:dumbbell-sumo-squat
+ex_frog_pump	hip extension	floor; soles together; knees apart; no band	art:frog-pump
+ex_reverse_hyperextension	hip extension	prone elevated support; legs move; dedicated machine	art:reverse-hyperextension
+ex_standing_calf_raise_machine	ankle plantarflexion	standing machine shoulder pads; straight knees	guide:standing-calf-raise@1
+ex_seated_calf_raise_machine	ankle plantarflexion	seated machine knee pads; bent knees	art:seated-calf-raise
+ex_leg_press_calf_raise	ankle plantarflexion	leg-press sled; forefoot on footplate	art:leg-press-calf-raise
+ex_smith_machine_calf_raise	ankle plantarflexion	Smith bar; straight knees; not reverse dorsiflexion	
+ex_dumbbell_standing_calf_raise	ankle plantarflexion	standing; dumbbell resistance	
+ex_single_leg_calf_raise	ankle plantarflexion	bodyweight; one working leg	art:single-leg-calf-raise
+ex_donkey_calf_raise	ankle plantarflexion	donkey calf machine; hinged torso; not partner/bodyweight	art:donkey-calf-raise
+ex_tibialis_raise	ankle dorsiflexion	bodyweight; heels grounded; toes raised	art:tib-raise
+ex_crunch	trunk flexion	floor; bodyweight; shoulders lift	art:crunch
+ex_cable_crunch	trunk flexion	kneeling high cable; rope	art:cable-crunch
+ex_machine_ab_crunch	trunk flexion	seated dedicated abdominal machine	
+ex_reverse_crunch	posterior pelvic curl	floor; bent knees toward torso	art:reverse-crunch
+ex_lying_leg_raise	hip flexion	lying; straight legs; bodyweight	art:lying-leg-raise
+ex_hanging_knee_raise	hip flexion	hanging from bar; bent knees	art:hanging-knee-raise
+ex_hanging_leg_raise	hip flexion	hanging from bar; straight legs	art:hanging-leg-raise
+ex_captain_s_chair_leg_raise	hip flexion	forearms/back supported; captain chair; leg raise not knee-only	art:captain-s-chair-knee-raise
+ex_plank	anti-extension	forearm plank; bodyweight	art:plank
+ex_side_plank	anti-lateral flexion	side forearm support; bodyweight	art:side-plank
+ex_dead_bug	anti-extension	supine; contralateral limb lowering; bodyweight	art:dead-bug
+ex_bird_dog	contralateral stabilization	quadruped; opposite arm and leg extended	art:bird-dog
+ex_russian_twist	trunk rotation	seated; bodyweight; no plate/dumbbell	art:russian-twist
+ex_bicycle_crunch	trunk flexion/rotation	bodyweight; alternating opposite elbow/knee	art:bicycle-crunch
+ex_mountain_climber	alternating hip flexion	high plank; alternating knees forward	art:mountain-climber
+ex_ab_wheel_rollout	anti-extension rollout	ab wheel; not barbell substitute	art:ab-wheel-rollout
+ex_pallof_press	anti-rotation press	standing cable; hands press away from sternum	art:pallof-press
+ex_cable_woodchopper	diagonal trunk rotation	cable; diagonal chop; not band	art:woodchop
+ex_flutter_kicks	alternating hip flexion	supine bodyweight; small straight-leg alternating kicks	art:flutter-kick
+ex_hollow_body_hold	anti-extension hold	supine; shoulders and straight legs lifted	art:hollow-hold
+ex_conventional_deadlift	floor hip hinge	barbell; conventional stance; hands outside legs	art:deadlift
+ex_sumo_deadlift	floor hip hinge	barbell; wide stance; hands inside legs	art:sumo-deadlift
+ex_trap_bar_deadlift	floor hip hinge	trap/hex bar; neutral grip inside frame	art:trap-bar-deadlift
+ex_kettlebell_swing	ballistic hip hinge	kettlebell; two-handed swing	art:kettlebell-swing
+ex_dumbbell_thruster	squat to overhead press	two dumbbells; continuous leg-driven press	
+ex_barbell_thruster	squat to overhead press	barbell front rack; continuous leg-driven press	
+ex_burpee	floor-to-standing conditioning	bodyweight; squat/thrust/plank/jump sequence	guide:burpee@1
+ex_dumbbell_clean_and_press	clean to overhead press	dumbbell resistance; clean then press	
+ex_barbell_clean_and_press	clean to overhead press	barbell resistance; clean then press	
+ex_power_clean	Olympic pull and catch	barbell from floor; catch above parallel	
+ex_hang_clean	Olympic pull and catch	barbell from hang; not floor power clean	
+ex_push_press	leg-assisted overhead press	barbell; dip/drive; no second dip	guide:push-press@3
+ex_dumbbell_snatch	unilateral Olympic pull	one dumbbell; continuous overhead catch	
+ex_kettlebell_turkish_get_up	floor-to-standing transition	kettlebell held overhead; staged get-up	
+ex_farmer_s_carry	loaded carry	two dumbbells at sides; walking	guide:farmer-carry
+ex_man_maker	compound conditioning sequence	dumbbells; plank row/push-up to clean/thruster	

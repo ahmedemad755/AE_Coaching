@@ -1,5 +1,17 @@
 import 'package:ae_coaching/core/di/sl_instance.dart';
+import 'package:ae_coaching/core/sync/write_id_factory.dart';
+import 'package:ae_coaching/features/workout/data/datasources/workout_template_remote_data_source.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:ae_coaching/features/workout/data/repositories/active_workout_edit_service.dart';
+import 'package:ae_coaching/features/workout/data/repositories/legacy_exercise_migration.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ae_coaching/features/workout/data/repositories/standard_workout_template_repository.dart';
+import 'package:ae_coaching/features/workout/data/repositories/workout_template_import_service.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_cascade_deletion_service.dart';
+import 'package:ae_coaching/features/workout/data/repositories/combined_exercise_library_catalog.dart';
+import 'package:ae_coaching/features/workout/data/repositories/custom_exercise_repository.dart';
+import 'package:ae_coaching/features/workout/data/repositories/exercise_catalog_repository.dart';
+import 'package:ae_coaching/features/workout/data/repositories/exercise_reference_resolver.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_program_repository.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_template_repository.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_session_repository.dart';
@@ -28,6 +40,29 @@ import 'package:ae_coaching/features/workout/presentation/cubit/home_workout_ove
 // `workout_programs_$uid` via WorkoutProgramRepository (already built
 // in Phase 1).
 void initWorkoutPrograms() {
+  // Ids of cloud writes (lets a device recognise its own writes).
+  sl.registerLazySingleton(() => WriteIdFactory(Hive.box('authBox')));
+  sl.registerLazySingleton(
+    () => CustomExerciseRepository(
+      storageManager: sl(),
+      remoteDataSource: CustomExerciseRemoteDataSourceImpl(),
+      newWriteId: () => sl<WriteIdFactory>().next(),
+    ),
+  );
+  // The bundled catalog is parsed off the UI thread (see the repository).
+  sl.registerLazySingleton(
+    () => ExerciseCatalogRepository(parseInBackground: true),
+  );
+  sl.registerLazySingleton(
+    () => CombinedExerciseLibraryCatalog(
+      builtInCatalog: sl(),
+      customExercises: sl(),
+    ),
+  );
+  // Pictures and details of the exercises inside programs and workouts.
+  sl.registerLazySingleton(
+    () => ExerciseReferenceResolver(catalog: sl(), customExercises: sl()),
+  );
   sl.registerLazySingleton(
     () => WorkoutProgramRepository(storageManager: sl()),
   );
@@ -42,11 +77,42 @@ void initWorkoutPrograms() {
 // (already built in Phase 2).
 void initWorkoutTemplates() {
   sl.registerLazySingleton(
-    () => WorkoutTemplateRepository(storageManager: sl()),
+    () => WorkoutTemplateRepository(
+      storageManager: sl(),
+      newWriteId: () => sl<WriteIdFactory>().next(),
+    ),
   );
 
   sl.registerFactory(
-    () => WorkoutTemplateCubit(repository: sl(), deletionService: sl()),
+    () => WorkoutTemplateCubit(
+      repository: sl(),
+      deletionService: sl(),
+      migrateCatalogReferences: () async {
+        await sl<LegacyExerciseMigration>().migrate();
+      },
+      syncRelated: () async {
+        await sl<CustomExerciseRepository>().syncWithCloud();
+      },
+    ),
+  );
+  sl.registerLazySingleton(
+    () => LegacyExerciseMigration(
+      templates: sl(),
+      sessions: sl(),
+      catalog: sl(),
+      currentUserId: () => FirebaseAuth.instance.currentUser?.uid,
+    ),
+  );
+  sl.registerLazySingleton(
+    () => StandardWorkoutTemplateRepository(catalog: sl()),
+  );
+  sl.registerLazySingleton(
+    () => WorkoutTemplateImportService(
+      programs: sl(),
+      templates: sl(),
+      catalog: sl(),
+      currentUserId: () => FirebaseAuth.instance.currentUser?.uid,
+    ),
   );
 }
 
@@ -84,7 +150,14 @@ void initSessionExercises() {
     () => SessionExerciseRepository(storageManager: sl()),
   );
   sl.registerFactory(
-    () => SessionExerciseCubit(repository: sl(), sessionRepository: sl()),
+    () => SessionExerciseCubit(
+      repository: sl(),
+      sessionRepository: sl(),
+      editService: sl(),
+    ),
+  );
+  sl.registerLazySingleton(
+    () => ActiveWorkoutEditService(sessions: sl(), templates: sl(), sets: sl()),
   );
 }
 
@@ -92,7 +165,9 @@ void initSessionExercises() {
 // already-registered WorkoutSessionRepository/SessionExerciseRepository
 // singletons rather than creating new instances.
 void initWorkoutHistory() {
-  sl.registerFactory(() => WorkoutHistoryCubit(sessionRepository: sl()));
+  sl.registerFactory(
+    () => WorkoutHistoryCubit(sessionRepository: sl(), setRepository: sl()),
+  );
 }
 
 // Program Analytics (Phase 15) — screen-scoped, read-only. Reuses the

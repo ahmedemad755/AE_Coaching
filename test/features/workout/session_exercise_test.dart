@@ -5,6 +5,7 @@ import 'package:ae_coaching/core/storage/user_storage_manager.dart';
 import 'package:ae_coaching/features/workout/data/datasources/workout_remote_data_source.dart';
 import 'package:ae_coaching/features/workout/data/datasources/workout_session_remote_data_source.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_session.dart';
+import 'package:ae_coaching/features/workout/data/models/workout_template_exercise_assignment.dart';
 import 'package:ae_coaching/features/workout/data/repositories/session_exercise_repository.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_session_repository.dart';
 import 'package:ae_coaching/features/workout/domain/services/personal_record_detection_service.dart';
@@ -66,6 +67,9 @@ void main() {
     if (!Hive.isAdapterRegistered(5)) {
       Hive.registerAdapter(WorkoutSessionAdapter());
     }
+    if (!Hive.isAdapterRegistered(7)) {
+      Hive.registerAdapter(WorkoutTemplateExerciseAssignmentAdapter());
+    }
 
     final storageManager = UserStorageManager();
     setRepository = SessionExerciseRepository(
@@ -118,6 +122,56 @@ void main() {
   );
 
   test(
+    'finish eligibility accepts only valid sets linked to this exact session',
+    () async {
+      final session = await sessionRepository.startWorkoutSession(
+        programId: programA,
+        workoutTemplateId: push1,
+        workoutNameSnapshot: 'Push 1',
+      );
+      final validSet = await setRepository.addSet(
+        programId: programA,
+        workoutTemplateId: push1,
+        workoutSessionId: session.id,
+        exerciseName: 'Bodyweight Squat',
+        weight: 0,
+        reps: 8,
+      );
+      final setBox = await setRepository.getUserBox();
+      await setBox.add(
+        ExerciseSet(
+          exerciseName: 'Wrong template',
+          weight: 50,
+          reps: 8,
+          date: DateTime.now(),
+          programId: programA,
+          workoutTemplateId: push2,
+          workoutSessionId: session.id,
+        ),
+      );
+      await setBox.add(
+        ExerciseSet(
+          exerciseName: 'Invalid reps',
+          weight: 50,
+          reps: 0,
+          date: DateTime.now(),
+          programId: programA,
+          workoutTemplateId: push1,
+          workoutSessionId: session.id,
+        ),
+      );
+
+      final cubit = SessionExerciseCubit(
+        repository: setRepository,
+        sessionRepository: sessionRepository,
+      );
+      addTearDown(cubit.close);
+
+      expect(await cubit.getValidSetsForSession(session), [validSet]);
+    },
+  );
+
+  test(
     'getExerciseNamesForSession preserves first-appearance order with no duplicates',
     () async {
       final session = await sessionRepository.startWorkoutSession(
@@ -157,6 +211,170 @@ void main() {
           'Bench Press',
         ),
         hasLength(2),
+      );
+    },
+  );
+
+  test(
+    'template assignments appear as empty rows without creating sets',
+    () async {
+      final assignment = WorkoutTemplateExerciseAssignment(
+        assignmentId: 'assignment_1',
+        exerciseId: 'ex_bench_press',
+        exerciseNameSnapshot: 'Barbell Bench Press',
+        referenceType: WorkoutExerciseReferenceType.builtIn.name,
+      );
+      final sourceAssignments = [assignment];
+      final session = await sessionRepository.startWorkoutSession(
+        programId: programA,
+        workoutTemplateId: push1,
+        workoutNameSnapshot: 'Push 1',
+        templateExerciseAssignments: sourceAssignments,
+      );
+      sourceAssignments.clear();
+
+      final cubit = SessionExerciseCubit(
+        repository: setRepository,
+        sessionRepository: sessionRepository,
+      );
+      addTearDown(cubit.close);
+      await cubit.loadForSession(session);
+
+      final state = cubit.state as SessionExerciseLoaded;
+      expect(state.rows, hasLength(1));
+      expect(state.rows.single.exerciseName, 'Barbell Bench Press');
+      expect(state.rows.single.isReferenceOnly, isTrue);
+      expect(state.rows.single.sets, isEmpty);
+      expect(await cubit.getValidSetsForSession(session), isEmpty);
+    },
+  );
+
+  test('active-session additions appear without logging a set', () async {
+    final session = await sessionRepository.startWorkoutSession(
+      programId: programA,
+      workoutTemplateId: push1,
+      workoutNameSnapshot: 'Push 1',
+    );
+    final cubit = SessionExerciseCubit(
+      repository: setRepository,
+      sessionRepository: sessionRepository,
+    );
+    addTearDown(cubit.close);
+
+    await cubit.addSessionExercise(session, 'One-off Squat');
+    final state = cubit.state as SessionExerciseLoaded;
+    expect(state.rows.single.exerciseName, 'One-off Squat');
+    expect(state.rows.single.isReferenceOnly, isTrue);
+    expect(state.rows.single.sets, isEmpty);
+    expect(await cubit.getValidSetsForSession(session), isEmpty);
+
+    await cubit.loadForSession(session);
+    expect(
+      (cubit.state as SessionExerciseLoaded).rows.single.exerciseName,
+      'One-off Squat',
+    );
+  });
+
+  test(
+    'removing a row with sets is blocked and preserves the recorded row',
+    () async {
+      final assignment = WorkoutTemplateExerciseAssignment(
+        assignmentId: 'assigned-row',
+        exerciseId: 'bench',
+        exerciseNameSnapshot: 'Bench Press',
+        referenceType: WorkoutExerciseReferenceType.builtIn.name,
+      );
+      final session = await sessionRepository.startWorkoutSession(
+        programId: programA,
+        workoutTemplateId: push1,
+        workoutNameSnapshot: 'Push 1',
+        templateExerciseAssignments: [assignment],
+      );
+      await setRepository.addSet(
+        programId: programA,
+        workoutTemplateId: push1,
+        workoutSessionId: session.id,
+        exerciseName: 'Bench Press',
+        weight: 60,
+        reps: 8,
+      );
+      final cubit = SessionExerciseCubit(
+        repository: setRepository,
+        sessionRepository: sessionRepository,
+      );
+      addTearDown(cubit.close);
+      await cubit.loadForSession(session);
+      await expectLater(
+        cubit.removeSessionExercise(session, 'Bench Press'),
+        throwsA(isA<Exception>()),
+      );
+
+      expect((cubit.state as SessionExerciseLoaded).rows, hasLength(1));
+      expect(await cubit.getValidSetsForSession(session), hasLength(1));
+      final stored = (await sessionRepository.getUserBox()).get(session.id)!;
+      expect(stored.hiddenExerciseNames, isEmpty);
+    },
+  );
+
+  test(
+    'active exercise replacement and order persist without changing sets',
+    () async {
+      final assignments = [
+        WorkoutTemplateExerciseAssignment(
+          assignmentId: 'bench-assignment',
+          exerciseId: 'bench',
+          exerciseNameSnapshot: 'Bench Press',
+          referenceType: WorkoutExerciseReferenceType.builtIn.name,
+        ),
+        WorkoutTemplateExerciseAssignment(
+          assignmentId: 'row-assignment',
+          exerciseId: 'row',
+          exerciseNameSnapshot: 'Cable Row',
+          referenceType: WorkoutExerciseReferenceType.builtIn.name,
+        ),
+      ];
+      final session = await sessionRepository.startWorkoutSession(
+        programId: programA,
+        workoutTemplateId: push1,
+        workoutNameSnapshot: 'Push 1',
+        templateExerciseAssignments: assignments,
+      );
+      await setRepository.addSet(
+        programId: programA,
+        workoutTemplateId: push1,
+        workoutSessionId: session.id,
+        exerciseName: 'Cable Row',
+        weight: 50,
+        reps: 10,
+      );
+      final cubit = SessionExerciseCubit(
+        repository: setRepository,
+        sessionRepository: sessionRepository,
+      );
+      addTearDown(cubit.close);
+      await cubit.loadForSession(session);
+      await cubit.replaceSessionExercise(
+        session: session,
+        oldName: 'Bench Press',
+        newName: 'Incline Press',
+      );
+      await cubit.reorderSessionExercises(session, const [
+        'Cable Row',
+        'Incline Press',
+      ]);
+
+      final state = cubit.state as SessionExerciseLoaded;
+      expect(state.rows.map((row) => row.exerciseName), [
+        'Cable Row',
+        'Incline Press',
+      ]);
+      expect(await cubit.getValidSetsForSession(session), hasLength(1));
+      await cubit.loadForSession(session);
+      expect(
+        (cubit.state as SessionExerciseLoaded).rows.map(
+          (row) => row.exerciseName,
+        ),
+        ['Cable Row', 'Incline Press'],
       );
     },
   );

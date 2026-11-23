@@ -17,6 +17,7 @@ import 'package:ae_coaching/features/workout/presentation/cubit/home_workout_ove
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
+import '../../support/fake_revision_cloud.dart';
 
 class _FakeWorkoutRemoteDataSource implements WorkoutRemoteDataSource {
   @override
@@ -41,16 +42,9 @@ class _FakeWorkoutSessionRemoteDataSource
   fetchAllRemoteSessions() async => const [];
 }
 
-class _FakeWorkoutTemplateRemoteDataSource
-    implements WorkoutTemplateRemoteDataSource {
-  @override
-  Future<void> syncTemplate(String id, WorkoutTemplate template) async {}
-  @override
-  Future<void> deleteTemplate(String id) async {}
-  @override
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>>
-  fetchAllRemoteTemplates() async => const [];
-}
+/// Rules-equivalent in-memory cloud (see FakeRevisionCloud).
+class _FakeWorkoutTemplateRemoteDataSource extends FakeRevisionCloud
+    implements WorkoutTemplateRemoteDataSource {}
 
 class _FakeWorkoutProgramRemoteDataSource
     implements WorkoutProgramRemoteDataSource {
@@ -127,6 +121,55 @@ void main() {
       await tempDir.delete(recursive: true);
     }
   });
+
+  test(
+    'sourceChanges notifies for each box the overview reads, without loading',
+    () async {
+      final sources = await cubit.sourceChanges();
+      expect(sources, hasLength(4));
+      final fired = List<int>.filled(sources.length, 0);
+      final subscriptions = [
+        for (final (i, source) in sources.indexed)
+          source.listen((_) => fired[i]++),
+      ];
+      addTearDown(() async {
+        for (final subscription in subscriptions) {
+          await subscription.cancel();
+        }
+      });
+      expect(cubit.state, isA<HomeWorkoutOverviewInitial>());
+
+      // Order: sessions, programs, templates, sets.
+      final program = await programRepository.createProgram(
+        name: 'PPL',
+        makeActive: true,
+      );
+      final day = await templateRepository.createTemplate(
+        programId: program.id,
+        name: 'Push',
+      );
+      final session = await sessionRepository.startWorkoutSession(
+        programId: program.id,
+        workoutTemplateId: day.id,
+        workoutNameSnapshot: 'Push',
+      );
+      await setRepository.addSet(
+        programId: program.id,
+        workoutTemplateId: day.id,
+        workoutSessionId: session.id,
+        exerciseName: 'Bench Press',
+        weight: 80,
+        reps: 8,
+      );
+      await Future<void>.delayed(Duration.zero);
+
+      for (final (i, count) in fired.indexed) {
+        expect(count, greaterThan(0), reason: 'source $i');
+      }
+      // Watching is passive: it never loads the overview by itself.
+      expect(cubit.state, isA<HomeWorkoutOverviewInitial>());
+    },
+  );
 
   test(
     'no active program and no completed workouts: both empty states load correctly',

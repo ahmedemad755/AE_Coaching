@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -11,8 +13,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 ///
 /// Ownership note (Stage 8 audit): [SessionStorage] also owns keys in
 /// this same `authBox` (`isLoggedIn`, `currentUserUid`,
-/// `currentUserName`, `currentUserPhone`). This is a deliberate,
-/// pre-existing overlap, not a bug — `appLocale` and SessionStorage's 4
+/// `currentUserName`, `currentUserEmail`). This is a deliberate,
+/// pre-existing overlap, not a bug — `appLocale` and SessionStorage's
 /// keys are disjoint, and a Hive box is just a key-value map, so two
 /// independent owners writing to different keys in it is safe. Neither
 /// class reads or writes the other's key(s). Left unchanged rather
@@ -23,7 +25,14 @@ class LocaleCubit extends Cubit<Locale> {
   static const String _boxName = 'authBox';
   static const String _prefsKey = 'appLocale';
 
-  LocaleCubit() : super(_readInitialLocale());
+  /// [onLanguageChanged] lets dependents follow the app language (the
+  /// server reminder preference does); it never changes the locale and its
+  /// failures never affect it.
+  LocaleCubit({Future<void> Function(String languageCode)? onLanguageChanged})
+    : _onLanguageChanged = onLanguageChanged,
+      super(_readInitialLocale());
+
+  final Future<void> Function(String languageCode)? _onLanguageChanged;
 
   static Locale _readInitialLocale() {
     try {
@@ -52,6 +61,12 @@ class LocaleCubit extends Cubit<Locale> {
     } catch (_) {
       // Non-fatal: the UI already switched language for this session even
       // if persisting the preference failed.
+    }
+    final onLanguageChanged = _onLanguageChanged;
+    if (onLanguageChanged != null) {
+      unawaited(
+        onLanguageChanged(locale.languageCode).catchError((Object _) {}),
+      );
     }
   }
 }

@@ -1,0 +1,373 @@
+{
+  "ex_high_to_low_cable_fly": {
+    "startingPosition": "Stand between two cable towers with pulleys visibly above shoulder level. Arms open, elbows softly bent, torso steady in a split stance.",
+    "endingPosition": "Hands meet in front of the lower chest/upper abdomen after moving downward and inward; retain the same soft elbow angle.",
+    "jointMovement": "Shoulder adduction and horizontal adduction along a downward diagonal; elbows remain approximately fixed.",
+    "equipmentDetails": "Two high adjustable pulleys, two single handles, visible taut cable runs and weight-stack housings.",
+    "gripAndStance": "One handle per hand, wrists aligned with forearms, split stance and soft knees.",
+    "cameraAngle": "Front three-quarter view wide enough to show both elevated pulley origins and the lower hand finish.",
+    "primaryMuscles": ["pectoralis major"],
+    "accuracyRequirements": ["Show both pulley origins; cable lines alone do not establish pulley height.", "End lower than the starting hands; do not depict the upward fly or a chest press.", "Keep elbow bend and torso angle consistent across panels."]
+  },
+  "ex_low_to_high_cable_fly": {
+    "startingPosition": "Stand between cable towers with both pulleys visibly near ankle level; handles beside and slightly behind the hips, elbows softly bent.",
+    "endingPosition": "Hands meet in front of the upper chest after an upward inward arc, without turning the movement into an overhead press.",
+    "jointMovement": "Shoulder flexion with horizontal adduction on an ascending diagonal; little change in elbow angle.",
+    "equipmentDetails": "Two low adjustable cable pulleys and individual handles; show the low anchor points.",
+    "gripAndStance": "Neutral-to-supinated comfortable handle grip, neutral wrists, balanced staggered stance.",
+    "cameraAngle": "Front three-quarter view including floor-level pulleys and the upper-chest finish.",
+    "primaryMuscles": ["pectoralis major, clavicular region"],
+    "accuracyRequirements": ["Both cable origins stay low in every panel.", "Hands travel upward and inward, not down toward the abdomen.", "Use an arm arc with a stable soft elbow bend, not a curl or press."]
+  },
+  "ex_single_arm_cable_chest_fly": {
+    "startingPosition": "Stand side-on to one chest-height pulley. Working arm opens to the side with a soft elbow bend; nonworking hand rests on the hip.",
+    "endingPosition": "Working hand sweeps inward to the front of the opposite side of the chest while the torso remains facing forward.",
+    "jointMovement": "Unilateral shoulder horizontal adduction with a nearly constant elbow angle; trunk resists rotation.",
+    "equipmentDetails": "One adjustable cable tower, pulley at chest height and one D-handle.",
+    "gripAndStance": "Single handle with neutral wrist; stable split stance, feet remain planted.",
+    "cameraAngle": "Front three-quarter view from the working side, showing the chest-height pulley and full arm arc.",
+    "primaryMuscles": ["pectoralis major"],
+    "accuracyRequirements": ["Only one arm holds a cable handle.", "No dumbbell, second cable or bench.", "Do not bend and extend the elbow like a unilateral chest press or rotate the whole torso."]
+  },
+  "ex_single_arm_lat_pulldown": {
+    "startingPosition": "Sit at a high cable station with feet supported, torso upright and one arm reaching overhead to a single handle.",
+    "endingPosition": "Working elbow draws down beside the ribs and handle approaches the upper chest/shoulder; nonworking arm remains relaxed.",
+    "jointMovement": "Shoulder adduction/extension with elbow flexion and natural scapular movement.",
+    "equipmentDetails": "Overhead cable pulley, one D-handle, seat and thigh restraint if present.",
+    "gripAndStance": "One neutral-grip handle; seated stable base and slight consistent backward torso lean.",
+    "cameraAngle": "Rear three-quarter view showing the working lat, overhead cable origin and bending elbow.",
+    "primaryMuscles": ["latissimus dorsi"],
+    "accuracyRequirements": ["One working arm, not two hands on a wide bar.", "Keep the pull in front of the head.", "Elbow flexes visibly; do not substitute a straight-arm pullover or horizontal row."]
+  },
+  "ex_wide_grip_seated_cable_row": {
+    "startingPosition": "Sit at a low cable row station, feet on supports, knees softly bent, upright torso and arms reaching forward to a long bar.",
+    "endingPosition": "Wide bar approaches the upper abdomen/lower chest with elbows traveling outward and back and shoulder blades drawing together.",
+    "jointMovement": "Shoulder extension/horizontal abduction, elbow flexion and scapular retraction.",
+    "equipmentDetails": "Low cable row station with footplates and a long straight or mildly angled bar.",
+    "gripAndStance": "Wide pronated grip visibly beyond shoulder width; seated feet braced.",
+    "cameraAngle": "Rear-side three-quarter view with an inset/front angle if needed to make both wide overhand hands visible.",
+    "primaryMuscles": ["rhomboids", "middle trapezius", "latissimus dorsi"],
+    "accuracyRequirements": ["Use a wide overhand bar, never a close neutral triangle handle.", "Show the horizontal low-cable line.", "Keep torso angle stable without depicting a backward body swing."]
+  },
+  "ex_pendlay_row": {
+    "startingPosition": "Barbell rests on the floor over the midfoot. Athlete hinges with soft knees, flat back and torso close to horizontal; arms extend down to the bar.",
+    "endingPosition": "Bar touches or approaches the lower chest/upper abdomen while torso stays near horizontal; the next panel returns the plates to the floor.",
+    "jointMovement": "Elbow flexion and shoulder extension with scapular retraction; hips and trunk brace rather than repeatedly standing up.",
+    "equipmentDetails": "Straight barbell with round plates visibly contacting the floor in reset panels.",
+    "gripAndStance": "Bilateral pronated grip slightly wider than shoulders; feet about hip-to-shoulder width.",
+    "cameraAngle": "Side three-quarter view at hip height, including the floor, plate contact and torso line.",
+    "primaryMuscles": ["latissimus dorsi", "rhomboids", "middle trapezius"],
+    "phases": ["Floor reset: plates on ground and near-horizontal braced torso.", "Row: bar approaches lower chest without raising torso.", "Floor reset again: plates visibly contact the ground."],
+    "accuracyRequirements": ["Floor reset must be visible; a generic unsupported bent-over-row still is insufficient.", "Keep torso close to parallel throughout the pull.", "No underhand grip, upright finish or knee-driven clean."]
+  },
+  "ex_single_arm_machine_row": {
+    "startingPosition": "Sit facing a dedicated row machine chest pad. One hand holds an independent lever handle with the working arm reaching forward; other hand stays on a stationary support.",
+    "endingPosition": "Working handle draws toward the same-side lower ribs with chest remaining against the pad; the other lever stays idle.",
+    "jointMovement": "Unilateral shoulder extension, elbow flexion and scapular retraction.",
+    "equipmentDetails": "Unbranded chest-supported row machine with clearly separate lever arms and plate or selectorized resistance.",
+    "gripAndStance": "One neutral-grip lever handle; feet stable and pelvis facing the chest pad.",
+    "cameraAngle": "Rear-side three-quarter view exposing the working handle, independent lever and chest support.",
+    "primaryMuscles": ["latissimus dorsi", "rhomboids", "middle trapezius"],
+    "accuracyRequirements": ["One moving independent machine lever, not a cable D-handle.", "Do not draw both arms rowing simultaneously.", "Keep the torso supported without rotation away from the pad."]
+  },
+  "ex_machine_pullover": {
+    "startingPosition": "Sit in a dedicated pullover machine with back supported and upper arms/elbows against overhead lever pads; hands hold the machine grips.",
+    "endingPosition": "Upper arms sweep downward toward the ribs against the lever while pelvis and back remain supported.",
+    "jointMovement": "Shoulder extension from overhead with approximately fixed elbow flexion; scapulae move naturally.",
+    "equipmentDetails": "Dedicated seated pullover machine with overhead pivoting lever and upper-arm pads, not a cable pulldown station.",
+    "gripAndStance": "Both machine grips held comfortably, elbows remain on pads; seated feet planted.",
+    "cameraAngle": "Side three-quarter view showing shoulder pivot, pad contact and the lever arc.",
+    "primaryMuscles": ["latissimus dorsi", "teres major"],
+    "accuracyRequirements": ["Show a dedicated pullover lever/pad mechanism.", "No bar pulled to the chest by elbow flexion.", "No dumbbell on a bench, cable rope or unsupported back arch."]
+  },
+  "ex_cable_pullover": {
+    "startingPosition": "Face a high cable station in a small hip hinge. Hold a rope with arms reaching upward/forward and elbows softly bent.",
+    "endingPosition": "Rope ends reach beside the upper thighs as the upper arms sweep down; trunk and soft elbow bend stay stable.",
+    "jointMovement": "Shoulder extension with nearly fixed elbow angle; no active rowing or curling.",
+    "equipmentDetails": "High cable pulley and rope attachment with both cable origin and rope ends visible.",
+    "gripAndStance": "Neutral rope grip, feet about hip width, knees soft, small fixed hinge.",
+    "cameraAngle": "Side three-quarter view making the overhead-to-thigh arc and cable line visible.",
+    "primaryMuscles": ["latissimus dorsi", "teres major"],
+    "accuracyRequirements": ["Use cable resistance and a shoulder-driven pullover arc.", "Do not depict elbow-flexion lat pulldown or a triceps pressdown.", "Do not replace the rope with a dumbbell or claim exclusivity from every straight-arm-pulldown naming convention."]
+  },
+  "ex_seated_dumbbell_lateral_raise": {
+    "startingPosition": "Sit upright on a flat bench with feet planted, one dumbbell beside each thigh and elbows softly bent.",
+    "endingPosition": "Both arms rise outward in a comfortable scapular plane to approximately shoulder height while the torso stays upright.",
+    "jointMovement": "Shoulder abduction with natural scapular upward rotation and little change in elbow bend.",
+    "equipmentDetails": "Flat bench and two separate dumbbells.",
+    "gripAndStance": "Neutral wrists, thumbs approximately forward rather than aggressively turned down; seated stable feet.",
+    "cameraAngle": "Front three-quarter view showing the seat contact, both feet and bilateral lateral arm paths.",
+    "primaryMuscles": ["deltoid, middle region"],
+    "accuracyRequirements": ["Clearly seated in both panels.", "No bent-over rear fly, standing raise or machine pads.", "Keep hands and elbows near shoulder height without shrugging to the ears."]
+  },
+  "ex_bayesian_cable_curl": {
+    "startingPosition": "Stand facing away from a low cable pulley, working upper arm held behind the torso and elbow almost extended; handle remains behind the hip.",
+    "endingPosition": "Flex the elbow to bring the handle upward while the upper arm remains behind the body rather than swinging forward.",
+    "jointMovement": "Elbow flexion with the shoulder held in extension; forearm supinated and wrist stable.",
+    "equipmentDetails": "One low cable pulley behind the athlete and one D-handle with a visible taut cable.",
+    "gripAndStance": "One supinated handle grip; staggered stance with stable torso and soft knees.",
+    "cameraAngle": "Strict side or side three-quarter view showing the elbow behind the torso in both poses and the pulley behind the athlete.",
+    "primaryMuscles": ["biceps brachii"],
+    "accuracyRequirements": ["Working upper arm remains behind the torso in both start and finish.", "Cable travels back to a low pulley behind the athlete.", "Do not substitute an ordinary cable curl with elbows in front; do not force a maximal shoulder extension angle."]
+  },
+  "ex_spider_curl": {
+    "startingPosition": "Lie chest-down on an inclined bench with feet braced and two dumbbells hanging freely below the shoulders; upper arms are unsupported by a preacher pad.",
+    "endingPosition": "Curl both dumbbells upward by bending the elbows while chest stays supported and upper arms remain nearly vertical.",
+    "jointMovement": "Bilateral elbow flexion with supinated forearms and stable upper arms.",
+    "equipmentDetails": "Incline bench and two dumbbells; no angled forearm support pad or barbell.",
+    "gripAndStance": "Supinated dumbbell grip, wrists neutral; prone chest support and feet contacting the floor.",
+    "cameraAngle": "Side three-quarter view showing chest-on-bench support, hanging upper arms and separate dumbbells.",
+    "primaryMuscles": ["biceps brachii"],
+    "accuracyRequirements": ["Prone on incline bench, not seated behind a preacher pad.", "Exactly two dumbbells rather than an EZ bar.", "Keep upper arms hanging and avoid turning the movement into a row."]
+  },
+  "ex_horizontal_leg_press": {
+    "startingPosition": "Sit with back and pelvis against a horizontal leg-press seat, knees bent and both feet flat on the footplate.",
+    "endingPosition": "Extend hips and knees to move the horizontal carriage away, stopping short of a forced knee lockout.",
+    "jointMovement": "Bilateral hip and knee extension followed by controlled flexion on return.",
+    "equipmentDetails": "Dedicated horizontal leg-press machine with a visibly level track; seat or footplate may move horizontally, but show one coherent mechanism.",
+    "gripAndStance": "Hands on seat handles; feet approximately shoulder width with heels staying on the plate.",
+    "cameraAngle": "Side three-quarter view with floor and level rails visible to establish horizontal travel.",
+    "primaryMuscles": ["quadriceps", "gluteus maximus"],
+    "accuracyRequirements": ["Track is horizontal, not a 45-degree sled.", "Back and pelvis remain supported.", "Both feet work; do not depict a calf press or hyperextended knees."]
+  },
+  "ex_single_leg_press": {
+    "startingPosition": "Sit in a leg-press machine with back supported, one foot centered on the footplate and the working knee bent; other foot rests clear on a stationary support.",
+    "endingPosition": "Extend the working hip and knee while the nonworking leg stays off the moving footplate and pelvis remains square.",
+    "jointMovement": "Unilateral hip and knee extension; controlled flexion on return.",
+    "equipmentDetails": "Unbranded leg-press machine with visible footplate and one coherent carriage; a 45-degree sled is the chosen illustration variant.",
+    "gripAndStance": "Hands on machine handles; one whole foot on the plate, heel supported, opposite foot safely clear.",
+    "cameraAngle": "Front-side three-quarter view where the working foot and nonworking foot are both unmistakable.",
+    "primaryMuscles": ["quadriceps", "gluteus maximus"],
+    "accuracyRequirements": ["Only one foot applies force to the moving footplate.", "No torso twisting or nonworking foot hiding behind the plate.", "Do not present the chosen sled angle as a new catalog constraint."]
+  },
+  "ex_single_leg_extension": {
+    "startingPosition": "Sit against the back pad of a leg-extension machine with one lower shin under the working roller and that knee bent; opposite foot rests outside the roller path.",
+    "endingPosition": "Straighten the working knee toward a comfortable near-straight position while the other leg stays relaxed and bent.",
+    "jointMovement": "Unilateral knee extension with the hip and thigh supported.",
+    "equipmentDetails": "Seated knee-extension machine with clear knee-level pivot, shin roller and thigh/seat support.",
+    "gripAndStance": "Hands hold side handles; seated pelvis steady and one working shin under the roller.",
+    "cameraAngle": "Front-side three-quarter view showing both legs and the roller contacting only the active shin.",
+    "primaryMuscles": ["quadriceps"],
+    "accuracyRequirements": ["Only one leg extends against resistance.", "Roller rests above the ankle, not on the knee or toes.", "Do not draw both shins behind a shared moving roller or a lying leg-curl machine."]
+  },
+  "ex_reverse_lunge": {
+    "startingPosition": "Stand tall with feet hip width, empty hands at the hips or sides and no external load.",
+    "endingPosition": "Step one foot backward and lower into a split stance with the front foot flat, front knee bent and rear knee near the floor; then return to the original stance.",
+    "jointMovement": "Hip and knee flexion during the backward step and descent, followed by front-leg hip/knee extension on return.",
+    "equipmentDetails": "Bodyweight only on a level floor; no dumbbells, barbell, Smith bar or kettlebell.",
+    "gripAndStance": "Hands empty; feet maintain hip-width separation rather than crossing behind each other.",
+    "cameraAngle": "Side three-quarter view with a small direction arrow showing the stepping foot traveling backward.",
+    "primaryMuscles": ["quadriceps", "gluteus maximus"],
+    "phases": ["Upright start, both feet level.", "One foot steps backward into a controlled lunge.", "Return the same rear foot forward to the starting stance."],
+    "accuracyRequirements": ["No external load.", "Sequence must establish a backward step, not a forward/walking lunge.", "Front heel stays planted and knee tracks with the foot; no crossed curtsy stance."]
+  },
+  "ex_step_up": {
+    "startingPosition": "Stand facing a stable knee-below-height box, one whole foot placed on its top and the other foot on the floor; hands are empty.",
+    "endingPosition": "Rise onto the box by extending the lead hip and knee; bring the trailing foot onto the top without adding a jump or curl.",
+    "jointMovement": "Lead-leg hip and knee extension; controlled hip/knee flexion when stepping back down.",
+    "equipmentDetails": "Stable unbranded step box or bench, bodyweight only.",
+    "gripAndStance": "Hands empty, arms natural; entire lead foot including heel on the box.",
+    "cameraAngle": "Side three-quarter view including floor, full box and contact of both feet.",
+    "primaryMuscles": ["quadriceps", "gluteus maximus"],
+    "accuracyRequirements": ["No dumbbells, barbell, biceps curl or knee-drive combination.", "Show a step rather than a two-foot jump.", "Box is stable and lead heel stays supported throughout."]
+  },
+  "ex_cyclist_squat": {
+    "startingPosition": "Stand in a narrow stance on a shallow heel wedge, toes/forefeet on the floor, body upright and hands empty in front for balance.",
+    "endingPosition": "Lower into a controlled squat with knees traveling forward with the toes and torso relatively upright; heels stay supported on the wedge.",
+    "jointMovement": "Knee and hip flexion on descent and extension on ascent, with heel elevation allowing forward knee travel.",
+    "equipmentDetails": "Bodyweight resistance and a small rigid heel wedge or equivalent stable heel support.",
+    "gripAndStance": "Hands empty; narrow comfortable stance, no forced feet-together position.",
+    "cameraAngle": "Side-front three-quarter view showing the narrow stance, wedge under the heels and forefeet remaining on the floor.",
+    "primaryMuscles": ["quadriceps"],
+    "accuracyRequirements": ["Heels visibly elevated by a wedge; not lifted by balancing on tiptoes.", "No goblet weight, barbell, belt-squat or leg-press machine.", "Maintain a squat pattern without an exaggerated backward-leaning sissy-squat pose."]
+  },
+  "ex_stiff_leg_deadlift": {
+    "startingPosition": "Stand holding a barbell against the thighs with a small soft knee bend and neutral braced trunk.",
+    "endingPosition": "Hinge the hips backward and lower the bar close to the shins while knees stay relatively straight and nearly unchanged; stop before the back rounds.",
+    "jointMovement": "Hip flexion/extension with minimal knee-angle change; spinal posture stays controlled.",
+    "equipmentDetails": "Straight barbell with matched plates, no dumbbells or trap bar.",
+    "gripAndStance": "Bilateral pronated grip just outside the thighs; feet about hip width and whole feet planted.",
+    "cameraAngle": "Strict side three-quarter view showing nearly straight knees, hip hinge and close bar path.",
+    "primaryMuscles": ["hamstrings", "gluteus maximus"],
+    "accuracyRequirements": ["Knees remain soft rather than forcibly locked.", "Show straighter knees and a clearly labeled authoring distinction from the more knee-flexed Romanian variant; do not reuse a generic RDL still.", "Floor contact and exact depth are not specified by this catalog; do not invent a floor reset or round the spine to reach it."]
+  },
+  "ex_glute_ham_raise": {
+    "startingPosition": "Secure ankles between the rollers of a glute-ham developer with knees/thighs at the curved front pad; torso begins upright in a kneeling position.",
+    "endingPosition": "Lower the trunk toward horizontal by extending the knees while keeping the trunk and thighs largely aligned, then flex the knees to return upright.",
+    "jointMovement": "Predominantly knee extension/flexion under eccentric/concentric hamstring loading, with glutes/trunk maintaining hip alignment.",
+    "equipmentDetails": "GHD with curved front thigh/knee pad, rear ankle rollers and footplate, all clearly connected.",
+    "gripAndStance": "Arms crossed at chest; ankles fixed between rollers, toes/feet braced at the footplate.",
+    "cameraAngle": "Strict side view showing the GHD support and the knee-centered lowering arc.",
+    "primaryMuscles": ["hamstrings", "gluteus maximus"],
+    "accuracyRequirements": ["GHD machine must be visible; no floor Nordic curl.", "Do not depict an ordinary hip-only back extension over the pad.", "Show ankle restraint and knee support that could mechanically hold the depicted body position."]
+  },
+  "ex_glute_kickback_machine": {
+    "startingPosition": "Stand braced on a dedicated kickback machine, torso against its support, working knee bent with the sole against a connected resistance footplate.",
+    "endingPosition": "Press the working leg backward through the hip against the footplate while keeping pelvis square and trunk supported.",
+    "jointMovement": "Unilateral hip extension; knee angle follows the machine lever without turning the pose into a leg press.",
+    "equipmentDetails": "Dedicated glute-kickback machine with a visible mechanical lever and sole-contact footplate; stationary support for the other foot.",
+    "gripAndStance": "Both hands on support handles; one supporting leg and one foot contacting the moving plate.",
+    "cameraAngle": "Side-rear three-quarter view clearly showing sole-on-footplate contact and lever linkage.",
+    "primaryMuscles": ["gluteus maximus"],
+    "accuracyRequirements": ["No ankle cuff or cable-tower substitution.", "Draw a coherent footplate/lever mechanism and stationary supporting leg.", "Hip extends without an exaggerated lumbar arch or pelvis twisting open."]
+  },
+  "ex_reverse_hyperextension": {
+    "startingPosition": "Lie prone across an elevated reverse-hyper machine pad with abdomen/pelvis supported, hands on fixed handles and both legs hanging below the pad edge.",
+    "endingPosition": "Raise both legs backward toward the line of the torso through the hips, moving the ankle strap and loaded pendulum while trunk remains supported.",
+    "jointMovement": "Bilateral hip extension with a stable supported trunk; controlled hip flexion on return.",
+    "equipmentDetails": "Dedicated reverse-hyper machine with elevated torso pad, fixed grips and a visible loaded pendulum/ankle-strap connection.",
+    "gripAndStance": "Both hands hold fixed grips; ankles secured to the connected resistance strap, knees softly extended.",
+    "cameraAngle": "Side view including the whole machine, hip position at the pad edge and pendulum under it.",
+    "primaryMuscles": ["gluteus maximus", "hamstrings"],
+    "accuracyRequirements": ["Legs move while torso remains on the pad.", "Show the resistance pendulum/strap; a generic unloaded table pose is insufficient.", "Do not depict a Roman-chair back extension or legs rising far beyond trunk alignment."]
+  },
+  "ex_smith_machine_calf_raise": {
+    "startingPosition": "Stand under a Smith bar across the upper traps, forefeet on a stable low calf block and heels lowered comfortably; knees remain soft and nearly straight.",
+    "endingPosition": "Rise onto the balls of the feet by lifting the heels; bar and body travel vertically along the Smith rails.",
+    "jointMovement": "Ankle plantarflexion and controlled dorsiflexion return, without repeated knee bending.",
+    "equipmentDetails": "Smith machine with visible vertical guide rails, bar on upper traps, safety stops and a stable calf block.",
+    "gripAndStance": "Hands stabilize the bar outside shoulders; feet parallel about hip width with forefeet supported.",
+    "cameraAngle": "Rear-side three-quarter view showing bar-to-rail connections, forefoot support and both heel positions.",
+    "primaryMuscles": ["gastrocnemius", "soleus"],
+    "accuracyRequirements": ["Recognizable Smith rails and guided bar, not a shoulder-pad calf machine.", "Heels rise for plantarflexion; do not draw toes lifting as a tibialis/reverse raise.", "No forced knee lockout or unsupported unstable stack of plates."]
+  },
+  "ex_dumbbell_standing_calf_raise": {
+    "startingPosition": "Stand tall holding one dumbbell at each side, both feet parallel on a stable low calf block and heels at a comfortable lowered position.",
+    "endingPosition": "Lift both heels onto the balls of the feet while knees remain nearly straight and dumbbells hang by the thighs.",
+    "jointMovement": "Bilateral ankle plantarflexion; controlled return toward dorsiflexion.",
+    "equipmentDetails": "Two dumbbells and one stable low calf block; the block is an illustration setup, not new catalog equipment.",
+    "gripAndStance": "Neutral dumbbell grips and neutral wrists, feet about hip width; balanced bilateral stance.",
+    "cameraAngle": "Rear-side three-quarter view exposing both dumbbells and the changing heel heights.",
+    "primaryMuscles": ["gastrocnemius", "soleus"],
+    "accuracyRequirements": ["Dumbbells visible in both panels.", "Standing bilateral raise, not seated or donkey-style.", "Do not show bodyweight-only art or replace dumbbells with a Smith bar."]
+  },
+  "ex_donkey_calf_raise": {
+    "startingPosition": "Hinge forward with forearms on a donkey-calf machine support, a dedicated load pad resting over the pelvis and forefeet on a calf block; knees remain softly extended.",
+    "endingPosition": "Raise both heels while maintaining the hip hinge and pelvis-to-load-pad contact.",
+    "jointMovement": "Ankle plantarflexion and controlled return; hip/trunk angle remains substantially fixed.",
+    "equipmentDetails": "Dedicated donkey calf machine with forearm support, pelvic load pad/lever and stable forefoot platform.",
+    "gripAndStance": "Forearms/hands brace on the support; parallel feet under hips with heels free beyond the block.",
+    "cameraAngle": "Strict side three-quarter view showing the pelvic pad, hinged torso and ankle motion.",
+    "primaryMuscles": ["gastrocnemius", "soleus"],
+    "accuracyRequirements": ["Machine resistance on the pelvis, not a partner sitting on the back.", "Do not substitute an unloaded bent-over calf raise.", "Maintain hinge and soft knees; no seated calf posture."]
+  },
+  "ex_machine_ab_crunch": {
+    "startingPosition": "Sit in a dedicated abdominal crunch machine with pelvis supported, feet braced and hands holding grips near the shoulders connected to an upper-body lever.",
+    "endingPosition": "Bring rib cage toward pelvis by controlled trunk flexion, moving the machine lever without pulling only with the arms.",
+    "jointMovement": "Spinal/trunk flexion with limited hip motion and a stable seated pelvis.",
+    "equipmentDetails": "Seated abdominal crunch machine with back/seat supports, shoulder-level grips and a clear resistance pivot/lever.",
+    "gripAndStance": "Hands on machine handles, feet supported, seated pelvis stays on the pad.",
+    "cameraAngle": "Side three-quarter view showing the rib-cage-to-pelvis change and coherent machine pivot.",
+    "primaryMuscles": ["rectus abdominis"],
+    "accuracyRequirements": ["Seated dedicated abdominal machine, not a kneeling cable crunch.", "Show trunk curling rather than a large hip hinge or arm-only pulldown.", "Do not pull the head/neck forward or depict a back-extension machine."]
+  },
+  "ex_captain_s_chair_leg_raise": {
+    "startingPosition": "Support the body on captain-chair forearm pads with back against the vertical pad, hands on handles and both legs hanging down off the floor.",
+    "endingPosition": "Raise both largely straight legs toward horizontal with a small controlled posterior pelvic tilt; forearms and back stay supported.",
+    "jointMovement": "Hip flexion with controlled pelvic curl/trunk stabilization; knees stay nearly extended.",
+    "equipmentDetails": "Captain-chair station with vertical back pad, paired forearm pads, handles and visible support frame.",
+    "gripAndStance": "Hands grip forward handles, elbows/forearms fully supported; no standing foot support during the repetition.",
+    "cameraAngle": "Side-front three-quarter view showing forearm and back contact and both extended knees.",
+    "primaryMuscles": ["rectus abdominis"],
+    "accuracyRequirements": ["Show straight-leg raising rather than only bent-knee tucking.", "Keep the shoulder support and forearm pads mechanically plausible.", "No hanging-from-bar or lying-bench substitute; hip flexors also work and should not be mislabeled as abs-only motion."]
+  },
+  "ex_dumbbell_thruster": {
+    "startingPosition": "Stand with two dumbbells in a shoulder front rack, feet around shoulder width and trunk braced.",
+    "endingPosition": "After a full controlled front squat, drive continuously through standing into an overhead dumbbell press, finishing upright with arms extended.",
+    "jointMovement": "Hip/knee flexion then extension flows into shoulder elevation and elbow extension; no second knee dip under the weights.",
+    "equipmentDetails": "Two dumbbells only, with identical implements in every phase.",
+    "gripAndStance": "Neutral dumbbell grips in the rack, feet planted about shoulder width; wrists remain aligned.",
+    "cameraAngle": "Front-side three-quarter view showing squat depth, rack and overhead finish without cropping the weights.",
+    "primaryMuscles": ["quadriceps", "gluteus maximus", "deltoids", "triceps brachii"],
+    "phases": ["Standing double-dumbbell shoulder rack.", "Bottom of a front squat with hips around or below knee level as controlled.", "Continuous leg drive into overhead extension without a second dip."],
+    "accuracyRequirements": ["Include a real squat, not only the shallow dip of a push press.", "Both dumbbells remain visible; do not substitute a barbell.", "No split jerk, second knee dip or separate unrelated shoulder-press panel."]
+  },
+  "ex_barbell_thruster": {
+    "startingPosition": "Stand with a barbell in the front rack across the front deltoids, elbows forward and feet around shoulder width.",
+    "endingPosition": "Rise from a full front squat directly into an overhead press, ending tall with the bar balanced over the midfoot.",
+    "jointMovement": "Hip/knee flexion and extension combined continuously with shoulder elevation and elbow extension.",
+    "equipmentDetails": "One straight barbell and matched plates; no dumbbells or Smith rails.",
+    "gripAndStance": "Pronated grip slightly wider than shoulders, front-rack support then full overhead grip; stable squat stance.",
+    "cameraAngle": "Side-front three-quarter view including bar, feet and all squat/press phases.",
+    "primaryMuscles": ["quadriceps", "gluteus maximus", "deltoids", "triceps brachii"],
+    "phases": ["Standing barbell front rack.", "Full front squat with bar supported on the deltoids.", "Continuous ascent and press to a tall overhead finish."],
+    "accuracyRequirements": ["Show full squat depth, not a shallow push-press dip.", "Keep the bar in front rack rather than behind the neck.", "No second dip, split stance or clean from the floor as the main movement."]
+  },
+  "ex_dumbbell_clean_and_press": {
+    "startingPosition": "Stand over two dumbbells near the feet with hips hinged, soft bent knees, flat braced trunk and arms long.",
+    "endingPosition": "Clean both dumbbells into a shoulder rack, stand stable, then press them overhead with arms extended.",
+    "jointMovement": "Hip/knee extension accelerates the clean; elbows turn under into the rack; a separate shoulder press uses shoulder elevation and elbow extension.",
+    "equipmentDetails": "Two dumbbells, no barbell or kettlebell; two implements are the explicitly chosen illustration variant for the unsuffixed catalog name.",
+    "gripAndStance": "Neutral grips at the sides of the feet and at the shoulder rack; feet hip-to-shoulder width.",
+    "cameraAngle": "Front-side three-quarter view showing the hinge, turnover/rack and overhead phases.",
+    "primaryMuscles": ["gluteus maximus", "quadriceps", "deltoids", "triceps brachii"],
+    "phases": ["Hinged start holding two dumbbells near the feet.", "Hip-driven clean into a stable shoulder rack.", "Tall standing rack before pressing.", "Overhead strict press with knees straight but not forced backward."],
+    "accuracyRequirements": ["Show the clean and the subsequent press, not only a curl-to-press.", "No jerk or thruster squat; the press follows a stable standing rack.", "Two-dumbbell/floor-start choice must be checked by the reviewer; it is not a catalog data change."]
+  },
+  "ex_barbell_clean_and_press": {
+    "startingPosition": "Barbell on the floor above midfeet, hands outside the legs, hips and knees bent and trunk braced.",
+    "endingPosition": "Clean the bar into the front rack, stand fully, then press it overhead to a stable extended-arm finish.",
+    "jointMovement": "Hip/knee extension and elbow turnover for the clean, followed by shoulder elevation and elbow extension for a separate press.",
+    "equipmentDetails": "One straight barbell with matched plates.",
+    "gripAndStance": "Bilateral pronated clean grip just outside shoulders; feet around hip width for pull and balanced shoulder-width rack.",
+    "cameraAngle": "Side-front three-quarter view showing floor start, front-rack turnover and overhead finish.",
+    "primaryMuscles": ["gluteus maximus", "quadriceps", "deltoids", "triceps brachii"],
+    "phases": ["Barbell floor start.", "Clean catch in front rack.", "Stable fully standing rack.", "Separate strict overhead press."],
+    "accuracyRequirements": ["Include both clean and press phases.", "Do not replace the press with a jerk or use a behind-neck rack.", "Bar stays near the body during the clean; hands and plate count remain consistent."]
+  },
+  "ex_power_clean": {
+    "startingPosition": "Barbell rests on the floor over midfeet; athlete grips outside the shins with bent knees, hips back and a neutral braced trunk.",
+    "endingPosition": "Receive the bar on the front deltoids with elbows forward in a partial squat clearly above parallel, then stand tall.",
+    "jointMovement": "Coordinated hip/knee/ankle extension followed by rapid elbow turnover and a shallow receiving flexion.",
+    "equipmentDetails": "Straight barbell with matched round plates; floor contact visible in the first panel.",
+    "gripAndStance": "Pronated or hook clean grip just outside the legs; pulling stance about hip width and receiving stance slightly wider.",
+    "cameraAngle": "Side-front three-quarter view showing floor contact, close bar path, turnover and above-parallel catch.",
+    "primaryMuscles": ["gluteus maximus", "quadriceps", "hamstrings", "trapezius"],
+    "phases": ["Floor start, arms long.", "Leg/hip drive with the bar close to the torso.", "Front-rack catch above parallel, elbows forward.", "Stand with the bar supported across the front deltoids."],
+    "accuracyRequirements": ["Floor start and above-parallel catch must both be visible.", "Do not substitute a hang clean, full squat clean, upright row or overhead snatch.", "Bar rests on shoulders in the rack rather than being held only by flexed wrists."]
+  },
+  "ex_hang_clean": {
+    "startingPosition": "Stand holding a barbell, then hinge to an above-knee hang with shoulders slightly over the bar and arms long; the plates do not rest on the floor.",
+    "endingPosition": "Accelerate from the hang, turn elbows under and receive the bar in front rack before standing. A full-squat catch is the proposed drawing variant, subject to coach review.",
+    "jointMovement": "Hip/knee/ankle extension from the hang followed by elbow turnover and receiving hip/knee flexion.",
+    "equipmentDetails": "Straight barbell with matched plates and a clearly visible gap between plates and floor in the starting panel.",
+    "gripAndStance": "Pronated or hook clean grip just outside the legs; balanced hip-width pull and slightly wider receiving stance.",
+    "cameraAngle": "Side-front three-quarter view emphasizing bar-above-knee hang start and front-rack catch.",
+    "primaryMuscles": ["gluteus maximus", "quadriceps", "hamstrings", "trapezius"],
+    "phases": ["Above-knee hang, bar held off the floor.", "Hip/leg drive with bar close to the body.", "Front-rack receiving squat; proposed full catch requires reviewer confirmation.", "Stand with bar in front rack."],
+    "accuracyRequirements": ["Do not show a floor start.", "Catalog distinguishes the hang start but does not specify catch depth; reviewer must confirm the proposed full-squat receiving depiction before approval.", "No overhead press or snatch, and no early arm curl substituted for the clean turnover."]
+  },
+  "ex_dumbbell_snatch": {
+    "startingPosition": "One dumbbell lies between the feet; athlete takes one neutral grip with hips/knees bent, back braced and free arm clear.",
+    "endingPosition": "Drive the dumbbell in one continuous pull to a single-arm overhead catch, then stand stable with wrist above shoulder and hips.",
+    "jointMovement": "Hip/knee extension accelerates the dumbbell; shoulder elevation and rapid elbow extension complete the overhead catch.",
+    "equipmentDetails": "Exactly one dumbbell, no barbell or kettlebell.",
+    "gripAndStance": "One hand on dumbbell handle, neutral wrist; feet about shoulder width with no exaggerated split.",
+    "cameraAngle": "Front-side three-quarter view showing floor start, close pull and overhead catch without cropping the arm.",
+    "primaryMuscles": ["gluteus maximus", "quadriceps", "deltoids", "trapezius"],
+    "phases": ["One dumbbell at floor between feet.", "Close explosive upward pull driven by hips and legs.", "Single-arm overhead catch with soft receiving knees.", "Tall stable overhead finish."],
+    "accuracyRequirements": ["No pause/rack at the shoulder as in a clean and press.", "One continuous ground-to-overhead movement with one dumbbell.", "Do not depict a two-arm press, kettlebell swing or barbell snatch."]
+  },
+  "ex_kettlebell_turkish_get_up": {
+    "startingPosition": "Lie supine with one kettlebell held above the shoulder on an extended arm; same-side knee bent with foot planted, opposite leg extended and free arm angled out on the floor.",
+    "endingPosition": "Stand fully upright with the same kettlebell arm extended overhead after rolling to support, lifting the hips, sweeping the free leg and rising through half-kneeling.",
+    "jointMovement": "Coordinated trunk rotation/stabilization, hip extension and leg sweep followed by hip/knee extension; loaded shoulder stays stacked rather than repeatedly pressing.",
+    "equipmentDetails": "One kettlebell in a conventional handle grip, no dumbbell or bottom-up substitution.",
+    "gripAndStance": "Single secure kettlebell grip, wrist aligned; support transitions from free elbow to hand to half-kneeling and standing.",
+    "cameraAngle": "Consistent front-side three-quarter view across six separate panels so the supporting hand, knee and overhead arm remain visible.",
+    "primaryMuscles": ["abdominal wall", "deltoids", "gluteus maximus"],
+    "phases": ["Supine with loaded arm vertical and same-side knee bent.", "Roll to opposite elbow while keeping the kettlebell stacked.", "Press to free hand and lift hips to make room for the leg sweep.", "Sweep the extended leg underneath into supported half-kneeling.", "Bring torso upright in half-kneeling with loaded arm overhead.", "Stand with the kettlebell stable overhead; return sequence reverses these positions."],
+    "accuracyRequirements": ["Same loaded arm and same kettlebell in every panel.", "Show intermediate support transitions; floor and standing poses alone are insufficient.", "No bell swapping hands, impossible limb crossings or shoulder pressing on each phase."]
+  },
+  "ex_man_maker": {
+    "startingPosition": "Begin in a stable plank gripping two nonrolling hex dumbbells on the floor, feet wider than hips for balance and trunk braced.",
+    "endingPosition": "After a push-up and one row per arm, bring feet under the body, clean both dumbbells to shoulders and finish a squat-to-overhead thruster.",
+    "jointMovement": "Elbow/shoulder flexion-extension for push-up and rows, hip/knee repositioning and clean, then squat extension and overhead pressing.",
+    "equipmentDetails": "Two identical hex dumbbells that stay with the athlete throughout the sequence.",
+    "gripAndStance": "Neutral grips on stable hex handles in plank; feet wide during rows, balanced squat stance for clean/thruster.",
+    "cameraAngle": "Front-side three-quarter sequence view showing both dumbbells and all ground-to-standing transitions.",
+    "primaryMuscles": ["pectoralis major", "latissimus dorsi", "quadriceps", "gluteus maximus", "deltoids", "triceps brachii"],
+    "phases": ["Plank push-up on two hex dumbbells.", "Row right dumbbell while left hand supports; pelvis stays square.", "Row left dumbbell while right hand supports.", "Bring feet in and clean both dumbbells into shoulder rack.", "Front squat with both dumbbells at shoulders.", "Continuous ascent to two-dumbbell overhead thruster finish."],
+    "accuracyRequirements": ["Show push-up, both unilateral rows, clean and thruster; a burpee or renegade row alone is incomplete.", "Two dumbbells only, consistent size and shape across all panels.", "No impossible simultaneous unsupported row, changing hand count or twisting hips to lift the weights."]
+  }
+}

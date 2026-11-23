@@ -42,7 +42,8 @@ Future<void> captureAndShareWorkout(ScreenshotController controller) async {
     await SharePlus.instance.share(
       ShareParams(
         files: [XFile(snapshotFile.path, mimeType: 'image/png')],
-        text: 'بص نظرة على حجم التطور بتاعي النهاردة في الجيم! 🏋️‍♂️📊 #AECoaching',
+        text:
+            'بص نظرة على حجم التطور بتاعي النهاردة في الجيم! 🏋️‍♂️📊 #AECoaching',
       ),
     );
   } on FileSystemException catch (error, stackTrace) {
@@ -61,16 +62,21 @@ Widget buildInstagramShareCard({
   required String progressDelta,
 }) {
   // 🔥 كشف ما إذا كان المستوى متراجع (يحتوي على سالب أو قيمته سالبة)
-  final double? deltaValue = double.tryParse(progressDelta.replaceAll('%', '').trim());
-  final bool isNegative = progressDelta.contains('-') || (deltaValue != null && deltaValue < 0);
-  
+  final double? deltaValue = double.tryParse(
+    progressDelta.replaceAll('%', '').trim(),
+  );
+  final bool isNegative =
+      progressDelta.contains('-') || (deltaValue != null && deltaValue < 0);
+
   // شيل علامة السالب من النص لو موجودة عشان شكل التصميم، لأننا هنعوض عنها بكلمة "تراجع" أو بشكل الـ UI الاحمر
   final String cleanDelta = progressDelta.replaceAll('-', '').trim();
 
   // 🎨 تحديد الألوان بناءً على الحالة (أخضر للتقدم / أحمر للتراجع)
-  final Color statusColor = isNegative ? const Color(0xFFEF4444) : const Color(0xFF4ADE80);
-  final String statusText = isNegative 
-      ? 'المستوى مريح بمعدل $cleanDelta% عن التمرين اللي فات! شد حيلك وعوض 🦾' 
+  final Color statusColor = isNegative
+      ? const Color(0xFFEF4444)
+      : const Color(0xFF4ADE80);
+  final String statusText = isNegative
+      ? 'المستوى مريح بمعدل $cleanDelta% عن التمرين اللي فات! شد حيلك وعوض 🦾'
       : 'أتطورت بمعدل $cleanDelta% عن التمرين اللي فات! 🔥';
 
   return Container(
@@ -81,15 +87,9 @@ Widget buildInstagramShareCard({
       gradient: const LinearGradient(
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
-        colors: [
-          Color(0xFF1E293B),
-          Color(0xFF0F172A),
-        ],
+        colors: [Color(0xFF1E293B), Color(0xFF0F172A)],
       ),
-      border: Border.all(
-        color: const Color(0xFF38BDF8),
-        width: 2,
-      ),
+      border: Border.all(color: const Color(0xFF38BDF8), width: 2),
       borderRadius: BorderRadius.circular(24),
       boxShadow: [
         BoxShadow(
@@ -185,17 +185,19 @@ Widget buildInstagramShareCard({
           width: double.infinity,
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
-            color: statusColor.withValues(alpha: 0.14), // خلفية خفيفة من نفس اللون الحرج
+            color: statusColor.withValues(
+              alpha: 0.14,
+            ), // خلفية خفيفة من نفس اللون الحرج
             borderRadius: BorderRadius.circular(18),
-            border: Border.all(
-              color: statusColor.withValues(alpha: 0.45),
-            ),
+            border: Border.all(color: statusColor.withValues(alpha: 0.45)),
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Icon(
-                isNegative ? Icons.trending_down : Icons.trending_up, // سهم نازل لو سالب وسهم طالع لو موجب
+                isNegative
+                    ? Icons.trending_down
+                    : Icons.trending_up, // سهم نازل لو سالب وسهم طالع لو موجب
                 color: statusColor,
                 size: 28,
               ),
@@ -288,7 +290,7 @@ class _WorkoutAnalyticsScreenState extends State<WorkoutAnalyticsScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      backgroundColor: const Color(0xFF0F172A),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -309,24 +311,31 @@ class _WorkoutAnalyticsScreenState extends State<WorkoutAnalyticsScreen> {
                 ElevatedButton.icon(
                   onPressed: _isSharing ? null : _shareWorkoutProgress,
                   icon: _isSharing
-                      ? const SizedBox(
+                      ? SizedBox(
                           width: 18,
                           height: 18,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.onPrimary,
                           ),
                         )
                       : const Icon(Icons.ios_share),
-                  label: Text(_isSharing ? l10n.sharingButton : l10n.shareProgressButton),
+                  label: Text(
+                    _isSharing ? l10n.sharingButton : l10n.shareProgressButton,
+                  ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF38BDF8),
-                    disabledBackgroundColor:
-                        const Color(0xFF38BDF8).withValues(alpha: 0.44),
-                    foregroundColor: const Color(0xFF0F172A),
-                    disabledForegroundColor: Colors.white70,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    disabledBackgroundColor: Theme.of(
+                      context,
+                    ).colorScheme.primary.withValues(alpha: 0.44),
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                    disabledForegroundColor: Theme.of(
+                      context,
+                    ).colorScheme.onPrimary.withValues(alpha: 0.7),
                     elevation: 10,
-                    shadowColor: const Color(0xFF38BDF8).withValues(alpha: 0.32),
+                    shadowColor: Theme.of(
+                      context,
+                    ).colorScheme.primary.withValues(alpha: 0.32),
                     padding: const EdgeInsets.symmetric(
                       horizontal: 28,
                       vertical: 15,

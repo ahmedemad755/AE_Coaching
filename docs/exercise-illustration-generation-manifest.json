@@ -1,0 +1,1613 @@
+{
+  "schemaVersion": 1,
+  "preparedOn": "2026-11-02",
+  "catalogSha256": "ad02176478b80b5627b817ba0ca6ff588333803f806d2879b9034b153bbac9d3",
+  "status": "specifications only; no generation performed",
+  "totals": {
+    "catalogAudited": 180,
+    "originalGapInventory": 38,
+    "originalGapsNowApproved": 2,
+    "approvedIllustrations": 144,
+    "requiresGeneration": 36,
+    "generatedInThisPreparation": 0
+  },
+  "generationCapability": "Image generation is available in this environment; intentionally deferred until after this inventory/specification deliverable.",
+  "preservation": {
+    "approvedImages": [
+      {
+        "exerciseId": "ex_barbell_bench_press",
+        "assetPath": "lib/assets/exercise_illustrations/ex_barbell_bench_press.webp",
+        "assetSha256": "e49f59693e29e6b2be296fbad64a96da01c9489bfcb531d1e86909007338f47f",
+        "sourceUrl": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/bench-press-2.png"
+      },
+      {
+        "exerciseId": "ex_incline_barbell_bench_press",
+        "assetPath": "lib/assets/exercise_illustrations/ex_incline_barbell_bench_press.webp",
+        "assetSha256": "83a4a992acc6a238d4884ec182a4e1e7bbc9bb08886827d2fa5d3000240f6198",
+        "sourceUrl": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/incline-bench-press-2.png"
+      },
+      {
+        "exerciseId": "ex_decline_barbell_bench_press",
+        "assetPath": "lib/assets/exercise_illustrations/ex_decline_barbell_bench_press.webp",
+        "assetSha256": "f7f68ad8fba4c3a85594a79d4fd8b465b26ee2c314b3f865cb5e09005c8156a1",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/decline-bench-press.png"
+      },
+      {
+        "exerciseId": "ex_dumbbell_bench_press",
+        "assetPath": "lib/assets/exercise_illustrations/ex_dumbbell_bench_press.webp",
+        "assetSha256": "83e372bfd4a18e57db0e4231ecc5886ac6804abe876d460de28b9f58a1c2683a",
+        "sourceUrl": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/bench-press-dumbbell-2.png"
+      },
+      {
+        "exerciseId": "ex_incline_dumbbell_press",
+        "assetPath": "lib/assets/exercise_illustrations/ex_incline_dumbbell_press.webp",
+        "assetSha256": "600fc8de50ee96da07dbda725e3a070fc4f818acaf81a52deaee7f3aaf08e4a3",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/incline-dumbbell-press.png"
+      },
+      {
+        "exerciseId": "ex_decline_dumbbell_press",
+        "assetPath": "lib/assets/exercise_illustrations/ex_decline_dumbbell_press.webp",
+        "assetSha256": "a9e4340ccc41e3329e578f08519eb4fd88018570dabf2a9788abc7a47b028f07",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/decline-dumbbell-press.png"
+      },
+      {
+        "exerciseId": "ex_dumbbell_fly",
+        "assetPath": "lib/assets/exercise_illustrations/ex_dumbbell_fly.webp",
+        "assetSha256": "a32e9882ed81c5d85de866ad4d4bdd16c74bb4c30b64bb8a7e2577a651aee046",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/dumbbell-fly.png"
+      },
+      {
+        "exerciseId": "ex_incline_dumbbell_fly",
+        "assetPath": "lib/assets/exercise_illustrations/ex_incline_dumbbell_fly.webp",
+        "assetSha256": "9c8d66f911da778080dbb5160125c410f231c2c2fd5857b20314801dc4514d57",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/incline-dumbbell-fly.png"
+      },
+      {
+        "exerciseId": "ex_machine_chest_press",
+        "assetPath": "lib/assets/exercise_illustrations/ex_machine_chest_press.webp",
+        "assetSha256": "97acf925b6b4b2d19e3ed13a8fc34958d2abc594297e7b34fda504350af33227",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/machine-chest-press.png"
+      },
+      {
+        "exerciseId": "ex_incline_chest_press_machine",
+        "assetPath": "lib/assets/exercise_illustrations/ex_incline_chest_press_machine.webp",
+        "assetSha256": "f632da066ab2179679a6c49e8c16e28a883caac801991e945f96bcbc3967f106",
+        "sourceUrl": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/incline-chest-press-2.png"
+      },
+      {
+        "exerciseId": "ex_decline_chest_press_machine",
+        "assetPath": "lib/assets/exercise_illustrations/ex_decline_chest_press_machine.webp",
+        "assetSha256": "f93ac234d1a1881667d019ad06de201fc2c2f23456742f3757954c51e05738f5",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/decline-chest-press.png"
+      },
+      {
+        "exerciseId": "ex_pec_deck_fly",
+        "assetPath": "lib/assets/exercise_illustrations/ex_pec_deck_fly.webp",
+        "assetSha256": "e78e4e3cc67f18a4d10e66bf797496dc95fe08824468a4aad752682d9c90f7b4",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/pec-deck.png"
+      },
+      {
+        "exerciseId": "ex_cable_chest_fly",
+        "assetPath": "lib/assets/exercise_illustrations/ex_cable_chest_fly.webp",
+        "assetSha256": "ceb50efd0b562d6d8112f82b1e609ef3077ba93b308fe63a8f3e82b32d4b03ce",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/cable-fly.png"
+      },
+      {
+        "exerciseId": "ex_smith_machine_bench_press",
+        "assetPath": "lib/assets/exercise_illustrations/ex_smith_machine_bench_press.webp",
+        "assetSha256": "ad449e8813188d819bd5a342b73c2a49426368ccf0b51201db600d9899f4a25a",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/smith-machine-bench-press.png"
+      },
+      {
+        "exerciseId": "ex_smith_machine_incline_press",
+        "assetPath": "lib/assets/exercise_illustrations/ex_smith_machine_incline_press.webp",
+        "assetSha256": "6ee8a29e5e5036362dae88c2b4d58f0ba66fb1be10d96d488e1403d05658be08",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/smith-machine-incline-bench-press.png"
+      },
+      {
+        "exerciseId": "ex_push_up",
+        "assetPath": "lib/assets/exercise_illustrations/ex_push_up.webp",
+        "assetSha256": "ab29071f70a973b111afbdda1739a2334081da7b207cd97ac1f744572bc2aaff",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/push-up.png"
+      },
+      {
+        "exerciseId": "ex_wide_grip_push_up",
+        "assetPath": "lib/assets/exercise_illustrations/ex_wide_grip_push_up.webp",
+        "assetSha256": "94b57e61615851faaaf10851799d0f5144f9528f96b7b1280fe7d69ae1470a5a",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/wide-push-up.png"
+      },
+      {
+        "exerciseId": "ex_diamond_push_up",
+        "assetPath": "lib/assets/exercise_illustrations/ex_diamond_push_up.webp",
+        "assetSha256": "a47d82327d3032457c429c22d2f89a6632617a5a2b4992145b999ffe762e88a0",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/diamond-push-up.png"
+      },
+      {
+        "exerciseId": "ex_chest_dip",
+        "assetPath": "lib/assets/exercise_illustrations/ex_chest_dip.webp",
+        "assetSha256": "cf17ce41b16c37491262cd92a63ffc206a11552e8883ba181ac14f10a260b0ff",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/chest-dip.png"
+      },
+      {
+        "exerciseId": "ex_pull_up",
+        "assetPath": "lib/assets/exercise_illustrations/ex_pull_up.webp",
+        "assetSha256": "deac2a4f7c30c0c6d9025363bcb0973fd02a35f56c5fb5fdb8fa5c25039767bc",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/pull-up.png"
+      },
+      {
+        "exerciseId": "ex_chin_up",
+        "assetPath": "lib/assets/exercise_illustrations/ex_chin_up.webp",
+        "assetSha256": "34b9e35ca9ab76939e13e0fce3f1197a0fed39716cf6590dfbf971852f0854f5",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/chin-up.png"
+      },
+      {
+        "exerciseId": "ex_wide_grip_pull_up",
+        "assetPath": "lib/assets/exercise_illustrations/ex_wide_grip_pull_up.webp",
+        "assetSha256": "92d399baa3bd46e513d295cd5e500f2a91b2a5ab413a0029e266619254f0a3a1",
+        "sourceUrl": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/pull-ups-2.png"
+      },
+      {
+        "exerciseId": "ex_assisted_pull_up",
+        "assetPath": "lib/assets/exercise_illustrations/ex_assisted_pull_up.webp",
+        "assetSha256": "4b753228c4c98fb1c48d06454f61878921de6695fd6a52228fa0e50c0babe0b8",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/assisted-pull-up.png"
+      },
+      {
+        "exerciseId": "ex_lat_pulldown",
+        "assetPath": "lib/assets/exercise_illustrations/ex_lat_pulldown.webp",
+        "assetSha256": "99f30dab146fa2419d468af664d597b8ce0e45581e1fc2b1b4520526d3d3fcea",
+        "sourceUrl": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/wide-grip-lat-pull-down-2.png"
+      },
+      {
+        "exerciseId": "ex_close_grip_lat_pulldown",
+        "assetPath": "lib/assets/exercise_illustrations/ex_close_grip_lat_pulldown.webp",
+        "assetSha256": "c9c9b06c87675131dab9cd9ccc5eb073bee6ab37661311fd1cb6019b049311e5",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/close-grip-lat-pulldown.png"
+      },
+      {
+        "exerciseId": "ex_reverse_grip_lat_pulldown",
+        "assetPath": "lib/assets/exercise_illustrations/ex_reverse_grip_lat_pulldown.webp",
+        "assetSha256": "e117130a0e4a6eb739b75e3bbf0b1cd48ce44d927910c4c667e4ac67cc1cfb83",
+        "sourceUrl": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/underhand-pull-down-2.png"
+      },
+      {
+        "exerciseId": "ex_neutral_grip_lat_pulldown",
+        "assetPath": "lib/assets/exercise_illustrations/ex_neutral_grip_lat_pulldown.webp",
+        "assetSha256": "ea3eba04c646b910adf7922b570bcd305489750594c9b18eac02694650f351fe",
+        "sourceUrl": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/v-bar-pull-down-2.png"
+      },
+      {
+        "exerciseId": "ex_seated_cable_row",
+        "assetPath": "lib/assets/exercise_illustrations/ex_seated_cable_row.webp",
+        "assetSha256": "1d4155ddfd18e6459f9df378aae89e96dd04af005cec14d41080d742f1e8f5c7",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/seated-cable-row.png"
+      },
+      {
+        "exerciseId": "ex_close_grip_seated_cable_row",
+        "assetPath": "lib/assets/exercise_illustrations/ex_seated_cable_row.webp",
+        "assetSha256": "1d4155ddfd18e6459f9df378aae89e96dd04af005cec14d41080d742f1e8f5c7",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/seated-cable-row.png"
+      },
+      {
+        "exerciseId": "ex_barbell_bent_over_row",
+        "assetPath": "lib/assets/exercise_illustrations/ex_barbell_bent_over_row.webp",
+        "assetSha256": "e40ab892c567e14ea7922b39df3a86621a7a2623781072b83ad021065b61d377",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/barbell-row.png"
+      },
+      {
+        "exerciseId": "ex_underhand_barbell_row",
+        "assetPath": "lib/assets/exercise_illustrations/ex_underhand_barbell_row.webp",
+        "assetSha256": "3a4fe90636ac5ced9137ebd47cf7257d4c6f9c40243888a375abf32654dee069",
+        "sourceUrl": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/reverse-grips-bent-over-barbell-rows-2.png"
+      },
+      {
+        "exerciseId": "ex_one_arm_dumbbell_row",
+        "assetPath": "lib/assets/exercise_illustrations/ex_one_arm_dumbbell_row.webp",
+        "assetSha256": "0dcf6ac63d193c0084e728ce11e66f060ed6ceb95494db0f09c45f09629fca41",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/dumbbell-row.png"
+      },
+      {
+        "exerciseId": "ex_chest_supported_dumbbell_row",
+        "assetPath": "lib/assets/exercise_illustrations/ex_chest_supported_dumbbell_row.webp",
+        "assetSha256": "d7fe00953ab4d4dffc846b2e585dea8b465ef2c9a887ad6caf8c597cfca2a79d",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/chest-supported-row.png"
+      },
+      {
+        "exerciseId": "ex_t_bar_row",
+        "assetPath": "lib/assets/exercise_illustrations/ex_t_bar_row.webp",
+        "assetSha256": "e1ec9a5dbb5f1c8df1b58f2e455b38c8afe9067f3a02329b6fd345627c9ed615",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/t-bar-row.png"
+      },
+      {
+        "exerciseId": "ex_chest_supported_machine_row",
+        "assetPath": "lib/assets/exercise_illustrations/ex_chest_supported_machine_row.webp",
+        "assetSha256": "f4f7f8400cfce0dd1dfc0ac6d36d14f7a3aa7701b7b6ca940dc0542fac664f3d",
+        "sourceUrl": "https://github.com/bryllim/workout-guide/blob/aac599224bb9780305239607ef98540b7e0ce389/packages/workout-guide/assets/chest-supported-row/frame-2.png"
+      },
+      {
+        "exerciseId": "ex_straight_arm_cable_pulldown",
+        "assetPath": "lib/assets/exercise_illustrations/ex_straight_arm_cable_pulldown.webp",
+        "assetSha256": "a8457b3d8a6be4219e36fe7d5cf734b6285668e3dfd5a96a8909ad0b5479d8d4",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/straight-arm-pulldown.png"
+      },
+      {
+        "exerciseId": "ex_dumbbell_pullover",
+        "assetPath": "lib/assets/exercise_illustrations/ex_dumbbell_pullover.webp",
+        "assetSha256": "7c8b360832640f04dc567d3402dcf5c2799155bc008d392a8616e16c1058ba00",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/dumbbell-pullover.png"
+      },
+      {
+        "exerciseId": "ex_inverted_row",
+        "assetPath": "lib/assets/exercise_illustrations/ex_inverted_row.webp",
+        "assetSha256": "05bd6649f7a0b43b2253e2b78f321fb46bab1ca66f9fb23369c7f112f2b1635c",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/inverted-row.png"
+      },
+      {
+        "exerciseId": "ex_back_extension",
+        "assetPath": "lib/assets/exercise_illustrations/ex_back_extension.webp",
+        "assetSha256": "665dd56056f7be0126dc6bcf61b0acb0b9f288eca89122f4bd97db64e861ce56",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/back-extension.png"
+      },
+      {
+        "exerciseId": "ex_barbell_overhead_press",
+        "assetPath": "lib/assets/exercise_illustrations/ex_barbell_overhead_press.webp",
+        "assetSha256": "594118a8757f6f99890f0a2d922870d2e23614559b85c97efc91eccc10e1f4d1",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/overhead-press.png"
+      },
+      {
+        "exerciseId": "ex_seated_barbell_shoulder_press",
+        "assetPath": "lib/assets/exercise_illustrations/ex_seated_barbell_shoulder_press.webp",
+        "assetSha256": "eac87edf9fbfdf6a7e11215901b6fdde60b3fad788b058db689822dd40e46be1",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/seated-military-press.png"
+      },
+      {
+        "exerciseId": "ex_dumbbell_shoulder_press",
+        "assetPath": "lib/assets/exercise_illustrations/ex_dumbbell_shoulder_press.webp",
+        "assetSha256": "8d690e36bb6fe6b734c5e08497d1615e6f256cb7944bdda1b3972be5d67cccfb",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/dumbbell-shoulder-press.png"
+      },
+      {
+        "exerciseId": "ex_arnold_press",
+        "assetPath": "lib/assets/exercise_illustrations/ex_arnold_press.webp",
+        "assetSha256": "2be9dad0c603dcd3bfb874d3db3e9b63750072814b700d067711d5f009ab061b",
+        "sourceUrl": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/arnold-press-1.png"
+      },
+      {
+        "exerciseId": "ex_machine_shoulder_press",
+        "assetPath": "lib/assets/exercise_illustrations/ex_machine_shoulder_press.webp",
+        "assetSha256": "8cb97c623f845d6bc5854a5bcac9611431142651a943213d610a28a2c2179cc9",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/machine-shoulder-press.png"
+      },
+      {
+        "exerciseId": "ex_smith_machine_shoulder_press",
+        "assetPath": "lib/assets/exercise_illustrations/ex_smith_machine_shoulder_press.webp",
+        "assetSha256": "25310f233117319b447b18a7ec4c35ccd0c754bd95f71f79734019729c6042f0",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/smith-machine-overhead-press.png"
+      },
+      {
+        "exerciseId": "ex_dumbbell_lateral_raise",
+        "assetPath": "lib/assets/exercise_illustrations/ex_dumbbell_lateral_raise.webp",
+        "assetSha256": "b4e783be5a72e5f0f1cc6f1ac426b33894539bf12e216bfb8f80b6564fa8c938",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/lateral-raise.png"
+      },
+      {
+        "exerciseId": "ex_cable_lateral_raise",
+        "assetPath": "lib/assets/exercise_illustrations/ex_cable_lateral_raise.webp",
+        "assetSha256": "1e6dd3d4f2d098c529bd1cfa4e55a085c3426ea9fea36fb0532ce62bd137ddd3",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/cable-lateral-raise.png"
+      },
+      {
+        "exerciseId": "ex_machine_lateral_raise",
+        "assetPath": "lib/assets/exercise_illustrations/ex_machine_lateral_raise.webp",
+        "assetSha256": "4b6b18c68ee85db5166a9ca5257dbca13796a3535e841488c45f7ec2a01e8a16",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/machine-lateral-raise.png"
+      },
+      {
+        "exerciseId": "ex_dumbbell_front_raise",
+        "assetPath": "lib/assets/exercise_illustrations/ex_dumbbell_front_raise.webp",
+        "assetSha256": "f4b1362e3e3fda59a4224b73750918df3c4245c7a5a91079c515fb65437ab228",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/front-raise.png"
+      },
+      {
+        "exerciseId": "ex_cable_front_raise",
+        "assetPath": "lib/assets/exercise_illustrations/ex_cable_front_raise.webp",
+        "assetSha256": "d82ae2df659281bd3124d2c710dfd6a9a827d5c2d2ba7b0c844ecc3ece454828",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/cable-front-raise.png"
+      },
+      {
+        "exerciseId": "ex_plate_front_raise",
+        "assetPath": "lib/assets/exercise_illustrations/ex_plate_front_raise.webp",
+        "assetSha256": "177e4ce29c548ac417deb55fcd761f6b39704701e32e431a14f42c6ee4dc396d",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/plate-front-raise.png"
+      },
+      {
+        "exerciseId": "ex_reverse_pec_deck",
+        "assetPath": "lib/assets/exercise_illustrations/ex_reverse_pec_deck.webp",
+        "assetSha256": "d68f632bdc8c265f7fe6754310a7359b417e817866fdd432f6ba207c1fb891eb",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/reverse-pec-deck.png"
+      },
+      {
+        "exerciseId": "ex_bent_over_dumbbell_reverse_fly",
+        "assetPath": "lib/assets/exercise_illustrations/ex_bent_over_dumbbell_reverse_fly.webp",
+        "assetSha256": "facd7923bfbb389561bf6ed3eb792869a5406310abaf593f2600ee1f55cdbe53",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/bent-over-rear-delt-raise.png"
+      },
+      {
+        "exerciseId": "ex_cable_rear_delt_fly",
+        "assetPath": "lib/assets/exercise_illustrations/ex_cable_rear_delt_fly.webp",
+        "assetSha256": "ee190228a7f70715d56e5a2e0668232c4f61742f57e087c77ddbe61f4e912f44",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/cable-rear-delt-fly.png"
+      },
+      {
+        "exerciseId": "ex_face_pull",
+        "assetPath": "lib/assets/exercise_illustrations/ex_face_pull.webp",
+        "assetSha256": "aca9e2f27e4207581eb127363b8bbf44beea1c5e4ab412d56bd4b8f9bd2af294",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/face-pull.png"
+      },
+      {
+        "exerciseId": "ex_barbell_upright_row",
+        "assetPath": "lib/assets/exercise_illustrations/ex_barbell_upright_row.webp",
+        "assetSha256": "23f48d8802ae9d76a38f529dd8ec0975ee9d71b88cb602e6deb3250458cb54dd",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/barbell-upright-row.png"
+      },
+      {
+        "exerciseId": "ex_dumbbell_shrug",
+        "assetPath": "lib/assets/exercise_illustrations/ex_dumbbell_shrug.webp",
+        "assetSha256": "72c5430bd32b8c2215a0a0e69c52bfccea465ac28ef4a15a4f107e8467a5d6b4",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/dumbbell-shrug.png"
+      },
+      {
+        "exerciseId": "ex_barbell_shrug",
+        "assetPath": "lib/assets/exercise_illustrations/ex_barbell_shrug.webp",
+        "assetSha256": "8faa5be6bf55df7f6bd824678468a7474038559a27fd14d72ede54f3dd2ca2de",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/barbell-shrug.png"
+      },
+      {
+        "exerciseId": "ex_barbell_curl",
+        "assetPath": "lib/assets/exercise_illustrations/ex_barbell_curl.webp",
+        "assetSha256": "cc27e159998a632a86271dd342ddf8344225de3a9e33ea2464395c7ebcfd0ba6",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/barbell-curl.png"
+      },
+      {
+        "exerciseId": "ex_ez_bar_curl",
+        "assetPath": "lib/assets/exercise_illustrations/ex_ez_bar_curl.webp",
+        "assetSha256": "4cd6a340a86d142ad9ed0e94d542cec0c12a0e61ae390cb62370212cba3b051f",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/ez-bar-curl.png"
+      },
+      {
+        "exerciseId": "ex_dumbbell_curl",
+        "assetPath": "lib/assets/exercise_illustrations/ex_dumbbell_curl.webp",
+        "assetSha256": "609f8e83b7c63238d88efef75f9bdab9bdbcce8ea39a4cae5af524d2965ca7cd",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/bicep-curl.png"
+      },
+      {
+        "exerciseId": "ex_alternating_dumbbell_curl",
+        "assetPath": "lib/assets/exercise_illustrations/ex_alternating_dumbbell_curl.webp",
+        "assetSha256": "1890202948e1c02befba6ee4836bf27acb1a1adb3b33e45d717eee916793deac",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/alternating-dumbbell-curl.png"
+      },
+      {
+        "exerciseId": "ex_hammer_curl",
+        "assetPath": "lib/assets/exercise_illustrations/ex_hammer_curl.webp",
+        "assetSha256": "43a7462dc135341450bbcb4ea48113bb4b0c0b12604ee8e228da76247ed2c4b9",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/hammer-curl.png"
+      },
+      {
+        "exerciseId": "ex_cross_body_hammer_curl",
+        "assetPath": "lib/assets/exercise_illustrations/ex_cross_body_hammer_curl.webp",
+        "assetSha256": "81f445b9a954e5e49d7c6fe2d4bdc379310acaed06b967a1f7a8c74382124c2b",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/hammer-curl-across-body.png"
+      },
+      {
+        "exerciseId": "ex_incline_dumbbell_curl",
+        "assetPath": "lib/assets/exercise_illustrations/ex_incline_dumbbell_curl.webp",
+        "assetSha256": "c02fbb8662e227d3d71d3415094524b4d182a585f70dcff2db09665e5d80a90a",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/incline-dumbbell-curl.png"
+      },
+      {
+        "exerciseId": "ex_preacher_curl",
+        "assetPath": "lib/assets/exercise_illustrations/ex_preacher_curl.webp",
+        "assetSha256": "a4ca540123b462dfc22c488ab28bb1e7290a6038efdc84dbdbf924404d1f47ff",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/preacher-curl.png"
+      },
+      {
+        "exerciseId": "ex_machine_preacher_curl",
+        "assetPath": "lib/assets/exercise_illustrations/ex_machine_preacher_curl.webp",
+        "assetSha256": "46b232f15e48203ca5391105dac9f033f04e542788e020d8989041fa2ade188c",
+        "sourceUrl": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/preacher-curl-with-machine-2.png"
+      },
+      {
+        "exerciseId": "ex_concentration_curl",
+        "assetPath": "lib/assets/exercise_illustrations/ex_concentration_curl.webp",
+        "assetSha256": "903cfbfc435ecdcb0d432dd7c274425de9e4b66084d0819dea8300a68e7b980f",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/concentration-curl.png"
+      },
+      {
+        "exerciseId": "ex_cable_biceps_curl",
+        "assetPath": "lib/assets/exercise_illustrations/ex_cable_biceps_curl.webp",
+        "assetSha256": "3bf20adff5d7e3b3873b994013a54f77e494e9f985872219de19bd05796d13ee",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/cable-curl.png"
+      },
+      {
+        "exerciseId": "ex_rope_hammer_curl",
+        "assetPath": "lib/assets/exercise_illustrations/ex_rope_hammer_curl.webp",
+        "assetSha256": "9efe7b94b13842b5c2d0bdf8bbd3f92eef3bf5ee332f45253fa25650a9ca1b7f",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/rope-hammer-curl.png"
+      },
+      {
+        "exerciseId": "ex_cable_triceps_pushdown",
+        "assetPath": "lib/assets/exercise_illustrations/ex_cable_triceps_pushdown.webp",
+        "assetSha256": "072da0e5302172291d33bc1c19ae0fae6961bb1c7c057760d35082dd5dd7b88d",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/triceps-pushdown.png"
+      },
+      {
+        "exerciseId": "ex_rope_triceps_pushdown",
+        "assetPath": "lib/assets/exercise_illustrations/ex_rope_triceps_pushdown.webp",
+        "assetSha256": "260769e6aab4377ad9b663e3d9274a012d828e3336de541fc92a2082314b53e6",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/rope-triceps-pushdown.png"
+      },
+      {
+        "exerciseId": "ex_reverse_grip_triceps_pushdown",
+        "assetPath": "lib/assets/exercise_illustrations/ex_reverse_grip_triceps_pushdown.webp",
+        "assetSha256": "3a235b7e89ed966ea116bed9a0173b9375180b01fd0b9c6fc21b4705a168379d",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/reverse-grip-triceps-pushdown.png"
+      },
+      {
+        "exerciseId": "ex_overhead_cable_triceps_extension",
+        "assetPath": "lib/assets/exercise_illustrations/ex_overhead_cable_triceps_extension.webp",
+        "assetSha256": "df3b7c378d3bab0cfa8c90dfb7c0b9d23d5a3c1fd59a2dcf3f3632209ccd1fbc",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/overhead-cable-extension.png"
+      },
+      {
+        "exerciseId": "ex_single_arm_cable_triceps_extension",
+        "assetPath": "lib/assets/exercise_illustrations/ex_single_arm_cable_triceps_extension.webp",
+        "assetSha256": "8264013c9c8a8a4fbf84a65e88f3619ebdacc800eea856dbc7d0961a8f5d8920",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/one-arm-cable-triceps-extension.png"
+      },
+      {
+        "exerciseId": "ex_dumbbell_overhead_triceps_extension",
+        "assetPath": "lib/assets/exercise_illustrations/ex_dumbbell_overhead_triceps_extension.webp",
+        "assetSha256": "32f15e5039acbc2f17c1d6981b7b87c470097d36102173e569fc27ae7c29f5bd",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/dumbbell-overhead-triceps-extension.png"
+      },
+      {
+        "exerciseId": "ex_single_arm_overhead_dumbbell_extension",
+        "assetPath": "lib/assets/exercise_illustrations/ex_single_arm_overhead_dumbbell_extension.webp",
+        "assetSha256": "2875eba187fb9be5c5d4202b12279e44e15ba0459250739d10ffe3017fe6a8dc",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/one-arm-dumbbell-triceps-extension.png"
+      },
+      {
+        "exerciseId": "ex_lying_ez_bar_triceps_extension",
+        "assetPath": "lib/assets/exercise_illustrations/ex_lying_ez_bar_triceps_extension.webp",
+        "assetSha256": "912b78f88a4299d31086c301abadb9d446d5e9acf774ea61d51c027985bfafc3",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/skull-crusher.png"
+      },
+      {
+        "exerciseId": "ex_dumbbell_skull_crusher",
+        "assetPath": "lib/assets/exercise_illustrations/ex_dumbbell_skull_crusher.webp",
+        "assetSha256": "83cd10e315efcc8cd0bc070ecd134a1b7d7c2a59790f9819aa16406b86cb0e7b",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/two-dumbbell-skullcrusher.png"
+      },
+      {
+        "exerciseId": "ex_close_grip_bench_press",
+        "assetPath": "lib/assets/exercise_illustrations/ex_close_grip_bench_press.webp",
+        "assetSha256": "c5fc4143a642e35751334408f66dc8eb988c8641255f5a65fdc453bd385679b1",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/close-grip-bench-press.png"
+      },
+      {
+        "exerciseId": "ex_parallel_bar_triceps_dip",
+        "assetPath": "lib/assets/exercise_illustrations/ex_parallel_bar_triceps_dip.webp",
+        "assetSha256": "ed2a7d43eb6b46023459cffd670fc7455498cca116bad0bdea6ad652282334e9",
+        "sourceUrl": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/tricep-dips-using-body-weight-2.png"
+      },
+      {
+        "exerciseId": "ex_bench_dip",
+        "assetPath": "lib/assets/exercise_illustrations/ex_bench_dip.webp",
+        "assetSha256": "0705468f2ccbcd62892a3b84d796d90cb534ef3794ae47ad834dfc075b2b2f70",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/bench-dip.png"
+      },
+      {
+        "exerciseId": "ex_triceps_extension_machine",
+        "assetPath": "lib/assets/exercise_illustrations/ex_triceps_extension_machine.webp",
+        "assetSha256": "ef26edf83b688853b18dff3df4e8183104b912334b88ec91f40e079e7ad708dd",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/machine-triceps-extension.png"
+      },
+      {
+        "exerciseId": "ex_dumbbell_triceps_kickback",
+        "assetPath": "lib/assets/exercise_illustrations/ex_dumbbell_triceps_kickback.webp",
+        "assetSha256": "32e2a8a273de78fb12287dbcc07a117c66c97e36e9b48d83ef62989ae3b9d242",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/triceps-kickback.png"
+      },
+      {
+        "exerciseId": "ex_barbell_back_squat",
+        "assetPath": "lib/assets/exercise_illustrations/ex_barbell_back_squat.webp",
+        "assetSha256": "fce6f18dd8280e0ce31faebe25b1c95e633a38654e6af0985eb801d4b807d50c",
+        "sourceUrl": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/barbell-squat-2.png"
+      },
+      {
+        "exerciseId": "ex_barbell_front_squat",
+        "assetPath": "lib/assets/exercise_illustrations/ex_barbell_front_squat.webp",
+        "assetSha256": "7c9cfd3b0ce52e68f546d4d80577d4411a9e32f5453c34762d2b24b85c8662bc",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/front-squat.png"
+      },
+      {
+        "exerciseId": "ex_smith_machine_squat",
+        "assetPath": "lib/assets/exercise_illustrations/ex_smith_machine_squat.webp",
+        "assetSha256": "fea6bec9945e7a715b1fe44d56930e4a2ad271cad49fda943fc3b6854b577e38",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/smith-machine-squat.png"
+      },
+      {
+        "exerciseId": "ex_goblet_squat",
+        "assetPath": "lib/assets/exercise_illustrations/ex_goblet_squat.webp",
+        "assetSha256": "45ef600fa93c19cbd4b51aa69a15e1dd3311f758cad8e6266bd65cc6f76f1dab",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/goblet-squat.png"
+      },
+      {
+        "exerciseId": "ex_hack_squat",
+        "assetPath": "lib/assets/exercise_illustrations/ex_hack_squat.webp",
+        "assetSha256": "afd4e1260769b5508c7e71c23b48bd1ffbf87ece3caf7d51bf46115c7168bd19",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/hack-squat.png"
+      },
+      {
+        "exerciseId": "ex_leg_press_45",
+        "assetPath": "lib/assets/exercise_illustrations/ex_leg_press_45.webp",
+        "assetSha256": "2ac3627ed8d9f9ef0dae6ae5f26a1c01579112550bece11d2c85dae8721d081c",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/leg-press.png"
+      },
+      {
+        "exerciseId": "ex_leg_extension",
+        "assetPath": "lib/assets/exercise_illustrations/ex_leg_extension.webp",
+        "assetSha256": "86d0f1948355f0f27a3b2b0740a55d68dd539099aacf9378fb665e0e0f71f9a8",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/leg-extension.png"
+      },
+      {
+        "exerciseId": "ex_bulgarian_split_squat",
+        "assetPath": "lib/assets/exercise_illustrations/ex_bulgarian_split_squat.webp",
+        "assetSha256": "029f29487de1fdffa2ef0622ccaca6d66d57783efb9be47b3b9b58b335d8013e",
+        "sourceUrl": "https://github.com/bryllim/workout-guide/blob/aac599224bb9780305239607ef98540b7e0ce389/packages/workout-guide/assets/bulgarian-split-squat/frame-1.png"
+      },
+      {
+        "exerciseId": "ex_dumbbell_walking_lunge",
+        "assetPath": "lib/assets/exercise_illustrations/ex_dumbbell_walking_lunge.webp",
+        "assetSha256": "2bd29f53daee0f408a13939291fdaedf54c9e02c94d7cf533c4aa919f44910cd",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/walking-lunge.png"
+      },
+      {
+        "exerciseId": "ex_forward_lunge",
+        "assetPath": "lib/assets/exercise_illustrations/ex_forward_lunge.webp",
+        "assetSha256": "b207ada93876f8d983a0d5a4aa087256e3157c947d6f9279a986a45caa5bda32",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/forward-lunge.png"
+      },
+      {
+        "exerciseId": "ex_sissy_squat",
+        "assetPath": "lib/assets/exercise_illustrations/ex_sissy_squat.webp",
+        "assetSha256": "17f57dcbce7b70c99e33312303275672ec4d725670dafabcafce2022c6489e03",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/sissy-squat.png"
+      },
+      {
+        "exerciseId": "ex_belt_squat",
+        "assetPath": "lib/assets/exercise_illustrations/ex_belt_squat.webp",
+        "assetSha256": "9801d701cd08bd6f21ebdf876563bc273769d0901354c43c7c86d191c53f0101",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/belt-squat.png"
+      },
+      {
+        "exerciseId": "ex_romanian_deadlift",
+        "assetPath": "lib/assets/exercise_illustrations/ex_romanian_deadlift.webp",
+        "assetSha256": "bd4fe7c391c209fb899bccfe22af03cdf71d78d069802070da41149d0698a7a4",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/romanian-deadlift.png"
+      },
+      {
+        "exerciseId": "ex_dumbbell_romanian_deadlift",
+        "assetPath": "lib/assets/exercise_illustrations/ex_dumbbell_romanian_deadlift.webp",
+        "assetSha256": "38ee76269355bd60abd940bf1bb3ecd709e1f8050486498bb8fa30f3924f80e2",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/dumbbell-romanian-deadlift.png"
+      },
+      {
+        "exerciseId": "ex_seated_leg_curl",
+        "assetPath": "lib/assets/exercise_illustrations/ex_seated_leg_curl.webp",
+        "assetSha256": "5e3b427c81f2463b6245a615d9bce5b5564abefb0cd51b0b20c4a9b5ca8b21ef",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/seated-leg-curl.png"
+      },
+      {
+        "exerciseId": "ex_lying_leg_curl",
+        "assetPath": "lib/assets/exercise_illustrations/ex_lying_leg_curl.webp",
+        "assetSha256": "018154a8d8045ba7330feb2b55362416d36dce067d7eca4a78b9254ea615e6f6",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/lying-leg-curl.png"
+      },
+      {
+        "exerciseId": "ex_standing_single_leg_curl",
+        "assetPath": "lib/assets/exercise_illustrations/ex_standing_single_leg_curl.webp",
+        "assetSha256": "86e90f73e921507ec7a4df97549d303967929be2c78a2bf155ca3883c9591d46",
+        "sourceUrl": "https://github.com/everkinetic/data/blob/446bb9a3d0c3beb6b84f7c9d77dfc8af707a2ab6/src/images-web/standing-leg-curls-2.png"
+      },
+      {
+        "exerciseId": "ex_nordic_hamstring_curl",
+        "assetPath": "lib/assets/exercise_illustrations/ex_nordic_hamstring_curl.webp",
+        "assetSha256": "57088a74ed8f44544a4f3b0f2e34ea3671833be2060eaa51d4e50f2ff983dabd",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/nordic-curl.png"
+      },
+      {
+        "exerciseId": "ex_barbell_hip_thrust",
+        "assetPath": "lib/assets/exercise_illustrations/ex_barbell_hip_thrust.webp",
+        "assetSha256": "6013f3350116ca1f1efa79b41c491a30dc4480303381fc0f87c0f4bf6db81b75",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/hip-thrust.png"
+      },
+      {
+        "exerciseId": "ex_smith_machine_hip_thrust",
+        "assetPath": "lib/assets/exercise_illustrations/ex_smith_machine_hip_thrust.webp",
+        "assetSha256": "dd0c09c7fba3b5c52933e3e97f91f705ab6da0228169579d50fb288e879c48ce",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/smith-machine-hip-thrust.png"
+      },
+      {
+        "exerciseId": "ex_dumbbell_hip_thrust",
+        "assetPath": "lib/assets/exercise_illustrations/ex_dumbbell_hip_thrust.webp",
+        "assetSha256": "94c647b129fab6b1e2b7e613ae85e09a5ee97ba395985bd8e7ad2ca79637ed36",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/dumbbell-hip-thrust.png"
+      },
+      {
+        "exerciseId": "ex_glute_bridge",
+        "assetPath": "lib/assets/exercise_illustrations/ex_glute_bridge.webp",
+        "assetSha256": "1c20a4437745f60d10b67ccfaeb2d3057c27f127650367c1d103ef90cbad6d0a",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/glute-bridge.png"
+      },
+      {
+        "exerciseId": "ex_single_leg_glute_bridge",
+        "assetPath": "lib/assets/exercise_illustrations/ex_single_leg_glute_bridge.webp",
+        "assetSha256": "ff270f48de3be0c17b6a2b40c6c1760f7e4c1c23f33f3938bf07a8776413c0b1",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/single-leg-glute-bridge.png"
+      },
+      {
+        "exerciseId": "ex_cable_glute_kickback",
+        "assetPath": "lib/assets/exercise_illustrations/ex_cable_glute_kickback.webp",
+        "assetSha256": "ee24595fc7f29e81212e388fdaec001a0cdd73def9137ee2be0cbeeefc476e50",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/cable-kickback.png"
+      },
+      {
+        "exerciseId": "ex_hip_abduction_machine",
+        "assetPath": "lib/assets/exercise_illustrations/ex_hip_abduction_machine.webp",
+        "assetSha256": "647a9afe19d001be907ea6526e34d960c6a36e59c5ef958b800788fcbf25bc7e",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/hip-abduction.png"
+      },
+      {
+        "exerciseId": "ex_hip_adduction_machine",
+        "assetPath": "lib/assets/exercise_illustrations/ex_hip_adduction_machine.webp",
+        "assetSha256": "55671723e7838ae104b420587636e28d2fb2aa831b54a536917889a0db9e7f2c",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/hip-adduction.png"
+      },
+      {
+        "exerciseId": "ex_cable_hip_abduction",
+        "assetPath": "lib/assets/exercise_illustrations/ex_cable_hip_abduction.webp",
+        "assetSha256": "a2a6aa6cfaa32ac64e3f75484242a954eebf2d8f5bdef9c3dfb86c3ad8cb45b8",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/cable-standing-hip-abduction.png"
+      },
+      {
+        "exerciseId": "ex_cable_pull_through",
+        "assetPath": "lib/assets/exercise_illustrations/ex_cable_pull_through.webp",
+        "assetSha256": "b862daeba2ca9d00cc298b8e955f32c1f4bcc1a586e34824abec1b32a183c89c",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/cable-pull-through.png"
+      },
+      {
+        "exerciseId": "ex_sumo_squat",
+        "assetPath": "lib/assets/exercise_illustrations/ex_sumo_squat.webp",
+        "assetSha256": "5896839ac8abdab6f5ddc5c6bbbc6cd28b9a65a8d1a4fa491e044fe81526f71e",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/dumbbell-sumo-squat.png"
+      },
+      {
+        "exerciseId": "ex_frog_pump",
+        "assetPath": "lib/assets/exercise_illustrations/ex_frog_pump.webp",
+        "assetSha256": "a639e0cb8642f1d0033544ff053e8b1f048f993072070264a757dfb97f94ad63",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/frog-pump.png"
+      },
+      {
+        "exerciseId": "ex_standing_calf_raise_machine",
+        "assetPath": "lib/assets/exercise_illustrations/ex_standing_calf_raise_machine.webp",
+        "assetSha256": "efa1ccb733bb670a157b171d76aa64c427a5be332525d2d9b230814e42d765dd",
+        "sourceUrl": "https://github.com/bryllim/workout-guide/blob/aac599224bb9780305239607ef98540b7e0ce389/packages/workout-guide/assets/standing-calf-raise/frame-1.png"
+      },
+      {
+        "exerciseId": "ex_seated_calf_raise_machine",
+        "assetPath": "lib/assets/exercise_illustrations/ex_seated_calf_raise_machine.webp",
+        "assetSha256": "d83777ffe8f6146cbf84c761b42862934d3793ca731ef1cf835761978cd1fefa",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/seated-calf-raise.png"
+      },
+      {
+        "exerciseId": "ex_leg_press_calf_raise",
+        "assetPath": "lib/assets/exercise_illustrations/ex_leg_press_calf_raise.webp",
+        "assetSha256": "d76644d4e87c861b3d5f49fb1f2b5d29e1c87062919283c8410a097ba4fd5d00",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/leg-press-calf-raise.png"
+      },
+      {
+        "exerciseId": "ex_single_leg_calf_raise",
+        "assetPath": "lib/assets/exercise_illustrations/ex_single_leg_calf_raise.webp",
+        "assetSha256": "f70bd9fa33640c7e7817f3ce2bbcc789e22f547835437b502c03c47da2d129d1",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/single-leg-calf-raise.png"
+      },
+      {
+        "exerciseId": "ex_tibialis_raise",
+        "assetPath": "lib/assets/exercise_illustrations/ex_tibialis_raise.webp",
+        "assetSha256": "4d9cd0dd936468e6fd0b1e093b197f79d35127565f8a229c6bdc0cc6ce717eba",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/tib-raise.png"
+      },
+      {
+        "exerciseId": "ex_crunch",
+        "assetPath": "lib/assets/exercise_illustrations/ex_crunch.webp",
+        "assetSha256": "000497cf59c1a50343f5cc16b0327640d782f5eb995e822a5da15cbcc07f5e9a",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/crunch.png"
+      },
+      {
+        "exerciseId": "ex_cable_crunch",
+        "assetPath": "lib/assets/exercise_illustrations/ex_cable_crunch.webp",
+        "assetSha256": "5a34cbe0027291191cf32a048ab84b7060bcdb86b76b17c32c038d7e00f53033",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/cable-crunch.png"
+      },
+      {
+        "exerciseId": "ex_reverse_crunch",
+        "assetPath": "lib/assets/exercise_illustrations/ex_reverse_crunch.webp",
+        "assetSha256": "0e17aea44aa6d6440de3d3934cc69d959a23e32d9e3d08af330142126bfa8105",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/reverse-crunch.png"
+      },
+      {
+        "exerciseId": "ex_lying_leg_raise",
+        "assetPath": "lib/assets/exercise_illustrations/ex_lying_leg_raise.webp",
+        "assetSha256": "f9fb7a528ad45e4605183d3088d7623d91b36247257b6ea7bbb76c0f6ff26bf3",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/lying-leg-raise.png"
+      },
+      {
+        "exerciseId": "ex_hanging_knee_raise",
+        "assetPath": "lib/assets/exercise_illustrations/ex_hanging_knee_raise.webp",
+        "assetSha256": "5d0900b944846cde4af3411d86d93a1c62aa256efbb54aa1cc716f2a4cdd5d62",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/hanging-knee-raise.png"
+      },
+      {
+        "exerciseId": "ex_hanging_leg_raise",
+        "assetPath": "lib/assets/exercise_illustrations/ex_hanging_leg_raise.webp",
+        "assetSha256": "fef15063d6c714b064e025ef672d887291dadc170e66f116eaeae72fd2135796",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/hanging-leg-raise.png"
+      },
+      {
+        "exerciseId": "ex_plank",
+        "assetPath": "lib/assets/exercise_illustrations/ex_plank.webp",
+        "assetSha256": "e24d65a1cc08df7f356a2060c81df65479c10db3ef209fb14d15a0af1840d76a",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/plank.png"
+      },
+      {
+        "exerciseId": "ex_side_plank",
+        "assetPath": "lib/assets/exercise_illustrations/ex_side_plank.webp",
+        "assetSha256": "042e319948c88931d29e27ae131a3772798e96cb32cdca4a0dad1b14037a6463",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/side-plank.png"
+      },
+      {
+        "exerciseId": "ex_dead_bug",
+        "assetPath": "lib/assets/exercise_illustrations/ex_dead_bug.webp",
+        "assetSha256": "4cc0502d760859276fb85e18ba789d11f2247b4eb646e97c6d0847c309df8bcc",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/dead-bug.png"
+      },
+      {
+        "exerciseId": "ex_bird_dog",
+        "assetPath": "lib/assets/exercise_illustrations/ex_bird_dog.webp",
+        "assetSha256": "989ef2ac6f6e8320914397f13fd65a89195ced0eca2ef6d995971224f5beec0d",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/bird-dog.png"
+      },
+      {
+        "exerciseId": "ex_russian_twist",
+        "assetPath": "lib/assets/exercise_illustrations/ex_russian_twist.webp",
+        "assetSha256": "aab9fba42637a789fcc396c27577dc6a9bbd40166b699694ed573975c4f506b3",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/russian-twist.png"
+      },
+      {
+        "exerciseId": "ex_bicycle_crunch",
+        "assetPath": "lib/assets/exercise_illustrations/ex_bicycle_crunch.webp",
+        "assetSha256": "994cfd69a4278621fa71ce403e1a459df59c44a3468570b3bf9f682c8c567859",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/bicycle-crunch.png"
+      },
+      {
+        "exerciseId": "ex_mountain_climber",
+        "assetPath": "lib/assets/exercise_illustrations/ex_mountain_climber.webp",
+        "assetSha256": "eafc8ec9234de0eb514a8a0a99cf175fde83901df7ec13af6023f85dd2e63f2b",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/mountain-climber.png"
+      },
+      {
+        "exerciseId": "ex_ab_wheel_rollout",
+        "assetPath": "lib/assets/exercise_illustrations/ex_ab_wheel_rollout.webp",
+        "assetSha256": "e69d3ef7da2eb36fa6035fca88cba29a412a7daa4e1f1090dd95acc491cfe38e",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/ab-wheel-rollout.png"
+      },
+      {
+        "exerciseId": "ex_pallof_press",
+        "assetPath": "lib/assets/exercise_illustrations/ex_pallof_press.webp",
+        "assetSha256": "f1fa240ee301f68e33823b4f749d345a2f3823b6acbacc33db0e3b500548e3f7",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/pallof-press.png"
+      },
+      {
+        "exerciseId": "ex_cable_woodchopper",
+        "assetPath": "lib/assets/exercise_illustrations/ex_cable_woodchopper.webp",
+        "assetSha256": "91dc07ade7c6098cd3d7ae4d089b4c33a8ce8dc83fc07b65986c2557634d7d98",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/woodchop.png"
+      },
+      {
+        "exerciseId": "ex_flutter_kicks",
+        "assetPath": "lib/assets/exercise_illustrations/ex_flutter_kicks.webp",
+        "assetSha256": "85c42e93a035504808e191c2d5a13c700bbcf0fbf9acc19142abd04e3ef11517",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/flutter-kick.png"
+      },
+      {
+        "exerciseId": "ex_hollow_body_hold",
+        "assetPath": "lib/assets/exercise_illustrations/ex_hollow_body_hold.webp",
+        "assetSha256": "041977f504d9c47c7513255c319ec28b24f04a757ff68cecae0891bdb2a60255",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/hollow-hold.png"
+      },
+      {
+        "exerciseId": "ex_conventional_deadlift",
+        "assetPath": "lib/assets/exercise_illustrations/ex_conventional_deadlift.webp",
+        "assetSha256": "ff15261ba706dd4bdbd13f4e2d74ed9831feb54f94ca4278be670d5f6c55b1f9",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/deadlift.png"
+      },
+      {
+        "exerciseId": "ex_sumo_deadlift",
+        "assetPath": "lib/assets/exercise_illustrations/ex_sumo_deadlift.webp",
+        "assetSha256": "6d238a116c75b915a66775a80d2a220ba43b203a25a7f7fc8ccea3f084adee97",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/sumo-deadlift.png"
+      },
+      {
+        "exerciseId": "ex_trap_bar_deadlift",
+        "assetPath": "lib/assets/exercise_illustrations/ex_trap_bar_deadlift.webp",
+        "assetSha256": "5a61c2aa30ebb1b0e879539baf6ec4100bd500aabdc288bfe808f4d1a7ffc2a2",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/trap-bar-deadlift.png"
+      },
+      {
+        "exerciseId": "ex_kettlebell_swing",
+        "assetPath": "lib/assets/exercise_illustrations/ex_kettlebell_swing.webp",
+        "assetSha256": "92b1f872533658717c49d70c6998c95b3dfc3540835c07d9d8d04d597cc58d43",
+        "sourceUrl": "https://github.com/AlexMollard/Open-Exercise-Art/blob/0f11ea4680746970e58b83448cdcdb64e4fc2793/png/kettlebell-swing.png"
+      },
+      {
+        "exerciseId": "ex_burpee",
+        "assetPath": "lib/assets/exercise_illustrations/ex_burpee.webp",
+        "assetSha256": "a7ef50a7d9c7c2ead94cf6f2fdc431c02fa7799e3d7ba4eb0c228f8e8b704a17",
+        "sourceUrl": "https://github.com/bryllim/workout-guide/blob/aac599224bb9780305239607ef98540b7e0ce389/packages/workout-guide/assets/burpee/frame-1.png"
+      },
+      {
+        "exerciseId": "ex_push_press",
+        "assetPath": "lib/assets/exercise_illustrations/ex_push_press.webp",
+        "assetSha256": "0a6074610216530b5db9decb352fe7c7b1d3e9f223c941ceb8b51ec2f9d7bed5",
+        "sourceUrl": "https://github.com/bryllim/workout-guide/blob/aac599224bb9780305239607ef98540b7e0ce389/packages/workout-guide/assets/push-press/frame-3.png"
+      },
+      {
+        "exerciseId": "ex_farmer_s_carry",
+        "assetPath": "lib/assets/exercise_illustrations/ex_farmer_s_carry.webp",
+        "assetSha256": "e56968241e7d87ca4768f38cc401a303ea63ce80638738057e347d559c6c3d09",
+        "sourceUrl": "https://github.com/bryllim/workout-guide/blob/aac599224bb9780305239607ef98540b7e0ce389/packages/workout-guide/assets/farmer-carry/frame-2.png"
+      }
+    ],
+    "videoReviewsSha256": "439a090471afadf798fc5114bc742a371667c57ea719f750c40c32292f261b41"
+  },
+  "outputRequirements": {
+    "masterFormat": "PNG",
+    "masterMinimumLongestEdge": 1536,
+    "layout": "Two panels for start/end; three to six ordered panels where sequence defines the variation.",
+    "runtimeFormatAfterApproval": "WebP, maximum 512 pixels per axis, bounded decode; no runtime network requests.",
+    "runtimeApproval": "Manual equipment, grip, stance, body position, movement, anatomy and rights/provenance review; never autoapprove generation output."
+  },
+  "jobs": [
+    {
+      "exerciseId": "ex_high_to_low_cable_fly",
+      "nameEn": "High-to-Low Cable Fly",
+      "promptSha256": "d57993abe267888b4c96b7108af09d6fa59b337c107c7505c18bc61bc5d13a98",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_high_to_low_cable_fly--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_high_to_low_cable_fly.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 2
+    },
+    {
+      "exerciseId": "ex_low_to_high_cable_fly",
+      "nameEn": "Low-to-High Cable Fly",
+      "promptSha256": "72670c62ebab8383ac2475e67ab0bee413c2ed2606f2d21a041f7a537a963f69",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_low_to_high_cable_fly--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_low_to_high_cable_fly.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 2
+    },
+    {
+      "exerciseId": "ex_single_arm_cable_chest_fly",
+      "nameEn": "Single-Arm Cable Chest Fly",
+      "promptSha256": "5f135111c4b68cc0fc5ff344596620eeb28ad23ad9c267edddf161191d68246e",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_single_arm_cable_chest_fly--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_single_arm_cable_chest_fly.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 2
+    },
+    {
+      "exerciseId": "ex_single_arm_lat_pulldown",
+      "nameEn": "Single-Arm Lat Pulldown",
+      "promptSha256": "9ab3f377520e68e30ba442ede9d0af68e348235b73887b1d2abe13a6030d6f0c",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_single_arm_lat_pulldown--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_single_arm_lat_pulldown.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 2
+    },
+    {
+      "exerciseId": "ex_wide_grip_seated_cable_row",
+      "nameEn": "Wide-Grip Seated Cable Row",
+      "promptSha256": "011349ac4c750b48136535bc83cd8912982cead0ed7814f8ad08ca5cd7e9d97e",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_wide_grip_seated_cable_row--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_wide_grip_seated_cable_row.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 2
+    },
+    {
+      "exerciseId": "ex_pendlay_row",
+      "nameEn": "Pendlay Row",
+      "promptSha256": "d72a5ad8ab94e24101f74004b67980daa833830da86d5b8691f07d2ebfec9e02",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_pendlay_row--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_pendlay_row.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 3
+    },
+    {
+      "exerciseId": "ex_single_arm_machine_row",
+      "nameEn": "Single-Arm Machine Row",
+      "promptSha256": "46a3032b277432fa007f903650facbfc6c50bce2acf0eda4c4d2779b8808c08c",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_single_arm_machine_row--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_single_arm_machine_row.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 2
+    },
+    {
+      "exerciseId": "ex_machine_pullover",
+      "nameEn": "Machine Pullover",
+      "promptSha256": "ec23d5f7de875b3406ac738a4312ab9d121ca0f9c6555873ac89a57bd40b05b7",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_machine_pullover--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_machine_pullover.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 2
+    },
+    {
+      "exerciseId": "ex_cable_pullover",
+      "nameEn": "Cable Pullover",
+      "promptSha256": "deb72c3e806949fa94c5b7df158fdc4fc655dc289db077c4b132f5bfbc0d27e3",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_cable_pullover--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_cable_pullover.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 2
+    },
+    {
+      "exerciseId": "ex_seated_dumbbell_lateral_raise",
+      "nameEn": "Seated Dumbbell Lateral Raise",
+      "promptSha256": "9ff044b254bab1a839297375671eb2a44a3400a931d6948650fdaf726cda107f",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_seated_dumbbell_lateral_raise--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_seated_dumbbell_lateral_raise.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 2
+    },
+    {
+      "exerciseId": "ex_bayesian_cable_curl",
+      "nameEn": "Bayesian Cable Curl",
+      "promptSha256": "e404e80625037fe85d2728811bed16216d9dc51618f344869e32be172359fe9d",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_bayesian_cable_curl--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_bayesian_cable_curl.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 2
+    },
+    {
+      "exerciseId": "ex_spider_curl",
+      "nameEn": "Spider Curl",
+      "promptSha256": "59dcd088060b035839975377f286ab2542822e27d08072ef472eb04a26e165f2",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_spider_curl--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_spider_curl.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 2
+    },
+    {
+      "exerciseId": "ex_horizontal_leg_press",
+      "nameEn": "Horizontal Leg Press",
+      "promptSha256": "cf56dd29fef66a007b1961e99932a06be29d4091ddfdb411a988be2bbc3b6b4b",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_horizontal_leg_press--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_horizontal_leg_press.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 2
+    },
+    {
+      "exerciseId": "ex_single_leg_press",
+      "nameEn": "Single-Leg Press",
+      "promptSha256": "ca0273c960e2c7269be14ffddd1d47cffccbcaac7e0829afc2b577f438aac6bc",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_single_leg_press--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_single_leg_press.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 2
+    },
+    {
+      "exerciseId": "ex_single_leg_extension",
+      "nameEn": "Single-Leg Extension",
+      "promptSha256": "50497959341253bdf3226e831d4893cc969720c4e4d1e19387cea929ca44c9f8",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_single_leg_extension--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_single_leg_extension.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 2
+    },
+    {
+      "exerciseId": "ex_reverse_lunge",
+      "nameEn": "Reverse Lunge",
+      "promptSha256": "09556f93a751a6be9033ed3dc15ee4b76e3ab5225dfecdc889ce9af0fdf34ea1",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_reverse_lunge--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_reverse_lunge.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 3
+    },
+    {
+      "exerciseId": "ex_step_up",
+      "nameEn": "Step-Up",
+      "promptSha256": "e1830cf434605b9d88a378ab8d16b8af307683fcf168c8b4567627daffa5cba6",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_step_up--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_step_up.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 2
+    },
+    {
+      "exerciseId": "ex_cyclist_squat",
+      "nameEn": "Cyclist Squat",
+      "promptSha256": "a3a2faa7b6c0c52b801b1348b9f105a6cf73a4bc285030d0b1b9bd9a979c764e",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_cyclist_squat--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_cyclist_squat.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 2
+    },
+    {
+      "exerciseId": "ex_stiff_leg_deadlift",
+      "nameEn": "Stiff-Leg Deadlift",
+      "promptSha256": "cd3e66eabb645c55ecc4c168e03bc37ba791d9bff4fa051b48e76765d6dde936",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_stiff_leg_deadlift--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_stiff_leg_deadlift.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 2
+    },
+    {
+      "exerciseId": "ex_glute_ham_raise",
+      "nameEn": "Glute-Ham Raise",
+      "promptSha256": "578fbc3ecfd95b8776c4e85f0f68e456a1de830005a827d9a50bb912fe116031",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_glute_ham_raise--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_glute_ham_raise.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 2
+    },
+    {
+      "exerciseId": "ex_glute_kickback_machine",
+      "nameEn": "Glute Kickback Machine",
+      "promptSha256": "391e7623f88625272fa890c2798ab8b5f8a27951015fe223d829f0ea80ac62f5",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_glute_kickback_machine--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_glute_kickback_machine.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 2
+    },
+    {
+      "exerciseId": "ex_reverse_hyperextension",
+      "nameEn": "Reverse Hyperextension",
+      "promptSha256": "dc12f129232309c8378de42b2b528cb6ba837c6ab10f907118191956cf5f45fb",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_reverse_hyperextension--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_reverse_hyperextension.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 2
+    },
+    {
+      "exerciseId": "ex_smith_machine_calf_raise",
+      "nameEn": "Smith Machine Calf Raise",
+      "promptSha256": "ad84d448f88af6506af94c9f50b115950758897067e92b3014a75c4c7336b8d1",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_smith_machine_calf_raise--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_smith_machine_calf_raise.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 2
+    },
+    {
+      "exerciseId": "ex_dumbbell_standing_calf_raise",
+      "nameEn": "Dumbbell Standing Calf Raise",
+      "promptSha256": "1d3ba0c109ad7e718f1fc8a3d2770d9c7b13c24c971c6466186d13ed0e31dda5",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_dumbbell_standing_calf_raise--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_dumbbell_standing_calf_raise.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 2
+    },
+    {
+      "exerciseId": "ex_donkey_calf_raise",
+      "nameEn": "Donkey Calf Raise",
+      "promptSha256": "878f2a5dcc42bde86bce1cbd356dfac18cde0cc3e87ba89170f52e32e9a86540",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_donkey_calf_raise--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_donkey_calf_raise.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 2
+    },
+    {
+      "exerciseId": "ex_machine_ab_crunch",
+      "nameEn": "Machine Ab Crunch",
+      "promptSha256": "c427664d1c50dda0a96eb733178a0a20e6af099ce76ce5a0de59be564cba4d6a",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_machine_ab_crunch--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_machine_ab_crunch.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 2
+    },
+    {
+      "exerciseId": "ex_captain_s_chair_leg_raise",
+      "nameEn": "Captain's Chair Leg Raise",
+      "promptSha256": "f13ced6bd15f10712349261e99b5648d41bbc45d3a19a460e8c2630fa9c68297",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_captain_s_chair_leg_raise--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_captain_s_chair_leg_raise.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 2
+    },
+    {
+      "exerciseId": "ex_dumbbell_thruster",
+      "nameEn": "Dumbbell Thruster",
+      "promptSha256": "6a06b1dbc3c52ae2ac5e1a835e8b38f5d3d989e30c00d026245e34a185c08aab",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_dumbbell_thruster--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_dumbbell_thruster.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 3
+    },
+    {
+      "exerciseId": "ex_barbell_thruster",
+      "nameEn": "Barbell Thruster",
+      "promptSha256": "491c6d2fbcc67933e6abb156412abd72023123ac39d3e3302e2c1669df55f75e",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_barbell_thruster--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_barbell_thruster.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 3
+    },
+    {
+      "exerciseId": "ex_dumbbell_clean_and_press",
+      "nameEn": "Dumbbell Clean and Press",
+      "promptSha256": "0d195a518106ed38d0e69e765d54e2ca74eaa085d76b95f181f76712973af8a3",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_dumbbell_clean_and_press--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_dumbbell_clean_and_press.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 4
+    },
+    {
+      "exerciseId": "ex_barbell_clean_and_press",
+      "nameEn": "Barbell Clean and Press",
+      "promptSha256": "2d2c724743841aa90e0e88b8323d732fcafd6d62565a6fd6fc9772ea5fa2ac1c",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_barbell_clean_and_press--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_barbell_clean_and_press.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 4
+    },
+    {
+      "exerciseId": "ex_power_clean",
+      "nameEn": "Power Clean",
+      "promptSha256": "b1b54f5991000741201897396b59b73bf88fca8b956eb6cf98cab8c28d18cb05",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_power_clean--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_power_clean.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 4
+    },
+    {
+      "exerciseId": "ex_hang_clean",
+      "nameEn": "Hang Clean",
+      "promptSha256": "51feafa29a70eaa1691e98c8b6e85c8169b5afe3c76d0ef952a594b5bf19855b",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_hang_clean--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_hang_clean.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 4
+    },
+    {
+      "exerciseId": "ex_dumbbell_snatch",
+      "nameEn": "Dumbbell Snatch",
+      "promptSha256": "7a4927abeae1ff6098eadebca393e6eb53feba8e19e56e6d6c234d929016811e",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_dumbbell_snatch--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_dumbbell_snatch.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 4
+    },
+    {
+      "exerciseId": "ex_kettlebell_turkish_get_up",
+      "nameEn": "Kettlebell Turkish Get-Up",
+      "promptSha256": "fb629d5d2fa110c5f66cb5ecfd7657ea9c5f0a89e46e1b8666cec7b27c7d59b6",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_kettlebell_turkish_get_up--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_kettlebell_turkish_get_up.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 6
+    },
+    {
+      "exerciseId": "ex_man_maker",
+      "nameEn": "Man Maker",
+      "promptSha256": "1d3a9d51cb17f72435bb82c7e6a235a736a2111f799568e36de82d0f24d84e0e",
+      "generationStatus": "not_started",
+      "reviewStatus": "pending",
+      "approved": false,
+      "proposedDraftPath": "build/exercise-illustration-drafts/ex_man_maker--sequence.png",
+      "proposedRuntimePathAfterApproval": "lib/assets/exercise_illustrations/ex_man_maker.webp",
+      "actualOutputPath": null,
+      "outputSha256": null,
+      "generatedOn": null,
+      "provider": null,
+      "modelVersion": null,
+      "generationTermsOrRightsGrant": null,
+      "referenceImageRights": [],
+      "reviewer": null,
+      "reviewNotes": null,
+      "phaseCount": 6
+    }
+  ]
+}

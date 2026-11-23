@@ -5,5 +5,9 @@ import { initializeApp } from 'firebase-admin/app';
 // service-account key file is ever bundled or referenced here.
 initializeApp();
 
-export { requestPasswordReset } from './requestPasswordReset';
-export { completePasswordReset } from './completePasswordReset';
+// Workout inactivity reminders (built and tested locally; not deployed:
+// deploy only with `firebase deploy --only functions` after approval).
+export { onWorkoutSessionCreated, onWorkoutSetCreated } from './inactivity/entrypoints/activityTriggers';
+export { onReminderPreferencesWritten } from './inactivity/entrypoints/preferencesTrigger';
+export { sendDueInactivityReminders } from './inactivity/entrypoints/reminderScheduler';
+export { onFcmTokenWritten } from './tokens/entrypoints/tokenOwnershipTriggers';

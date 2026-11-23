@@ -1,0 +1,341 @@
+import 'package:ae_coaching/core/localization/locale_cubit.dart';
+import 'package:ae_coaching/core/feedback/app_feedback.dart';
+import 'package:ae_coaching/core/routes/app_router.dart';
+import 'package:ae_coaching/core/notifications/fcm_device_service.dart';
+import 'package:ae_coaching/core/theme/app_theme.dart';
+import 'package:ae_coaching/core/theme/theme_cubit.dart';
+import 'package:ae_coaching/features/notification_settings/presentation/cubit/notification_preferences_cubit.dart';
+import 'package:ae_coaching/features/notification_settings/presentation/widgets/inactivity_reminder_preference_tile.dart';
+import 'package:ae_coaching/features/workout/presentation/screens/exercise_sources_screen.dart';
+import 'package:ae_coaching/features/profile/presentation/profile_navigation.dart';
+import 'package:ae_coaching/l10n/app_localizations.dart';
+import 'package:ae_coaching/service_locator.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ae_coaching/core/widgets/app_shimmer.dart';
+
+class AppSettingsScreen extends StatefulWidget {
+  const AppSettingsScreen({super.key, required this.onLogout});
+
+  final ProfileLogoutCallback onLogout;
+
+  @override
+  State<AppSettingsScreen> createState() => _AppSettingsScreenState();
+}
+
+class _AppSettingsScreenState extends State<AppSettingsScreen>
+    with WidgetsBindingObserver {
+  late Future<AuthorizationStatus> _permissionStatus;
+  late final NotificationPreferencesCubit _reminderPreferences;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _permissionStatus = sl<FcmDeviceService>()
+        .notificationAuthorizationStatus();
+    final locale = context.read<LocaleCubit>();
+    // Bound to the account verified now; the reminder language follows
+    // the app language (it never changes it).
+    _reminderPreferences = NotificationPreferencesCubit(
+      repository: sl(),
+      deviceTimeZone: sl(),
+      account: sl(),
+      languageCode: () => locale.state.languageCode,
+    )..start();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && mounted) {
+      setState(() {
+        _permissionStatus = sl<FcmDeviceService>()
+            .notificationAuthorizationStatus();
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _reminderPreferences.close();
+    super.dispose();
+  }
+
+  Future<void> _setTheme(ThemeMode mode) async {
+    final l10n = AppLocalizations.of(context)!;
+    try {
+      await context.read<ThemeCubit>().setThemeMode(mode);
+    } catch (_) {
+      if (mounted) {
+        AppFeedback.error(l10n.themePreferenceSaveError);
+      }
+    }
+  }
+
+  Future<void> _showPermissionHelp() async {
+    final l10n = AppLocalizations.of(context)!;
+    await showDialog<void>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.settingsPermissionHelpAction),
+        content: Text(l10n.settingsPermissionHelpBody),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text(l10n.close),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final colors = context.appColors;
+    // Edge-to-edge: keep the last item (the Danger Zone) clear of the
+    // system navigation bar / gesture area and of landscape cut-outs.
+    final insets = MediaQuery.paddingOf(context);
+    return Scaffold(
+      backgroundColor: colors.canvas,
+      appBar: AppBar(title: Text(l10n.appSettingsTitle)),
+      body: ListView(
+        padding: EdgeInsets.fromLTRB(
+          18 + insets.left,
+          8,
+          18 + insets.right,
+          32 + insets.bottom,
+        ),
+        children: [
+          _SectionTitle(title: l10n.settingsLanguage),
+          BlocBuilder<LocaleCubit, Locale>(
+            builder: (context, locale) => Column(
+              children: [
+                _ChoiceTile(
+                  title: 'العربية',
+                  selected: locale.languageCode == 'ar',
+                  onTap: () =>
+                      context.read<LocaleCubit>().setLocale(const Locale('ar')),
+                ),
+                _ChoiceTile(
+                  title: 'English',
+                  selected: locale.languageCode == 'en',
+                  onTap: () =>
+                      context.read<LocaleCubit>().setLocale(const Locale('en')),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 18),
+          _SectionTitle(title: l10n.appearanceTitle),
+          BlocBuilder<ThemeCubit, ThemeMode>(
+            builder: (context, mode) => Column(
+              children: [
+                _ChoiceTile(
+                  title: l10n.themeSystemDefault,
+                  icon: Icons.brightness_auto_outlined,
+                  selected: mode == ThemeMode.system,
+                  onTap: () => _setTheme(ThemeMode.system),
+                ),
+                _ChoiceTile(
+                  title: l10n.themeLight,
+                  icon: Icons.light_mode_outlined,
+                  selected: mode == ThemeMode.light,
+                  onTap: () => _setTheme(ThemeMode.light),
+                ),
+                _ChoiceTile(
+                  title: l10n.themeDark,
+                  icon: Icons.dark_mode_outlined,
+                  selected: mode == ThemeMode.dark,
+                  onTap: () => _setTheme(ThemeMode.dark),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 18),
+          _SectionTitle(title: l10n.settingsNotifications),
+          BlocProvider.value(
+            value: _reminderPreferences,
+            child: const InactivityReminderPreferenceTile(),
+          ),
+          Padding(
+            padding: const EdgeInsetsDirectional.only(
+              start: 4,
+              end: 4,
+              bottom: 8,
+            ),
+            child: Text(
+              l10n.settingsNotificationPermissionNote,
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: colors.textMuted),
+            ),
+          ),
+          FutureBuilder<AuthorizationStatus>(
+            future: _permissionStatus,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const ShimmerTileRow();
+              }
+              if (snapshot.hasError || !snapshot.hasData) {
+                return ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: const Icon(Icons.notifications_none),
+                  title: Text(l10n.settingsNotificationNotRequested),
+                );
+              }
+              final status = snapshot.data!;
+              final allowed =
+                  status.name == 'authorized' ||
+                  status.name == 'provisional' ||
+                  status.name == 'ephemeral';
+              final notRequested = status.name == 'notDetermined';
+              return ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: Icon(
+                  allowed
+                      ? Icons.notifications_active_outlined
+                      : Icons.notifications_off_outlined,
+                  color: allowed ? colors.success : colors.textMuted,
+                ),
+                title: Text(
+                  allowed
+                      ? l10n.settingsNotificationAuthorized
+                      : notRequested
+                      ? l10n.settingsNotificationNotRequested
+                      : l10n.settingsNotificationDenied,
+                ),
+                trailing: allowed
+                    ? null
+                    : IconButton(
+                        tooltip: l10n.settingsPermissionHelpAction,
+                        onPressed: _showPermissionHelp,
+                        icon: const Icon(Icons.help_outline),
+                      ),
+              );
+            },
+          ),
+          const SizedBox(height: 14),
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            leading: const Icon(Icons.info_outline),
+            title: Text(l10n.repdbDataSources),
+            onTap: () => Navigator.push<void>(
+              context,
+              MaterialPageRoute<void>(
+                builder: (_) => const ExerciseSourcesScreen(),
+              ),
+            ),
+          ),
+          const Divider(),
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            leading: Icon(
+              Icons.logout,
+              color: Theme.of(context).colorScheme.error,
+            ),
+            title: Text(l10n.logoutTooltip),
+            subtitle: Text(l10n.settingsLogoutDescription),
+            onTap: widget.onLogout,
+          ),
+          const SizedBox(height: 24),
+          _DangerZone(
+            title: l10n.dangerZoneTitle,
+            child: ListTile(
+              key: const ValueKey('settings-delete-account'),
+              contentPadding: EdgeInsets.zero,
+              leading: Icon(
+                Icons.delete_forever_outlined,
+                color: Theme.of(context).colorScheme.error,
+              ),
+              title: Text(
+                l10n.deleteAccountTitle,
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
+              subtitle: Text(l10n.deleteAccountEntrySubtitle),
+              onTap: () =>
+                  Navigator.pushNamed(context, AppNavigator.deleteAccount),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Destructive actions, visually separated from everything else.
+class _DangerZone extends StatelessWidget {
+  const _DangerZone({required this.title, required this.child});
+
+  final String title;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final error = Theme.of(context).colorScheme.error;
+    return Container(
+      padding: const EdgeInsets.fromLTRB(14, 10, 14, 6),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: error.withValues(alpha: 0.5)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              color: error,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          child,
+        ],
+      ),
+    );
+  }
+}
+
+class _SectionTitle extends StatelessWidget {
+  const _SectionTitle({required this.title});
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.only(bottom: 8),
+    child: Text(
+      title,
+      style: Theme.of(
+        context,
+      ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
+    ),
+  );
+}
+
+class _ChoiceTile extends StatelessWidget {
+  const _ChoiceTile({
+    required this.title,
+    required this.selected,
+    required this.onTap,
+    this.icon,
+  });
+
+  final String title;
+  final bool selected;
+  final VoidCallback onTap;
+  final IconData? icon;
+
+  @override
+  Widget build(BuildContext context) => ListTile(
+    contentPadding: EdgeInsets.zero,
+    leading: icon == null ? null : Icon(icon),
+    title: Text(title),
+    trailing: selected
+        ? Icon(Icons.check_circle, color: Theme.of(context).colorScheme.primary)
+        : const SizedBox(width: 24),
+    onTap: onTap,
+  );
+}

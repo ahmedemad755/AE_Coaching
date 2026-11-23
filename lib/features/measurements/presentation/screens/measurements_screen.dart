@@ -1,4 +1,6 @@
 import 'package:ae_coaching/auth/data/models/body_measurement.dart';
+import 'package:ae_coaching/core/localization/operation_message_localizer.dart';
+import 'package:ae_coaching/core/feedback/app_feedback.dart';
 import 'package:ae_coaching/features/measurements/presentation/cubit/measurement_cubit.dart';
 import 'package:ae_coaching/features/measurements/presentation/screens/add_edit_measurement_screen.dart';
 import 'package:ae_coaching/features/measurements/presentation/screens/measurement_analytics_screen.dart';
@@ -6,12 +8,14 @@ import 'package:ae_coaching/features/measurements/presentation/screens/measureme
 import 'package:ae_coaching/features/measurements/presentation/widgets/measurement_values_list.dart';
 import 'package:ae_coaching/features/progress_photos/presentation/cubit/progress_photo_cubit.dart';
 import 'package:ae_coaching/features/progress_photos/presentation/screens/progress_photos_screen.dart';
+import 'package:ae_coaching/core/theme/app_theme.dart';
 import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:ae_coaching/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:ae_coaching/core/widgets/app_shimmer.dart';
 
 /// Body Measurements home screen: shows the latest check-in and gives
 /// access to Add / History / Analytics.
@@ -27,9 +31,6 @@ class MeasurementsScreen extends StatefulWidget {
 }
 
 class _MeasurementsScreenState extends State<MeasurementsScreen> {
-  static const Color _blue = Color(0xff2f80ed);
-  static const Color _muted = Color(0xff7d8792);
-
   // Retains the last successfully loaded box across transient states
   // (e.g. the silent background Firestore sync, or a save/delete
   // round-trip) so the screen never flashes a spinner/error over data
@@ -101,16 +102,15 @@ class _MeasurementsScreenState extends State<MeasurementsScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      backgroundColor: const Color(0xfff5f9fc),
       appBar: AppBar(
-        backgroundColor: _blue,
-        foregroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Theme.of(context).colorScheme.onPrimary,
         title: Text(l10n.bodyMeasurementsTitle),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _openAdd,
-        backgroundColor: _blue,
-        foregroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Theme.of(context).colorScheme.onPrimary,
         elevation: 10,
         icon: const Icon(Icons.add_circle_outline),
         label: Text(
@@ -124,10 +124,10 @@ class _MeasurementsScreenState extends State<MeasurementsScreen> {
             setState(() => _box = state.box);
           }
           if (state is MeasurementError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: Colors.redAccent,
+            AppFeedback.error(
+              localizeOperationError(
+                AppLocalizations.of(context)!,
+                state.message,
               ),
             );
           }
@@ -146,14 +146,22 @@ class _MeasurementsScreenState extends State<MeasurementsScreen> {
                       Text(
                         l10n.somethingWrongLoadingMeasurements,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(color: _muted, fontWeight: FontWeight.w700),
+                        style: TextStyle(
+                          color: context.appColors.textMuted,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                       const SizedBox(height: 12),
                       ElevatedButton(
-                        onPressed: () => context.read<MeasurementCubit>().loadMeasurements(),
+                        onPressed: () =>
+                            context.read<MeasurementCubit>().loadMeasurements(),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: _blue,
-                          foregroundColor: Colors.white,
+                          backgroundColor: Theme.of(
+                            context,
+                          ).colorScheme.primary,
+                          foregroundColor: Theme.of(
+                            context,
+                          ).colorScheme.onPrimary,
                         ),
                         child: Text(l10n.retry),
                       ),
@@ -162,7 +170,7 @@ class _MeasurementsScreenState extends State<MeasurementsScreen> {
                 ),
               );
             }
-            return const Center(child: CircularProgressIndicator(color: _blue));
+            return const ShimmerList();
           }
 
           return ValueListenableBuilder(
@@ -221,17 +229,15 @@ class _LatestCheckInCard extends StatelessWidget {
 
   const _LatestCheckInCard({required this.measurement});
 
-  static const Color _dark = Color(0xff202936);
-  static const Color _muted = Color(0xff7d8792);
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final colors = context.appColors;
     final dateLocale = Localizations.localeOf(context).toString();
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
@@ -246,12 +252,20 @@ class _LatestCheckInCard extends StatelessWidget {
         children: [
           Text(
             l10n.lastCheckInLabel,
-            style: const TextStyle(color: _muted, fontWeight: FontWeight.w700, fontSize: 12),
+            style: TextStyle(
+              color: colors.textMuted,
+              fontWeight: FontWeight.w700,
+              fontSize: 12,
+            ),
           ),
           const SizedBox(height: 4),
           Text(
             DateFormat('d MMM yyyy', dateLocale).format(measurement.date),
-            style: const TextStyle(color: _dark, fontWeight: FontWeight.w900, fontSize: 20),
+            style: TextStyle(
+              color: colors.textPrimary,
+              fontWeight: FontWeight.w900,
+              fontSize: 20,
+            ),
           ),
           const SizedBox(height: 16),
           MeasurementValuesList(measurement: measurement),
@@ -266,17 +280,15 @@ class _EmptyState extends StatelessWidget {
 
   const _EmptyState({required this.onAdd});
 
-  static const Color _blue = Color(0xff2f80ed);
-  static const Color _dark = Color(0xff202936);
-  static const Color _muted = Color(0xff7d8792);
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final colors = context.appColors;
+    final scheme = Theme.of(context).colorScheme;
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: scheme.surface,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
@@ -288,18 +300,25 @@ class _EmptyState extends StatelessWidget {
       ),
       child: Column(
         children: [
-          const Icon(Icons.straighten, color: _blue, size: 40),
+          Icon(Icons.straighten, color: scheme.primary, size: 40),
           const SizedBox(height: 14),
           Text(
             l10n.noMeasurementsYetTitle,
             textAlign: TextAlign.center,
-            style: const TextStyle(color: _dark, fontWeight: FontWeight.w900, fontSize: 16),
+            style: TextStyle(
+              color: colors.textPrimary,
+              fontWeight: FontWeight.w900,
+              fontSize: 16,
+            ),
           ),
           const SizedBox(height: 6),
           Text(
             l10n.addFirstCheckInSubtitle,
             textAlign: TextAlign.center,
-            style: const TextStyle(color: _muted, fontWeight: FontWeight.w600),
+            style: TextStyle(
+              color: colors.textMuted,
+              fontWeight: FontWeight.w600,
+            ),
           ),
           const SizedBox(height: 18),
           ElevatedButton.icon(
@@ -307,9 +326,11 @@ class _EmptyState extends StatelessWidget {
             icon: const Icon(Icons.add),
             label: Text(l10n.addMeasurementButton),
             style: ElevatedButton.styleFrom(
-              backgroundColor: _blue,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              backgroundColor: scheme.primary,
+              foregroundColor: scheme.onPrimary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             ),
           ),
@@ -324,15 +345,18 @@ class _ActionButton extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
 
-  const _ActionButton({required this.icon, required this.label, required this.onTap});
-
-  static const Color _blue = Color(0xff2f80ed);
+  const _ActionButton({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     return OutlinedButton.icon(
       onPressed: onTap,
-      icon: Icon(icon, color: _blue, size: 18),
+      icon: Icon(icon, color: scheme.primary, size: 18),
       label: Text(
         label,
         maxLines: 1,
@@ -340,11 +364,11 @@ class _ActionButton extends StatelessWidget {
         style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 12),
       ),
       style: OutlinedButton.styleFrom(
-        foregroundColor: _blue,
-        side: const BorderSide(color: _blue),
+        foregroundColor: scheme.primary,
+        side: BorderSide(color: scheme.primary),
         minimumSize: const Size.fromHeight(48),
         padding: const EdgeInsets.symmetric(horizontal: 6),
-        backgroundColor: Colors.white,
+        backgroundColor: scheme.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
     );

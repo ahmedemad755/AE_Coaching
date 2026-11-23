@@ -9,6 +9,74 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get activeSessionOnly => 'This Session Only';
+
+  @override
+  String get activeSessionAndProgram => 'This Session + Program';
+
+  @override
+  String get activeExerciseScopeBody =>
+      'Update this workout now. Also update the program day only if you choose Session + Program.';
+
+  @override
+  String get activeApplyEdit => 'Apply';
+
+  @override
+  String get activeSessionEditSaved => 'Session updated. Program unchanged.';
+
+  @override
+  String get activeProgramEditSaved => 'Session and program day updated.';
+
+  @override
+  String get activeLoggedExerciseProtected =>
+      'This exercise has logged sets. Keep it to preserve your records; add another exercise instead. Targets and order can still be edited.';
+
+  @override
+  String get activeProgramConflict =>
+      'The program day differs from this session. Use Session Only, or apply the program exercises before editing both.';
+
+  @override
+  String get activeProgramPending =>
+      'Session changes are saved, but the program update is unfinished. Retry to complete it. Stopping retries keeps your session and any program change already written.';
+
+  @override
+  String get activeDuplicateExercise =>
+      'This exercise is already included. No duplicate was added.';
+
+  @override
+  String get activeWorkoutNoLongerActive =>
+      'This workout is no longer active. Reopen your current workout.';
+
+  @override
+  String get activeApplyProgram => 'Apply program exercises';
+
+  @override
+  String get activeApplyProgramBody =>
+      'Program edits elsewhere affect future workouts only. Apply the current program day to this session now? This replaces session exercise edits and targets. Logged sets stay intact; changes that would remove a logged exercise are blocked.';
+
+  @override
+  String get activeRetryProgramEdit => 'Retry program update';
+
+  @override
+  String get activeKeepSessionEdit => 'Keep changes and stop retrying';
+
+  @override
+  String get appearanceTitle => 'Appearance';
+
+  @override
+  String get themeSystemDefault => 'System default';
+
+  @override
+  String get themeLight => 'Light';
+
+  @override
+  String get themeDark => 'Dark';
+
+  @override
+  String get themePreferenceSaveError =>
+      'Could not save your appearance preference.';
+
+  @override
   String get appBrandShort => 'AE';
 
   @override
@@ -36,13 +104,140 @@ class AppLocalizationsEn extends AppLocalizations {
   String get languageToggleTooltip => 'Switch language';
 
   @override
+  String get inactivityRemindersTitle => 'Inactivity Reminders';
+
+  @override
+  String get inactivityReminderSaveFailed =>
+      'Could not save notification preference. Try again.';
+
+  @override
+  String get inactivityRemindersSubtitle =>
+      'A gentle nudge when you haven\'t logged a workout for a while.';
+
+  @override
+  String get inactivityReminderLoading => 'Loading your reminder setting…';
+
+  @override
+  String get inactivityReminderSaving => 'Saving reminder setting…';
+
+  @override
+  String get inactivityReminderSaved => 'Reminder setting saved.';
+
+  @override
+  String get inactivityReminderSavedOffline =>
+      'Saved on this device. It will sync when you\'re back online.';
+
+  @override
+  String get inactivityReminderPendingSync =>
+      'Waiting to sync. Your change isn\'t confirmed yet.';
+
+  @override
+  String get inactivityReminderOffline =>
+      'You\'re offline. Connect to load your reminder setting.';
+
+  @override
+  String get inactivityReminderUnavailable =>
+      'Verify your email to manage workout reminders.';
+
+  @override
+  String get inactivityReminderLoadFailed =>
+      'Couldn\'t load your reminder setting.';
+
+  @override
+  String get repdbInstructions => 'Instructions';
+
+  @override
+  String get repdbPrimaryMuscles => 'Primary muscles';
+
+  @override
+  String get repdbSecondaryMuscles => 'Secondary muscles';
+
+  @override
+  String get repdbStartPosition => 'Starting position';
+
+  @override
+  String get repdbPeakPosition => 'Peak / end position';
+
+  @override
+  String get repdbDataSources => 'Credits and exercise data sources';
+
+  @override
+  String get repdbSourceLicense => 'RepDB Free Tier License';
+
+  @override
+  String get repdbTranslationPending =>
+      'Arabic instructions are awaiting review. The original English instructions are shown below.';
+
+  @override
+  String get repdbUnknownMetadata => 'Not supplied by the source';
+
+  @override
+  String get repdbFormCues => 'Form cues';
+
+  @override
+  String get repdbDatasetVersion => 'Dataset version';
+
+  @override
+  String get repdbAddToWorkout => 'Add to workout';
+
+  @override
+  String get repdbLegacyReference =>
+      'Legacy exercise. Choose a replacement from the new library if you want to update it.';
+
+  @override
+  String get repdbResolveBeforeSave =>
+      'Replace the remaining legacy exercises before saving a new copy. Existing saved workouts are preserved.';
+
+  @override
+  String get homeGreetingMorning => 'Good morning';
+
+  @override
+  String get homeGreetingAfternoon => 'Good afternoon';
+
+  @override
+  String get homeGreetingEvening => 'Good evening';
+
+  @override
+  String get homeGreetingSubtitle => 'Ready for today\'s workout?';
+
+  @override
+  String get homeDashboardSubtitle => 'Plan, train and track your progress';
+
+  @override
+  String get homeManagePrograms => 'Manage your programs';
+
+  @override
+  String get homeExploreTemplates => 'Explore & save programs';
+
+  @override
+  String get homeBeginSession => 'Begin a training session';
+
+  @override
+  String get homeProgress => 'Progress';
+
+  @override
+  String get homeTrackResults => 'Track your results';
+
+  @override
+  String get homeQuickActions => 'Quick Actions';
+
+  @override
+  String get homeLogWorkout => 'Log Workout';
+
+  @override
+  String get homeBodyMetrics => 'Body Metrics';
+
+  @override
+  String get homeNavigationHome => 'Home';
+
+  @override
+  String get homeNavigationPrograms => 'Programs';
+
+  @override
+  String get homeNavigationMore => 'More';
+
+  @override
   String get loginSubtitle => 'Login to Your Account';
-
-  @override
-  String get phoneNumberHint => 'Phone number';
-
-  @override
-  String get phoneNumberRequired => 'Enter your phone number';
 
   @override
   String get passwordHint => 'Password';
@@ -78,54 +273,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fullNameRequired => 'Please enter your name';
 
   @override
-  String get phoneNumberFieldHint => 'Phone Number';
-
-  @override
-  String get phoneNumberRequiredRegister => 'Please enter phone number';
-
-  @override
-  String get passwordTooShort => 'Password too short';
-
-  @override
   String get createAccountButton => 'CREATE ACCOUNT';
-
-  @override
-  String get accountCreatedSuccess => 'Account created successfully';
-
-  @override
-  String get accountCreatedPendingLogin =>
-      'Account created successfully. Please login.';
-
-  @override
-  String get verifyPhoneTitle => 'Verify Phone';
-
-  @override
-  String enterCodeSentTo(String phone) {
-    return 'Enter the 6-digit code sent to $phone';
-  }
-
-  @override
-  String get resendCodeTooltip => 'Resend Code';
-
-  @override
-  String get enterSixDigitCodeValidator => 'Enter the 6-digit code';
-
-  @override
-  String get resendButton => 'RESEND';
-
-  @override
-  String get verifyButton => 'VERIFY';
-
-  @override
-  String get accountVerifiedMessage => 'Account Verified! Please Login.';
-
-  @override
-  String get completeRegistrationSetPasswordTitle => 'Set a password';
-
-  @override
-  String completeRegistrationSetPasswordSubtitle(String phone) {
-    return 'Your phone number $phone is verified. Choose a password to secure your account.';
-  }
 
   @override
   String get completeRegistrationFinishProfileTitle => 'Finish your profile';
@@ -135,40 +283,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Just need your name to finish setting up your account.';
 
   @override
-  String get completeRegistrationCancelAndSignOut =>
-      'This isn\'t me — start over';
-
-  @override
   String get sessionCheckingMessage => 'Checking your account...';
 
   @override
-  String get verifyPhoneMigrationTitle => 'Verify your phone';
-
-  @override
-  String verifyPhoneMigrationSubtitle(String phone) {
-    return 'For your account\'s security, confirm the code sent to $phone.';
-  }
-
-  @override
-  String get phoneVerifiedSuccessMessage => 'Phone verified successfully';
-
-  @override
   String get forgotPasswordTitle => 'Reset your password';
-
-  @override
-  String get forgotPasswordSubtitle =>
-      'Enter your phone number and we\'ll send you a verification code.';
-
-  @override
-  String get sendCodeButton => 'SEND CODE';
-
-  @override
-  String get resetPasswordTitle => 'Enter new password';
-
-  @override
-  String resetPasswordSubtitle(String phone) {
-    return 'Enter the code sent to $phone and choose a new password.';
-  }
 
   @override
   String get confirmPasswordHint => 'Confirm password';
@@ -178,9 +296,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get passwordsDoNotMatch => 'Passwords do not match';
-
-  @override
-  String get resetPasswordButton => 'RESET PASSWORD';
 
   @override
   String get passwordChangedSuccessMessage => 'Password changed successfully';
@@ -208,9 +323,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get startFirstExercise => 'Start by adding your first exercise.';
 
   @override
-  String get newExerciseButton => 'New Exercise';
-
-  @override
   String get todaysVolumeLabel => 'Today\'s Volume: [kg]';
 
   @override
@@ -224,6 +336,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get exerciseTrendsLabel => 'Exercise Trends';
+
+  @override
+  String get progressSelectProgram => 'Program';
+
+  @override
+  String get progressSelectWorkoutDay => 'Workout day';
+
+  @override
+  String get progressSelectExercise => 'Exercise';
+
+  @override
+  String get progressNoCompletedHistory =>
+      'No linked completed workout history yet.';
 
   @override
   String get needMoreDataForProgress =>
@@ -601,6 +726,53 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addWorkoutDayButton => 'Add Workout Day';
 
   @override
+  String get manageTemplateExercisesButton => 'Manage exercises';
+
+  @override
+  String manageTemplateExercisesTitle(String name) {
+    return 'Exercises for $name';
+  }
+
+  @override
+  String get searchExerciseLibraryHint => 'Search exercises';
+
+  @override
+  String get assignedTemplateExercisesTitle => 'Workout plan';
+
+  @override
+  String assignedTemplateExercisesCount(int count) {
+    return 'Exercises · $count';
+  }
+
+  @override
+  String get noAssignedTemplateExercises =>
+      'No exercises assigned yet. Add exercises here so they are ready whenever you start this workout day.';
+
+  @override
+  String get exerciseLibraryTitle => 'Exercise library';
+
+  @override
+  String get noExerciseSearchResults => 'No exercises match your search.';
+
+  @override
+  String get removeAssignedExerciseTooltip =>
+      'Remove exercise from workout day';
+
+  @override
+  String get addAssignedExerciseTooltip => 'Add exercise to workout day';
+
+  @override
+  String get templateExerciseDuplicateError =>
+      'This exercise is already assigned.';
+
+  @override
+  String get templateExerciseSaveError =>
+      'Could not save workout-day exercises.';
+
+  @override
+  String get exerciseLibraryLoadError => 'Could not load the exercise library.';
+
+  @override
   String get createWorkoutDayTitle => 'Add Workout Day';
 
   @override
@@ -722,6 +894,46 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get discardEmptyWorkoutTitle => 'Discard this empty workout?';
+
+  @override
+  String get discardEmptyWorkoutBody =>
+      'No completed sets have been recorded. Keep training or discard this workout?';
+
+  @override
+  String get keepTrainingButton => 'Keep Training';
+
+  @override
+  String get discardWorkoutButton => 'Discard Workout';
+
+  @override
+  String get workoutCelebrationHeading => 'Great work! 💪🔥';
+
+  @override
+  String get workoutCelebrationSubtitle =>
+      'Workout complete. Every session brings you closer to your goal!';
+
+  @override
+  String get completionExercisesLabel => 'Exercises';
+
+  @override
+  String get completionSetsLabel => 'Sets';
+
+  @override
+  String get completionVolumeLabel => 'Volume';
+
+  @override
+  String get workoutDurationLabel => 'Duration';
+
+  @override
+  String completionDurationMinutes(int minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String get backToHomeButton => 'Back to Home';
+
+  @override
   String workoutFinishedBody(String volume) {
     return 'Workout completed! Total volume: $volume kg.';
   }
@@ -809,6 +1021,64 @@ class AppLocalizationsEn extends AppLocalizations {
   String get programAnalyticsTitle => 'Program Analytics';
 
   @override
+  String get analyticsSelectDay => 'Workout day';
+
+  @override
+  String get analyticsSelectExercise => 'Exercise';
+
+  @override
+  String get analyticsWeightTitle => 'Weight progression';
+
+  @override
+  String get analyticsRepsTitle => 'Reps progression';
+
+  @override
+  String get analyticsVolumeTitle => 'Training volume progression';
+
+  @override
+  String get analyticsRepsUnit => 'reps';
+
+  @override
+  String get analyticsVolumeUnit => 'kg × reps';
+
+  @override
+  String analyticsRepsAtWeight(String weight) {
+    return 'Best reps at $weight kg';
+  }
+
+  @override
+  String analyticsPreviousValue(String date, String value, String unit) {
+    return 'Previous ($date): $value $unit';
+  }
+
+  @override
+  String analyticsLatestValue(String date, String value, String unit) {
+    return 'Latest ($date): $value $unit';
+  }
+
+  @override
+  String analyticsAbsoluteChange(String change, String unit) {
+    return 'Change: $change $unit';
+  }
+
+  @override
+  String analyticsPercentChange(String change) {
+    return 'Change: $change%';
+  }
+
+  @override
+  String get analyticsPercentageUnavailable =>
+      'Percentage change unavailable from a zero baseline.';
+
+  @override
+  String get analyticsNeedMoreSessions =>
+      'Complete at least two sessions with this exercise to compare progression.';
+
+  @override
+  String get analyticsNoComparableReps =>
+      'No shared weight appears in the latest two sessions, so reps cannot be compared.';
+
+  @override
   String get analyticsTooltip => 'Analytics';
 
   @override
@@ -848,6 +1118,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get restTimerLabel => 'Rest Timer';
+
+  @override
+  String get restDurationLabel => 'Rest duration';
+
+  @override
+  String get restMinutesLabel => 'min';
+
+  @override
+  String get restSecondsLabel => 'sec';
+
+  @override
+  String get setDoneLabel => 'Done';
+
+  @override
+  String get waitForRestTimerLabel => 'Wait until the rest timer finishes.';
+
+  @override
+  String get markPreviousSetDoneLabel =>
+      'Mark the previous set done to start rest.';
 
   @override
   String get startRestTimerButton => 'Start';
@@ -948,6 +1237,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get homeCurrentProgramLabel => 'Current Program';
+
+  @override
+  String get homeWorkoutPlansTitle => 'My Workout Plans';
+
+  @override
+  String get homeViewAllPlansButton => 'View all';
+
+  @override
+  String get homeNoWorkoutPlansBody =>
+      'Create your first workout plan to organize your training days.';
+
+  @override
+  String get homeCreateWorkoutPlanButton => 'Create a workout plan';
 
   @override
   String homeWorkoutsCompletedThisWeekLabel(int count) {
@@ -1052,4 +1354,1495 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get restoreButton => 'Restore';
+
+  @override
+  String get exercisePickerTitle => 'Select exercises';
+
+  @override
+  String get exerciseFiltersTitle => 'Filters';
+
+  @override
+  String get muscleGroupLabel => 'Muscle group';
+
+  @override
+  String get equipmentLabel => 'Equipment';
+
+  @override
+  String get createCustomExerciseButton => 'Create custom exercise';
+
+  @override
+  String addSelectedExercisesButton(int count) {
+    return 'Add selected ($count)';
+  }
+
+  @override
+  String get customExerciseDuplicateError =>
+      'An exercise with this name already exists.';
+
+  @override
+  String get customExerciseSaveError => 'Could not save the custom exercise.';
+
+  @override
+  String get createCustomExerciseTitle => 'Create custom exercise';
+
+  @override
+  String get exerciseNameLabel => 'Exercise name';
+
+  @override
+  String get muscleGroupOptionalLabel => 'Muscle group (optional)';
+
+  @override
+  String get equipmentOptionalLabel => 'Equipment (optional)';
+
+  @override
+  String get addExerciseButton => 'Add exercise';
+
+  @override
+  String get addExerciseToTitle => 'Add exercises to';
+
+  @override
+  String get addExerciseToBody =>
+      'Choose whether these exercises belong only to this workout or should be saved to the workout day for next time.';
+
+  @override
+  String get currentSessionOnlyAction => 'This workout only';
+
+  @override
+  String get saveToWorkoutDayAction => 'Save to workout day';
+
+  @override
+  String get exerciseLibrarySaveError =>
+      'Could not add the selected exercises.';
+
+  @override
+  String get newExerciseButton => 'Add exercise';
+
+  @override
+  String get sessionOnlyExerciseLabel => 'Added to this workout only';
+
+  @override
+  String get replaceExerciseAction => 'Replace exercise';
+
+  @override
+  String get removeExerciseAction => 'Remove exercise';
+
+  @override
+  String get exerciseChangeDestinationTitle =>
+      'Where should this change apply?';
+
+  @override
+  String get exerciseChangeDestinationBody =>
+      'Choose this workout only, or save the change to the workout day for future sessions. Saving to the workout day will not change this active workout.';
+
+  @override
+  String get exerciseChangeFutureOnlyNote =>
+      'Saving to the workout day affects future sessions only. This current workout stays unchanged.';
+
+  @override
+  String removeExerciseLoggedSetsBody(Object name, int count) {
+    return '$name has $count recorded sets. Removing it only hides the exercise from this session; the sets remain in workout history and totals.';
+  }
+
+  @override
+  String get personalHubTitle => 'Personal Hub';
+
+  @override
+  String get profileHeaderSubtitle => 'Your training and account in one place';
+
+  @override
+  String get profileEditName => 'Edit name';
+
+  @override
+  String get profileEmailLabel => 'Email';
+
+  @override
+  String get profileAddPhoto => 'Add photo';
+
+  @override
+  String get profileChangePhoto => 'Change photo';
+
+  @override
+  String get profileRemovePhoto => 'Remove photo';
+
+  @override
+  String get profilePhotoPreviewTitle => 'Preview profile photo';
+
+  @override
+  String get profilePhotoSaved => 'Profile photo saved.';
+
+  @override
+  String get profilePhotoRemoved => 'Profile photo removed.';
+
+  @override
+  String get profilePhotoSaveFailed =>
+      'Could not save the profile photo. Try another image.';
+
+  @override
+  String get profilePhotoRemoveFailed =>
+      'Could not remove the profile photo. Try again.';
+
+  @override
+  String get profilePhotoRemoveConfirm =>
+      'Remove only this profile photo? Your account and workout data will stay unchanged.';
+
+  @override
+  String get profileNameSaved => 'Your name was updated.';
+
+  @override
+  String get profileNameSaveFailed =>
+      'Could not update your name. Check your connection and try again.';
+
+  @override
+  String get profileProgressAction => 'My progress';
+
+  @override
+  String get appSettingsTitle => 'App settings';
+
+  @override
+  String get myProgressTitle => 'My progress';
+
+  @override
+  String get progressCompletedWorkoutsLabel => 'Completed workouts';
+
+  @override
+  String get progressThisWeekLabel => 'This week';
+
+  @override
+  String get progressThisMonthLabel => 'This month';
+
+  @override
+  String get progressWeeklyActivity => 'Weekly activity';
+
+  @override
+  String get progressPersonalRecords => 'Personal records';
+
+  @override
+  String get progressHeaviestWeightRecord => 'Heaviest weight';
+
+  @override
+  String get progressHighestSetVolumeRecord => 'Highest set volume';
+
+  @override
+  String get progressProgramAnalytics => 'Program analytics';
+
+  @override
+  String get progressRecentWorkouts => 'Workout history';
+
+  @override
+  String get progressNoCompletedWorkouts =>
+      'Completed workouts will appear here after you finish a workout.';
+
+  @override
+  String get progressDataUnavailable =>
+      'Your workout progress could not be loaded right now.';
+
+  @override
+  String get profileNameUnavailable => 'Name not available';
+
+  @override
+  String get profileNameInvalid =>
+      'Enter a name of up to 60 characters that includes at least one letter.';
+
+  @override
+  String get settingsLanguage => 'Language';
+
+  @override
+  String get settingsNotifications => 'Notifications and reminders';
+
+  @override
+  String get settingsNotificationAuthorized =>
+      'Device notifications are allowed';
+
+  @override
+  String get settingsNotificationDenied =>
+      'Device notifications are turned off';
+
+  @override
+  String get settingsNotificationNotRequested =>
+      'Device notification permission has not been requested';
+
+  @override
+  String get settingsNotificationPermissionNote =>
+      'The workout reminder switch is separate from your phone\'s notification permission.';
+
+  @override
+  String get settingsPermissionHelpAction => 'How to enable notifications';
+
+  @override
+  String get settingsPermissionHelpBody =>
+      'Open your phone settings, choose Apps, select AE Coaching, then allow Notifications.';
+
+  @override
+  String get settingsLogoutDescription =>
+      'Sign out of this device. Your saved workouts and account data will remain.';
+
+  @override
+  String get profileNameEditTitle => 'Edit your name';
+
+  @override
+  String get exercisePickerAlternateTitle => 'اختر التمارين';
+
+  @override
+  String get exerciseIllustrationUnavailable => 'No illustration yet';
+
+  @override
+  String get exercisePreviewAction => 'Preview exercise';
+
+  @override
+  String get exerciseCustomBadge => 'Custom';
+
+  @override
+  String get exerciseAllFilter => 'All';
+
+  @override
+  String get exerciseWatchVideo => 'Watch on MuscleWiki (external browser)';
+
+  @override
+  String get exerciseBrowserLaunchFailed =>
+      'Could not open the browser. Please try again.';
+
+  @override
+  String get exerciseArtworkCredits => 'Illustration credits';
+
+  @override
+  String get exerciseArtworkSource => 'View illustration source';
+
+  @override
+  String get exerciseArtworkLicense => 'Read illustration license (offline)';
+
+  @override
+  String exerciseMuscleName(String muscle) {
+    String _temp0 = intl.Intl.selectLogic(muscle, {
+      'chest': 'Chest',
+      'back': 'Back',
+      'shoulders': 'Shoulders',
+      'biceps': 'Biceps',
+      'triceps': 'Triceps',
+      'quadriceps': 'Quadriceps',
+      'hamstrings_glutes': 'Hamstrings / glutes',
+      'calves': 'Calves',
+      'abs_core': 'Abs / core',
+      'full_body': 'Full body',
+      'other': '$muscle',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String exerciseEquipmentName(String equipment) {
+    String _temp0 = intl.Intl.selectLogic(equipment, {
+      'barbell': 'Barbell',
+      'dumbbell': 'Dumbbell',
+      'cable': 'Cable',
+      'machine': 'Machine',
+      'bodyweight': 'Bodyweight',
+      'smith_machine': 'Smith machine',
+      'ez_bar': 'EZ bar',
+      'kettlebell': 'Kettlebell',
+      'plate': 'Plate',
+      'trap_bar': 'Trap bar',
+      'ab_wheel': 'Ab wheel',
+      'other': '$equipment',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String get workoutTemplatesTitle => 'Workout Templates';
+
+  @override
+  String get standardTemplatesIntro =>
+      'Choose a split, preview its days, then customize your own copy.';
+
+  @override
+  String get useWorkoutTemplate => 'Use Template';
+
+  @override
+  String get customizeTemplateTitle => 'Customize Program';
+
+  @override
+  String get saveToMyPrograms => 'Save to My Programs';
+
+  @override
+  String get standardTemplateSaved => 'Program saved to My Programs.';
+
+  @override
+  String get standardTemplateSavedLocally =>
+      'Program saved on this device. Cloud backup is incomplete; reopen My Programs and the program\'s days when connected.';
+
+  @override
+  String get standardTemplateLoadError => 'Unable to load workout templates.';
+
+  @override
+  String get standardTemplatesEmpty => 'No workout templates are available.';
+
+  @override
+  String get standardTemplateProgrammingNote =>
+      'Working sets exclude warm-ups. Start with loads that leave about 1–3 reps in reserve. Use the lower end of the volume if needed, add load gradually within the rep range, and allow recovery. Rest longer when needed. These are adjustable starting plans, not individualized prescriptions.';
+
+  @override
+  String get standardTemplateAdvancedNote =>
+      'Six training days suit experienced lifters with enough recovery. A/B sessions share the weekly workload; they are not two copies of the three-day plan. Add rest days if recovery suffers.';
+
+  @override
+  String get standardTemplateAnteriorPosteriorNote =>
+      'A practical emphasis split: anterior days focus on chest, quads, delts, biceps and abs; posterior days focus on back, hamstrings, glutes, rear delts, triceps and calves. Movements naturally overlap.';
+
+  @override
+  String get suggestedTrainingWeek => 'Suggested seven-day sequence';
+
+  @override
+  String get standardRestDay => 'Rest';
+
+  @override
+  String get workingSetsLabel => 'Working sets';
+
+  @override
+  String get minimumRepsLabel => 'Minimum reps';
+
+  @override
+  String get maximumRepsLabel => 'Maximum reps';
+
+  @override
+  String get exerciseRestSecondsLabel => 'Rest (seconds)';
+
+  @override
+  String get editExerciseTargets => 'Edit sets, reps & rest';
+
+  @override
+  String get exerciseTargetsValidation =>
+      'Use 1–10 sets, 1–100 reps (minimum ≤ maximum) and 15–600 seconds rest.';
+
+  @override
+  String get standardDraftInvalid =>
+      'Enter a program name, name every day, and keep at least one exercise in each day. Check exercise targets.';
+
+  @override
+  String get standardDraftSaveError =>
+      'Unable to save the program. Your draft is still available; try again.';
+
+  @override
+  String get standardDraftAccountChanged =>
+      'The account changed. Reopen Workout Templates for the current account.';
+
+  @override
+  String get discardProgramDraftTitle => 'Discard this draft?';
+
+  @override
+  String get discardProgramDraftBody =>
+      'This program has not been saved. Leaving will discard your customizations.';
+
+  @override
+  String get discardProgramDraft => 'Discard draft';
+
+  @override
+  String templateDaysPerWeek(int count) {
+    return '$count days / week';
+  }
+
+  @override
+  String suggestedSequenceDay(int day) {
+    return 'Day $day';
+  }
+
+  @override
+  String exerciseTargetSummary(int sets, int min, int max, int seconds) {
+    return 'Plan: $sets sets × $min–$max reps · rest ${seconds}s';
+  }
+
+  @override
+  String get loadingLabel => 'Loading';
+
+  @override
+  String resendCodeIn(int seconds) {
+    return 'Resend in ${seconds}s';
+  }
+
+  @override
+  String get signOutUseAnotherAccount => 'Sign out and use another account';
+
+  @override
+  String get leaveVerificationTitle => 'Leave verification?';
+
+  @override
+  String get signOutButton => 'Sign out';
+
+  @override
+  String get stayButton => 'Stay';
+
+  @override
+  String get verificationInProgressMessage =>
+      'Please wait until verification finishes.';
+
+  @override
+  String get sessionCheckFailedTitle => 'We couldn\'t check your account';
+
+  @override
+  String get sessionCheckFailedBody =>
+      'Check your internet connection and try again.';
+
+  @override
+  String nameTooLong(int max) {
+    return 'Name must be $max characters or fewer';
+  }
+
+  @override
+  String get nameNeedsLetters => 'Name must include letters';
+
+  @override
+  String passwordMinLengthError(int min) {
+    return 'Password must be at least $min characters';
+  }
+
+  @override
+  String passwordMaxLengthError(int max) {
+    return 'Password must be $max characters or fewer';
+  }
+
+  @override
+  String get passwordEdgeWhitespaceError =>
+      'Password can\'t start or end with a space';
+
+  @override
+  String passwordRequirementsHelper(int min) {
+    return 'At least $min characters';
+  }
+
+  @override
+  String get showPasswordTooltip => 'Show password';
+
+  @override
+  String get hidePasswordTooltip => 'Hide password';
+
+  @override
+  String get changePasswordAction => 'Change password';
+
+  @override
+  String get authErrorWeakPassword =>
+      'Please choose a stronger password (at least 6 characters).';
+
+  @override
+  String get authErrorNetwork =>
+      'Network error. Please check your connection and try again.';
+
+  @override
+  String get authErrorTooManyRequests =>
+      'Too many attempts. Please try again later.';
+
+  @override
+  String get authErrorAccountDisabled =>
+      'This account has been disabled. Please contact support.';
+
+  @override
+  String get authErrorGeneric => 'Something went wrong. Please try again.';
+
+  @override
+  String get authErrorInvalidName => 'Please enter a valid name.';
+
+  @override
+  String get emailHint => 'Email';
+
+  @override
+  String get emailRequired => 'Enter your email address';
+
+  @override
+  String get emailInvalidError => 'Enter a valid email address';
+
+  @override
+  String get emailTooLongError => 'Email address is too long';
+
+  @override
+  String get emailReservedError => 'This email address can\'t be used';
+
+  @override
+  String get verifyEmailTitle => 'Verify your email';
+
+  @override
+  String verifyEmailBody(String email) {
+    return 'We sent a verification link to $email. Open it, then come back and tap \"I\'ve verified\".';
+  }
+
+  @override
+  String verifyEmailNotSentBody(String email) {
+    return 'We couldn\'t send the verification email to $email. Tap Resend to try again.';
+  }
+
+  @override
+  String get verifyEmailSpamHint =>
+      'Can\'t find it? Check your spam or junk folder.';
+
+  @override
+  String get iveVerifiedButton => 'I\'VE VERIFIED';
+
+  @override
+  String get resendEmailButton => 'RESEND EMAIL';
+
+  @override
+  String get verificationEmailSentMessage => 'Verification email sent.';
+
+  @override
+  String get emailNotVerifiedYetMessage =>
+      'Your email isn\'t verified yet. Open the link we sent, then try again.';
+
+  @override
+  String get changeEmailButton => 'Change email';
+
+  @override
+  String get changeEmailBody =>
+      'We\'ll send a verification link to the new address. Your sign-in email changes after you open it.';
+
+  @override
+  String get newEmailHint => 'New email';
+
+  @override
+  String get sendLinkButton => 'Send link';
+
+  @override
+  String emailChangeRequestedMessage(String email) {
+    return 'Verification link sent to $email. Open it to finish changing your email.';
+  }
+
+  @override
+  String get emailVerifiedSuccessMessage => 'Email verified successfully';
+
+  @override
+  String get accountSetupCompleteMessage => 'Account setup complete';
+
+  @override
+  String get legacyAccountSignedOutMessage =>
+      'This test account is no longer supported. Please create a new account with your email.';
+
+  @override
+  String get leaveEmailVerificationBody =>
+      'You\'ll be signed out. Log in again any time to finish verifying your email.';
+
+  @override
+  String get forgotPasswordEmailSubtitle =>
+      'Enter your account email and we\'ll send you a link to reset your password.';
+
+  @override
+  String get sendResetLinkButton => 'SEND RESET LINK';
+
+  @override
+  String get passwordResetEmailSentTitle => 'Check your email';
+
+  @override
+  String passwordResetEmailSentBody(String email) {
+    return 'If an account exists for $email, we\'ve sent a link to reset your password.';
+  }
+
+  @override
+  String get backToLoginButton => 'Back to login';
+
+  @override
+  String get authErrorIncorrectEmailCredentials =>
+      'Incorrect email or password.';
+
+  @override
+  String get authErrorEmailInUse =>
+      'An account already exists for this email. Please log in instead.';
+
+  @override
+  String get authErrorNewEmailInUse =>
+      'This email address is already used by another account.';
+
+  @override
+  String get authErrorRecentLoginEmail =>
+      'For your security, please sign in again to change your email.';
+
+  @override
+  String get authErrorSessionExpired =>
+      'Your session has expired. Please sign in again.';
+
+  @override
+  String get authErrorSessionEnded =>
+      'Your session has ended. Please sign in again.';
+
+  @override
+  String get accountSetupFailedTitle =>
+      'We couldn\'t finish setting up your account';
+
+  @override
+  String get profilePermissionDeniedBody =>
+      'Access to your account profile was denied. Please try again later, or contact support if this continues.';
+
+  @override
+  String get profileConflictingBody =>
+      'Your account profile needs attention. Please contact support.';
+
+  @override
+  String get profileUnknownFailureBody =>
+      'Something went wrong while setting up your account. Please try again.';
+
+  @override
+  String get authErrorProfilePermissionDenied =>
+      'We couldn\'t save your profile because access was denied. Please contact support.';
+
+  @override
+  String get authErrorProfileConflicting =>
+      'Your account profile needs attention. Please contact support.';
+
+  @override
+  String get feedbackDismiss => 'Dismiss';
+
+  @override
+  String get feedbackSuccessLabel => 'Success';
+
+  @override
+  String get feedbackErrorLabel => 'Error';
+
+  @override
+  String get feedbackWarningLabel => 'Warning';
+
+  @override
+  String get feedbackInfoLabel => 'Information';
+
+  @override
+  String get feedbackLoadingLabel => 'In progress';
+
+  @override
+  String get feedbackGenericError => 'Something went wrong. Please try again.';
+
+  @override
+  String get feedbackSignInRequired =>
+      'Your session has ended. Please sign in again.';
+
+  @override
+  String get feedbackItemUnavailable =>
+      'This item is no longer available. Refresh and try again.';
+
+  @override
+  String get logoutFailedMessage => 'Logout failed. Please try again.';
+
+  @override
+  String get feedbackWorkoutNotActive => 'This workout is no longer active.';
+
+  @override
+  String get dangerZoneTitle => 'Danger zone';
+
+  @override
+  String get deleteAccountTitle => 'Delete account';
+
+  @override
+  String get deleteAccountEntrySubtitle =>
+      'Permanently delete your account and its data';
+
+  @override
+  String get deleteAccountIntro => 'Deleting your account permanently removes:';
+
+  @override
+  String get deleteAccountItemWorkouts =>
+      'Your workouts, sets, sessions and programs';
+
+  @override
+  String get deleteAccountItemMeasurements =>
+      'Your body measurements and progress photos';
+
+  @override
+  String get deleteAccountItemProfile =>
+      'Your profile, settings and notification devices';
+
+  @override
+  String get deleteAccountIrreversible =>
+      'This can\'t be undone. Your account and all its data are deleted right away.';
+
+  @override
+  String get deleteAccountPasswordLabel => 'Enter your password to confirm';
+
+  @override
+  String get deleteAccountConfirmCheckbox =>
+      'I understand that my account and all its data will be permanently deleted.';
+
+  @override
+  String get deleteAccountSubmit => 'Delete my account permanently';
+
+  @override
+  String get deleteAccountSubmitting => 'Deleting your account…';
+
+  @override
+  String get deleteAccountWrongPassword => 'Incorrect password. Try again.';
+
+  @override
+  String get deleteAccountTooManyAttempts =>
+      'Too many attempts. Wait a few minutes and try again.';
+
+  @override
+  String get deleteAccountOffline =>
+      'You\'re offline. Connect to the internet to delete your account.';
+
+  @override
+  String get deleteAccountReauthRequired => 'Please sign in again, then retry.';
+
+  @override
+  String get deleteAccountUnsupported =>
+      'Account deletion isn\'t available for this sign-in method. Please contact support.';
+
+  @override
+  String get deleteAccountFailed =>
+      'Couldn\'t finish deleting your account. Try again.';
+
+  @override
+  String get accountDeletedNotice => 'Your account has been deleted.';
+
+  @override
+  String get inactivityReminderTitle1 => 'Ready for your next workout?';
+
+  @override
+  String get inactivityReminderBody1 =>
+      'Your training plan is waiting whenever you are. Even a short session counts.';
+
+  @override
+  String get inactivityReminderTitle2 => 'Small steps add up';
+
+  @override
+  String get inactivityReminderBody2 =>
+      'A few sets today keep your progress moving. Start whenever it suits you.';
+
+  @override
+  String get inactivityReminderTitle3 => 'Your workout is one tap away';
+
+  @override
+  String get inactivityReminderBody3 =>
+      'Pick up where you left off. Your programs are ready for you.';
+
+  @override
+  String get inactivityReminderTitle4 => 'Let\'s get moving again';
+
+  @override
+  String get inactivityReminderBody4 =>
+      'Consistency beats perfection. A quick session is a great restart.';
+
+  @override
+  String get inactivityReminderTitle5 => 'We saved your spot';
+
+  @override
+  String get inactivityReminderBody5 =>
+      'Your workouts are right where you left them. Come back anytime.';
+
+  @override
+  String get inactivityReminderTitle6 => 'Time for a fresh start?';
+
+  @override
+  String get inactivityReminderBody6 =>
+      'Every session is a new beginning. Open AE Coaching and start yours.';
+
+  @override
+  String get deleteAccountIncomplete =>
+      'An earlier deletion didn\'t finish. Enter your password to complete it.';
+
+  @override
+  String get deleteAccountIncompleteNotice =>
+      'Your account deletion didn\'t finish. Until you complete it in Settings → Delete account, new changes are saved on this phone only.';
+
+  @override
+  String get progressViewAll => 'View all';
+
+  @override
+  String get progressAllTimeCaption => 'Since you started';
+
+  @override
+  String progressSinceCaption(String date) {
+    return 'Since $date';
+  }
+
+  @override
+  String progressMetricSemantics(String label, int value, String caption) {
+    return '$label: $value, $caption';
+  }
+
+  @override
+  String get progressLatestRecords => 'Latest personal records';
+
+  @override
+  String get progressRecentWorkoutsSection => 'Recent workouts';
+
+  @override
+  String get progressRangeDays => '7 days';
+
+  @override
+  String get progressRangeWeeks => '6 weeks';
+
+  @override
+  String get progressDailyChartSubtitle =>
+      'Completed workouts per day over the last 7 days';
+
+  @override
+  String get progressWeeklyChartSubtitle =>
+      'Completed workouts per week (Monday to Sunday) over the last 6 weeks';
+
+  @override
+  String get progressChartInfo =>
+      'A workout counts when you finish it with at least one logged set. Cancelled workouts don\'t count.';
+
+  @override
+  String progressChartTotal(int count) {
+    return 'Total: $count';
+  }
+
+  @override
+  String progressChartBarSemantics(String period, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count completed workouts',
+      one: '1 completed workout',
+    );
+    return '$period: $_temp0';
+  }
+
+  @override
+  String progressWeekOf(String date) {
+    return 'Week of $date';
+  }
+
+  @override
+  String get progressTodayLabel => 'Today';
+
+  @override
+  String progressWorkoutCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count workouts',
+      one: '1 workout',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String progressExerciseCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count exercises',
+      one: '1 exercise',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get progressRecordsEmpty =>
+      'Your personal records will appear here once you log sets with weight.';
+
+  @override
+  String get progressRecordsSearchHint => 'Search by exercise name';
+
+  @override
+  String progressRecordsNoResults(String query) {
+    return 'No exercise matches “$query”.';
+  }
+
+  @override
+  String get progressBestSetVolumeLabel => 'Best single set (weight × reps)';
+
+  @override
+  String progressRecordSetOn(String date) {
+    return 'Set on $date';
+  }
+
+  @override
+  String get progressAllPrograms => 'All programs';
+
+  @override
+  String get progressFilterByProgram => 'Filter by program';
+
+  @override
+  String get progressHistoryNoResults =>
+      'No completed workouts in this program yet.';
+
+  @override
+  String get progressClearSearch => 'Clear search';
+
+  @override
+  String progressWeightTimesReps(String weight, int reps) {
+    return '$weight kg × $reps';
+  }
+
+  @override
+  String progressSetVolumeFormula(String weight, int reps, String volume) {
+    return '$weight kg × $reps = $volume kg';
+  }
+
+  @override
+  String get syncReviewNeeded => 'Needs your review';
+
+  @override
+  String get syncReviewAction => 'Review';
+
+  @override
+  String get syncEditedElsewhereTitle => 'Changed on another device';
+
+  @override
+  String get syncEditedElsewhereBody =>
+      'This day was changed here and on another device. Choose the version to keep — the other one stays saved on this phone.';
+
+  @override
+  String get syncDeletedElsewhereTitle => 'Deleted on another device';
+
+  @override
+  String get syncDeletedElsewhereBody =>
+      'This day was deleted on another device, but you changed it here. Restore it everywhere, or delete it here too.';
+
+  @override
+  String get syncDeletedHereTitle =>
+      'Changed on another device after you deleted it';
+
+  @override
+  String get syncDeletedHereBody =>
+      'You deleted this day, but it was changed on another device meanwhile. Delete it anyway, or keep it.';
+
+  @override
+  String get syncDiffersTitle => 'Two different versions';
+
+  @override
+  String get syncDiffersBody =>
+      'The version on this phone differs from the one saved in your account. Choose the version to keep — the other one stays saved on this phone.';
+
+  @override
+  String get syncOlderBuildTitle => 'Replaced by an older app version';
+
+  @override
+  String get syncOlderBuildBody =>
+      'An older version of the app replaced this day in your account. Choose the version to keep.';
+
+  @override
+  String get syncKeepMine => 'Keep this phone\'s version';
+
+  @override
+  String get syncKeepCloud => 'Keep the other version';
+
+  @override
+  String get syncRestoreDay => 'Restore the day';
+
+  @override
+  String get syncDeleteHereToo => 'Delete it here too';
+
+  @override
+  String get syncDeleteAnyway => 'Delete anyway';
+
+  @override
+  String get syncKeepDay => 'Keep the day';
+
+  @override
+  String get syncThisPhone => 'This phone';
+
+  @override
+  String get syncOtherVersion => 'Other version';
+
+  @override
+  String get syncResolved => 'Saved. The other version stays on this phone.';
+
+  @override
+  String get syncLegacyTitle => 'Earlier exercises found';
+
+  @override
+  String syncLegacyBody(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count exercises were',
+      one: '1 exercise was',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'them',
+      one: 'it',
+    );
+    return '$_temp0 saved earlier for this day. Restore $_temp1?';
+  }
+
+  @override
+  String syncLegacySavedOn(String date) {
+    return 'Saved on $date';
+  }
+
+  @override
+  String get syncLegacyRestore => 'Restore';
+
+  @override
+  String get syncLegacyDismiss => 'Don\'t restore';
+
+  @override
+  String get syncLegacyRestored => 'Exercises restored.';
+
+  @override
+  String get syncEarlierVersionAvailable =>
+      'An earlier version of this day is available';
+
+  @override
+  String syncActivitiesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count activities',
+      one: '1 activity',
+      zero: 'No activities',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String activityLimitReached(int limit) {
+    return 'A workout day can hold up to $limit activities.';
+  }
+
+  @override
+  String syncLegacySplitNotice(int limit, int remaining, int newDays) {
+    String _temp0 = intl.Intl.pluralLogic(
+      newDays,
+      locale: localeName,
+      other: '$newDays new days',
+      one: 'a new day',
+    );
+    return 'A day holds up to $limit activities. The first $limit are restored here and the other $remaining go into $_temp0 at the end of this program.';
+  }
+
+  @override
+  String syncNewDayLabel(String name) {
+    return 'New day: $name';
+  }
+
+  @override
+  String syncLegacyRestoredSplit(int days) {
+    return 'Exercises restored into $days days.';
+  }
+
+  @override
+  String get syncTooManyTitle => 'Too many activities to sync';
+
+  @override
+  String syncTooManyBody(int count, int limit) {
+    return 'This day has $count activities, more than the $limit a day can sync. Until it is split, its changes stay on this phone only.';
+  }
+
+  @override
+  String get syncSplitDay => 'Split day';
+
+  @override
+  String get syncSplitConfirmTitle => 'Split this day?';
+
+  @override
+  String syncSplitConfirmBody(int limit, int newDays) {
+    String _temp0 = intl.Intl.pluralLogic(
+      newDays,
+      locale: localeName,
+      other: '$newDays new days',
+      one: 'a new day',
+    );
+    return 'Activities after the first $limit move, in the same order, to $_temp0 at the end of this program. Nothing is deleted.';
+  }
+
+  @override
+  String syncSplitDone(int days) {
+    return 'Split into $days days.';
+  }
+
+  @override
+  String get addActivityButton => 'Add activity';
+
+  @override
+  String get addActivityTitle => 'Add activity';
+
+  @override
+  String get addActivityStrengthTitle => 'Strength exercise';
+
+  @override
+  String get addActivityStrengthBody =>
+      'Sets and reps from the exercise library';
+
+  @override
+  String get addActivityCardioTitle => 'Cardio';
+
+  @override
+  String get addActivityCardioBody => 'Treadmill, bike, running and more';
+
+  @override
+  String get addActivityLibraryTitle => 'My library';
+
+  @override
+  String get addActivityLibraryBody => 'Exercises and activities you created';
+
+  @override
+  String get cardioLibraryTitle => 'Cardio library';
+
+  @override
+  String get cardioSearchHint => 'Search cardio';
+
+  @override
+  String get cardioCategoryAll => 'All';
+
+  @override
+  String get cardioCategoryMachines => 'Machines & equipment';
+
+  @override
+  String get cardioCategoryBodyweight => 'Bodyweight';
+
+  @override
+  String get cardioCategoryOutdoor => 'Outdoor';
+
+  @override
+  String get cardioCategoryMine => 'My cardio';
+
+  @override
+  String get cardioNoResults => 'No cardio activity matches your search.';
+
+  @override
+  String get cardioMineEmpty => 'Cardio activities you create appear here.';
+
+  @override
+  String get cardioCreateCustom => 'Create a cardio activity';
+
+  @override
+  String get cardioCustomNameLabel => 'Activity name';
+
+  @override
+  String get cardioCreateAndAdd => 'Create and add';
+
+  @override
+  String get cardioAlreadyInDay => 'In this day';
+
+  @override
+  String cardioAddAction(String name) {
+    return 'Add $name';
+  }
+
+  @override
+  String cardioAddedToDay(String name, String duration) {
+    return '$name added · $duration';
+  }
+
+  @override
+  String cardioDurationMinutes(int minutes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutes,
+      locale: localeName,
+      other: '$minutes min',
+      one: '1 min',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get cardioModeCountdown => 'Countdown';
+
+  @override
+  String get cardioModeStopwatch => 'Stopwatch';
+
+  @override
+  String get cardioModeIntervals => 'Intervals';
+
+  @override
+  String cardioPlanSummary(String mode, String duration) {
+    return '$mode · $duration';
+  }
+
+  @override
+  String get cardioShadowBoxing => 'Shadow Boxing';
+
+  @override
+  String get cardioHiking => 'Hiking';
+
+  @override
+  String get cardioSwimming => 'Swimming';
+
+  @override
+  String get cardioAirBikeAlsoKnown => 'Also known as Assault Bike';
+
+  @override
+  String get activityTypeCardio => 'Cardio';
+
+  @override
+  String get myLibraryTitle => 'My library';
+
+  @override
+  String get myLibraryEmpty =>
+      'Exercises and cardio activities you create appear here.';
+
+  @override
+  String get myLibraryStrengthSection => 'Strength exercises';
+
+  @override
+  String get myLibraryCardioSection => 'Cardio';
+
+  @override
+  String get cardioSettingsTitle => 'Cardio settings';
+
+  @override
+  String get cardioTimerModeLabel => 'Timer mode';
+
+  @override
+  String get cardioDurationLabel => 'Duration';
+
+  @override
+  String get cardioTargetToggle => 'Set a target duration';
+
+  @override
+  String get cardioWorkLabel => 'Work';
+
+  @override
+  String get cardioIntervalRestLabel => 'Rest';
+
+  @override
+  String get cardioRoundsLabel => 'Rounds';
+
+  @override
+  String get cardioWarmupLabel => 'Warm-up';
+
+  @override
+  String get cardioCooldownLabel => 'Cool-down';
+
+  @override
+  String get cardioIntensityLabel => 'Intensity (optional)';
+
+  @override
+  String get cardioIntensityLight => 'Light';
+
+  @override
+  String get cardioIntensityModerate => 'Moderate';
+
+  @override
+  String get cardioIntensityHigh => 'High';
+
+  @override
+  String get cardioIntensityLightHint =>
+      'Effort (RPE) 2–4 of 10 · you can talk in full sentences.';
+
+  @override
+  String get cardioIntensityModerateHint =>
+      'Effort (RPE) 5–6 of 10 · you can talk, but not sing.';
+
+  @override
+  String get cardioIntensityHighHint =>
+      'Effort (RPE) 7–8 of 10 · only a few words at a time.';
+
+  @override
+  String get cardioDetailsLabel => 'Details (optional)';
+
+  @override
+  String get cardioSpeedLabel => 'Speed (km/h)';
+
+  @override
+  String get cardioInclineLabel => 'Incline (%)';
+
+  @override
+  String get cardioResistanceLabel => 'Resistance level';
+
+  @override
+  String get cardioDistanceLabel => 'Distance (km)';
+
+  @override
+  String cardioValueRange(String min, String max) {
+    return 'Between $min and $max';
+  }
+
+  @override
+  String cardioPlannedTotal(String duration) {
+    return 'Planned: $duration';
+  }
+
+  @override
+  String cardioSecondsValue(int seconds) {
+    return '$seconds s';
+  }
+
+  @override
+  String get cardioNone => 'None';
+
+  @override
+  String get cardioSettingsSaved => 'Cardio settings saved.';
+
+  @override
+  String cardioDecrease(String label) {
+    return 'Decrease $label';
+  }
+
+  @override
+  String cardioIncrease(String label) {
+    return 'Increase $label';
+  }
+
+  @override
+  String estimatedDuration(String duration) {
+    return 'Estimated: $duration';
+  }
+
+  @override
+  String estimatedDurationAtLeast(String duration) {
+    return 'Estimated: at least $duration';
+  }
+
+  @override
+  String get estimatedDurationNote =>
+      'An estimate from the planned sets, reps, rest and cardio time, not the time a workout took.';
+
+  @override
+  String get undoAction => 'Undo';
+
+  @override
+  String activityRemoved(String name) {
+    return '$name removed';
+  }
+
+  @override
+  String get cardioJustAddedHint =>
+      'Added to the day with these settings. Save to change them, or Cancel to keep them.';
+
+  @override
+  String get cardioTimerStart => 'Start';
+
+  @override
+  String get cardioTimerPause => 'Pause';
+
+  @override
+  String get cardioTimerResume => 'Resume';
+
+  @override
+  String get cardioTimerFinish => 'Finish';
+
+  @override
+  String get cardioTimerSkip => 'Skip';
+
+  @override
+  String get cardioTimerOpen => 'Open timer';
+
+  @override
+  String get cardioTimerView => 'View';
+
+  @override
+  String get cardioTimerStartAgain => 'Do it anyway';
+
+  @override
+  String get cardioRemainingLabel => 'Remaining';
+
+  @override
+  String get cardioElapsedLabel => 'Elapsed';
+
+  @override
+  String cardioPlannedValue(String duration) {
+    return 'Planned: $duration';
+  }
+
+  @override
+  String cardioTargetValue(String duration) {
+    return 'Target: $duration';
+  }
+
+  @override
+  String get cardioNoTarget => 'No target: finish when you are done';
+
+  @override
+  String cardioNextActivity(String name) {
+    return 'Next: $name';
+  }
+
+  @override
+  String get cardioLastActivity => 'Last activity of this workout';
+
+  @override
+  String get cardioStatusNotStarted => 'Not started';
+
+  @override
+  String cardioStatusRunning(String time) {
+    return 'In progress · $time';
+  }
+
+  @override
+  String cardioStatusPaused(String time) {
+    return 'Paused · $time';
+  }
+
+  @override
+  String cardioStatusCompleted(String time) {
+    return 'Done · $time';
+  }
+
+  @override
+  String cardioStatusEndedEarly(String time) {
+    return 'Ended early · $time';
+  }
+
+  @override
+  String get cardioStatusSkipped => 'Skipped';
+
+  @override
+  String get intervalPhaseWarmup => 'Warm-up';
+
+  @override
+  String get intervalPhaseWork => 'Work';
+
+  @override
+  String get intervalPhaseRest => 'Rest';
+
+  @override
+  String get intervalPhaseCooldown => 'Cool-down';
+
+  @override
+  String intervalRoundOf(int current, int total) {
+    return 'Round $current of $total';
+  }
+
+  @override
+  String intervalNextPhase(String phase, String duration) {
+    return 'Next: $phase · $duration';
+  }
+
+  @override
+  String get intervalLastPhase => 'Last phase';
+
+  @override
+  String cardioSkipConfirmTitle(String name) {
+    return 'Skip $name?';
+  }
+
+  @override
+  String get cardioSkipConfirmBody =>
+      'It will be saved as skipped, not as done.';
+
+  @override
+  String get cardioFinishEarlyTitle => 'Finish now?';
+
+  @override
+  String cardioFinishEarlyBody(String actual, String planned) {
+    return '$actual of $planned done. It will be saved as ended early.';
+  }
+
+  @override
+  String get cardioSoundOn => 'Sounds and vibration on';
+
+  @override
+  String get cardioSoundOff => 'Sounds and vibration off';
+
+  @override
+  String get cardioTargetReached => 'Target reached. Keep going or finish.';
+
+  @override
+  String cardioDoneMessage(String name, String time) {
+    return '$name done: $time';
+  }
+
+  @override
+  String cardioSkippedMessage(String name) {
+    return '$name skipped';
+  }
+
+  @override
+  String get cardioBackgroundNote =>
+      'The timer keeps counting if you leave the app or lock the phone. Sounds play only while this screen is open.';
+
+  @override
+  String get cardioTimerSaveError => 'Could not save the timer. Try again.';
+
+  @override
+  String get cardioTimerProgress => 'Timer progress';
+
+  @override
+  String get finishWorkoutConfirmCardioBody =>
+      'Your cardio will be saved with this workout in your history.';
+
+  @override
+  String get completionCardioTitle => 'Cardio';
+
+  @override
+  String get cardioBackToWorkout => 'Back to workout';
 }

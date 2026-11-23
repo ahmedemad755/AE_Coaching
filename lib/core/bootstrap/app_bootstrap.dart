@@ -1,12 +1,22 @@
 import 'package:ae_coaching/features/workout/data/models/exercise_set.dart';
+import 'package:ae_coaching/features/workout/data/models/custom_exercise.dart';
+import 'package:ae_coaching/features/workout/data/models/workout_template_exercise_assignment.dart';
 import 'package:ae_coaching/auth/data/models/body_measurement.dart';
 import 'package:ae_coaching/features/progress_photos/data/models/progress_photo.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_program.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_session.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_template.dart';
 import 'package:ae_coaching/firebase_options.dart';
+import 'package:ae_coaching/core/notifications/fcm_device_service.dart';
+import 'package:ae_coaching/core/notifications/local_notifications.dart';
+import 'package:ae_coaching/core/feedback/app_feedback.dart';
+import 'package:ae_coaching/features/account_deletion/application/account_deletion_lifecycle.dart';
+import 'package:ae_coaching/features/inactivity_reminders/application/inactivity_reminder_scheduler.dart';
+import 'package:ae_coaching/l10n/app_localizations.dart';
 import 'package:ae_coaching/service_locator.dart';
+import 'package:ae_coaching/core/bootstrap/debug_firebase_emulator.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart' show kDebugMode, visibleForTesting;
 import 'package:flutter/widgets.dart';
@@ -37,15 +47,60 @@ class AppBootstrap {
     await _initializeFirebase();
     _initializeDependencies();
     await _initializeStorage();
+    // Before anything uses Firestore: completing an account deletion may
+    // need to clear Firestore's offline cache, which is only possible then.
+    await _completeAccountDeletionIfNeeded();
+    // Channel + legacy cleanup before FCM, so the reminder channel exists
+    // before the first push and no old local reminder can follow it.
+    await sl<LocalNotificationsBootstrap>().initialize();
+    // Reminders scheduled for an account that is no longer signed in here.
+    await sl<InactivityReminderScheduler>().reconcileAtStartup(
+      FirebaseAuth.instance.currentUser?.uid,
+    );
+    // Push registration belongs to the real project: not with the emulator.
+    if (!DebugFirebaseEmulator.enabled) {
+      await sl<FcmDeviceService>().initialize();
+    }
+  }
+
+  static Future<void> _completeAccountDeletionIfNeeded() async {
+    final result = await sl<AccountDeletionLifecycle>().completeAtStartup(
+      // Let Firebase Auth restore the persisted user before deciding.
+      waitForAuthRestore: () => FirebaseAuth.instance
+          .authStateChanges()
+          .first
+          .timeout(const Duration(seconds: 3), onTimeout: () => null),
+    );
+    final code = Hive.box('authBox').get('appLocale', defaultValue: 'ar') as String;
+    final l10n = lookupAppLocalizations(Locale(code == 'en' ? 'en' : 'ar'));
+    final notice = switch (result) {
+      DeletionCompletion.accountDeleted => l10n.accountDeletedNotice,
+      DeletionCompletion.incomplete => l10n.deleteAccountIncompleteNotice,
+      DeletionCompletion.none || DeletionCompletion.localDataRemoved => null,
+    };
+    if (notice == null) return;
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => result == DeletionCompletion.incomplete
+          ? AppFeedback.warning(notice)
+          : AppFeedback.info(notice),
+    );
   }
 
   static Future<void> _initializeFirebase() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+    if (DebugFirebaseEmulator.enabled) {
+      // Debug builds only. No App Check either: the emulator does not use it.
+      await DebugFirebaseEmulator.connect();
+      return;
+    }
 
-    // Phase 5B: the trusted password-reset backend enforces App Check on
-    // both callable functions. In debug builds this uses the Android
+    // App Check attests that requests come from this genuine app. It was
+    // introduced for the (since retired, never deployed) SMS reset
+    // backend, and is kept because Firestore/Auth can enforce it too.
+    // Enforcement is a Firebase Console decision. In debug builds this
+    // uses the Android
     // debug provider (prints a token to the console that must be
     // registered in Firebase Console for local testing — not done as
     // part of this stage). Release builds are wired to Play Integrity in
@@ -79,6 +134,9 @@ class AppBootstrap {
     initRestTimer(); // Rest Timer (Phase 17) — separate from all of the above
     initProgramConsistency(); // Program Consistency (Phase 19) — separate from all of the above
     initHomeWorkoutOverview(); // Home Workout Overview redesign — separate from all of the above
+    initNotificationSettings(); // Server-driven inactivity reminder preferences
+    initInactivityReminders(); // Local inactivity reminders (Spark plan)
+    initAccountDeletion(); // Account deletion requests (Spark plan)
   }
 
   static Future<void> _initializeStorage() async {
@@ -87,7 +145,7 @@ class AppBootstrap {
     await Hive.openBox('authBox');
   }
 
-  /// The 6 guarded `Hive.registerAdapter` calls, extracted on their own
+  /// The guarded `Hive.registerAdapter` calls, extracted on their own
   /// so they can be exercised by a real test against a disposable Hive
   /// instance (no Firebase involved) rather than only proven by reading
   /// source text. Idempotent — safe to call more than once, exactly as
@@ -112,6 +170,12 @@ class AppBootstrap {
     }
     if (!Hive.isAdapterRegistered(5)) {
       Hive.registerAdapter(WorkoutSessionAdapter());
+    }
+    if (!Hive.isAdapterRegistered(6)) {
+      Hive.registerAdapter(CustomExerciseAdapter());
+    }
+    if (!Hive.isAdapterRegistered(7)) {
+      Hive.registerAdapter(WorkoutTemplateExerciseAssignmentAdapter());
     }
   }
 }

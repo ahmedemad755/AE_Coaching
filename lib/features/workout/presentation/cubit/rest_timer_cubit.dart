@@ -4,47 +4,60 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'rest_timer_state.dart';
 
-/// A manual, count-UP rest timer — the user explicitly starts it and
-/// explicitly stops it; it never auto-starts after logging a set and
-/// never auto-ends on its own after some fixed duration. This mirrors
-/// the same manual-stopwatch preference already used for the overall
-/// session elapsed timer (Phase 7): the athlete decides when rest is
-/// over, not a countdown.
-///
-/// Entirely in-memory and screen-scoped (registered as a factory, one
-/// instance per [ActiveWorkoutSessionScreen]) — nothing here is
-/// persisted, and nothing here can block or interfere with logging
-/// sets, finishing, or cancelling the workout; it is purely an
-/// optional side display.
+/// In-memory countdown used only by the active workout screen.
 class RestTimerCubit extends Cubit<RestTimerState> {
   Timer? _ticker;
 
-  RestTimerCubit() : super(const RestTimerState(elapsed: Duration.zero, isRunning: false));
+  RestTimerCubit()
+    : super(
+        const RestTimerState(
+          configuredDuration: Duration(minutes: 1),
+          remaining: Duration(minutes: 1),
+          isRunning: false,
+        ),
+      );
 
-  /// Starts (or resumes) counting up from the current elapsed value.
-  /// Calling it while already running is a harmless no-op — it never
-  /// schedules a second ticker.
-  void start() {
+  /// Updates the next rest duration. Changing it also resets a paused timer.
+  void configure(Duration duration) {
     if (state.isRunning) return;
-    emit(state.copyWith(isRunning: true));
-    _ticker = Timer.periodic(const Duration(seconds: 1), (_) {
-      emit(state.copyWith(elapsed: state.elapsed + const Duration(seconds: 1)));
-    });
+    final safeDuration = duration.isNegative ? Duration.zero : duration;
+    emit(
+      state.copyWith(configuredDuration: safeDuration, remaining: safeDuration),
+    );
   }
 
-  /// Pauses counting, preserving the elapsed value so far — the user
-  /// can [start] again to resume from where it left off.
+  /// Starts a fresh rest interval. Calling this after another set restarts it.
+  void startCountdown() {
+    final duration = state.configuredDuration;
+    if (duration <= Duration.zero) return;
+    _ticker?.cancel();
+    emit(state.copyWith(remaining: duration, isRunning: true));
+    _ticker = Timer.periodic(const Duration(seconds: 1), (_) => _tick());
+  }
+
+  void _tick() {
+    final remaining = state.remaining - const Duration(seconds: 1);
+    if (remaining <= Duration.zero) {
+      _ticker?.cancel();
+      _ticker = null;
+      emit(state.copyWith(remaining: Duration.zero, isRunning: false));
+      return;
+    }
+    emit(state.copyWith(remaining: remaining));
+  }
+
+  /// Pauses the countdown without losing its remaining time.
   void stop() {
     _ticker?.cancel();
     _ticker = null;
     if (state.isRunning) emit(state.copyWith(isRunning: false));
   }
 
-  /// Stops and zeroes the elapsed value.
+  /// Resets the display to the configured duration.
   void reset() {
     _ticker?.cancel();
     _ticker = null;
-    emit(const RestTimerState(elapsed: Duration.zero, isRunning: false));
+    emit(state.copyWith(remaining: state.configuredDuration, isRunning: false));
   }
 
   @override

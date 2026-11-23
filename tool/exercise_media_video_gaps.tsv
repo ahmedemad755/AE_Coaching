@@ -1,0 +1,75 @@
+id	candidate_url	reason
+ex_decline_barbell_bench_press		Directory search surfaced a decline barbell entry, but no readable exact public exercise page was established; incline and single-arm variants were excluded.
+ex_incline_dumbbell_fly	https://musclewiki.com/exercise/dumbbell-incline-chest-flys	Title says incline, but the readable instructions say flat bench and do not establish its incline angle. Actual demonstration variation remains unresolved.
+ex_high_to_low_cable_fly		No exact bilateral high-pulley downward fly page verified; reverse-fly and single-arm incline candidates do not match.
+ex_low_to_high_cable_fly	https://musclewiki.com/exercise/cable-standing-single-arm-incline-chest-fly	Candidate is unilateral; the catalog item is the bilateral low-to-high fly. Do not silently substitute arm-count variation.
+ex_wide_grip_push_up		Standard, incline and weighted/diamond pages surfaced, but no exact wide-hand demonstration page was verified.
+ex_chest_dip	https://musclewiki.com/exercise/parralel-bar-dips	Generic parallel-bar dip page does not establish the forward torso lean required to distinguish this chest-emphasis item.
+ex_single_arm_cable_chest_fly		Readable candidates use a bench or an upward incline arc; no exact standing chest-height single-arm cable fly established.
+ex_wide_grip_pull_up		No readable public page establishing the wide overhand variant; ordinary pull-up and assisted/chin-up pages were not substituted.
+ex_reverse_grip_lat_pulldown	https://musclewiki.com/exercise/narrow-pulldown	Narrow straight-bar page does not establish a supinated grip; not assigned to reverse-grip pulldown.
+ex_neutral_grip_lat_pulldown	https://musclewiki.com/exercise/narrow-pulldown	Candidate explicitly uses a straight bar and does not establish parallel neutral handles.
+ex_single_arm_lat_pulldown		Only bilateral pulldown and unrelated single-arm cable movements were established; no exact unilateral lat-pulldown page verified.
+ex_close_grip_seated_cable_row	https://musclewiki.com/ar-sa/exercise/machine-seated-cable-row	Readable guide establishes a seated cable row but not narrow neutral hand spacing.
+ex_wide_grip_seated_cable_row	https://musclewiki.com/ar-sa/exercise/machine-seated-cable-row	Readable guide does not establish wide overhand hand spacing; not reused from generic row.
+ex_barbell_bent_over_row	https://musclewiki.com/fr-fr/exercise/barbell-bent-over-row	Detailed guide and associated demonstration specify supinated rowing, despite generic opening steps mentioning both grips. Assigned only to the separate underhand item.
+ex_chest_supported_dumbbell_row	https://musclewiki.com/exercise/machine-chest-supported-t-bar-row	Verified candidate uses a machine T-bar rather than dumbbells on an incline bench.
+ex_chest_supported_machine_row	https://musclewiki.com/exercise/machine-chest-supported-t-bar-row	Only a specifically named T-bar machine row was established; exact selectorized/lever chest-supported row variation remains unresolved.
+ex_single_arm_machine_row	https://musclewiki.com/exercise/single-arm-row	Candidate is a Vitruvian movement; no dedicated single-arm row-machine demonstration established.
+ex_seated_barbell_shoulder_press	https://musclewiki.com/exercise/barbell-z-press	Candidate is floor-seated Z press, not the seated-bench barbell shoulder press.
+ex_arnold_press		Ordinary overhead press, Cuban press and neutral-grip pages do not establish the Arnold rotation; no exact readable page verified.
+ex_smith_machine_shoulder_press		Ordinary machine overhead presses and Smith bench presses do not establish a Smith overhead shoulder press.
+ex_machine_lateral_raise		No exact readable dedicated lateral-raise machine page verified; dumbbell/cable versions remain separate.
+ex_cable_front_raise		No exact readable low-cable forward-raise page verified; plate/dumbbell front raises were excluded.
+ex_bent_over_dumbbell_reverse_fly	https://musclewiki.com/exercise/dumbbell-alternating-rear-delt-fly	Candidates add alternating arm action or prone bench support; exact standing bent-over bilateral reverse fly not established.
+ex_cable_rear_delt_fly	https://musclewiki.com/de-de/exercise/cable-high-single-arm-rear-delt-fly	Candidate adds a high unilateral path; exact bilateral rear-delt cable-fly variation was not established.
+ex_face_pull	https://musclewiki.com/exercise/band-face-pull	Candidate is band-resisted, unlike the catalog cable face pull.
+ex_dumbbell_curl	https://musclewiki.com/ar-sa/exercise/dumbbell-curl	Readable page explicitly alternates arms; it is assigned to the separate alternating item, not the bilateral curl.
+ex_cross_body_hammer_curl	https://musclewiki.com/exercise/dumbbell-single-arm-hammer-curl	Candidate establishes neutral curl at the side, not an across-body path.
+ex_incline_dumbbell_curl	https://musclewiki.com/exercise/dumbbell-incline-twisting-curl	Candidate adds alternating wrist rotation; no exact conventional incline supinated curl page established.
+ex_preacher_curl	https://musclewiki.com/ar-sa/exercise/ez-bar-preacher-curl	Exact-name public candidate returned no readable exercise content. Machine and reverse-grip preacher variants were not substituted.
+ex_cable_biceps_curl	https://musclewiki.com/exercise/cable-single-arm-twisting-curl	Candidates add unilateral twisting or high-cable paths; ordinary bilateral low-cable supinated curl not established.
+ex_spider_curl	https://musclewiki.com/exercise/ez-bar-spider-curl	Candidate uses an EZ bar, not the catalog dumbbells.
+ex_reverse_grip_triceps_pushdown	https://musclewiki.com/tr-tr/exercise/cable-bar-reverse-grip-pushdown	Candidate grip wording is inconsistent with reverse-grip naming; no unambiguous supinated-bar demonstration established.
+ex_single_arm_cable_triceps_extension		Verified unilateral overhead candidate is dumbbell-resisted; no exact single-arm cable extension page established.
+ex_dumbbell_overhead_triceps_extension	https://musclewiki.com/ar-sa/exercise/dumbbell-overhead-tricep-extension	Exact-name public candidate returned no readable content; single-arm and rolling/skullover versions were excluded.
+ex_lying_ez_bar_triceps_extension	https://musclewiki.com/exercise/barbell-skullcrusher	Readable skullcrusher guide specifies a generic barbell; exact EZ-bar equipment was not established.
+ex_parallel_bar_triceps_dip	https://musclewiki.com/exercise/parralel-bar-dips	Generic dip page does not unambiguously establish upright triceps-emphasis posture versus the separate chest dip.
+ex_triceps_extension_machine	https://musclewiki.com/exercise/machine-tricep-pushdown	Candidate is a press-down machine, not the seated elbow-extension machine variation.
+ex_leg_press_45	https://musclewiki.com/ru-ru/exercise/machine-leg-press	Public guide establishes machine leg press but not a 45-degree sled angle; horizontal and Smith variants were excluded.
+ex_single_leg_extension	https://musclewiki.com/exercise/machine-leg-extension	Readable candidate is bilateral; no exact unilateral machine knee extension established.
+ex_bulgarian_split_squat	https://musclewiki.com/fr-fr/exercise/bulgarian-split-squat	Readable public candidate is explicitly bodyweight, unlike the catalog dumbbell exercise.
+ex_dumbbell_walking_lunge	https://musclewiki.com/exercise/lunge-walking	Readable walking-lunge page is explicitly bodyweight; dumbbell resistance is not established.
+ex_reverse_lunge	https://musclewiki.com/exercise/reverse-lunge	Slug resolves to Medicine Ball Reverse Lunge, unlike the catalog bodyweight item.
+ex_step_up	https://musclewiki.com/exercise/barbell-step-up	Verified candidates add a barbell or kettlebell; no exact unweighted step-up page established.
+ex_sissy_squat	https://musclewiki.com/exercise/machine-goblet-sissy-squat	Candidates add a machine/goblet load or stability ball; no exact unassisted bodyweight sissy squat established.
+ex_belt_squat	https://musclewiki.com/exercise/belt-squat	Slug resolves to Vitruvian Belt Squat; exact dedicated belt-squat machine not established.
+ex_cyclist_squat		No exact bodyweight narrow-stance heels-elevated cyclist squat page verified; weighted goblet and Smith variants excluded.
+ex_lying_leg_curl	https://musclewiki.com/exercise/machine-seated-leg-curl	Verified page is seated, not prone; no exact public lying machine-curl page established.
+ex_standing_single_leg_curl	https://musclewiki.com/exercise/cable-seated-leg-curl	Candidates change support position or use a cable cuff; exact standing single-leg curl-machine page not established.
+ex_hip_adduction_machine	https://musclewiki.com/exercise/machine-hip-and-glute-adduction	Candidate uses a standing multi-hip pad, not the seated bilateral adduction machine represented by this catalog item.
+ex_cable_hip_abduction	https://musclewiki.com/ar-sa/exercise/cable-standing-hip-abduction	Exact-name public candidate returned no readable content; seated machine and band versions were not substituted.
+ex_sumo_squat	https://musclewiki.com/exercise/dumbbell-sumo-squat	Readable candidate specifies two dumbbells from the ground, unlike the reviewed single low-held dumbbell squat variation.
+ex_frog_pump		No exact readable bodyweight soles-together frog-pump page verified; ordinary glute bridges were not substituted.
+ex_leg_press_calf_raise	https://musclewiki.com/exercise/machine-45-degree-calf-raise	Readable calf-machine page does not establish a leg-press sled and forefoot footplate setup.
+ex_tibialis_raise	https://musclewiki.com/exercise/standing-tibialis-raise	Readable candidate adds a barbell on the back; other candidates add dumbbells/kettlebells, unlike the bodyweight catalog item.
+ex_crunch		No exact readable ordinary bodyweight floor-crunch page established; machine, standing-cable and V-position candidates excluded.
+ex_cable_crunch	https://musclewiki.com/exercise/cable-rope-standing-crunch	Readable candidate is standing, unlike the kneeling cable-crunch illustration/variation.
+ex_reverse_crunch	https://musclewiki.com/exercise/reverse-crunch	Instructions describe seated V-position torso/leg folding rather than a supine posterior-pelvic reverse crunch.
+ex_hanging_leg_raise	https://musclewiki.com/exercise/hanging-knee-raises	Readable candidate bends the knees toward the chest; straight-leg hanging variation not established.
+ex_captain_s_chair_leg_raise		No exact public straight-leg captain-chair demonstration established; knee raises and bar-hanging variants excluded.
+ex_ab_wheel_rollout		Search surfaced TRX/barbell rollout variants; no exact readable ab-wheel page verified.
+ex_cable_woodchopper		No exact readable cable diagonal woodchop page verified; unrelated cable curls/pressdowns excluded.
+ex_flutter_kicks		No exact readable supine alternating straight-leg flutter-kick demonstration page verified.
+ex_sumo_deadlift	https://musclewiki.com/exercise/barbell-sumo-deadlift	Short guide specifies hands inside legs, but the detailed article contradicts it with hands outside the feet. Associated video could not be independently checked; kept unavailable pending resolution.
+ex_trap_bar_deadlift	https://musclewiki.com/exercise/trap-bar-pause-deadlift	Candidate adds a deliberate pause; Romanian and single-leg trap-bar variants also differ from the catalog ordinary floor pull.
+ex_dumbbell_thruster	https://musclewiki.com/fr-fr/exercise/dumbbell-thruster	Exact-name page was unreadable; directory instructions describe a slight dip/drive rather than establish the full squat-to-press thruster.
+ex_barbell_thruster		No exact readable full barbell front-squat-to-overhead-press demonstration established.
+ex_dumbbell_clean_and_press	https://musclewiki.com/tr-tr/exercise/dumbbell-clean-and-press	Exact public candidate could not be read (cache miss); kettlebell and barbell clean-and-press pages were not substituted.
+ex_power_clean		No exact readable barbell floor-start power-clean page established; kettlebell clean-and-jerk variants excluded.
+ex_hang_clean		No exact readable barbell hang-start clean page established; floor-start or other-equipment clean variants excluded.
+ex_push_press	https://musclewiki.com/exercise/dumbbell-single-arm-push-press	Candidate uses a unilateral dumbbell rather than the catalog bilateral barbell.
+ex_dumbbell_snatch	https://musclewiki.com/exercise/barbell-snatch	Readable candidate uses a barbell, unlike the catalog unilateral dumbbell snatch.
+ex_kettlebell_turkish_get_up		No exact readable kettlebell overhead floor-to-standing Turkish-get-up page verified.
+ex_farmer_s_carry	https://musclewiki.com/exercise/kettlebell-farmers-carry	Candidates use kettlebells or plate pinch grips; no exact two-dumbbell carry page established.
+ex_man_maker		No exact readable dumbbell push-up/row-to-clean/thruster man-maker sequence page verified.

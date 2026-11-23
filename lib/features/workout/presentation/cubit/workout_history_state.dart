@@ -19,8 +19,12 @@ class WorkoutHistoryLoading extends WorkoutHistoryState {
 /// different template's sessions.
 class WorkoutHistoryLoaded extends WorkoutHistoryState {
   final List<WorkoutSession> sessions;
+  final Map<String, List<ExerciseSet>> setsBySessionId;
 
-  const WorkoutHistoryLoaded({required this.sessions});
+  const WorkoutHistoryLoaded({
+    required this.sessions,
+    this.setsBySessionId = const {},
+  });
 }
 
 class WorkoutHistoryError extends WorkoutHistoryState {

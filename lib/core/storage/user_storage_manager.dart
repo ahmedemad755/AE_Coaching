@@ -1,4 +1,5 @@
 import 'package:ae_coaching/features/workout/data/models/exercise_set.dart';
+import 'package:ae_coaching/features/workout/data/models/custom_exercise.dart';
 import 'package:ae_coaching/auth/data/models/body_measurement.dart';
 import 'package:ae_coaching/features/progress_photos/data/models/progress_photo.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_program.dart';
@@ -48,8 +49,8 @@ class UserStorageCloseException implements Exception {
 class UserStorageManager {
   UserStorageManager();
 
-  /// Closed, canonical prefix -> model-type mapping for the 6
-  /// supported per-user boxes. `getUserBox` validates BOTH the prefix
+  /// Closed, canonical prefix -> model-type mapping for the supported
+  /// per-user boxes. `getUserBox` validates BOTH the prefix
   /// and the caller's requested `T` against this map before touching
   /// Hive at all — an unknown prefix or a mismatched `T` is rejected
   /// deterministically here, not left to a later cast or to Hive's own
@@ -61,6 +62,12 @@ class UserStorageManager {
     'workout_sessions': WorkoutSession,
     'measurements': BodyMeasurement,
     'progress_photos': ProgressPhoto,
+    'custom_exercises': CustomExercise,
+    // Cloud sync state (Stage 2): conflict copies kept until the user deletes
+    // them, deletions waiting for the server, the migration marker.
+    'sync_conflicts': Map,
+    'sync_tombstones': Map,
+    'sync_state': Map,
   };
 
   final Map<String, Box<dynamic>> _ownedBoxes = {};
@@ -154,7 +161,7 @@ class UserStorageManager {
     return box;
   }
 
-  /// Closes every box owned for [uid] (across all 6 supported
+  /// Closes every box owned for [uid] (across all 7 supported
   /// prefixes) — never `authBox`, never any box outside this manager's
   /// own [supportedBoxes] list, and never a disk delete.
   ///
@@ -234,6 +241,17 @@ class UserStorageManager {
 
     if (failures.isNotEmpty) {
       throw UserStorageCloseException(uid: uid, failures: failures);
+    }
+  }
+
+  /// Permanently removes every per-user box of [uid] from disk (account
+  /// deletion). Closes them first through [closeForUser], then deletes
+  /// exactly the `<prefix>_<uid>` boxes; other accounts' boxes on the same
+  /// device are never touched. Safe to repeat (missing boxes are a no-op).
+  Future<void> deleteForUser(String uid) async {
+    await closeForUser(uid);
+    for (final prefix in supportedBoxes.keys) {
+      await Hive.deleteBoxFromDisk(boxNameFor(prefix, uid));
     }
   }
 }

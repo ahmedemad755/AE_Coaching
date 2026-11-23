@@ -1,8 +1,13 @@
 import 'package:ae_coaching/core/storage/user_storage_manager.dart';
 import 'package:ae_coaching/features/workout/data/datasources/workout_session_remote_data_source.dart';
 import 'package:ae_coaching/features/workout/data/models/workout_session.dart';
+import 'package:ae_coaching/features/workout/data/models/workout_template_exercise_assignment.dart';
+import 'package:ae_coaching/features/workout/data/repositories/exercise_name_normalizer.dart';
 import 'package:ae_coaching/features/workout/data/repositories/workout_session_exceptions.dart';
 import 'package:ae_coaching/features/workout/data/workout_id_generator.dart';
+import 'package:ae_coaching/features/workout/domain/activity_plans.dart';
+import 'package:ae_coaching/features/workout/domain/cardio_run.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -20,6 +25,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 class WorkoutSessionRepository {
   final WorkoutSessionRemoteDataSource remoteDataSource;
   final UserBox<WorkoutSession> _userBox;
+  Future<void>? _exerciseLayoutTail;
 
   @visibleForTesting
   final String? Function()? uidOverride;
@@ -28,14 +34,33 @@ class WorkoutSessionRepository {
     WorkoutSessionRemoteDataSource? remoteDataSource,
     required UserStorageManager storageManager,
     @visibleForTesting this.uidOverride,
-  })  : remoteDataSource = remoteDataSource ?? WorkoutSessionRemoteDataSourceImpl(),
-        _userBox = UserBox<WorkoutSession>(
-          manager: storageManager,
-          prefix: 'workout_sessions',
-          uidOverride: uidOverride,
-        );
+  }) : remoteDataSource =
+           remoteDataSource ?? WorkoutSessionRemoteDataSourceImpl(),
+       _userBox = UserBox<WorkoutSession>(
+         manager: storageManager,
+         prefix: 'workout_sessions',
+         uidOverride: uidOverride,
+       );
 
   Future<Box<WorkoutSession>> getUserBox() => _userBox.getUserBox();
+
+  String? get currentUserId => uidOverride != null
+      ? uidOverride!()
+      : FirebaseAuth.instance.currentUser?.uid;
+
+  /// Share the existing layout queue with coordinated session/day edits.
+  Future<T> coordinateExerciseEdit<T>(Future<T> Function() write) =>
+      _serializeExerciseLayoutWrite(write);
+
+  Future<T> _serializeExerciseLayoutWrite<T>(Future<T> Function() write) {
+    final result =
+        _exerciseLayoutTail?.then((_) => write()) ?? Future<T>.sync(write);
+    _exerciseLayoutTail = result.then<void>(
+      (_) {},
+      onError: (Object _, StackTrace __) {},
+    );
+    return result;
+  }
 
   // ==================== Start / Complete / Cancel ====================
 
@@ -52,6 +77,8 @@ class WorkoutSessionRepository {
     required String programId,
     required String workoutTemplateId,
     required String workoutNameSnapshot,
+    List<WorkoutTemplateExerciseAssignment> templateExerciseAssignments =
+        const [],
   }) async {
     final box = await getUserBox();
 
@@ -62,7 +89,11 @@ class WorkoutSessionRepository {
 
     final now = DateTime.now();
     final id = WorkoutIdGenerator.generate('session');
-    final previous = getPreviousCompletedSession(box, programId, workoutTemplateId);
+    final previous = getPreviousCompletedSession(
+      box,
+      programId,
+      workoutTemplateId,
+    );
 
     final session = WorkoutSession(
       id: id,
@@ -75,6 +106,9 @@ class WorkoutSessionRepository {
       status: WorkoutSessionStatus.inProgress.value,
       totalVolume: 0,
       previousSessionId: previous?.id,
+      templateExerciseAssignmentsSnapshot: List.unmodifiable(
+        templateExerciseAssignments,
+      ),
     );
 
     await box.put(id, session);
@@ -98,6 +132,14 @@ class WorkoutSessionRepository {
   Future<WorkoutSession> completeWorkoutSession({
     required String sessionId,
     required double totalVolume,
+  }) => coordinateExerciseEdit(
+    () =>
+        _completeWorkoutSession(sessionId: sessionId, totalVolume: totalVolume),
+  );
+
+  Future<WorkoutSession> _completeWorkoutSession({
+    required String sessionId,
+    required double totalVolume,
   }) async {
     final box = await getUserBox();
     final target = box.get(sessionId);
@@ -109,11 +151,15 @@ class WorkoutSessionRepository {
       throw InvalidWorkoutSessionStateException(
         sessionId: sessionId,
         actualStatus: target.statusValue,
-        reason: 'Only an inProgress session can be completed '
+        reason:
+            'Only an inProgress session can be completed '
             '(current status: ${target.status}).',
       );
     }
 
+    if (target.pendingProgramExerciseEdit != null) {
+      throw StateError('Resolve the pending program edit before finishing.');
+    }
     final previous = getPreviousCompletedSession(
       box,
       target.programId,
@@ -121,22 +167,50 @@ class WorkoutSessionRepository {
       excludeSessionId: sessionId,
     );
 
+    final now = DateTime.now();
     final completed = target.copyWith(
       status: WorkoutSessionStatus.completed.value,
-      completedAt: DateTime.now(),
+      completedAt: now,
       totalVolume: totalVolume,
       previousSessionId: previous?.id,
+      activityRuns: _closeOpenRuns(target, now.millisecondsSinceEpoch),
     );
     await box.put(sessionId, completed);
+    // Inactivity reminders are server-driven (Cloud Functions watch
+    // session/set creation); completing a workout schedules nothing here.
     await _syncSafely(sessionId, completed);
     return completed;
+  }
+
+  /// A cardio timer still running or paused when the workout is finished is
+  /// recorded with the time it had: completed only if its plan was reached.
+  static Map<String, Map<String, Object?>> _closeOpenRuns(
+    WorkoutSession session,
+    int nowMs,
+  ) {
+    if (session.activityRuns.isEmpty) return session.activityRuns;
+    final plans = <String, CardioPlan?>{
+      for (final a in session.templateExerciseAssignmentsSnapshot)
+        a.assignmentId: a.cardio,
+    };
+    return {
+      for (final entry in session.activityRuns.entries)
+        entry.key: CardioRun.fromMap(entry.value).status.isOpen
+            ? CardioRun.fromMap(
+                entry.value,
+              ).close(nowMs, plans[entry.key]).toMap()
+            : entry.value,
+    };
   }
 
   /// Cancels an inProgress session. Throws
   /// [InvalidWorkoutSessionStateException] if it isn't currently
   /// inProgress. The record is preserved — never deleted — and is
   /// permanently excluded from previous-completed-session lookups.
-  Future<WorkoutSession> cancelWorkoutSession(String sessionId) async {
+  Future<WorkoutSession> cancelWorkoutSession(String sessionId) =>
+      coordinateExerciseEdit(() => _cancelWorkoutSession(sessionId));
+
+  Future<WorkoutSession> _cancelWorkoutSession(String sessionId) async {
     final box = await getUserBox();
     final target = box.get(sessionId);
 
@@ -147,12 +221,18 @@ class WorkoutSessionRepository {
       throw InvalidWorkoutSessionStateException(
         sessionId: sessionId,
         actualStatus: target.statusValue,
-        reason: 'Only an inProgress session can be cancelled '
+        reason:
+            'Only an inProgress session can be cancelled '
             '(current status: ${target.status}).',
       );
     }
 
-    final cancelled = target.copyWith(status: WorkoutSessionStatus.cancelled.value);
+    if (target.pendingProgramExerciseEdit != null) {
+      throw StateError('Resolve the pending program edit before cancelling.');
+    }
+    final cancelled = target.copyWith(
+      status: WorkoutSessionStatus.cancelled.value,
+    );
     await box.put(sessionId, cancelled);
     await _syncSafely(sessionId, cancelled);
     return cancelled;
@@ -184,7 +264,17 @@ class WorkoutSessionRepository {
   /// string. Built via the direct constructor (not `copyWith`, which
   /// can't null out a field — same reasoning as
   /// `WorkoutProgramRepository.setActiveProgram`).
-  Future<WorkoutSession> updateSessionNote({required String sessionId, required String? note}) async {
+  Future<WorkoutSession> updateSessionNote({
+    required String sessionId,
+    required String? note,
+  }) => coordinateExerciseEdit(
+    () => _updateSessionNote(sessionId: sessionId, note: note),
+  );
+
+  Future<WorkoutSession> _updateSessionNote({
+    required String sessionId,
+    required String? note,
+  }) async {
     final box = await getUserBox();
     final target = box.get(sessionId);
     if (target == null) {
@@ -192,7 +282,9 @@ class WorkoutSessionRepository {
     }
 
     final trimmed = note?.trim();
-    final normalizedNote = (trimmed == null || trimmed.isEmpty) ? null : trimmed;
+    final normalizedNote = (trimmed == null || trimmed.isEmpty)
+        ? null
+        : trimmed;
 
     final updated = WorkoutSession(
       id: target.id,
@@ -206,10 +298,123 @@ class WorkoutSessionRepository {
       totalVolume: target.totalVolume,
       previousSessionId: target.previousSessionId,
       workoutNote: normalizedNote,
+      templateExerciseAssignmentsSnapshot:
+          target.templateExerciseAssignmentsSnapshot,
+      sessionExerciseNames: target.sessionExerciseNames,
+      hiddenExerciseNames: target.hiddenExerciseNames,
+      exerciseOrder: target.exerciseOrder,
+      pendingProgramExerciseEdit: target.pendingProgramExerciseEdit,
+      activityRuns: target.activityRuns,
     );
     await box.put(sessionId, updated);
     await _syncSafely(sessionId, updated);
     return updated;
+  }
+
+  /// Saves where a cardio activity of an active session is (Stage 6). Local
+  /// only, like the session's layout fields: no cloud write, so starting or
+  /// pausing a timer works offline and costs nothing.
+  Future<WorkoutSession> saveActivityRun({
+    required String sessionId,
+    required String assignmentId,
+    required CardioRun run,
+  }) => coordinateExerciseEdit(() async {
+    final box = await getUserBox();
+    final target = box.get(sessionId);
+    if (target == null || !target.isInProgress) {
+      throw Exception('Active workout session not found.');
+    }
+    final updated = target.copyWith(
+      activityRuns: {...target.activityRuns, assignmentId: run.toMap()},
+    );
+    await box.put(sessionId, updated);
+    return updated;
+  });
+
+  Future<WorkoutSession> addSessionExerciseName({
+    required String sessionId,
+    required String exerciseName,
+  }) {
+    return _serializeExerciseLayoutWrite(() async {
+      if (kDebugMode) {
+        debugPrint(
+          '[WorkoutSessionRepository] Add exercise to session=$sessionId',
+        );
+      }
+      final name = exerciseName.trim();
+      if (name.isEmpty) throw ArgumentError.value(exerciseName, 'exerciseName');
+      final box = await getUserBox();
+      final target = box.get(sessionId);
+      if (target == null || !target.isInProgress) {
+        throw Exception('Active workout session not found.');
+      }
+      final normalized = normalizeExerciseName(name);
+      final alreadyExists = target.sessionExerciseNames.any(
+        (existing) => normalizeExerciseName(existing) == normalized,
+      );
+      final hiddenExerciseNames = target.hiddenExerciseNames
+          .where((existing) => normalizeExerciseName(existing) != normalized)
+          .toList();
+      if (alreadyExists &&
+          hiddenExerciseNames.length == target.hiddenExerciseNames.length) {
+        if (kDebugMode) {
+          debugPrint(
+            '[WorkoutSessionRepository] Session=$sessionId already contains '
+            'normalized exercise; no duplicate written',
+          );
+        }
+        return target;
+      }
+      final updated = target.copyWith(
+        sessionExerciseNames: alreadyExists
+            ? target.sessionExerciseNames
+            : [...target.sessionExerciseNames, name],
+        hiddenExerciseNames: hiddenExerciseNames,
+        exerciseOrder:
+            target.exerciseOrder.isEmpty ||
+                target.exerciseOrder.any(
+                  (existing) => normalizeExerciseName(existing) == normalized,
+                )
+            ? target.exerciseOrder
+            : [...target.exerciseOrder, name],
+      );
+      await box.put(sessionId, updated);
+      if (kDebugMode) {
+        debugPrint(
+          '[WorkoutSessionRepository] Saved session=$sessionId, '
+          'session-only exercises=${updated.sessionExerciseNames.length}',
+        );
+      }
+      return updated;
+    });
+  }
+
+  Future<WorkoutSession> updateActiveExerciseLayout({
+    required String sessionId,
+    required List<String> sessionExerciseNames,
+    required List<String> hiddenExerciseNames,
+    required List<String> exerciseOrder,
+  }) {
+    return _serializeExerciseLayoutWrite(() async {
+      final box = await getUserBox();
+      final target = box.get(sessionId);
+      if (target == null || !target.isInProgress) {
+        throw Exception('Active workout session not found.');
+      }
+      final updated = target.copyWith(
+        sessionExerciseNames: sessionExerciseNames,
+        hiddenExerciseNames: hiddenExerciseNames,
+        exerciseOrder: exerciseOrder,
+      );
+      await box.put(sessionId, updated);
+      if (kDebugMode) {
+        debugPrint(
+          '[WorkoutSessionRepository] Saved exercise layout: '
+          'session=$sessionId, visible=${exerciseOrder.length}',
+        );
+      }
+      return updated;
+    });
   }
 
   // ==================== Retrieval ====================
@@ -230,15 +435,25 @@ class WorkoutSessionRepository {
 
   /// Every session for [workoutTemplateId] regardless of status,
   /// newest first by [WorkoutSession.date].
-  List<WorkoutSession> getSessionsForTemplate(Box<WorkoutSession> box, String workoutTemplateId) {
-    final matches = box.values.where((s) => s.workoutTemplateId == workoutTemplateId).toList();
+  List<WorkoutSession> getSessionsForTemplate(
+    Box<WorkoutSession> box,
+    String workoutTemplateId,
+  ) {
+    final matches = box.values
+        .where((s) => s.workoutTemplateId == workoutTemplateId)
+        .toList();
     matches.sort((a, b) => b.date.compareTo(a.date));
     return matches;
   }
 
   /// Only completed sessions for [workoutTemplateId], newest first.
-  List<WorkoutSession> getCompletedSessionsForTemplate(Box<WorkoutSession> box, String workoutTemplateId) {
-    final matches = box.values.where((s) => s.workoutTemplateId == workoutTemplateId && s.isCompleted).toList();
+  List<WorkoutSession> getCompletedSessionsForTemplate(
+    Box<WorkoutSession> box,
+    String workoutTemplateId,
+  ) {
+    final matches = box.values
+        .where((s) => s.workoutTemplateId == workoutTemplateId && s.isCompleted)
+        .toList();
     matches.sort((a, b) => b.date.compareTo(a.date));
     return matches;
   }
@@ -248,8 +463,13 @@ class WorkoutSessionRepository {
   /// this is deliberately NOT scoped to one day. Used by Phase 19's
   /// program-wide consistency analytics, where "am I showing up" is a
   /// whole-program question, not a per-day one.
-  List<WorkoutSession> getCompletedSessionsForProgram(Box<WorkoutSession> box, String programId) {
-    final matches = box.values.where((s) => s.programId == programId && s.isCompleted).toList();
+  List<WorkoutSession> getCompletedSessionsForProgram(
+    Box<WorkoutSession> box,
+    String programId,
+  ) {
+    final matches = box.values
+        .where((s) => s.programId == programId && s.isCompleted)
+        .toList();
     matches.sort((a, b) => b.date.compareTo(a.date));
     return matches;
   }
@@ -261,7 +481,9 @@ class WorkoutSessionRepository {
   /// caller's job (see `HomeWorkoutOverviewService`).
   List<WorkoutSession> getAllCompletedSessions(Box<WorkoutSession> box) {
     final matches = box.values.where((s) => s.isCompleted).toList();
-    matches.sort((a, b) => (b.completedAt ?? b.date).compareTo(a.completedAt ?? a.date));
+    matches.sort(
+      (a, b) => (b.completedAt ?? b.date).compareTo(a.completedAt ?? a.date),
+    );
     return matches;
   }
 
@@ -281,16 +503,20 @@ class WorkoutSessionRepository {
     String? excludeSessionId,
   }) {
     final candidates = box.values
-        .where((s) =>
-            s.programId == programId &&
-            s.workoutTemplateId == workoutTemplateId &&
-            s.isCompleted &&
-            s.id != excludeSessionId)
+        .where(
+          (s) =>
+              s.programId == programId &&
+              s.workoutTemplateId == workoutTemplateId &&
+              s.isCompleted &&
+              s.id != excludeSessionId,
+        )
         .toList();
 
     if (candidates.isEmpty) return null;
 
-    candidates.sort((a, b) => (b.completedAt ?? b.date).compareTo(a.completedAt ?? a.date));
+    candidates.sort(
+      (a, b) => (b.completedAt ?? b.date).compareTo(a.completedAt ?? a.date),
+    );
     return candidates.first;
   }
 
@@ -321,7 +547,46 @@ class WorkoutSessionRepository {
       final remoteIds = remoteDocs.map((doc) => doc.id).toSet();
 
       for (final doc in remoteDocs) {
-        final session = WorkoutSession.fromJson(doc.data());
+        var session = WorkoutSession.fromJson(doc.data());
+        final localSession = box.get(doc.id);
+        if (localSession?.pendingProgramExerciseEdit != null) {
+          session = session.copyWith(
+            pendingProgramExerciseEdit:
+                localSession!.pendingProgramExerciseEdit,
+          );
+        }
+        if (session.templateExerciseAssignmentsSnapshot.isEmpty &&
+            localSession != null &&
+            localSession.templateExerciseAssignmentsSnapshot.isNotEmpty) {
+          session = session.copyWith(
+            templateExerciseAssignmentsSnapshot:
+                localSession.templateExerciseAssignmentsSnapshot,
+          );
+        }
+        if (session.sessionExerciseNames.isEmpty &&
+            localSession != null &&
+            localSession.sessionExerciseNames.isNotEmpty) {
+          session = session.copyWith(
+            sessionExerciseNames: localSession.sessionExerciseNames,
+          );
+        }
+        if (session.hiddenExerciseNames.isEmpty &&
+            localSession != null &&
+            localSession.hiddenExerciseNames.isNotEmpty) {
+          session = session.copyWith(
+            hiddenExerciseNames: localSession.hiddenExerciseNames,
+          );
+        }
+        if (session.exerciseOrder.isEmpty &&
+            localSession != null &&
+            localSession.exerciseOrder.isNotEmpty) {
+          session = session.copyWith(exerciseOrder: localSession.exerciseOrder);
+        }
+        if (session.activityRuns.isEmpty &&
+            localSession != null &&
+            localSession.activityRuns.isNotEmpty) {
+          session = session.copyWith(activityRuns: localSession.activityRuns);
+        }
         await box.put(doc.id, session);
       }
 
@@ -342,7 +607,9 @@ class WorkoutSessionRepository {
         );
       }
     } catch (error, stackTrace) {
-      debugPrint('Failed to fetch and sync workout sessions from cloud: $error\n$stackTrace');
+      debugPrint(
+        'Failed to fetch and sync workout sessions from cloud: $error\n$stackTrace',
+      );
       rethrow;
     }
   }

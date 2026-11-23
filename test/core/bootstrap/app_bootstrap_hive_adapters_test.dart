@@ -38,10 +38,10 @@ void main() {
     }
   });
 
-  test('registers all 6 typeIds (0–5) with no exception', () {
+  test('registers all 8 typeIds (0–7) with no exception', () {
     expect(AppBootstrap.registerHiveAdapters, returnsNormally);
 
-    for (final typeId in [0, 1, 2, 3, 4, 5]) {
+    for (final typeId in [0, 1, 2, 3, 4, 5, 6, 7]) {
       expect(
         Hive.isAdapterRegistered(typeId),
         isTrue,
@@ -57,7 +57,7 @@ void main() {
 
     expect(AppBootstrap.registerHiveAdapters, returnsNormally);
 
-    for (final typeId in [0, 1, 2, 3, 4, 5]) {
+    for (final typeId in [0, 1, 2, 3, 4, 5, 6, 7]) {
       expect(
         Hive.isAdapterRegistered(typeId),
         isTrue,

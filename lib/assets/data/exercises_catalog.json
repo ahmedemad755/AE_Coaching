@@ -1,0 +1,1265 @@
+{
+  "schema_version": 1,
+  "exercises": [
+    {
+      "id": "ex_barbell_bench_press",
+      "name_en": "Barbell Bench Press",
+      "name_ar": "بنش بار مستوي",
+      "muscle_group": "chest",
+      "equipment": "barbell"
+    },
+    {
+      "id": "ex_incline_barbell_bench_press",
+      "name_en": "Incline Barbell Bench Press",
+      "name_ar": "بنش بار مائل",
+      "muscle_group": "chest",
+      "equipment": "barbell"
+    },
+    {
+      "id": "ex_decline_barbell_bench_press",
+      "name_en": "Decline Barbell Bench Press",
+      "name_ar": "بنش بار مقلوب",
+      "muscle_group": "chest",
+      "equipment": "barbell"
+    },
+    {
+      "id": "ex_dumbbell_bench_press",
+      "name_en": "Dumbbell Bench Press",
+      "name_ar": "بنش دمبل مستوي",
+      "muscle_group": "chest",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_incline_dumbbell_press",
+      "name_en": "Incline Dumbbell Press",
+      "name_ar": "بنش دمبل مائل",
+      "muscle_group": "chest",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_decline_dumbbell_press",
+      "name_en": "Decline Dumbbell Press",
+      "name_ar": "بنش دمبل مقلوب",
+      "muscle_group": "chest",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_dumbbell_fly",
+      "name_en": "Dumbbell Fly",
+      "name_ar": "تفتيح دمبل مستوي",
+      "muscle_group": "chest",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_incline_dumbbell_fly",
+      "name_en": "Incline Dumbbell Fly",
+      "name_ar": "تفتيح دمبل مائل",
+      "muscle_group": "chest",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_machine_chest_press",
+      "name_en": "Machine Chest Press",
+      "name_ar": "ضغط صدر جهاز",
+      "muscle_group": "chest",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_incline_chest_press_machine",
+      "name_en": "Incline Chest Press Machine",
+      "name_ar": "ضغط صدر مائل جهاز",
+      "muscle_group": "chest",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_decline_chest_press_machine",
+      "name_en": "Decline Chest Press Machine",
+      "name_ar": "ضغط صدر مقلوب جهاز",
+      "muscle_group": "chest",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_pec_deck_fly",
+      "name_en": "Pec Deck Fly",
+      "name_ar": "تفتيح فراشة جهاز",
+      "muscle_group": "chest",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_cable_chest_fly",
+      "name_en": "Cable Chest Fly",
+      "name_ar": "تفتيح صدر كابل",
+      "muscle_group": "chest",
+      "equipment": "cable"
+    },
+    {
+      "id": "ex_high_to_low_cable_fly",
+      "name_en": "High-to-Low Cable Fly",
+      "name_ar": "تفتيح كابل من أعلى لأسفل",
+      "muscle_group": "chest",
+      "equipment": "cable"
+    },
+    {
+      "id": "ex_low_to_high_cable_fly",
+      "name_en": "Low-to-High Cable Fly",
+      "name_ar": "تفتيح كابل من أسفل لأعلى",
+      "muscle_group": "chest",
+      "equipment": "cable"
+    },
+    {
+      "id": "ex_smith_machine_bench_press",
+      "name_en": "Smith Machine Bench Press",
+      "name_ar": "بنش مستوي سميث",
+      "muscle_group": "chest",
+      "equipment": "smith_machine"
+    },
+    {
+      "id": "ex_smith_machine_incline_press",
+      "name_en": "Smith Machine Incline Press",
+      "name_ar": "بنش مائل سميث",
+      "muscle_group": "chest",
+      "equipment": "smith_machine"
+    },
+    {
+      "id": "ex_push_up",
+      "name_en": "Push-Up",
+      "name_ar": "ضغط أرضي",
+      "muscle_group": "chest",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_wide_grip_push_up",
+      "name_en": "Wide-Grip Push-Up",
+      "name_ar": "ضغط أرضي واسع",
+      "muscle_group": "chest",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_diamond_push_up",
+      "name_en": "Diamond Push-Up",
+      "name_ar": "ضغط دايموند",
+      "muscle_group": "chest",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_chest_dip",
+      "name_en": "Chest Dip",
+      "name_ar": "متوازي صدر",
+      "muscle_group": "chest",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_single_arm_cable_chest_fly",
+      "name_en": "Single-Arm Cable Chest Fly",
+      "name_ar": "تفتيح صدر كابل ذراع واحدة",
+      "muscle_group": "chest",
+      "equipment": "cable"
+    },
+    {
+      "id": "ex_pull_up",
+      "name_en": "Pull-Up",
+      "name_ar": "عقلة قبضة عادية",
+      "muscle_group": "back",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_chin_up",
+      "name_en": "Chin-Up",
+      "name_ar": "عقلة قبضة معكوسة",
+      "muscle_group": "back",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_wide_grip_pull_up",
+      "name_en": "Wide-Grip Pull-Up",
+      "name_ar": "عقلة قبضة واسعة",
+      "muscle_group": "back",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_assisted_pull_up",
+      "name_en": "Assisted Pull-Up",
+      "name_ar": "عقلة بمساعدة جهاز",
+      "muscle_group": "back",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_lat_pulldown",
+      "name_en": "Lat Pulldown",
+      "name_ar": "سحب أمامي واسع",
+      "muscle_group": "back",
+      "equipment": "cable"
+    },
+    {
+      "id": "ex_close_grip_lat_pulldown",
+      "name_en": "Close-Grip Lat Pulldown",
+      "name_ar": "سحب أمامي ضيق",
+      "muscle_group": "back",
+      "equipment": "cable"
+    },
+    {
+      "id": "ex_reverse_grip_lat_pulldown",
+      "name_en": "Reverse-Grip Lat Pulldown",
+      "name_ar": "سحب أمامي قبضة معكوسة",
+      "muscle_group": "back",
+      "equipment": "cable"
+    },
+    {
+      "id": "ex_neutral_grip_lat_pulldown",
+      "name_en": "Neutral-Grip Lat Pulldown",
+      "name_ar": "سحب أمامي قبضة محايدة",
+      "muscle_group": "back",
+      "equipment": "cable"
+    },
+    {
+      "id": "ex_single_arm_lat_pulldown",
+      "name_en": "Single-Arm Lat Pulldown",
+      "name_ar": "سحب أمامي ذراع واحدة",
+      "muscle_group": "back",
+      "equipment": "cable"
+    },
+    {
+      "id": "ex_seated_cable_row",
+      "name_en": "Seated Cable Row",
+      "name_ar": "تجديف كابل جالس",
+      "muscle_group": "back",
+      "equipment": "cable"
+    },
+    {
+      "id": "ex_close_grip_seated_cable_row",
+      "name_en": "Close-Grip Seated Cable Row",
+      "name_ar": "تجديف كابل ضيق",
+      "muscle_group": "back",
+      "equipment": "cable"
+    },
+    {
+      "id": "ex_wide_grip_seated_cable_row",
+      "name_en": "Wide-Grip Seated Cable Row",
+      "name_ar": "تجديف كابل واسع",
+      "muscle_group": "back",
+      "equipment": "cable"
+    },
+    {
+      "id": "ex_barbell_bent_over_row",
+      "name_en": "Barbell Bent-Over Row",
+      "name_ar": "تجديف بار منحني",
+      "muscle_group": "back",
+      "equipment": "barbell"
+    },
+    {
+      "id": "ex_underhand_barbell_row",
+      "name_en": "Underhand Barbell Row",
+      "name_ar": "تجديف بار قبضة معكوسة",
+      "muscle_group": "back",
+      "equipment": "barbell"
+    },
+    {
+      "id": "ex_pendlay_row",
+      "name_en": "Pendlay Row",
+      "name_ar": "تجديف بندلاي",
+      "muscle_group": "back",
+      "equipment": "barbell"
+    },
+    {
+      "id": "ex_one_arm_dumbbell_row",
+      "name_en": "One-Arm Dumbbell Row",
+      "name_ar": "تجديف دمبل ذراع واحدة",
+      "muscle_group": "back",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_chest_supported_dumbbell_row",
+      "name_en": "Chest-Supported Dumbbell Row",
+      "name_ar": "تجديف دمبل على بنش مائل",
+      "muscle_group": "back",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_t_bar_row",
+      "name_en": "T-Bar Row",
+      "name_ar": "تجديف تي بار",
+      "muscle_group": "back",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_chest_supported_machine_row",
+      "name_en": "Chest-Supported Machine Row",
+      "name_ar": "تجديف ظهر جهاز بدعم الصدر",
+      "muscle_group": "back",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_single_arm_machine_row",
+      "name_en": "Single-Arm Machine Row",
+      "name_ar": "تجديف جهاز ذراع واحدة",
+      "muscle_group": "back",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_straight_arm_cable_pulldown",
+      "name_en": "Straight-Arm Cable Pulldown",
+      "name_ar": "سحب كابل ذراع مستقيمة",
+      "muscle_group": "back",
+      "equipment": "cable"
+    },
+    {
+      "id": "ex_dumbbell_pullover",
+      "name_en": "Dumbbell Pullover",
+      "name_ar": "بول أوفر دمبل",
+      "muscle_group": "back",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_machine_pullover",
+      "name_en": "Machine Pullover",
+      "name_ar": "بول أوفر جهاز",
+      "muscle_group": "back",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_inverted_row",
+      "name_en": "Inverted Row",
+      "name_ar": "تجديف بوزن الجسم",
+      "muscle_group": "back",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_back_extension",
+      "name_en": "Back Extension",
+      "name_ar": "تمديد أسفل الظهر",
+      "muscle_group": "back",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_cable_pullover",
+      "name_en": "Cable Pullover",
+      "name_ar": "بول أوفر كابل",
+      "muscle_group": "back",
+      "equipment": "cable"
+    },
+    {
+      "id": "ex_barbell_overhead_press",
+      "name_en": "Barbell Overhead Press",
+      "name_ar": "ضغط كتف بار واقف",
+      "muscle_group": "shoulders",
+      "equipment": "barbell"
+    },
+    {
+      "id": "ex_seated_barbell_shoulder_press",
+      "name_en": "Seated Barbell Shoulder Press",
+      "name_ar": "ضغط كتف بار جالس",
+      "muscle_group": "shoulders",
+      "equipment": "barbell"
+    },
+    {
+      "id": "ex_dumbbell_shoulder_press",
+      "name_en": "Dumbbell Shoulder Press",
+      "name_ar": "ضغط كتف دمبل",
+      "muscle_group": "shoulders",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_arnold_press",
+      "name_en": "Arnold Press",
+      "name_ar": "ضغط أرنولد",
+      "muscle_group": "shoulders",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_machine_shoulder_press",
+      "name_en": "Machine Shoulder Press",
+      "name_ar": "ضغط كتف جهاز",
+      "muscle_group": "shoulders",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_smith_machine_shoulder_press",
+      "name_en": "Smith Machine Shoulder Press",
+      "name_ar": "ضغط كتف سميث",
+      "muscle_group": "shoulders",
+      "equipment": "smith_machine"
+    },
+    {
+      "id": "ex_dumbbell_lateral_raise",
+      "name_en": "Dumbbell Lateral Raise",
+      "name_ar": "رفرفة جانبي دمبل",
+      "muscle_group": "shoulders",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_seated_dumbbell_lateral_raise",
+      "name_en": "Seated Dumbbell Lateral Raise",
+      "name_ar": "رفرفة جانبي دمبل جالس",
+      "muscle_group": "shoulders",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_cable_lateral_raise",
+      "name_en": "Cable Lateral Raise",
+      "name_ar": "رفرفة جانبي كابل",
+      "muscle_group": "shoulders",
+      "equipment": "cable"
+    },
+    {
+      "id": "ex_machine_lateral_raise",
+      "name_en": "Machine Lateral Raise",
+      "name_ar": "رفرفة جانبي جهاز",
+      "muscle_group": "shoulders",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_dumbbell_front_raise",
+      "name_en": "Dumbbell Front Raise",
+      "name_ar": "رفرفة أمامي دمبل",
+      "muscle_group": "shoulders",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_cable_front_raise",
+      "name_en": "Cable Front Raise",
+      "name_ar": "رفرفة أمامي كابل",
+      "muscle_group": "shoulders",
+      "equipment": "cable"
+    },
+    {
+      "id": "ex_plate_front_raise",
+      "name_en": "Plate Front Raise",
+      "name_ar": "رفرفة أمامي بطارة",
+      "muscle_group": "shoulders",
+      "equipment": "plate"
+    },
+    {
+      "id": "ex_reverse_pec_deck",
+      "name_en": "Reverse Pec Deck",
+      "name_ar": "رفرفة خلفي جهاز",
+      "muscle_group": "shoulders",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_bent_over_dumbbell_reverse_fly",
+      "name_en": "Bent-Over Dumbbell Reverse Fly",
+      "name_ar": "رفرفة خلفي دمبل",
+      "muscle_group": "shoulders",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_cable_rear_delt_fly",
+      "name_en": "Cable Rear Delt Fly",
+      "name_ar": "رفرفة خلفي كابل",
+      "muscle_group": "shoulders",
+      "equipment": "cable"
+    },
+    {
+      "id": "ex_face_pull",
+      "name_en": "Face Pull",
+      "name_ar": "فيس بول كابل",
+      "muscle_group": "shoulders",
+      "equipment": "cable"
+    },
+    {
+      "id": "ex_barbell_upright_row",
+      "name_en": "Barbell Upright Row",
+      "name_ar": "سحب بار للذقن",
+      "muscle_group": "shoulders",
+      "equipment": "barbell"
+    },
+    {
+      "id": "ex_dumbbell_shrug",
+      "name_en": "Dumbbell Shrug",
+      "name_ar": "هز كتف دمبل",
+      "muscle_group": "shoulders",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_barbell_shrug",
+      "name_en": "Barbell Shrug",
+      "name_ar": "هز كتف بار",
+      "muscle_group": "shoulders",
+      "equipment": "barbell"
+    },
+    {
+      "id": "ex_barbell_curl",
+      "name_en": "Barbell Curl",
+      "name_ar": "بايسبس بار مستقيم",
+      "muscle_group": "biceps",
+      "equipment": "barbell"
+    },
+    {
+      "id": "ex_ez_bar_curl",
+      "name_en": "EZ-Bar Curl",
+      "name_ar": "بايسبس بار زجزاج",
+      "muscle_group": "biceps",
+      "equipment": "ez_bar"
+    },
+    {
+      "id": "ex_dumbbell_curl",
+      "name_en": "Dumbbell Curl",
+      "name_ar": "بايسبس دمبل",
+      "muscle_group": "biceps",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_alternating_dumbbell_curl",
+      "name_en": "Alternating Dumbbell Curl",
+      "name_ar": "بايسبس دمبل تبادلي",
+      "muscle_group": "biceps",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_hammer_curl",
+      "name_en": "Hammer Curl",
+      "name_ar": "هامر دمبل",
+      "muscle_group": "biceps",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_cross_body_hammer_curl",
+      "name_en": "Cross-Body Hammer Curl",
+      "name_ar": "هامر دمبل متقاطع",
+      "muscle_group": "biceps",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_incline_dumbbell_curl",
+      "name_en": "Incline Dumbbell Curl",
+      "name_ar": "بايسبس دمبل على بنش مائل",
+      "muscle_group": "biceps",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_preacher_curl",
+      "name_en": "Preacher Curl",
+      "name_ar": "بايسبس بريتشر",
+      "muscle_group": "biceps",
+      "equipment": "ez_bar"
+    },
+    {
+      "id": "ex_machine_preacher_curl",
+      "name_en": "Machine Preacher Curl",
+      "name_ar": "بايسبس بريتشر جهاز",
+      "muscle_group": "biceps",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_concentration_curl",
+      "name_en": "Concentration Curl",
+      "name_ar": "بايسبس تركيز",
+      "muscle_group": "biceps",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_cable_biceps_curl",
+      "name_en": "Cable Biceps Curl",
+      "name_ar": "بايسبس كابل",
+      "muscle_group": "biceps",
+      "equipment": "cable"
+    },
+    {
+      "id": "ex_rope_hammer_curl",
+      "name_en": "Rope Hammer Curl",
+      "name_ar": "هامر حبل كابل",
+      "muscle_group": "biceps",
+      "equipment": "cable"
+    },
+    {
+      "id": "ex_bayesian_cable_curl",
+      "name_en": "Bayesian Cable Curl",
+      "name_ar": "بايسبس بايزيان كابل",
+      "muscle_group": "biceps",
+      "equipment": "cable"
+    },
+    {
+      "id": "ex_spider_curl",
+      "name_en": "Spider Curl",
+      "name_ar": "بايسبس سبايدر",
+      "muscle_group": "biceps",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_cable_triceps_pushdown",
+      "name_en": "Cable Triceps Pushdown",
+      "name_ar": "ترايسبس ضغط كابل",
+      "muscle_group": "triceps",
+      "equipment": "cable"
+    },
+    {
+      "id": "ex_rope_triceps_pushdown",
+      "name_en": "Rope Triceps Pushdown",
+      "name_ar": "ترايسبس حبل",
+      "muscle_group": "triceps",
+      "equipment": "cable"
+    },
+    {
+      "id": "ex_reverse_grip_triceps_pushdown",
+      "name_en": "Reverse-Grip Triceps Pushdown",
+      "name_ar": "ترايسبس كابل قبضة معكوسة",
+      "muscle_group": "triceps",
+      "equipment": "cable"
+    },
+    {
+      "id": "ex_overhead_cable_triceps_extension",
+      "name_en": "Overhead Cable Triceps Extension",
+      "name_ar": "ترايسبس كابل فوق الرأس",
+      "muscle_group": "triceps",
+      "equipment": "cable"
+    },
+    {
+      "id": "ex_single_arm_cable_triceps_extension",
+      "name_en": "Single-Arm Cable Triceps Extension",
+      "name_ar": "ترايسبس كابل ذراع واحدة",
+      "muscle_group": "triceps",
+      "equipment": "cable"
+    },
+    {
+      "id": "ex_dumbbell_overhead_triceps_extension",
+      "name_en": "Dumbbell Overhead Triceps Extension",
+      "name_ar": "ترايسبس دمبل فوق الرأس",
+      "muscle_group": "triceps",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_single_arm_overhead_dumbbell_extension",
+      "name_en": "Single-Arm Overhead Dumbbell Extension",
+      "name_ar": "ترايسبس دمبل فوق الرأس ذراع واحدة",
+      "muscle_group": "triceps",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_lying_ez_bar_triceps_extension",
+      "name_en": "Lying EZ-Bar Triceps Extension",
+      "name_ar": "سكال كراشر بار زجزاج",
+      "muscle_group": "triceps",
+      "equipment": "ez_bar"
+    },
+    {
+      "id": "ex_dumbbell_skull_crusher",
+      "name_en": "Dumbbell Skull Crusher",
+      "name_ar": "سكال كراشر دمبل",
+      "muscle_group": "triceps",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_close_grip_bench_press",
+      "name_en": "Close-Grip Bench Press",
+      "name_ar": "بنش بار قبضة ضيقة",
+      "muscle_group": "triceps",
+      "equipment": "barbell"
+    },
+    {
+      "id": "ex_parallel_bar_triceps_dip",
+      "name_en": "Parallel Bar Triceps Dip",
+      "name_ar": "متوازي ترايسبس",
+      "muscle_group": "triceps",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_bench_dip",
+      "name_en": "Bench Dip",
+      "name_ar": "ديبس على بنش",
+      "muscle_group": "triceps",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_triceps_extension_machine",
+      "name_en": "Triceps Extension Machine",
+      "name_ar": "ترايسبس جهاز",
+      "muscle_group": "triceps",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_dumbbell_triceps_kickback",
+      "name_en": "Dumbbell Triceps Kickback",
+      "name_ar": "ترايسبس كيك باك دمبل",
+      "muscle_group": "triceps",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_barbell_back_squat",
+      "name_en": "Barbell Back Squat",
+      "name_ar": "سكوات بار خلفي",
+      "muscle_group": "quadriceps",
+      "equipment": "barbell"
+    },
+    {
+      "id": "ex_barbell_front_squat",
+      "name_en": "Barbell Front Squat",
+      "name_ar": "سكوات بار أمامي",
+      "muscle_group": "quadriceps",
+      "equipment": "barbell"
+    },
+    {
+      "id": "ex_smith_machine_squat",
+      "name_en": "Smith Machine Squat",
+      "name_ar": "سكوات سميث",
+      "muscle_group": "quadriceps",
+      "equipment": "smith_machine"
+    },
+    {
+      "id": "ex_goblet_squat",
+      "name_en": "Goblet Squat",
+      "name_ar": "جوبلت سكوات دمبل",
+      "muscle_group": "quadriceps",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_hack_squat",
+      "name_en": "Hack Squat",
+      "name_ar": "هاك سكوات جهاز",
+      "muscle_group": "quadriceps",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_leg_press_45",
+      "name_en": "Leg Press 45°",
+      "name_ar": "ضغط رجل 45 درجة",
+      "muscle_group": "quadriceps",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_horizontal_leg_press",
+      "name_en": "Horizontal Leg Press",
+      "name_ar": "ضغط رجل أفقي",
+      "muscle_group": "quadriceps",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_single_leg_press",
+      "name_en": "Single-Leg Press",
+      "name_ar": "ضغط رجل واحدة",
+      "muscle_group": "quadriceps",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_leg_extension",
+      "name_en": "Leg Extension",
+      "name_ar": "فرد رجل جهاز",
+      "muscle_group": "quadriceps",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_single_leg_extension",
+      "name_en": "Single-Leg Extension",
+      "name_ar": "فرد رجل واحدة جهاز",
+      "muscle_group": "quadriceps",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_bulgarian_split_squat",
+      "name_en": "Bulgarian Split Squat",
+      "name_ar": "بلغاريان سبليت سكوات",
+      "muscle_group": "quadriceps",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_dumbbell_walking_lunge",
+      "name_en": "Dumbbell Walking Lunge",
+      "name_ar": "لانجز مشي دمبل",
+      "muscle_group": "quadriceps",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_reverse_lunge",
+      "name_en": "Reverse Lunge",
+      "name_ar": "لانجز خلفي",
+      "muscle_group": "quadriceps",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_forward_lunge",
+      "name_en": "Forward Lunge",
+      "name_ar": "لانجز أمامي",
+      "muscle_group": "quadriceps",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_step_up",
+      "name_en": "Step-Up",
+      "name_ar": "طلوع صندوق",
+      "muscle_group": "quadriceps",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_sissy_squat",
+      "name_en": "Sissy Squat",
+      "name_ar": "سيسي سكوات",
+      "muscle_group": "quadriceps",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_belt_squat",
+      "name_en": "Belt Squat",
+      "name_ar": "بيلت سكوات جهاز",
+      "muscle_group": "quadriceps",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_cyclist_squat",
+      "name_en": "Cyclist Squat",
+      "name_ar": "سكوات بالكعب مرفوع",
+      "muscle_group": "quadriceps",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_romanian_deadlift",
+      "name_en": "Romanian Deadlift",
+      "name_ar": "رومانيان ديدليفت بار",
+      "muscle_group": "hamstrings_glutes",
+      "equipment": "barbell"
+    },
+    {
+      "id": "ex_dumbbell_romanian_deadlift",
+      "name_en": "Dumbbell Romanian Deadlift",
+      "name_ar": "رومانيان ديدليفت دمبل",
+      "muscle_group": "hamstrings_glutes",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_stiff_leg_deadlift",
+      "name_en": "Stiff-Leg Deadlift",
+      "name_ar": "ديدليفت رجل شبه مستقيمة",
+      "muscle_group": "hamstrings_glutes",
+      "equipment": "barbell"
+    },
+    {
+      "id": "ex_seated_leg_curl",
+      "name_en": "Seated Leg Curl",
+      "name_ar": "خلفية رجل جالس جهاز",
+      "muscle_group": "hamstrings_glutes",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_lying_leg_curl",
+      "name_en": "Lying Leg Curl",
+      "name_ar": "خلفية رجل نايم جهاز",
+      "muscle_group": "hamstrings_glutes",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_standing_single_leg_curl",
+      "name_en": "Standing Single-Leg Curl",
+      "name_ar": "خلفية رجل واقف رجل واحدة",
+      "muscle_group": "hamstrings_glutes",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_nordic_hamstring_curl",
+      "name_en": "Nordic Hamstring Curl",
+      "name_ar": "نوردك هامرسترنج",
+      "muscle_group": "hamstrings_glutes",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_glute_ham_raise",
+      "name_en": "Glute-Ham Raise",
+      "name_ar": "جلوت هام ريز",
+      "muscle_group": "hamstrings_glutes",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_barbell_hip_thrust",
+      "name_en": "Barbell Hip Thrust",
+      "name_ar": "هيب ثرست بار",
+      "muscle_group": "hamstrings_glutes",
+      "equipment": "barbell"
+    },
+    {
+      "id": "ex_smith_machine_hip_thrust",
+      "name_en": "Smith Machine Hip Thrust",
+      "name_ar": "هيب ثرست سميث",
+      "muscle_group": "hamstrings_glutes",
+      "equipment": "smith_machine"
+    },
+    {
+      "id": "ex_dumbbell_hip_thrust",
+      "name_en": "Dumbbell Hip Thrust",
+      "name_ar": "هيب ثرست دمبل",
+      "muscle_group": "hamstrings_glutes",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_glute_bridge",
+      "name_en": "Glute Bridge",
+      "name_ar": "جلوت بريدج",
+      "muscle_group": "hamstrings_glutes",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_single_leg_glute_bridge",
+      "name_en": "Single-Leg Glute Bridge",
+      "name_ar": "جلوت بريدج رجل واحدة",
+      "muscle_group": "hamstrings_glutes",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_cable_glute_kickback",
+      "name_en": "Cable Glute Kickback",
+      "name_ar": "كيك باك جلوتس كابل",
+      "muscle_group": "hamstrings_glutes",
+      "equipment": "cable"
+    },
+    {
+      "id": "ex_glute_kickback_machine",
+      "name_en": "Glute Kickback Machine",
+      "name_ar": "كيك باك جلوتس جهاز",
+      "muscle_group": "hamstrings_glutes",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_hip_abduction_machine",
+      "name_en": "Hip Abduction Machine",
+      "name_ar": "فتح رجل جهاز",
+      "muscle_group": "hamstrings_glutes",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_hip_adduction_machine",
+      "name_en": "Hip Adduction Machine",
+      "name_ar": "ضم رجل جهاز",
+      "muscle_group": "hamstrings_glutes",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_cable_hip_abduction",
+      "name_en": "Cable Hip Abduction",
+      "name_ar": "فتح رجل كابل",
+      "muscle_group": "hamstrings_glutes",
+      "equipment": "cable"
+    },
+    {
+      "id": "ex_cable_pull_through",
+      "name_en": "Cable Pull-Through",
+      "name_ar": "بول ثرو كابل",
+      "muscle_group": "hamstrings_glutes",
+      "equipment": "cable"
+    },
+    {
+      "id": "ex_sumo_squat",
+      "name_en": "Sumo Squat",
+      "name_ar": "سكوات سومو",
+      "muscle_group": "hamstrings_glutes",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_frog_pump",
+      "name_en": "Frog Pump",
+      "name_ar": "فروج بامب",
+      "muscle_group": "hamstrings_glutes",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_reverse_hyperextension",
+      "name_en": "Reverse Hyperextension",
+      "name_ar": "ريفيرس هايبر إكستنشن",
+      "muscle_group": "hamstrings_glutes",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_standing_calf_raise_machine",
+      "name_en": "Standing Calf Raise Machine",
+      "name_ar": "سمانة واقف جهاز",
+      "muscle_group": "calves",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_seated_calf_raise_machine",
+      "name_en": "Seated Calf Raise Machine",
+      "name_ar": "سمانة جالس جهاز",
+      "muscle_group": "calves",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_leg_press_calf_raise",
+      "name_en": "Leg Press Calf Raise",
+      "name_ar": "سمانة على جهاز ضغط الرجل",
+      "muscle_group": "calves",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_smith_machine_calf_raise",
+      "name_en": "Smith Machine Calf Raise",
+      "name_ar": "سمانة سميث",
+      "muscle_group": "calves",
+      "equipment": "smith_machine"
+    },
+    {
+      "id": "ex_dumbbell_standing_calf_raise",
+      "name_en": "Dumbbell Standing Calf Raise",
+      "name_ar": "سمانة واقف دمبل",
+      "muscle_group": "calves",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_single_leg_calf_raise",
+      "name_en": "Single-Leg Calf Raise",
+      "name_ar": "سمانة رجل واحدة",
+      "muscle_group": "calves",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_donkey_calf_raise",
+      "name_en": "Donkey Calf Raise",
+      "name_ar": "سمانة دونكي",
+      "muscle_group": "calves",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_tibialis_raise",
+      "name_en": "Tibialis Raise",
+      "name_ar": "رفع مشط القدم للعضلة الأمامية",
+      "muscle_group": "calves",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_crunch",
+      "name_en": "Crunch",
+      "name_ar": "كرنش بطن",
+      "muscle_group": "abs_core",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_cable_crunch",
+      "name_en": "Cable Crunch",
+      "name_ar": "كرنش بطن كابل",
+      "muscle_group": "abs_core",
+      "equipment": "cable"
+    },
+    {
+      "id": "ex_machine_ab_crunch",
+      "name_en": "Machine Ab Crunch",
+      "name_ar": "كرنش بطن جهاز",
+      "muscle_group": "abs_core",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_reverse_crunch",
+      "name_en": "Reverse Crunch",
+      "name_ar": "كرنش عكسي",
+      "muscle_group": "abs_core",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_lying_leg_raise",
+      "name_en": "Lying Leg Raise",
+      "name_ar": "رفع رجلين نايم",
+      "muscle_group": "abs_core",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_hanging_knee_raise",
+      "name_en": "Hanging Knee Raise",
+      "name_ar": "رفع الركبتين معلق",
+      "muscle_group": "abs_core",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_hanging_leg_raise",
+      "name_en": "Hanging Leg Raise",
+      "name_ar": "رفع الرجلين معلق",
+      "muscle_group": "abs_core",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_captain_s_chair_leg_raise",
+      "name_en": "Captain's Chair Leg Raise",
+      "name_ar": "رفع الرجلين على جهاز البطن",
+      "muscle_group": "abs_core",
+      "equipment": "machine"
+    },
+    {
+      "id": "ex_plank",
+      "name_en": "Plank",
+      "name_ar": "بلانك",
+      "muscle_group": "abs_core",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_side_plank",
+      "name_en": "Side Plank",
+      "name_ar": "بلانك جانبي",
+      "muscle_group": "abs_core",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_dead_bug",
+      "name_en": "Dead Bug",
+      "name_ar": "ديد باج",
+      "muscle_group": "abs_core",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_bird_dog",
+      "name_en": "Bird Dog",
+      "name_ar": "بيرد دوج",
+      "muscle_group": "abs_core",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_russian_twist",
+      "name_en": "Russian Twist",
+      "name_ar": "روشن تويست",
+      "muscle_group": "abs_core",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_bicycle_crunch",
+      "name_en": "Bicycle Crunch",
+      "name_ar": "بايسكل كرنش",
+      "muscle_group": "abs_core",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_mountain_climber",
+      "name_en": "Mountain Climber",
+      "name_ar": "ماونتن كلايمبر",
+      "muscle_group": "abs_core",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_ab_wheel_rollout",
+      "name_en": "Ab Wheel Rollout",
+      "name_ar": "رول آوت بعجلة البطن",
+      "muscle_group": "abs_core",
+      "equipment": "ab_wheel"
+    },
+    {
+      "id": "ex_pallof_press",
+      "name_en": "Pallof Press",
+      "name_ar": "بالوف بريس كابل",
+      "muscle_group": "abs_core",
+      "equipment": "cable"
+    },
+    {
+      "id": "ex_cable_woodchopper",
+      "name_en": "Cable Woodchopper",
+      "name_ar": "وود تشوبر كابل",
+      "muscle_group": "abs_core",
+      "equipment": "cable"
+    },
+    {
+      "id": "ex_flutter_kicks",
+      "name_en": "Flutter Kicks",
+      "name_ar": "رفرفة الرجلين للبطن",
+      "muscle_group": "abs_core",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_hollow_body_hold",
+      "name_en": "Hollow Body Hold",
+      "name_ar": "هولو بودي هولد",
+      "muscle_group": "abs_core",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_conventional_deadlift",
+      "name_en": "Conventional Deadlift",
+      "name_ar": "ديدليفت تقليدي",
+      "muscle_group": "full_body",
+      "equipment": "barbell"
+    },
+    {
+      "id": "ex_sumo_deadlift",
+      "name_en": "Sumo Deadlift",
+      "name_ar": "ديدليفت سومو",
+      "muscle_group": "full_body",
+      "equipment": "barbell"
+    },
+    {
+      "id": "ex_trap_bar_deadlift",
+      "name_en": "Trap Bar Deadlift",
+      "name_ar": "ديدليفت تراب بار",
+      "muscle_group": "full_body",
+      "equipment": "trap_bar"
+    },
+    {
+      "id": "ex_kettlebell_swing",
+      "name_en": "Kettlebell Swing",
+      "name_ar": "مرجحة كيتل بيل",
+      "muscle_group": "full_body",
+      "equipment": "kettlebell"
+    },
+    {
+      "id": "ex_dumbbell_thruster",
+      "name_en": "Dumbbell Thruster",
+      "name_ar": "ثرستر دمبل",
+      "muscle_group": "full_body",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_barbell_thruster",
+      "name_en": "Barbell Thruster",
+      "name_ar": "ثرستر بار",
+      "muscle_group": "full_body",
+      "equipment": "barbell"
+    },
+    {
+      "id": "ex_burpee",
+      "name_en": "Burpee",
+      "name_ar": "بيربي",
+      "muscle_group": "full_body",
+      "equipment": "bodyweight"
+    },
+    {
+      "id": "ex_dumbbell_clean_and_press",
+      "name_en": "Dumbbell Clean and Press",
+      "name_ar": "كلين آند بريس دمبل",
+      "muscle_group": "full_body",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_barbell_clean_and_press",
+      "name_en": "Barbell Clean and Press",
+      "name_ar": "كلين آند بريس بار",
+      "muscle_group": "full_body",
+      "equipment": "barbell"
+    },
+    {
+      "id": "ex_power_clean",
+      "name_en": "Power Clean",
+      "name_ar": "باور كلين",
+      "muscle_group": "full_body",
+      "equipment": "barbell"
+    },
+    {
+      "id": "ex_hang_clean",
+      "name_en": "Hang Clean",
+      "name_ar": "هانج كلين",
+      "muscle_group": "full_body",
+      "equipment": "barbell"
+    },
+    {
+      "id": "ex_push_press",
+      "name_en": "Push Press",
+      "name_ar": "بوش بريس بار",
+      "muscle_group": "full_body",
+      "equipment": "barbell"
+    },
+    {
+      "id": "ex_dumbbell_snatch",
+      "name_en": "Dumbbell Snatch",
+      "name_ar": "سناتش دمبل",
+      "muscle_group": "full_body",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_kettlebell_turkish_get_up",
+      "name_en": "Kettlebell Turkish Get-Up",
+      "name_ar": "تركيش جيت أب كيتل بيل",
+      "muscle_group": "full_body",
+      "equipment": "kettlebell"
+    },
+    {
+      "id": "ex_farmer_s_carry",
+      "name_en": "Farmer's Carry",
+      "name_ar": "فارمرز كاري دمبل",
+      "muscle_group": "full_body",
+      "equipment": "dumbbell"
+    },
+    {
+      "id": "ex_man_maker",
+      "name_en": "Man Maker",
+      "name_ar": "مان ميكر دمبل",
+      "muscle_group": "full_body",
+      "equipment": "dumbbell"
+    }
+  ]
+}

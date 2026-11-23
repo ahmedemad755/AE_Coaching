@@ -7,50 +7,63 @@ void main() {
   setUp(() => cubit = RestTimerCubit());
   tearDown(() async => cubit.close());
 
-  test('initial state is zero and not running', () {
-    expect(cubit.state.elapsed, equals(Duration.zero));
+  test('starts with a one-minute configurable rest', () {
+    expect(cubit.state.configuredDuration, const Duration(minutes: 1));
+    expect(cubit.state.remaining, const Duration(minutes: 1));
+    expect(cubit.state.progress, 1);
     expect(cubit.state.isRunning, isFalse);
   });
 
-  test('start() flips isRunning to true immediately, without waiting for a tick', () {
-    cubit.start();
-    expect(cubit.state.isRunning, isTrue);
-    expect(cubit.state.elapsed, equals(Duration.zero));
+  test('accepts a user-configured duration and resets the remaining time', () {
+    cubit.configure(const Duration(minutes: 2, seconds: 15));
+
+    expect(
+      cubit.state.configuredDuration,
+      const Duration(minutes: 2, seconds: 15),
+    );
+    expect(cubit.state.remaining, const Duration(minutes: 2, seconds: 15));
   });
 
-  test('calling start() twice is a harmless no-op — never schedules a second ticker', () {
-    cubit.start();
-    cubit.start(); // must not throw, must not double-schedule
+  test('startCountdown starts or restarts from the configured duration', () {
+    cubit.configure(const Duration(seconds: 30));
+    cubit.startCountdown();
     expect(cubit.state.isRunning, isTrue);
+    expect(cubit.state.remaining, const Duration(seconds: 30));
+
+    cubit.startCountdown();
+    expect(cubit.state.isRunning, isTrue);
+    expect(cubit.state.remaining, const Duration(seconds: 30));
   });
 
-  test('stop() pauses without losing the elapsed value', () {
-    cubit.start();
+  test('configuration is not changed during a running rest', () {
+    cubit.startCountdown();
+    cubit.configure(const Duration(minutes: 3));
+
+    expect(cubit.state.configuredDuration, const Duration(minutes: 1));
+  });
+
+  test('stop pauses and reset restores the configured duration', () {
+    cubit.configure(const Duration(seconds: 35));
+    cubit.startCountdown();
     cubit.stop();
     expect(cubit.state.isRunning, isFalse);
-    expect(cubit.state.elapsed, equals(Duration.zero));
-  });
 
-  test('stop() when not running is a harmless no-op', () {
-    cubit.stop();
-    expect(cubit.state.isRunning, isFalse);
-  });
-
-  test('reset() while running stops the ticker and zeroes elapsed', () {
-    cubit.start();
+    cubit.configure(const Duration(minutes: 2));
     cubit.reset();
-    expect(cubit.state.isRunning, isFalse);
-    expect(cubit.state.elapsed, equals(Duration.zero));
+    expect(cubit.state.remaining, const Duration(minutes: 2));
+    expect(cubit.state.progress, 1);
   });
 
-  test(
-    'close() cancels any active ticker cleanly — a leaked Timer would fail this test '
-    'with a pending-timer error from the test framework itself once tearDown closes it',
-    () {
-      cubit.start();
-      // tearDown's cubit.close() runs after this test body — reaching
-      // the end of the whole test without the runner complaining about
-      // a pending Timer IS the assertion; close() must cancel it.
-    },
-  );
+  test('zero duration cannot be started', () {
+    cubit.configure(Duration.zero);
+    cubit.startCountdown();
+
+    expect(cubit.state.isRunning, isFalse);
+    expect(cubit.state.progress, 0);
+  });
+
+  test('close cancels an active timer', () async {
+    cubit.startCountdown();
+    await cubit.close();
+  });
 }
